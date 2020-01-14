@@ -8,3 +8,12 @@ def readJSON():
 def writeJSON(data):
     with open('homeware.json', 'w') as f:
         json.dump(data, f)
+
+def readConfig():
+    with open('config.json', 'r') as f:
+        data = json.load(f)
+        return data
+
+def writeConfig(data):
+    with open('config.json', 'w') as f:
+        json.dump(data, f)

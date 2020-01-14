@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="en">
+  <head> </head>
+  <body style="visibility: hidden;">
+
+    <div id="navbarBlock"></div>
+
+    <div id="grid" class="container containerP">
+      <div class="row">
+        <div class="col">
+          <div class="alert alert-danger" role="alert">
+            <h2>Take note</h2>
+            - Be careful when changing data, once saved, a sync request will be sent to Google Home Graph!<br>
+            - Modes are not supported yet.
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div id="alertContainer"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <form id=formulario"">
+
+
+            <div class="container p-3 mb-2 bg-light text-dark" style="text-align: right">
+              <button type="button" class="btn btn-danger" id="deleteDevice">Delete device</button>
+              <button type="button" class="btn btn-primary" id="save">Save</button>
+              <input type="hidden" id="operation" value="none">
+              <input type="hidden" id="default_names" value="">
+              <input type="hidden" id="nick_names" value="">
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark">
+              <h3>ID and type</h3>
+              <div class="form-group">
+                <label for="id">Device ID:</label>
+                <input type="text" class="form-control" id="id">
+              </div>
+              <div class="form-group">
+                <label for="type">Type:</label>
+                <select class="form-control" id="type" onchange="updateTraits('no')">
+                  <option>Select a device</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark">
+              <h3>Traits</h3>
+              <div class="form-group">
+                <label for="traits">Traits</label>
+                <select multiple class="form-control" id="trais" onchange="updateTraitsDependencies()">
+                  <option>Select a device type first</option>
+                </select>
+                <small id="emailHelp" class="form-text text-muted">Select all you need using <i>Ctrl</i> key.</small>
+              </div>
+            </div>
+
+            <!-- Toggles -->
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Toggles">
+              <h3>Attribute: Toggles</h3>
+              <input type="hidden" value="-1" id="availableToggles">
+              <div class="row" id="badge_toggles_container">
+                <!--Toggles cards-->
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-1">
+                  <label for="languaje_toogle">Languaje:</label>
+                  <select class="form-control" id="languaje_toggle">
+                    <option>en</option>
+                    <option>es</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="name_toggle">Name:</label>
+                  <input type="text" class="form-control" id="name_toggle" placeholder="Write a name">
+                </div>
+                <div class="form-group col-md-7">
+                  <label for="synonyms_toggle">Synonymous:</label>
+                  <input type="text" class="form-control" id="synonyms_toggle" placeholder="Write synonyms separated by ;">
+                </div>
+                <div class="form-group col-md-1">
+                  <label for="add_toggle_button">.</label>
+                  <input type="button" class="form-control" id="add_toggle_button" value="Add" onclick="addToggle()">
+                </div>
+              </div>
+            </div>
+
+            <!-- ArmDisarm -->
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" name="trait_container" id="action.devices.traits.ArmDisarm">
+              <h3>Attribute: ArmDisarm</h3>
+              <input type="hidden" value="-1" id="availableArmLevels">
+              <div class="row" id="badge_arm_levels_container">
+                <!--Toggles cards-->
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-1">
+                  <label for="languaje_arm_levels">Languaje:</label>
+                  <select class="form-control" id="languaje_arm_levels">
+                    <option>en</option>
+                    <option>es</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="name_arm_levels">Name:</label>
+                  <input type="text" class="form-control" id="name_arm_levels" placeholder="Write a name">
+                </div>
+                <div class="form-group col-md-7">
+                  <label for="synonyms_arm_levels">Synonymous:</label>
+                  <input type="text" class="form-control" id="synonyms_arm_levels" placeholder="Write synonyms separated by ;">
+                </div>
+                <div class="form-group col-md-1">
+                  <label for="add_arm_levels_button">.</label>
+                  <input type="button" class="form-control" id="add_arm_levels_button" value="Add" onclick="addArmLevels()">
+                </div>
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_arm_levels_ordered">
+                    <label class="custom-control-label" for="customSwitch_arm_levels_ordered">Ordered</label>
+                    <small class="form-text text-muted">" If set to true, additional grammar for increase/decrease logic will apply, in the order (increasing) of the speeds array."</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CameraStream -->
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.CameraStream">
+              <h3>Attribute: CameraStream</h3>
+              <div class="form-group">
+                <label for="cameraStreamSupportedProtocols">cameraStreamSupportedProtocols</label>
+                <select multiple class="form-control" id="cameraStreamSupportedProtocols">
+                  <option>hls</option>
+                  <option>dash</option>
+                </select>
+                <small id="emailHelp" class="form-text text-muted">Select all you need using <i>Ctrl</i> key.</small>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_cameraStreamNeedAuthToken">
+                    <label class="custom-control-label" for="customSwitch_cameraStreamNeedAuthToken">cameraStreamNeedAuthToken</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_cameraStreamNeedDrmEncryption">
+                    <label class="custom-control-label" for="customSwitch_cameraStreamNeedDrmEncryption">cameraStreamNeedDrmEncryption</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ColorSetting -->
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.ColorSetting">
+              <h3>Attribute: ColorSetting</h3>
+              <div class="form-row">
+                <div class="form-group col-md-5">
+                  <label for="colorModel">Model:</label>
+                  <select class="form-control" id="colorModel">
+                    <option>Choose</option>
+                    <option>rgb</option>
+                    <option>hsv</option>
+                    <option>no rgb, only color temperature</option>
+                  </select>
+                </div>
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_colorTemperaturRange">
+                    <label class="custom-control-label" for="customSwitch_colorTemperaturRange">Color temperature control</label>
+                  </div>
+                  <small class="form-text text-muted">Must be used if no RGB model is selected.</small>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="temperatureMinK">Minimum color temperature [K]</label>
+                  <input type="number" class="form-control" id="temperatureMinK">
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="temperatureMaxK">Maximum color temperature [K]</label>
+                  <input type="number" class="form-control" id="temperatureMaxK">
+                </div>
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyColorSetting">
+                    <label class="custom-control-label" for="customSwitch_commandOnlyColorSetting">commandOnlyColorSetting</label>
+                    <small class="form-text text-muted">Enable it if the hardware can not confirm its status after execute a command.</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- FanSpeed -->
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.FanSpeed">
+              <h3>Attribute: FanSpeed</h3>
+              <input type="hidden" value="-1" id="availableFanSpeeds">
+              <div class="row" id="badge_fan_speeds_container">
+                <!--Toggles cards-->
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-1">
+                  <label for="languaje_fan_speeds">Languaje:</label>
+                  <select class="form-control" id="languaje_fan_speeds">
+                    <option>en</option>
+                    <option>es</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="name_fan_speed">Name:</label>
+                  <input type="text" class="form-control" id="name_fan_speed" placeholder="Write a name">
+                </div>
+                <div class="form-group col-md-7">
+                  <label for="synonyms_fan_speed">Synonymous:</label>
+                  <input type="text" class="form-control" id="synonyms_fan_speed" placeholder="Write synonyms separated by ;">
+                </div>
+                <div class="form-group col-md-1">
+                  <label for="add_fan_speed_button">.</label>
+                  <input type="button" class="form-control" id="add_fan_speed_button" value="Add" onclick="addFanSpeed()">
+                </div>
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_ordered">
+                    <label class="custom-control-label" for="customSwitch_ordered">Ordered</label>
+                    <small class="form-text text-muted">" If set to true, additional grammar for increase/decrease logic will apply, in the order (increasing) of the speeds array."</small>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_reversible">
+                    <label class="custom-control-label" for="customSwitch_reversible">Reversible</label>
+                    <small class="form-text text-muted">" If set to true, this device supports blowing the fan in both directions and can accept the command to reverse fan direction."</small>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyFanSpeed">
+                    <label class="custom-control-label" for="customSwitch_commandOnlyFanSpeed">commandOnlyFanSpeed</label>
+                    <small class="form-text text-muted">Enable it if the hardware can not confirm its status after execute a command.</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- LightEffects -->
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.LightEffects">
+              <h3>Attribute: LightEffects</h3>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_colorLoop">
+                    <label class="custom-control-label" for="customSwitch_colorLoop">colorLoop</label>
+                    <small class="form-text text-muted">"colorLoop" is the only Effect supported by Google.</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Modes">
+              <h3>Attribute: Modes</h3>
+              <p>This atribut hasn't been developed yet. If you really need it, open an issue on <a href="https://github.com/kikeelectronico/Homeware/issues" target="blanck">Github</a>. Meanwhile you can enter the attributes directly on the database.</p>
+            </div>
+
+            <!-- OnOff -->
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.OnOff">
+              <h3>Attribute: OnOff</h3>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyOnOff">
+                    <label class="custom-control-label" for="customSwitch_commandOnlyOnOff">commandOnlyOnOff</label>
+                    <small id="emailHelp" class="form-text text-muted">Enable it if the hardware can not confirm its status after execute a command.</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- OpenClose -->
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.OpenClose">
+              <h3>Attribute: OpenClose</h3>
+              <input type="hidden" value="-1" id="openDirection">
+              <div class="row" id="badge_openDirection_container">
+                <!--Toggles cards-->
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-11">
+                  <label for="name_openDirection">Directions:</label>
+                  <input type="text" class="form-control" id="name_openDirection">
+                </div>
+                <div class="form-group col-md-1">
+                  <label for="add_toggle_button">.</label>
+                  <input type="button" class="form-control" id="add_openDirection_button" value="Add" onclick="addOpenDirection()">
+                </div>
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_queryOnlyOpenClose">
+                    <label class="custom-control-label" for="customSwitch_queryOnlyOpenClose">queryOnlyOpenClose</label>
+                    <small class="form-text text-muted">Enable it if the hardware can not confirm its status after execute a command.</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scene -->
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Scene">
+              <h3>Attribute: Scene</h3>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_sceneReversible">
+                    <label class="custom-control-label" for="customSwitch_sceneReversible">sceneReversible</label>
+                    <small class="form-text text-muted">"Indicating that this scene may be reversed. This is only relevant for scenes that modify state and remember previous state."</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- StartStop -->
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.StartStop">
+              <h3>Attribute: StartStop</h3>
+              <input type="hidden" value="-1" id="zones">
+              <div class="row" id="badge_zones_container">
+                <!--zones badges-->
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-11">
+                  <label for="name_zones">Zones:</label>
+                  <input type="text" class="form-control" id="name_zones">
+                </div>
+                <div class="form-group col-md-1">
+                  <label for="add_zones_button">.</label>
+                  <input type="button" class="form-control" id="add_zones_button" value="Add" onclick="addZones()">
+                </div>
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_pausable">
+                    <label class="custom-control-label" for="customSwitch_pausable">pausable</label>
+                    <small class="form-text text-muted">"Indicating whether the device can be paused during operation."</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TemperatureControl -->
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.TemperatureControl">
+              <h3>Attribute: TemperatureControl</h3>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="minThresholdCelsius">Minimum temperature [Celsius]</label>
+                  <input type="number" class="form-control" id="minThresholdCelsius">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="maxThresholdCelsius">Maximum temperature [Celsius]</label>
+                  <input type="number" class="form-control" id="maxThresholdCelsius">
+                </div>
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="temperatureStepCelsius">Relative temperature step [Celsius]</label>
+                  <input type="number" class="form-control" id="temperatureStepCelsius">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="temperatureUnitForUX">Units that will see the user</label>
+                  <input type="text" class="form-control" id="temperatureUnitForUX" value="C">
+                </div>
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_queryOnlyTemperatureControl">
+                    <label class="custom-control-label" for="customSwitch_queryOnlyTemperatureControl">queryOnlyTemperatureControl</label>
+                    <small class="form-text text-muted">"Indicates if the device can only be queried for state information, and cannot be controlled."</small>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyTemperatureControl">
+                    <label class="custom-control-label" for="customSwitch_commandOnlyTemperatureControl">commandOnlyTemperatureControl</label>
+                    <small class="form-text text-muted">Enable it if the hardware can not confirm its status after execute a command.</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TemperatureSetting -->
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.TemperatureSetting">
+              <h3>Attribute: TemperatureSetting</h3>
+              <div class="form-group">
+                <label for="availableThermostatModes">Thermostat modes</label>
+                <select multiple class="form-control" id="availableThermostatModes">
+                </select>
+                <small id="emailHelp" class="form-text text-muted">Select all you need using <i>Ctrl</i> key.</small>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="thermostatTemperatureUnit">Unit</label>
+                  <input type="text" class="form-control" id="thermostatTemperatureUnit" value="C">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="bufferRangeCelsius">Minimum offset between heat-cool setpoints</label>
+                  <input type="number" class="form-control" id="bufferRangeCelsius" value="2">
+                </div>
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_queryOnlyTemperatureSetting">
+                    <label class="custom-control-label" for="customSwitch_queryOnlyTemperatureSetting">queryOnlyTemperatureSetting</label>
+                    <small class="form-text text-muted">"Indicates if the device can only be queried for state information, and cannot be controlled."</small>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyTemperatureSetting">
+                    <label class="custom-control-label" for="customSwitch_commandOnlyTemperatureSetting">commandOnlyTemperatureSetting</label>
+                    <small class="form-text text-muted">Enable it if the hardware can not confirm its status after execute a command.</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Timer -->
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Timer">
+              <h3>Attribute: Timer</h3>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="maxTimerLimitSec">Longest timer setting [seconds]</label>
+                  <input type="number" class="form-control" id="maxTimerLimitSec">
+                </div>
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyTimer">
+                    <label class="custom-control-label" for="customSwitch_commandOnlyTimer">commandOnlyTimer</label>
+                    <small class="form-text text-muted">"Indicates if the device can only be queried for state information, and cannot be controlled."</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="container p-3 mb-2 bg-light text-dark">
+              <h3>Device Info</h3>
+              <div class="form-group">
+                <label for="hwVersion">Hardware version:</label>
+                <input type="text" class="form-control" id="hwVersion" >
+              </div>
+              <div class="form-group">
+                <label for="swVersion">Firmware version:</label>
+                <input type="text" class="form-control" id="swVersion"  >
+              </div>
+              <div class="form-group">
+                <label for="manufacturer">Manufacturer:</label>
+                <input type="text" class="form-control" id="manufacturer" >
+              </div>
+              <div class="form-group">
+                <label for="model">Model:</label>
+                <input type="text" class="form-control" id="model"  >
+              </div>
+              <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" >
+              </div>
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark">
+              <h3>Default names</h3>
+              <div id="badge_default_names_container">
+
+              </div>
+              <hr>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" id="add_default_names" placeholder="Write a new one and click Add">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" id="add_default_name_button"  onclick="addName('default_names')">Add</button>
+                </div>
+              </div>
+              <small id="emailHelp" class="form-text text-muted">A list separeted by ;</small>
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark ">
+              <h3>Nick names</h3>
+              <div id="badge_nick_names_container">
+
+              </div>
+              <hr>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" id="add_nick_names" placeholder="Write a new one and click Add">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" id="add_nick_names_button" onclick="addName('nick_names')">Add</button>
+                </div>
+              </div>
+              <small id="emailHelp" class="form-text text-muted">A list separeted by ;</small>
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark ">
+              <h3>Smart Connection</h3>
+              <label>Delay by hour:</label>
+              <div class="form-row">
+                <div class="col-1">
+                  0h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="0h">
+                </div>
+                <div class="col-1">
+                  1h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="1h">
+                </div>
+                <div class="col-1">
+                  2h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="2h">
+                </div>
+                <div class="col-1">
+                  3h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="3h">
+                </div>
+                <div class="col-1">
+                  4h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="4h">
+                </div>
+                <div class="col-1">
+                  5h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="5h">
+                </div>
+                <div class="col-1">
+                  6h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="6h">
+                </div>
+                <div class="col-1">
+                  7h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="7h">
+                </div>
+                <div class="col-1">
+                  8h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="8h">
+                </div>
+                <div class="col-1">
+                  9h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="9h">
+                </div>
+                <div class="col-1">
+                  10h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="10h">
+                </div>
+                <div class="col-1">
+                  11h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="11h">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col-1">
+                  12h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="12h">
+                </div>
+                <div class="col-1">
+                  13h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="13h">
+                </div>
+                <div class="col-1">
+                  14h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="14h">
+                </div>
+                <div class="col-1">
+                  15h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="15h">
+                </div>
+                <div class="col-1">
+                  16h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="16h">
+                </div>
+                <div class="col-1">
+                  17h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="17h">
+                </div>
+                <div class="col-1">
+                  18h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="18h">
+                </div>
+                <div class="col-1">
+                  19h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="19h">
+                </div>
+                <div class="col-1">
+                  20h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="20h">
+                </div>
+                <div class="col-1">
+                  21h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="21h">
+                </div>
+                <div class="col-1">
+                  22h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="22h">
+                </div>
+                <div class="col-1">
+                  23h
+                  <input type="number" class="form-control" value="1" min="1" max="255" id="23h">
+                </div>
+              </div>
+              <small id="emailHelp" class="form-text text-muted">Delay, in seconds, between requests from the electronics to the API. SmartConnection must be enabled at the ESP8266.</small>
+              <br>
+              <div class="form-group">
+                <label for="updateTime">Update time:</label>
+                <input type="number" class="form-control" value="3600" id="updateTime">
+              </div>
+              <small id="emailHelp" class="form-text text-muted">Delay, in seconds, for the ESP8266 to update the Smart Connection data.</small>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="toastBoard" aria-live="polite" aria-atomic="true" style="position:absolute; bottom:0; min-height: 10px;  width: 100%;">
+      <!-- Position it -->
+      <div id="toastBoardPosition" style="position: absolute; bottom: 0; right: 0; margin-right: 20px; margin-bottom: 20px;">
+        <!--Toats go here-->
+      </div>
+    </div>
+
+    <script src="/static/panel/coolNames.js"></script>
+    <script src="/static/panel/edit_device.js"></script>
+
+    <script>
+      //Load things
+      window.addEventListener('load', function(event){
+        device = JSON.parse('{{ deviceString|safe }}');
+        smartConnectionData = JSON.parse('{{ smartConnectionDataString|safe }}');
+        loadDevices(device, smartConnectionData, '{{ deviceID }}');
+      })
+
+    </script>
+
+    <script src="https://www.gstatic.com/firebasejs/3.5.0/firebase.js"></script>
+    <script src="/static/panel/load.js"></script>
+    <script src="/static/panel/footer.js"></script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+  </body>
+</html>

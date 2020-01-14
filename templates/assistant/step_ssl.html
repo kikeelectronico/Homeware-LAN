@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Config - Welcome</title>
+    <title>Config - SSL</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/main.css">
   </head>
@@ -10,27 +10,23 @@
     <div class="configTable">
         <div style="display: table-cell; vertical-align: middle; ">
           <div id="alertContainer"></div>
-          <h1>Homeware configuration assistant - Domain</h1><br>
-          <p>You must get a domain and point it to your WAN IP.</p>
-          <p>There are two possibilities:</p>
-            <ul>
-              <li>Use a static IP and a DNS</li>
-              <li>Use a dinamic IP and a DDNS</li>
-            </ul>
-          <p>If you have a static WAN IP, you probably know how to configure your domain name</p>
-          <p>If you have a dinamic IP, you should use a DDNS provider</p>
-          <p>The process depend on the provider you choose. For example, you can use <a href='https://my.noip.com' target='blanck'>no-ip</a> as the provider:</p>
-          <ul>
-            <li>Create an account in no-ip.</li>
-            <li>Go to <i>Dynamic DNS</i> and create a new <i>Hostname<i>.</li>
-                <ul>
-                  <li>Choose a unique <i>Hostname</i>.</li>
-                  <li>Select <i>DNS Host (A)</i>.</li>
-                  <li>Fill the <i>IPv4 Address<i> with your WAN/public IP. You can get it from <a href='https://www.whatismyip.com/what-is-my-public-ip-address/' target='blanck'>WhatsMyIp</a>.
-                </ul>
-            </li>
-            <li>Install the no-ip client in your Raspberry Pi. Find the instrucctions <a href='https://my.noip.com/#!/dynamic-dns/duc' target='black'>here</a>.</li>
-          </ul>
+          <h1>Homeware configuration assistant - SSL certificate</h1><br>
+          <p>Google needs to comunicate with the Raspberry Pi via HTTPS, so we need a SSL certicate for Homeware.</p>
+
+          <h1>TODO:</h1>
+          Pendiente de validar proceso con puerto 80 y Raspberry Pi.
+          1 - Automático.
+          2 - Manual.
+            step 1: Desde terminal.
+            step 2: Introducir las variables de verificación de dominio.
+            step 3: Verificar "Test" desde el navegador.
+            step 4: Verificar desde terminal.
+            step 5: Indicar rutas al asistente.
+            step 6: Guardar rutas en archivo config.
+            step 7: Rescribir archivo de configuración de configuración nginx.
+            step 8: Reiniciar nginx.
+
+
           <h3>Test your configuration</h3>
           Test if your configurations are working. Type your domain name.
           <input type="text" id="domain" placeholder="Your domain" style="margin-left: 20px;"/>

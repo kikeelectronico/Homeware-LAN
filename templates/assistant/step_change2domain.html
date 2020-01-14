@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Config - Change to domain</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/main.css">
+  </head>
+  <body>
+    <div class="configTable">
+        <div style="display: table-cell; vertical-align: middle; ">
+          <h1>Homeware configuration assistant - Change to domain</h1><br>
+          <p>Now we must change to your domain.</p>
+          <p>First, go to your router admin page and change the 80 port rule</p>
+          <ul>
+            <li>Protocol: TCP</li>
+            <li>WAN start port: 80</li>
+            <li>WAN end port: 80</li>
+            <li>LAN start port: <strike>5001</strike> 80</li>
+            <li>LAN end port: <strike>5001</strike> 80</li>
+            <li>LAN host IP: The Raspberry Pi IP</li>
+          </ul>
+          <p>After changing the LAN start and LAN end ports go to your domain</p>
+          <a class="btn btn-primary" href="http://{{ param['domain'] }}/config/{{ next }}" target="blanck" role="button" style="float: right;">Go to your domain</a>
+        </div>
+    </div>
+
+    <script>
+      function process(){
+        location.href = '/config/{{ next }}';
+      }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+  </body>
+</html>

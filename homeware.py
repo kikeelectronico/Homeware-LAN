@@ -1,10 +1,11 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect
 import json
 import time
 import random
 import subprocess
 from multiprocessing import Process
-from aux import readJSON, writeJSON
+from cryptography.fernet import Fernet
+from aux import readJSON, writeJSON, readConfig, writeConfig
 
 app = Flask(__name__)
 app = Flask(__name__)
@@ -19,35 +20,122 @@ def runapp():
 
 ########################### APP ###########################
 
+@app.route('/login')
+@app.route('/login/')
+def login():
+    return render_template('panel/login.html')
+
 @app.route('/')
 def index():
-    return 'Welcome to Homeware'
+    try:
+        readConfig()
+        return render_template('panel/index.html')
+    except:
+        return redirect("/config", code=302)
 
-@app.route('/config')
-@app.route('/config/')
-@app.route('/config/<step>')
-@app.route('/config/<step>/')
-def config(step = 'welcome'):
+@app.route('/devices')
+@app.route('/devices/')
+@app.route('/devices/<process>/')
+@app.route('/devices/<process>/')
+@app.route('/devices/<process>/<id>')
+@app.route('/devices/<process>/<id>/')
+def devices(process = "", id = ""):
+
+    config = readConfig()
+    domain = config['domain']
+
+    if process == 'edit':
+        data = readJSON()
+        devices = data['devices']
+        #Find the device
+        device = {}
+        for d in devices:
+            if id == d['id']:
+                device = d
+                break
+        deviceString=json.dumps(device)
+        smartConnectionDataString=json.dumps(data['smartConnection'][id])
+        return render_template('panel/edit_device.html', domain=domain, device=device, deviceString=deviceString, smartConnectionDataString=smartConnectionDataString, deviceID=id)
+    else:
+        return render_template('panel/devices.html', domain=domain)
+
+@app.route('/settings')
+@app.route('/settings/')
+def settings():
+
+    config = readConfig()
+    domain = config['domain']
+
+    return render_template('panel/settings.html', domain=domain)
+
+
+@app.route('/assistant')
+@app.route('/assistant/')
+@app.route('/assistant/<step>')
+@app.route('/assistant/<step>/')
+def assistant(step = 'welcome'):
 
     steps = {
-        'welcome': 'ports',
+        'welcome': 'user',
+        'user': 'ports',
         'ports': 'domain',
         'domain': 'nginx',
         'nginx': 'confignginx',
         'confignginx': 'change2domain',
-        'change2domain': ''
+        'change2domain': 'changed2domain',
+        'changed2domain': 'certbot',
+        'certbot': 'ssl',
+        'ssl': 'initialize',
+        'initialize': ''
     }
 
-    return render_template('step_' + step + '.html', step=step, next=steps[step])
+    param = {}
+    if step == 'change2domain':
+        param['domain'] = readConfig()['domain']
+    elif step == 'initialize':
+        #Try to open the json as a security method
+        try:
+            with open('homeware.json', 'r') as f:
+                data = json.load(f)
+                return data
+            print('Nothing to do here')
+        except:
+            #Copy the DDBB template
+            subprocess.run(["sudo", "cp", "configuration_templates/homeware.json", "homeware.json"],  stdout=subprocess.PIPE)
+            subprocess.run(["sudo", "chmod", "777", "homeware.json"],  stdout=subprocess.PIPE)
 
+            return render_template('assistant/step_' + step + '.html', step=step, next=steps[step], param=param)
+
+    return render_template('assistant/step_' + step + '.html', step=step, next=steps[step], param=param)
+
+
+########################### API ###########################
 @app.route('/test')
 @app.route('/test/')
 def test():
     return 'Load'
 
-@app.route('/operation/<name>')
-def operation(name):
-    if name == 'nginx':
+#Asistant operations
+@app.route('/assistant/operation/<segment>')
+@app.route('/assistant/operation/<segment>/')
+@app.route('/assistant/operation/<segment>/<value>')
+@app.route('/assistant/operation/<segment>/<value>/')
+def operation(segment, value=""):
+    if segment == 'user':
+        try:
+            readConfig()
+            return 'Your user has beed set in the past'
+        except:
+            data = {}
+            key = Fernet.generate_key()
+            data['key'] = str(key)
+            cipher_suite = Fernet(key)
+            ciphered_text = cipher_suite.encrypt(str.encode(value.split(':')[1]))   #required to be bytes
+            data['user'] = value.split(':')[0]
+            data['pass'] = str(ciphered_text)
+            writeConfig(data)
+            return 'Saved correctly!'
+    elif segment == 'nginx':
         output = '<b>$ sudo apt-get update</b><br><br>'
         result = subprocess.run(["sudo", "apt-get", "update"],  stdout=subprocess.PIPE)
         output += str(result.stdout)
@@ -55,17 +143,201 @@ def operation(name):
         result = subprocess.run(["sudo", "apt-get", "install", "nginx"],  stdout=subprocess.PIPE)
         output += str(result.stdout)
         return output
-    elif name == 'confignginx':
-        output = '<b>Running...</b><br><br>'
-        result = subprocess.run(["sudo", "sh", "bash/confignginx.sh"], stdout=subprocess.PIPE)
-        print(result.stdout)
+    elif segment == 'confignginx':
+        output = '<b>Running...</b><br>'
+        result = subprocess.run(["sudo", "sh", "bash/confignginx.sh", value], stdout=subprocess.PIPE)
+        data = readConfig()
+        data['domain'] = value
+        writeConfig(data);
         output += str(result.stdout)
-
+        return output
+    elif segment == 'certbot':
+        output = '<b>Running...</b><br>'
+        result = subprocess.run(["sudo", "sh", "bash/certbot.sh", value], stdout=subprocess.PIPE)
+        output += str(result.stdout)
         return output
 
     return 'Load'
 
-########################### API ###########################
+#Front end operations
+@app.route("/front/<operation>/")
+@app.route("/front/<operation>/<segment>")
+@app.route("/front/<operation>/<segment>/")
+@app.route("/front/<operation>/<segment>/<value>")
+@app.route("/front/<operation>/<segment>/<value>/")
+def front(operation, segment = "", value = ''):
+    #Log in doesn't require token
+    if operation == 'login':
+        if segment == 'user':
+            config = readConfig()
+            user = request.headers['user']
+            password = request.headers['pass']
+
+            cipher_suite = Fernet(str.encode(config['key'][2:len(config['key'])]))
+            plain_text = cipher_suite.decrypt(str.encode(config['pass'][2:len(config['pass'])]))
+            responseData = {}
+            if user == config['user'] and plain_text == str.encode(password):
+                #Generate the token
+                chars = 'abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+                token = ''
+                i = 0
+                while i < 40:
+                    token += random.choice(chars)
+                    i += 1
+                #Saved the new token
+                config = readConfig();
+                config['token'] = {
+                    'front': token
+                }
+                writeConfig(config)
+                #Prepare the response
+                responseData = {
+                    'status': 'in',
+                    'user': user,
+                    'token': token
+                }
+            else:
+                #Prepare the response
+                responseData = {
+                    'status': 'fail'
+                }
+
+        elif segment == 'token':
+            config = readConfig()
+            user = request.headers['user']
+            token = request.headers['token']
+
+            if user == config['user'] and token == config['token']['front']:
+                responseData = {
+                    'status': 'in'
+                }
+            else:
+                responseData = {
+                    'status': 'fail'
+                }
+        response = app.response_class(
+            response=json.dumps(responseData),
+            status=200,
+            mimetype='application/json'
+        )
+        return response
+
+    #Operations not related with login
+    else:
+        #Verify the user token
+        token = request.headers['authorization'].split(' ')[1]
+        savedToken = readConfig()['token']['front'];
+        if token == savedToken:
+            #Read data
+            if operation == 'read':
+                data = readJSON()
+                #Get the requested data
+                if segment != '':
+                    for p in segment.split('>'):
+                        data = data[p]
+                response = app.response_class(
+                    response=json.dumps(data),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return response
+            #Save simple data
+            #Write data
+            elif operation == 'write':
+                data = readJSON()
+                segments = segment.split('>')
+                #Esto es una ñapa, pero ahora mismo no se cómo solucionarlo
+                if len(segments) == 1:
+                    data[segment] = json.loads(value)
+                elif len(segments) == 2:
+                    data[segments[0]][segments[1]] = json.loads(value)
+                elif len(segments) == 3:
+                    data[segments[0]][segments[1]][segments[2]] = json.loads(value)
+
+
+                response = app.response_class(
+                    response=json.dumps(data),
+                    status=200,
+                    mimetype='application/json'
+                )
+                print(data)
+                writeJSON(data)
+                return response
+            #Special operations
+            elif operation == 'device':
+                data = readJSON()
+
+                if segment == 'update' or segment == 'create':
+                    incommingData = json.loads(value)
+                    deviceID = incommingData['devices']['id']
+
+                    #Updating device or create device
+                    if segment == 'update':
+                        temp_devices = [];
+                        for device in data['devices']:
+                            if device['id'] == incommingData['devices']['id']:
+                                temp_devices.append(incommingData['devices'])
+                            else:
+                                temp_devices.append(device)
+                        data['devices'] = temp_devices
+                    else:
+                        data['devices'].append(incommingData['devices'])
+
+                    #Update alive
+                    data['alive'][deviceID] = incommingData['alive']
+                    #Update samrtConnection
+                    data['smartConnection'][deviceID] = incommingData['smartConnection']
+                    #Update status
+                    if not deviceID in data['status'].keys():
+                        data['status'][deviceID] = {}
+                    data['status'][deviceID]['online'] = True
+                    #Athorization code
+                    code = ''
+                    if data['settings']['bools']['autoAuthentication']:
+                        code = deviceID + data['settings']['strings']['codeKey']
+                    else:
+                        code = '-'
+
+                    if segment == 'create':
+                        data['token'][deviceID] = {}
+                        data['token'][deviceID]['authorization_code'] = {}
+                    data['token'][deviceID]['authorization_code']['value'] = code
+
+                elif segment == 'delete':
+                    temp_devices = [];
+                    for device in data['devices']:
+                        if device['id'] != value:
+                            temp_devices.append(device)
+                    data['devices'] = temp_devices
+                    # Delete status
+                    status = data['status']
+                    del status[value]
+                    data['status'] = status
+                    # Delete token
+                    token = data['token']
+                    del token[value]
+                    data['token'] = token
+                    # Delete alive
+                    alive = data['alive']
+                    del alive[value]
+                    data['alive'] = alive
+                    # Delete smartConnection
+                    smartConnection = data['smartConnection']
+                    del smartConnection[value]
+                    data['smartConnection'] = smartConnection
+
+
+                writeJSON(data)
+
+                response = app.response_class(
+                    response=json.dumps(data),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return response
+        else:
+            return 'Bad token'
+
 #Hardware's endpoint
 @app.route("/read/")
 def read():

@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+  <head> </head>
+  <body style="visibility: hidden;">
+
+    <div id="navbarBlock"></div>
+
+    <div id="grid" class="container containerP">
+
+      <div class="row">
+        <div class="col">
+          <div id="alertContainer"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <form id=formulario"">
+
+
+            <div class="container p-3 mb-2 bg-light text-dark" style="text-align: right">
+              <span class="textMessageAlert" id="textMessageAlert">Up to date</span>
+              <button type="button" class="btn btn-primary" id="save">Save</button>
+              <!--<input type="hidden" id="n" value="-1">-->
+            </div>
+
+
+            <div class="container p-3 mb-2 bg-light text-dark">
+              <h3>Devices</h3>
+              <div class="form-row">
+                <div class="form-group col-md-10">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="autoAuthentication">
+                    <label class="custom-control-label" for="autoAuthentication">Automatic authentication</label>
+                  </div>
+                </div>
+                <div class="form-group col-md-2">
+                  <a class="badge badge-primary" data-toggle="modal" data-target="#modal" style="color:white;" onclick="updateModal('autoAuthentication')">Learn more</a>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" id="codeKey" value="-code">
+                </div>
+                <div class="form-group col-md-7 colAligmentL">
+                    <label for="codeKey">Key for authorization code</label>
+                </div>
+                <div class="form-group col-md-2 colAligmentA">
+                  <a class="badge badge-primary" data-toggle="modal" data-target="#modal" style="color:white;" onclick="updateModal('codeKey')">Learn more</a>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark">
+              <h3>Homeware API</h3>
+              <div class="form-row">
+                <div class="form-group col-md-7">
+                    <input type="text" class="form-control" id="apiClockURL" value="https://{{ domain }}/clock" disabled>
+                </div>
+                <div class="form-group col-md-3 colAligmentL">
+                    <label for="apiClockURL">Clock's function URL</label>
+                </div>
+                <div class="form-group col-md-2 colAligmentA">
+                  <a class="badge badge-primary" data-toggle="modal" data-target="#modal" style="color:white;" onclick="updateModal('apiClockURL')">Learn more</a>
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="container p-3 mb-2 bg-light text-dark" style="text-align: right">
+              <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#eventsLog" aria-expanded="false" aria-controls="eventsLog" id="showEventsLog">
+                Show events log
+              </button>
+            <div>
+            <div class="collapse" id="eventsLog">
+              <div class="card card-body" style="margin-top:20px;" id="eventsLogBox">
+
+                WIP
+
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal Learn more -->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="learMoreModalTitle">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="learMoreModalParagraph">
+            ...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="toastBoard" aria-live="polite" aria-atomic="true" style="position:absolute; right: 20px; bottom:0; min-height: 10px;  ">
+      <!-- Position it -->
+      <div id="toastBoardPosition" style="position: absolute; bottom: 0; right: 0; margin-left: 20px; margin-bottom: 20px; width: 300px;">
+        <!--Toats go here-->
+      </div>
+    </div>
+
+    <script>
+
+      data = {}
+      window.addEventListener('load', function(event){
+        laodSettingsRequest();
+      });
+
+      function laodSettingsRequest(){
+        var http = new XMLHttpRequest();
+        http.addEventListener("load", function(){
+          loadSettings(http.responseText);
+        });
+        http.open("GET", "/front/read/settings");
+        http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+        http.send();
+      }
+
+      function loadSettings(local_data){
+        var settings = JSON.parse(local_data);
+        data = settings;
+
+        Object.keys(settings['strings']).forEach(function(setting){
+          if(setting != 'apiClockURL')
+            document.getElementById(setting).value = settings['strings'][setting];
+        });
+
+        Object.keys(settings['bools']).forEach(function(setting){
+          document.getElementById(setting).checked = settings['bools'][setting];
+        });
+      }
+
+      autoAuthentication.addEventListener('change', function() {
+        //Get the status switch
+        var status = document.getElementById('autoAuthentication').checked;
+        data['bools']['autoAuthentication'] = status;
+        saveData('settings', data);
+        //Update the text message
+        updateMessageWithTime();
+      });
+
+      save.addEventListener('click', function() {
+        //Update the text message
+        document.getElementById('textMessageAlert').innerHTML = '...';
+        data['bools']['autoAuthentication'] = document.getElementById('autoAuthentication').checked;
+        data['strings']['codeKey'] = document.getElementById('codeKey').value;
+        //data['strings']['apiClockURL'] = 'https://{{ domain }}/clock/';
+        saveData('settings', data);
+        //Update the text message
+        updateMessageWithTime();
+      });
+
+      function saveData(param, value){
+        var http = new XMLHttpRequest();
+        http.addEventListener("load", function(){
+          if (http.responseText != 'Bad token')
+            console.log(http.responseText);
+          else {
+            document.getElementById('textMessageAlert').innerHTML = 'An error has happed.';
+          }
+        });
+        http.open("GET", "/front/write/settings/" + JSON.stringify(value) + '/');
+        http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+        http.send();
+      }
+
+      function updateModal(settings){
+        var title = 'Fail';
+        var paragrahp = 'Something goes wrong';
+
+        if (settings == 'autoAuthentication'){
+          title = 'Automatic authentication';
+          paragraph = 'If <b>False</b> manual authentication must be done from the <i>Device</i> section:<br>  <ul><li>For new devices</li> <li>If the device lost its refresh token</li></ul> If <b>True</b> the devices will autoconnect using its <i>Authorization code</i>.';
+        } else if (settings == 'codeKey'){
+          title = 'Key for authorization code';
+          paragraph = 'The authorization code is compose with the device\'s id and the Key for authorization code. <br><br> For example, if the device\'s id is <b><i>"bedroom-light"</i></b> and the key is <b><i>"-code"</i></b> the athorization code will be <b><i>"bedroom-light-code"</i></b>.';
+        } else if (settings == 'apiClockURL'){
+          title = 'The clock\'s URL from your Homeware API';
+          paragraph = 'Go to <i>Functions</i> section in Firebase console. Look for the <i>clock</i> function and copy it\'s URL.';
+        }
+
+
+        document.getElementById('learMoreModalTitle').innerHTML = title;
+        document.getElementById('learMoreModalParagraph').innerHTML = paragraph;
+
+      }
+
+      //Print message after save
+      function addZero(i) {
+        if (i < 10) {
+          i = "0" + i;
+        }
+        return i;
+      }
+
+      function updateMessageWithTime(){
+        var d = new Date();
+        var h = addZero(d.getHours());
+        var m = addZero(d.getMinutes());
+        var s = addZero(d.getSeconds());
+        document.getElementById('textMessageAlert').innerHTML = 'Saved at ' + h + ":" + m + ":" + s;
+      }
+
+      // TODO
+      // - Show events list
+      //Load the events
+      /*showEventsLog.addEventListener('click', function(){
+        database.ref('/events/read/').on('value', function(eventsSnapshot){
+          var events = eventsSnapshot.val();
+          var eventsKeys = Object.keys(events);
+          //Compose the HTML
+          var html = '';
+          for(i = eventsKeys.length-1; i > eventsKeys.length-11; i--){
+            var uniqueEvent = events[eventsKeys[i]];
+            date = new Date(uniqueEvent.timestamp);
+            html += '<div class="card"> <div class="card-body">';
+            html += '<b>' + uniqueEvent.title + '</b> <br> ' + uniqueEvent.text + ' <br> <b>Timestamp</b>: ';
+            html += addZero(date.getDate()) + '/' + addZero(date.getMonth()) + '/' + date.getFullYear() + ' ' + addZero(date.getHours()) + ':' + addZero(date.getMinutes()) + ':' + addZero(date.getSeconds());
+            html += '</div> </div>';
+          }
+
+          document.getElementById('eventsLogBox').innerHTML = html;
+        })
+      })*/
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script src="/static/panel/load.js"></script>
+    <script src="/static/panel/footer.js"></script>
+
+  </body>
+</html>

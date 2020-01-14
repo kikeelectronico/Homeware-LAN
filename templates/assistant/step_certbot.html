@@ -2,26 +2,29 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Config - Config Nginx</title>
+    <title>Config - Certbot</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/main.css">
   </head>
   <body>
     <div class="configTable">
         <div style="display: table-cell; vertical-align: middle; ">
-          <h1>Homeware configuration assistant - Configuration of Nginx</h1><br>
-          <p>Configure Nginx with the initial settings</p>
+          <h1>Homeware configuration assistant - Certbot</h1><br>
+          <p>Install Certbot in your Raspberry Pi</p>
           <h3>Fancy way</h3>
           Press this button.
-          <button type="button" class="btn btn-primary btn-lg" style="margin-left: 20px;" onclick="operation('confignginx')">Install Nginx</button><br>
+          <button type="button" class="btn btn-primary btn-lg" style="margin-left: 20px;" onclick="operation('certbot')">Install Certbot</button><br>
           <div id="loading"> </div>
           <div id="terminal"> </div>
 
           <h3>Manual way</h3>
           <p>If the Fancy way goes wrong</p>
           <p>Open a terminal on your Raspberry Pi or connect to the Raspberry Pi using SSH and run:</p>
+          <span class="code">$ sudo apt-get install software-properties-common</span><br><br>
+          <span class="code">$ sudo add-apt-repository universe</span><br><br>
+          <span class="code">$ sudo add-apt-repository ppa:certbot/certbot</span><br><br>
           <span class="code">$ sudo apt-get update</span><br><br>
-          <span class="code">$ sudo apt-get install nginx</span><br><br>
+          <span class="code">$ sudo apt-get install certbot python-certbot-nginx</span><br><br>
           <button type="button" class="btn btn-primary btn-lg" style="float: right;" onclick="process()">Next</button>
         </div>
     </div>
@@ -41,7 +44,7 @@
               document.getElementById('terminal').classList.add('terminal');
           }
         }
-        url = 'http://' + window.location.hostname + ':5001/operation/' + name;
+        url = 'https://' + window.location.hostname + '/assistant/operation/' + name;
         xmlHttp.open( "GET", url, true ); // false for synchronous request
         xmlHttp.send( null );
       }

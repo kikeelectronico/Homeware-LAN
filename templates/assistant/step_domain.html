@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Config - Domain</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/main.css">
+  </head>
+  <body>
+    <div class="configTable">
+        <div style="display: table-cell; vertical-align: middle; ">
+          <div id="alertContainer"></div>
+          <h1>Homeware configuration assistant - Domain</h1><br>
+          <p>You must get a domain and point it to your WAN IP.</p>
+          <p>There are two possibilities:</p>
+            <ul>
+              <li>Use a static IP and a DNS</li>
+              <li>Use a dinamic IP and a DDNS</li>
+            </ul>
+          <p>If you have a static WAN IP, you probably know how to configure your domain name</p>
+          <p>If you have a dinamic IP, you should use a DDNS provider</p>
+          <p>The process depend on the provider you choose. For example, you can use <a href='https://my.noip.com' target='blanck'>no-ip</a> as the provider:</p>
+          <ul>
+            <li>Create an account in no-ip.</li>
+            <li>Go to <i>Dynamic DNS</i> and create a new <i>Hostname<i>.</li>
+                <ul>
+                  <li>Choose a unique <i>Hostname</i>.</li>
+                  <li>Select <i>DNS Host (A)</i>.</li>
+                  <li>Fill the <i>IPv4 Address<i> with your WAN/public IP. You can get it from <a href='https://www.whatismyip.com/what-is-my-public-ip-address/' target='blanck'>WhatsMyIp</a>.
+                </ul>
+            </li>
+            <li>Install the no-ip client in your Raspberry Pi. Find the instrucctions <a href='https://my.noip.com/#!/dynamic-dns/duc' target='black'>here</a>.</li>
+          </ul>
+          <h3>Test your configuration</h3>
+          Test if your configurations are working. Type your domain name.
+          <input type="text" id="domain" placeholder="Your domain" style="margin-left: 20px;"/>
+          <button type="button" class="btn btn-primary btn-lg" style="margin-left: 20px;" onclick="test()">Test</button>
+          <br>
+          <br>
+          <button type="button" class="btn btn-primary btn-lg" style="float: right;" onclick="process()">Next</button>
+        </div>
+    </div>
+
+    <script>
+      function process(){
+        location.href = '/config/{{ next }}';
+      }
+
+      function test(){
+        document.getElementById('alertContainer').innerHTML = '';
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() {
+          if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+          alert(xmlHttp.responseText)
+            if (xmlHttp.responseText == 'Load'){
+              document.getElementById('alertContainer').innerHTML = '<div class="alert alert-success" role="alert"> It works! </div>';
+            } else {
+              document.getElementById('alertContainer').innerHTML = '<div class="alert alert-danger" role="alert"> Something goes wrong! The assistant can\'t communicate with your Raspberry Pi.<br>Go to ' + url + ' using a smartphone with a celullar connection. If you see "Load" the test has been pass.</div>';
+            }
+            //setTimeout(function(){document.getElementById('alertContainer').innerHTML = '';}, 15000);
+        }
+        url = 'http://' + document.getElementById('domain').value + '/test/';
+        xmlHttp.open( "GET", url, true ); // false for synchronous request
+        xmlHttp.send( null );
+      }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+  </body>
+</html>
