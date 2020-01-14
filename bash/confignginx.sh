@@ -1,5 +1,5 @@
 #!/bin/bash
-runSed="sed -i 's/domain/$1/g' /etc/nginx/sites-enabled/defaul"
+runSed="sed -i 's/domain/$1/g' /etc/nginx/sites-enabled/default"
 file="/etc/nginx/sites-enabled"
 echo "$invalue"
 if [ -e "$file" ]
