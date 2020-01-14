@@ -11,23 +11,10 @@
         <div style="display: table-cell; vertical-align: middle; ">
           <h1>Homeware configuration assistant - Configuration of Nginx</h1><br>
           <p>Configure Nginx with the initial settings</p>
-          <h3>Fancy way</h3>
-          Type your domain and press this button.
-          <input type="text" id="domain" placeholder="Your domain" style="margin-left: 20px;"/>
-          <button type="button" class="btn btn-primary btn-lg" style="margin-left: 20px;" onclick="operation('confignginx')">Configure Nginx</button><br>
-          <div id="loading"> </div>
-          <div id="terminal"> </div>
 
-          <h3>Manual way</h3>
-          <p>If the Fancy way goes wrong</p>
           <p>Open a terminal on your Raspberry Pi or connect to the Raspberry Pi using SSH and run:</p>
-          <span class="code">$ cd /etc/nginx/sites-enabled</span><br><br>
-          <span class="code">$ sudo wget https://raw.githubusercontent.com/kikeelectronico/Homeware-LAN/master/configuration_templates/initial_nginx_config</span><br><br>
-          <span class="code">$ sudo cp initial_nginx_config homeware</span><br><br>
-          <span class="code">$ sudo rm initial_nginx_config</span><br><br>
-          <span class="code">$ sudo nano homeware</span><br><br>
-          <p>Sustituir <i>domain</i> por tu dominio en la línea <i>server_name domain;</i>. Guardar con <i>Ctrl + o</i> y salir con <i>Ctrl + x</i>.</p>
-          <span class="code">$ sudo service nginx restart</span><br><br>
+          <span class="code">$ cd bash</span><br><br>
+          <span class="code">$ sudo sh config.sh your.domain.com</span><br><br>
           <button type="button" class="btn btn-primary btn-lg" style="float: right;" onclick="process()">Next</button>
         </div>
     </div>

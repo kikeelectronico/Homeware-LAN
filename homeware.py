@@ -79,12 +79,10 @@ def assistant(step = 'welcome'):
         'welcome': 'user',
         'user': 'ports',
         'ports': 'domain',
-        'domain': 'nginx',
-        'nginx': 'confignginx',
+        'domain': 'confignginx',
         'confignginx': 'change2domain',
         'change2domain': 'changed2domain',
-        'changed2domain': 'certbot',
-        'certbot': 'ssl',
+        'changed2domain': 'ssl',
         'ssl': 'initialize',
         'initialize': ''
     }
@@ -135,27 +133,6 @@ def operation(segment, value=""):
             data['pass'] = str(ciphered_text)
             writeConfig(data)
             return 'Saved correctly!'
-    elif segment == 'nginx':
-        output = '<b>$ sudo apt-get update</b><br><br>'
-        result = subprocess.run(["sudo", "apt-get", "update"],  stdout=subprocess.PIPE)
-        output += str(result.stdout)
-        output += '<br><br><b>$ sudo apt-get install nginx</b><br><br>'
-        result = subprocess.run(["sudo", "apt-get", "install", "nginx"],  stdout=subprocess.PIPE)
-        output += str(result.stdout)
-        return output
-    elif segment == 'confignginx':
-        output = '<b>Running...</b><br>'
-        result = subprocess.run(["sudo", "sh", "bash/confignginx.sh", value], stdout=subprocess.PIPE)
-        data = readConfig()
-        data['domain'] = value
-        writeConfig(data);
-        output += str(result.stdout)
-        return output
-    elif segment == 'certbot':
-        output = '<b>Running...</b><br>'
-        result = subprocess.run(["sudo", "sh", "bash/certbot.sh", value], stdout=subprocess.PIPE)
-        output += str(result.stdout)
-        return output
 
     return 'Load'
 
