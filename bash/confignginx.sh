@@ -6,7 +6,7 @@ if [ -e "$file" ]
 then
 	echo "Nginx found."
 	#1
-	if sudo cp configuration_templates/initial_nginx_config /etc/nginx/sites-enabled/default
+	if sudo cp ../configuration_templates/initial_nginx_config /etc/nginx/sites-enabled/default
 	then
 		echo "Copy: Ok"
 		#2

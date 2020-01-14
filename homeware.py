@@ -31,7 +31,7 @@ def index():
         readConfig()
         return render_template('panel/index.html')
     except:
-        return redirect("/config", code=302)
+        return redirect("/assistant/", code=302)
 
 @app.route('/devices')
 @app.route('/devices/')
