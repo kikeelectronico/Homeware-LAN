@@ -21,13 +21,13 @@
             <li>LAN host IP: The Raspberry Pi IP</li>
           </ul>
           <p>After changing the LAN start and LAN end ports go to your domain</p>
-          <a class="btn btn-primary" href="http://{{ param['domain'] }}/config/{{ next }}" target="blanck" role="button" style="float: right;">Go to your domain</a>
+          <a class="btn btn-primary" href="http://{{ param['domain'] }}/assistant/{{ next }}" target="blanck" role="button" style="float: right;">Go to your domain</a>
         </div>
     </div>
 
     <script>
       function process(){
-        location.href = '/config/{{ next }}';
+        location.href = '/assistant/{{ next }}';
       }
     </script>
 
