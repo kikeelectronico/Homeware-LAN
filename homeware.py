@@ -16,6 +16,7 @@ deviceAliveTimeout = 20000
 #app
 def runapp():
     app.run(host='0.0.0.0', port=5001, debug=True)
+    #app.run(host='0.0.0.0')
 
 
 ########################### APP ###########################
@@ -87,24 +88,8 @@ def assistant(step = 'welcome'):
         'initialize': ''
     }
 
-    param = {}
-    if step == 'change2domain':
-        param['domain'] = readConfig()['domain']
-    elif step == 'initialize':
-        #Try to open the json as a security method
-        try:
-            with open('homeware.json', 'r') as f:
-                data = json.load(f)
-                return data
-            print('Nothing to do here')
-        except:
-            #Copy the DDBB template
-            subprocess.run(["sudo", "cp", "configuration_templates/homeware.json", "homeware.json"],  stdout=subprocess.PIPE)
-            subprocess.run(["sudo", "chmod", "777", "homeware.json"],  stdout=subprocess.PIPE)
 
-            return render_template('assistant/step_' + step + '.html', step=step, next=steps[step], param=param)
-
-    return render_template('assistant/step_' + step + '.html', step=step, next=steps[step], param=param)
+    return render_template('assistant/step_' + step + '.html', step=step, next=steps[step])
 
 
 ########################### API ###########################
@@ -133,6 +118,10 @@ def operation(segment, value=""):
             data['pass'] = str(ciphered_text)
             writeConfig(data)
             return 'Saved correctly!'
+    elif segment == 'domain':
+        config = readConfig()
+        config['domain'] = value
+        writeConfig(config)
 
     return 'Load'
 

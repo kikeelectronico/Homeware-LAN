@@ -13,26 +13,9 @@
           <h1>Homeware configuration assistant - SSL certificate</h1><br>
           <p>Google needs to comunicate with the Raspberry Pi via HTTPS, so we need a SSL certicate for Homeware.</p>
 
-          <h1>TODO:</h1>
-          Pendiente de validar proceso con puerto 80 y Raspberry Pi.
-          1 - Automático.
-          2 - Manual.
-            step 1: Desde terminal.
-            step 2: Introducir las variables de verificación de dominio.
-            step 3: Verificar "Test" desde el navegador.
-            step 4: Verificar desde terminal.
-            step 5: Indicar rutas al asistente.
-            step 6: Guardar rutas en archivo config.
-            step 7: Rescribir archivo de configuración de configuración nginx.
-            step 8: Reiniciar nginx.
-
-
-          <h3>Test your configuration</h3>
-          Test if your configurations are working. Type your domain name.
-          <input type="text" id="domain" placeholder="Your domain" style="margin-left: 20px;"/>
-          <button type="button" class="btn btn-primary btn-lg" style="margin-left: 20px;" onclick="test()">Test</button>
-          <br>
-          <br>
+          <p>Open a terminal on your Raspberry Pi or connect to the Raspberry Pi using SSH and run:</p>
+          <span class="code">$ sudo certbot --nginx</span><br><br>
+          <p>Follow the Certbot instructions. When Certbot ask you about redirecting http to https, enable it.</p>
           <button type="button" class="btn btn-primary btn-lg" style="float: right;" onclick="process()">Next</button>
         </div>
     </div>

@@ -1,0 +1,80 @@
+{
+  "alive": {
+    "light": {
+      "timestamp": 1558948640991
+    }
+  },
+  "devices": [
+    {
+      "deviceInfo": {
+        "hwVersion": "2.1",
+        "manufacturer": "Enrique",
+        "model": "ACR",
+        "swVersion": "1.0"
+      },
+      "id": "light",
+      "name": {
+        "defaultNames": [
+          "ACR 2.1"
+        ],
+        "name": "ACR 2.1",
+        "nicknames": [
+          "Bulb"
+        ]
+      },
+      "traits": [
+        "action.devices.traits.OnOff",
+        "action.devices.traits.Brightness"
+      ],
+      "type": "action.devices.types.LIGHT"
+    }
+  ],
+  "settings": {
+    "bools": {
+      "autoAuthentication": true
+    },
+    "strings": {
+      "codeKey": "-code"
+    }
+  },
+  "status": {
+    "light": {
+      "brightness": 100,
+      "on": false,
+      "online": true
+    }
+  },
+  "token": {
+    "google": {
+      "access_token": {
+        "timestamp": 0,
+        "value": ""
+      },
+      "authorization_code": {
+        "timestamp": 1,
+        "value": 1
+      },
+      "client_id": "123",
+      "client_secret": "456",
+      "refresh_token": {
+        "timestamp": 1,
+        "value": ""
+      }
+    },
+    "light": {
+      "access_token": {
+        "timestamp": 1559847064459,
+        "value": "token"
+      },
+      "authorization_code": {
+        "timestamp": "patata",
+        "value": "light-code"
+      },
+      "refresh_token": {
+        "timestamp": 1559847064459,
+        "value": "token"
+      }
+    }
+  },
+  "smartConnection": {}
+}
