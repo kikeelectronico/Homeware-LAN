@@ -78,8 +78,7 @@ def assistant(step = 'welcome'):
 
     steps = {
         'welcome': 'user',
-        'user': 'ports',
-        'ports': 'domain',
+        'user': 'domain',
         'domain': 'confignginx',
         'confignginx': 'change2domain',
         'change2domain': 'changed2domain',
@@ -87,6 +86,18 @@ def assistant(step = 'welcome'):
         'ssl': 'initialize',
         'initialize': ''
     }
+
+    if step == 'initialize':
+        #Try to open the json as a security method
+        try:
+            with open('homeware.json', 'r') as f:
+                data = json.load(f)
+                return data
+            print('Nothing to do here')
+        except:
+            #Copy the DDBB template
+            subprocess.run(["sudo", "cp", "configuration_templates/homeware.json", "homeware.json"],  stdout=subprocess.PIPE)
+            subprocess.run(["sudo", "chmod", "777", "homeware.json"],  stdout=subprocess.PIPE)
 
 
     return render_template('assistant/step_' + step + '.html', step=step, next=steps[step])
