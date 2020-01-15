@@ -46,17 +46,20 @@ def devices(process = "", id = ""):
     domain = config['domain']
 
     if process == 'edit':
-        data = readJSON()
-        devices = data['devices']
-        #Find the device
-        device = {}
-        for d in devices:
-            if id == d['id']:
-                device = d
-                break
-        deviceString=json.dumps(device)
-        smartConnectionDataString=json.dumps(data['smartConnection'][id])
-        return render_template('panel/edit_device.html', domain=domain, device=device, deviceString=deviceString, smartConnectionDataString=smartConnectionDataString, deviceID=id)
+        if id != '':
+            data = readJSON()
+            devices = data['devices']
+            #Find the device
+            device = {}
+            for d in devices:
+                if id == d['id']:
+                    device = d
+                    break
+            deviceString=json.dumps(device)
+            smartConnectionDataString=json.dumps(data['smartConnection'][id])
+            return render_template('panel/edit_device.html', deviceString=deviceString, smartConnectionDataString=smartConnectionDataString, deviceID=id)
+        else:
+            return render_template('panel/edit_device.html', deviceID=id)
     else:
         return render_template('panel/devices.html', domain=domain)
 
@@ -96,8 +99,7 @@ def assistant(step = 'welcome'):
             print('Nothing to do here')
         except:
             #Copy the DDBB template
-            subprocess.run(["sudo", "cp", "configuration_templates/homeware.json", "homeware.json"],  stdout=subprocess.PIPE)
-            subprocess.run(["sudo", "chmod", "777", "homeware.json"],  stdout=subprocess.PIPE)
+            subprocess.run(["cp", "configuration_templates/homeware.json", "homeware.json"],  stdout=subprocess.PIPE)
 
 
     return render_template('assistant/step_' + step + '.html', step=step, next=steps[step])
@@ -237,7 +239,6 @@ def front(operation, segment = "", value = ''):
                     status=200,
                     mimetype='application/json'
                 )
-                print(data)
                 writeJSON(data)
                 return response
             #Special operations
@@ -302,7 +303,6 @@ def front(operation, segment = "", value = ''):
                     smartConnection = data['smartConnection']
                     del smartConnection[value]
                     data['smartConnection'] = smartConnection
-
 
                 writeJSON(data)
 
@@ -577,19 +577,6 @@ def smarthome():
     else:
         print('Token incorrecto')
         return "A"
-
-#Dinamic load
-@app.route('/<a>/<b>/<c>')
-def verification(a,b,c):
-    #SSL validation
-    if a == '.well-known' and b == 'acme-challenge':
-        with open('sslVerification.json', 'r') as f:
-            verification = json.load(f)
-            verificationContent = verification['content']
-            verificationUri = verification['uri']
-        return verificationContent
-    else:
-        return 'Something'
 
 @app.errorhandler(404)
 def page_not_found(error):

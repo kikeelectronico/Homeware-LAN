@@ -3,9 +3,7 @@ function loadDevices(device, smartConnectionData, deviceID) {
     //Status
     var operation = 'create';
     console.log(deviceID);
-    Object.keys(deviceCoolName).forEach(function(device){
-      document.getElementById('type').innerHTML += '<option value="' + device + '">' + getDeviceCoolName(device) + '</option>';
-    })
+    
 
     if(deviceID != ''){
       operation = 'update';

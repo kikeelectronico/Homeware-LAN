@@ -660,9 +660,18 @@
     <script>
       //Load things
       window.addEventListener('load', function(event){
-        device = JSON.parse('{{ deviceString|safe }}');
-        smartConnectionData = JSON.parse('{{ smartConnectionDataString|safe }}');
-        loadDevices(device, smartConnectionData, '{{ deviceID }}');
+        var operation = 'create';
+        document.getElementById('operation').value = operation;
+        
+        Object.keys(deviceCoolName).forEach(function(device){
+          document.getElementById('type').innerHTML += '<option value="' + device + '">' + getDeviceCoolName(device) + '</option>';
+        })
+
+        if ('{{ deviceID }}' != ''){
+          device = JSON.parse('{{ deviceString|safe }}');
+          smartConnectionData = JSON.parse('{{ smartConnectionDataString|safe }}');
+          loadDevices(device, smartConnectionData, '{{ deviceID }}');
+        }
       })
 
     </script>
