@@ -76,5 +76,9 @@
       }
     }
   },
-  "smartConnection": {}
+  "smartConnection": {
+    "termostato" : {
+    "delay" : [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
+    "update" : "3600"
+  }}
 }
