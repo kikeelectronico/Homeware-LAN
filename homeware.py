@@ -8,7 +8,6 @@ from cryptography.fernet import Fernet
 from aux import readJSON, writeJSON, readConfig, writeConfig
 
 app = Flask(__name__)
-app = Flask(__name__)
 
 #Global variables
 deviceAliveTimeout = 20000
@@ -16,7 +15,6 @@ deviceAliveTimeout = 20000
 #app
 def runapp():
     app.run(host='0.0.0.0', port=5001, debug=True)
-    #app.run(host='0.0.0.0')
 
 
 ########################### APP ###########################
@@ -92,7 +90,6 @@ def settings():
     domain = config['domain']
 
     return render_template('panel/settings.html', domain=domain)
-
 
 @app.route('/assistant')
 @app.route('/assistant/')
@@ -628,6 +625,13 @@ def page_not_found(error):
 def page_not_found(error):
     return 'La qué has liado pollito'
 
+@app.route("/cron")
+@app.route("/cron/")
+def cron():
+    updatestates()
+
+    return "Done"
+
 def updatestates():
     #Get JSON
     data = readJSON()
@@ -645,11 +649,3 @@ def updatestates():
 
 if __name__ == "__main__":
     runapp()
-    #p1 = Process(target=runapp)
-    #p1.start()
-    #p1.join()
-
-    #Cron job execution at main thread
-    # while(True):
-    #     updatestates()
-    #     time.sleep(5)
