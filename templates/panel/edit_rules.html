@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head> </head>
+  <body style="visibility: hidden;">
+
+    <div id="navbarBlock"></div>
+
+    <div id="grid" class="container containerP">
+      <div class="row">
+        <div class="col">
+          <div class="alert alert-danger" role="alert">
+            <h2>Take note</h2>
+            The rules are cached by the API in order to reduce the data downloaded from the database. Normally the cache is updated every hour, so the changes may take 1 hour to be abailable.<br>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div id="alertContainer"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <form id=formulario"">
+
+
+            <div class="container p-3 mb-2 bg-light text-dark" style="text-align: right">
+              <span class="apiClock" id="apiClock"></span>
+              <button type="button" class="btn btn-danger" id="deleteRule">Delete Rule</button>
+              <button type="button" class="btn btn-primary" id="save" >Save</button>
+              <input type="hidden" id="n" value="-1">
+              <input type="hidden" id="operation" value="-1">
+              <input type="hidden" id="triggerType" value="-1">
+            </div>
+
+
+            <div class="container p-3 mb-2 bg-light text-dark" id="deviceTriggered">
+              <h3>Triggers</h3>
+              <input type="hidden" value="-1" id="availableTriggers">
+              <div class="row" id="badge_triggers_container">
+                <!--Targets cards-->
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  <label for="triggerId">Trigger</label>
+                  <select class="custom-select mr-sm-2" id="triggerId">
+                    <option selected>Choose...</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="triggerParam">Trigger param</label>
+                  <select class="custom-select mr-sm-2" id="triggerParam">
+
+                  </select>
+                </div>
+                <div class="form-group col-md-1">
+                  <label for="triggerOperator">Operator</label>
+                  <select class="custom-select mr-sm-2" id="triggerOperator">
+                    <option value="1">=</option>
+                    <option value="2"><</option>
+                    <option value="3">></option>
+                  </select>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="triggerValue">Trigger value</label>
+                  <input type="text" class="form-control" id="triggerValue" placeholder="true, false or a number">
+                </div>
+                <div class="form-group col-md-1">
+                  <label for="add_arm_levels_button">.</label>
+                  <input type="button" class="form-control" id="add_triggers_button" value="Add">
+                </div>
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-1">
+                  <label for="hour">Hour</label>
+                  <input type="number" max="23" min="0" class="form-control" id="hour" value="9">
+                </div>
+                <div class="form-group col-md-1">
+                  <label for="minute">Minute</label>
+                  <input type="number" max="59" min="0" class="form-control" id="minute" value="25">
+                </div>
+                <div class="form-group col-md-9">
+                  <label for="minute">Week days</label>
+                  <br>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="weekDay0">
+                    <label class="form-check-label" for="weekDay0">Sunday</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="weekDay1">
+                    <label class="form-check-label" for="weekDay1">Monday</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="weekDay2">
+                    <label class="form-check-label" for="weekDay2">Tuesday</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="weekDay3">
+                    <label class="form-check-label" for="weekDay3">Wednesday</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="weekDay4">
+                    <label class="form-check-label" for="weekDay4">Thursday</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="weekDay5">
+                    <label class="form-check-label" for="weekDay5">Friday</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="weekDay6">
+                    <label class="form-check-label" for="weekDay6">Saturday</label>
+                  </div>
+                </div>
+
+              <!--
+                <div class="form-group col-md-3">
+                  <label for="weekDays">Week days</label>
+                  <select multiple class="custom-select mr-sm-2" id="weekDays">
+                    <option value="0">Sunday</option>
+                    <option value="1">Monday</option>
+                    <option value="2">Tuesday</option>
+                    <option value="3">Wednesday</option>
+                    <option value="4">Thursday</option>
+                    <option value="5">Friday</option>
+                    <option value="6">Saturday</option>
+                  </select>
+                </div>
+              -->
+                <div class="form-group col-md-1">
+                  <label for="add_arm_levels_button">.</label>
+                  <input type="button" class="form-control" id="add_time_triggers_button" value="Add">
+                </div>
+              </div>
+              <small id="emailHelp" class="form-text text-muted">Use 24 hour format and verify the API time zone. </small>
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark" id="target">
+              <h3>Targets</h3>
+              <input type="hidden" value="-1" id="availableTargets">
+              <div class="row" id="badge_targets_container">
+                <!--Targets cards-->
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="targetId">Target</label>
+                  <select class="custom-select mr-sm-2" id="targetId">
+                    <option selected>Choose...</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="targetParam">Target param</label>
+                  <select class="custom-select mr-sm-2" id="targetParam">
+
+                  </select>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="targetValue">Target value</label>
+                  <input type="text" class="form-control" id="targetValue" placeholder="true, false or a number">
+                </div>
+                <div class="form-group col-md-1">
+                  <label for="add_arm_levels_button">.</label>
+                  <input type="button" class="form-control" id="add_targets_button" value="Add">
+                </div>
+              </div>
+            </div>
+
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="toastBoard" aria-live="polite" aria-atomic="true" style="position:absolute; bottom:0; min-height: 10px;  width: 100%;">
+      <!-- Position it -->
+      <div id="toastBoardPosition" style="position: absolute; bottom: 0; right: 0; margin-right: 20px; margin-bottom: 20px;">
+        <!--Toats go here-->
+      </div>
+    </div>
+
+    <script>
+      //Load things
+      window.addEventListener('load', function(event){
+        var operation = 'create';
+        if({{ ruleID }} != -1)
+          operation = 'update';
+        document.getElementById('operation').value = operation;
+        laodDevicesRequest({{ ruleID }});
+      })
+
+    </script>
+
+    <script src="/static/panel/load.js"></script>
+    <script src="/static/panel/coolNames.js"></script>
+    <script src="/static/panel/edit_rules.js"></script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script src="/static/panel/footer.js"></script>
+
+  </body>
+</html>

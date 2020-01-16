@@ -63,6 +63,27 @@ def devices(process = "", id = ""):
     else:
         return render_template('panel/devices.html', domain=domain)
 
+@app.route('/rules')
+@app.route('/rules/')
+@app.route('/rules/<process>/')
+@app.route('/rules/<process>/')
+@app.route('/rules/<process>/<int:id>')
+@app.route('/rules/<process>/<int:id>/')
+def rules(process = "", id = -1):
+
+    config = readConfig()
+    domain = config['domain']
+
+    if process == 'edit':
+        if id != -1:
+            data = readJSON()
+
+            return render_template('panel/edit_rules.html', ruleID=id)
+        else:
+            return render_template('panel/edit_rules.html', ruleID=id)
+    else:
+        return render_template('panel/rules.html', domain=domain)
+
 @app.route('/settings')
 @app.route('/settings/')
 def settings():
@@ -312,6 +333,27 @@ def front(operation, segment = "", value = ''):
                     mimetype='application/json'
                 )
                 return response
+            #Special operations
+            elif operation == 'rule':
+                data = readJSON()
+                if segment == 'create' or segment == 'update':
+                    incommingData = json.loads(value)
+                    data['rules'][int(incommingData['n'])] = incommingData['rule']
+
+                elif segment == 'delete':
+                    temp_rules = data['rules']
+                    del temp_rules[int(value)]
+                    data['rules'] = temp_rules
+
+                writeJSON(data)
+
+                response = app.response_class(
+                    response=json.dumps(data),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return response
+
         else:
             return 'Bad token'
 
