@@ -94,9 +94,7 @@ function  loadCards(){
       }
       //Get alerts
       var alert = '';
-      if(data['token'][device.id]['authorization_code']['requestManualAuthorization']){
-        alert = '<br><br><a onclick="authorize(\'' + device.id + '\')" class="btn btn-danger" style="color:white;" title="The devie ask for autorization to connect.">Authorize</a>';
-      }
+      
 
       html += '<div class="card cardDevice" style="margin-bottom: 15px; margin-right: 3%;">';
         html += '<div class="colorRectangle" style="background-color:#' + color + '; opacity:' + opacity + '"></div>';

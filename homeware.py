@@ -105,7 +105,8 @@ def assistant(step = 'welcome'):
         'confignginx': 'change2domain',
         'change2domain': 'changed2domain',
         'changed2domain': 'ssl',
-        'ssl': 'initialize',
+        'ssl': 'google',
+        'google': 'initialize',
         'initialize': ''
     }
 
@@ -291,19 +292,16 @@ def front(operation, segment = "", value = ''):
                         data['status'][deviceID] = {}
                     data['status'][deviceID]['online'] = True
                     #Athorization code
-                    code = ''
-                    if data['settings']['bools']['autoAuthentication']:
-                        code = deviceID + data['settings']['strings']['codeKey']
-                    else:
-                        code = '-'
-
-                    if segment == 'create':
-                        data['token'][deviceID] = {}
-                        data['token'][deviceID]['authorization_code'] = {}
-                        token[deviceID] = {}
-                        token[deviceID]['authorization_code'] = {}
-                    token[deviceID]['authorization_code']['value'] = code
-                    data['token'][deviceID]['authorization_code'] = {"requestManualAuthorization": False}
+                    # code = ''
+                    # if data['settings']['bools']['autoAuthentication']:
+                    #     code = deviceID + data['settings']['strings']['codeKey']
+                    # else:
+                    #     code = '-'
+                    #
+                    # if segment == 'create':
+                    #     token[deviceID] = {}
+                    #     token[deviceID]['authorization_code'] = {}
+                    # token[deviceID]['authorization_code']['value'] = code
 
                 elif segment == 'delete':
                     temp_devices = [];
@@ -317,7 +315,7 @@ def front(operation, segment = "", value = ''):
                     data['status'] = status
                     # Delete token
                     #token = data['token']
-                    del token[value]
+                    #del token[value]
                     #data['token'] = token
                     # Delete alive
                     alive = data['alive']
@@ -428,15 +426,9 @@ def token():
     client_secret = request.form.get('client_secret')
     code = ''
     if grantType == 'authorization_code':
-        if agent == 'google':
-            code = request.form.get('code')
-        else:
-            code = request.args.get('code')
+        code = request.form.get('code')
     else:
-        if agent == 'google':
-            code = request.form.get('refresh_token')
-        else:
-            code = request.args.get('refresh_token')
+        code = request.form.get('refresh_token')
 
 
     #Get the tokens and ids from DDBB
@@ -463,7 +455,7 @@ def token():
 
 
         #Clear authorization_code if autoAuthentication is not permited
-        if not data['settings']['bools']['autoAuthentication'] or agent == 'google':
+        if agent == 'google':
             data = readJSON()
             token[agent]['authorization_code']['value'] = random.randrange(1000000000)
             writeJSON(data)
