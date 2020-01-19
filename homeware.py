@@ -394,6 +394,7 @@ def tokenGenerator(agent, type):
 
 #Auth endpoint
 @app.route("/auth")
+@app.route("/auth/")
 def auth():
     token = readToken();                #Tokens from the DDBB
     clientId = request.args.get('client_id')    #ClientId from the client
