@@ -117,8 +117,8 @@ def assistant(step = 'welcome'):
             print('Nothing to do here')
         except:
             #Copy the DDBB template
-            subprocess.run(["cp", "configuration_templates/homeware.json", "homeware.json"],  stdout=subprocess.PIPE)
-            subprocess.run(["cp", "configuration_templates/token.json", "token.json"],  stdout=subprocess.PIPE)
+            subprocess.run(["cp", "configuration_templates/template_homeware.json", "homeware.json"],  stdout=subprocess.PIPE)
+            subprocess.run(["cp", "configuration_templates/template_token.json", "token.json"],  stdout=subprocess.PIPE)
 
 
     return render_template('assistant/step_' + step + '.html', step=step, next=steps[step])
