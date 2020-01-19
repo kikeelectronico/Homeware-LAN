@@ -5,6 +5,7 @@ import random
 import subprocess
 from multiprocessing import Process
 from cryptography.fernet import Fernet
+import paho.mqtt.publish as publish
 from aux import readJSON, writeJSON, readConfig, writeConfig, readToken, writeToken
 
 app = Flask(__name__)
@@ -127,6 +128,7 @@ def assistant(step = 'welcome'):
 @app.route('/test')
 @app.route('/test/')
 def test():
+    publish.single("test", "payload", hostname="localhost")
     return 'Load'
 
 #Asistant operations
@@ -362,57 +364,6 @@ def front(operation, segment = "", value = ''):
         else:
             return 'Bad token'
 
-#Hardware's endpoint
-@app.route("/read/")
-def read():
-    #Get all data
-    userAgent = request.headers['User-Agent']
-    id = request.args.get('id')
-    token = request.headers['authorization'].split(' ')[1]
-    param = request.args.get('param')
-    value = request.args.get('value')
-    vartype = request.args.get('vartype')
-    smartConnection = request.args.get('smartconnection')
-    #Response content
-    responseData = {}
-    #Change var type
-    if vartype == "int":
-        value = int(value)
-    elif vartype == "bool":
-        if value == "true":
-            value = True;
-        else:
-            value = False;
-
-    #Read the JSON file
-    data = readJSON()
-    token = readToken()
-
-    #Verify token
-    if(token == token[id]['access_token']['value']):
-        #Save the current timestamp
-        ts = int(time.time()*1000)
-        data['alive'][id]['timestamp'] = ts
-        #Validate smartConnection
-        if smartConnection == "true":
-            responseData = data['smartConnection'][id]
-        else:
-            #Verify if data must been updated
-            if isinstance(param, str):
-                data['status'][id][param] = value
-            responseData = data['status'][id]
-        writeJSON(data)
-        #Response back
-        response = app.response_class(
-            response=json.dumps(responseData),
-            status=200,
-            mimetype='application/json'
-        )
-        return response
-
-    else:
-        return "Bad token"
-
 def tokenGenerator(agent, type):
     #Generate the token
     chars = 'abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -461,7 +412,9 @@ def auth():
 
 #Token's endpoint
 @app.route('/token', methods = ['GET', 'POST'])
+@app.route('/token/', methods = ['GET', 'POST'])
 def token():
+
     agent = request.headers['User-Agent']
     #Verify special agents
     if '+http://www.google.com/bot.html' in agent:
@@ -609,6 +562,7 @@ def smarthome():
                     deviceParamsKeys = deviceParams.keys()
                     for key in deviceParamsKeys:
                         data['status'][deviceId][key] = deviceParams[key]
+                    publish.single("device/"+deviceId, str(data['status'][deviceId]), hostname="localhost")
                 obj['payload']['commands'][0]['states'] = data['status']
                 writeJSON(data)
 

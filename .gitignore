@@ -1,6 +1,7 @@
 config.json
 homeware.json
 token.json
+hardware.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
