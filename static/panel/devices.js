@@ -65,6 +65,8 @@ function  loadCards(){
         scenesHTML += '</div>';
       scenesHTML += '</div>';
     } else {
+
+      paragraph += "<b>MQTT topic:</b> device/" + device.id + "<br>";
       //Get brightness
       if (data['status'][device.id].brightness){
         paragraph += "<b>Brightness:</b> " + data['status'][device.id].brightness + " %<br><br>";
