@@ -3,7 +3,7 @@ Homeware for Raspberry Pi. This is an alternative for <a href="https://github.co
 
 # Homeware-LAN is under develop.
 
-This API creates an integration between hardware devices like ESP8266 or Arduino and the Google Assitant using Firebase for the backend.
+This API creates an integration between hardware devices like ESP8266 or Arduino and the Google Assitant using a Raspberry Pi for the backend.
 
 <img alt="Super Grover" src="https://github.com/kikeelectronico/homeware/raw/master/images/cloud.png" />
 
