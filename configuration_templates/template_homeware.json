@@ -29,7 +29,7 @@
       "type": "action.devices.types.LIGHT"
     }
   ],
-  "rules": {},
+  "rules": [],
   "settings": {
     "bools": {
       "autoAuthentication": true
