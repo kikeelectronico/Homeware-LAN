@@ -669,7 +669,7 @@ def verifyRules():
         if verified == ammountTriggers:
             for target in rule['targets']:
                 data['status'][target['id']][target['param']] = target['value']
-        publish.single("device/"+target['id'], json.dumps(data['status'][target['id']]), hostname="localhost")
+                publish.single("device/"+target['id'], json.dumps(data['status'][target['id']]), hostname="localhost")
 
     writeJSON(data)
 
