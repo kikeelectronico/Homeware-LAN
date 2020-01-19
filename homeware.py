@@ -563,7 +563,7 @@ def smarthome():
                     deviceParamsKeys = deviceParams.keys()
                     for key in deviceParamsKeys:
                         data['status'][deviceId][key] = deviceParams[key]
-                    publish.single("device/"+deviceId, str(data['status'][deviceId]), hostname="localhost")
+                    publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
                 obj['payload']['commands'][0]['states'] = data['status']
                 writeJSON(data)
 
