@@ -17,7 +17,7 @@ Subscribe to this Telegram channel: [https://t.me/homeware_up_to_date](https://t
 
 ## Supported Devices and traits
 
-All traits and devices are supported under an experimental function. If you see something wrong, please open an issue: [https://github.com/kikeelectronico/Homeware/issues/new](https://github.com/kikeelectronico/Homeware-LAN/issues/new)
+All traits and devices are supported under an experimental function. If you see something wrong, please open an issue: [https://github.com/kikeelectronico/Homeware-LAN/issues/new](https://github.com/kikeelectronico/Homeware-LAN/issues/new)
 
 ## To Do list
 
