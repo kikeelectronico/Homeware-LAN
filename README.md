@@ -1,5 +1,5 @@
 # Homeware-LAN
-Homeware for Raspberry Pi. This is an alternative for <a href="" target="blanck">Homeware</a> that works in a Raspberry Pi instead of Firebase.
+Homeware for Raspberry Pi. This is an alternative for <a href="https://github.com/kikeelectronico/Homeware" target="blanck">Homeware</a> that works in a Raspberry Pi instead of Firebase.
 
 # Homeware-LAN is under develop.
 
