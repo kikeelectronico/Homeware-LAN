@@ -164,7 +164,10 @@ save.addEventListener('click', e => {
        $("#savedAlert").remove();
      }, 5000);
   });
-  http.open("GET", "/front/rule/update/" + JSON.stringify(outgoingData));
+  segment = 'update'
+  if (n == -1)
+    segment = 'create'
+  http.open("GET", "/front/rule/" + segment + "/" + JSON.stringify(outgoingData));
   http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
   http.send();
 

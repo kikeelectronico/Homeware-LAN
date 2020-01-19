@@ -5,7 +5,7 @@ import random
 import subprocess
 from multiprocessing import Process
 from cryptography.fernet import Fernet
-from aux import readJSON, writeJSON, readConfig, writeConfig
+from aux import readJSON, writeJSON, readConfig, writeConfig, readToken, writeToken
 
 app = Flask(__name__)
 
@@ -118,10 +118,10 @@ def assistant(step = 'welcome'):
         except:
             #Copy the DDBB template
             subprocess.run(["cp", "configuration_templates/homeware.json", "homeware.json"],  stdout=subprocess.PIPE)
+            subprocess.run(["cp", "configuration_templates/token.json", "token.json"],  stdout=subprocess.PIPE)
 
 
     return render_template('assistant/step_' + step + '.html', step=step, next=steps[step])
-
 
 ########################### API ###########################
 @app.route('/test')
@@ -262,6 +262,7 @@ def front(operation, segment = "", value = ''):
             #Special operations
             elif operation == 'device':
                 data = readJSON()
+                token = readToken()
 
                 if segment == 'update' or segment == 'create':
                     incommingData = json.loads(value)
@@ -297,7 +298,10 @@ def front(operation, segment = "", value = ''):
                     if segment == 'create':
                         data['token'][deviceID] = {}
                         data['token'][deviceID]['authorization_code'] = {}
-                    data['token'][deviceID]['authorization_code']['value'] = code
+                        token[deviceID] = {}
+                        token[deviceID]['authorization_code'] = {}
+                    token[deviceID]['authorization_code']['value'] = code
+                    data['token'][deviceID]['authorization_code'] = {"requestManualAuthorization": False}
 
                 elif segment == 'delete':
                     temp_devices = [];
@@ -310,9 +314,9 @@ def front(operation, segment = "", value = ''):
                     del status[value]
                     data['status'] = status
                     # Delete token
-                    token = data['token']
+                    #token = data['token']
                     del token[value]
-                    data['token'] = token
+                    #data['token'] = token
                     # Delete alive
                     alive = data['alive']
                     del alive[value]
@@ -323,6 +327,7 @@ def front(operation, segment = "", value = ''):
                     data['smartConnection'] = smartConnection
 
                 writeJSON(data)
+                writeToken(token)
 
                 response = app.response_class(
                     response=json.dumps(data),
@@ -333,9 +338,12 @@ def front(operation, segment = "", value = ''):
             #Special operations
             elif operation == 'rule':
                 data = readJSON()
-                if segment == 'create' or segment == 'update':
+                if segment == 'update':
                     incommingData = json.loads(value)
                     data['rules'][int(incommingData['n'])] = incommingData['rule']
+                if segment == 'create':
+                    incommingData = json.loads(value)
+                    data['rules'].append(incommingData['rule'])
 
                 elif segment == 'delete':
                     temp_rules = data['rules']
@@ -378,9 +386,10 @@ def read():
 
     #Read the JSON file
     data = readJSON()
+    token = readToken()
 
     #Verify token
-    if(token == data['token'][id]['access_token']['value']):
+    if(token == token[id]['access_token']['value']):
         #Save the current timestamp
         ts = int(time.time()*1000)
         data['alive'][id]['timestamp'] = ts
@@ -421,13 +430,13 @@ def tokenGenerator(agent, type):
 
     #Save the token
     ts = int(time.time()*1000)
-    data = readJSON()
+    data = readToken()
     legalTypes = ['access_token', 'authorization_code', 'refresh_token']
 
     if type in legalTypes:
-        data['token'][agent][type]['value'] = token
-        data['token'][agent][type]['timestamp'] = ts
-        writeJSON(data)
+        data[agent][type]['value'] = token
+        data[agent][type]['timestamp'] = ts
+        writeToken(data)
         return token
     else:
         return 'Something goes wrong'
@@ -435,7 +444,7 @@ def tokenGenerator(agent, type):
 #Auth endpoint
 @app.route("/auth")
 def auth():
-    token = readJSON()['token'];                #Tokens from the DDBB
+    token = readToken();                #Tokens from the DDBB
     clientId = request.args.get('client_id')    #ClientId from the client
     responseURI = request.args.get('redirect_uri')
     state = request.args.get('state')
@@ -478,14 +487,15 @@ def token():
 
     #Get the tokens and ids from DDBB
     data = readJSON()
+    token = readToken()
+    obj = {}
     #Verify the code
-    if code == data['token'][agent][grantType]['value']:
+    if code == token[agent][grantType]['value']:
         #Tokens lifetime
         secondsInDay = 86400;
         #Create a new token
         access_token = tokenGenerator(agent, 'access_token')
         #Compose the response JSON
-        obj = {}
         obj['token_type'] = 'bearer'
         obj['expires_in'] = secondsInDay
         if grantType == 'authorization_code':
@@ -501,7 +511,7 @@ def token():
         #Clear authorization_code if autoAuthentication is not permited
         if not data['settings']['bools']['autoAuthentication'] or agent == 'google':
             data = readJSON()
-            data['token'][agent]['authorization_code']['value'] = random.randrange(1000000000)
+            token[agent]['authorization_code']['value'] = random.randrange(1000000000)
             writeJSON(data)
 
 
@@ -540,9 +550,10 @@ def smarthome():
     elif agent == 'OpenAuth':
         agent = 'google';
     #Get the access_token
-    token = request.headers['authorization'].split(' ')[1]
+    tokenClient = request.headers['authorization'].split(' ')[1]
     data = readJSON()
-    if token == data['token'][agent]['access_token']['value']:
+    token = readToken()
+    if tokenClient == token[agent]['access_token']['value']:
         #Anlalyze the inputs
         inputs = body['inputs']
         requestId = body['requestId']
@@ -629,6 +640,7 @@ def page_not_found(error):
 @app.route("/cron/")
 def cron():
     updatestates()
+    verifyRules()
 
     return "Done"
 
@@ -645,6 +657,64 @@ def updatestates():
         else:
             data['status'][device]['online'] = True
     #Save the new data
+    writeJSON(data)
+
+def verifyRules():
+    data = readJSON()
+    status = data['status']
+    rules = data['rules']
+
+    ts = time.localtime(time.time())
+    h = ts.tm_hour
+    m = ts.tm_min
+    pw = ts.tm_wday
+    week = [1,2,3,4,5,6,0]
+    w = week[pw]
+
+    for rule in rules:
+        ammountTriggers = 1
+        verified = 0
+        triggers = []
+        ruleKeys = []
+        for key in rule.keys():
+            ruleKeys.append(key)
+
+        if 'triggers' in ruleKeys:
+            ammountTriggers = len(rule['triggers'])
+            triggers = rule['triggers']
+        else:
+            triggers.append(rule['trigger'])
+
+        for trigger in triggers:
+            #Verify device to device
+            value = ""
+            if '>' in str(trigger['value']):
+                id = trigger['value'].split('>')[0]
+                param = trigger['value'].split('>')[1]
+                value = status[id][param]
+            else:
+                value = trigger['value']
+
+            #Verify operators
+            if int(trigger['operator']) == 1 and str(status[trigger['id']][trigger['param']]) == str(value):
+                verified+=1
+            elif int(trigger['operator']) == 2 and status[trigger['id']][trigger['param']] < value:
+                verified+=1
+            elif int(trigger['operator']) == 3 and status[trigger['id']][trigger['param']] > value:
+                verified+=1
+            elif int(trigger['operator']) == 4 and h == int(value.split(':')[0]) and m == int(value.split(':')[1]):
+                if len(value.split(':')) == 3:
+                    print(value.split(':')[2])
+                    if str(w) in value.split(':')[2]:
+                        verified+=1
+                else:
+                    verified+=1
+
+        #Update targets if needed
+        if verified == ammountTriggers:
+            for target in rule['targets']:
+                data['status'][target['id']][target['param']] = target['value']
+
     writeJSON(data)
 
 if __name__ == "__main__":
