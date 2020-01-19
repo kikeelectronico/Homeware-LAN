@@ -607,7 +607,7 @@ def updatestates():
     ts = int(time.time()*1000)
 
     for device in alive:
-        if ts - int(alive[device]['timestamp']) > deviceAliveTimeout:
+        if False: #ts - int(alive[device]['timestamp']) > deviceAliveTimeout:
             data['status'][device]['online'] = False
         else:
             data['status'][device]['online'] = True
