@@ -678,12 +678,15 @@ def on_message(client, userdata, msg):
     id = payload['id']
     param = payload['param']
     value = payload['value']
+    intent = payload['intent']
 
     data = readJSON();
     data['status'][id][param] = value;
     writeJSON(data)
-
-    print("end")
+    if intent == 'execute':
+        publish.single("device/"+id, json.dumps(data['status'][id]), hostname="localhost")
+    elif intent == 'rules':
+        verifyRules():
 
 # MQTT reader
 def mqttReader():
