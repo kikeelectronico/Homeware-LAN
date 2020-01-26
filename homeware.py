@@ -686,7 +686,7 @@ def on_message(client, userdata, msg):
     if intent == 'execute':
         publish.single("device/"+id, json.dumps(data['status'][id]), hostname="localhost")
     elif intent == 'rules':
-        verifyRules():
+        verifyRules()
 
 # MQTT reader
 def mqttReader():
