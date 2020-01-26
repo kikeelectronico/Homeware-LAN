@@ -3,9 +3,10 @@ import json
 import time
 import random
 import subprocess
-from multiprocessing import Process
+import multiprocessing
 from cryptography.fernet import Fernet
 import paho.mqtt.publish as publish
+import paho.mqtt.client as mqtt
 from aux import readJSON, writeJSON, readConfig, writeConfig, readToken, writeToken
 
 app = Flask(__name__)
@@ -16,7 +17,6 @@ deviceAliveTimeout = 20000
 #app
 def runapp():
     app.run(host='0.0.0.0', port=5001, debug=True)
-
 
 ########################### APP ###########################
 
@@ -665,5 +665,39 @@ def verifyRules():
 
     writeJSON(data)
 
+########################### MQTT reader ###########################
+
+def on_connect(client, userdata, flags, rc):
+    print("Connected with result code "+str(rc))
+    client.subscribe("device/control")
+
+def on_message(client, userdata, msg):
+    print(msg.topic+" "+str(msg.payload))
+    #Get the data
+    payload = json.loads(msg.payload)
+    id = payload['id']
+    param = payload['param']
+    value = payload['value']
+
+    data = readJSON();
+    data['status'][id][param] = value;
+    writeJSON(data)
+
+    print("end")
+
+# MQTT reader
+def mqttReader():
+    client = mqtt.Client()
+    client.on_connect = on_connect
+    client.on_message = on_message
+
+    client.connect("localhost", 1883, 60)
+    client.loop_forever()
+
 if __name__ == "__main__":
-    runapp()
+    #Flask App and Api
+    flaskProcess = multiprocessing.Process(target=runapp)
+    flaskProcess.start()
+    #MQTT reader
+    mqttProcess = multiprocessing.Process(target=mqttReader)
+    mqttProcess.start()
