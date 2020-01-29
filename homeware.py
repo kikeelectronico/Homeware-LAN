@@ -575,6 +575,15 @@ def smarthome():
         print('Token incorrecto')
         return "A"
 
+#Clock endpoint
+@app.route("/clock")
+@app.route("/clock/")
+def clock():
+    ts = time.localtime(time.time())
+    h = ts.tm_hour
+    m = ts.tm_min
+    return str(h) + ":" + str(m)
+
 @app.errorhandler(404)
 def page_not_found(error):
     return 'Error 404'
@@ -651,12 +660,10 @@ def verifyRules():
                 verified+=1
             elif int(trigger['operator']) == 4 and h == int(value.split(':')[0]) and m == int(value.split(':')[1]):
                 if len(value.split(':')) == 3:
-                    print(value.split(':')[2])
                     if str(w) in value.split(':')[2]:
                         verified+=1
                 else:
                     verified+=1
-
         #Update targets if needed
         if verified == ammountTriggers:
             for target in rule['targets']:

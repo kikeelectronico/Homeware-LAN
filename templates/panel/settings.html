@@ -23,34 +23,6 @@
               <!--<input type="hidden" id="n" value="-1">-->
             </div>
 
-
-            <div class="container p-3 mb-2 bg-light text-dark">
-              <h3>Devices</h3>
-              <div class="form-row">
-                <div class="form-group col-md-10">
-                  <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="autoAuthentication">
-                    <label class="custom-control-label" for="autoAuthentication">Automatic authentication</label>
-                  </div>
-                </div>
-                <div class="form-group col-md-2">
-                  <a class="badge badge-primary" data-toggle="modal" data-target="#modal" style="color:white;" onclick="updateModal('autoAuthentication')">Learn more</a>
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group col-md-3">
-                    <input type="text" class="form-control" id="codeKey" value="-code">
-                </div>
-                <div class="form-group col-md-7 colAligmentL">
-                    <label for="codeKey">Key for authorization code</label>
-                </div>
-                <div class="form-group col-md-2 colAligmentA">
-                  <a class="badge badge-primary" data-toggle="modal" data-target="#modal" style="color:white;" onclick="updateModal('codeKey')">Learn more</a>
-                </div>
-              </div>
-
-            </div>
-
             <div class="container p-3 mb-2 bg-light text-dark">
               <h3>Homeware API</h3>
               <div class="form-row">
@@ -141,15 +113,6 @@
           document.getElementById(setting).checked = settings['bools'][setting];
         });
       }
-
-      autoAuthentication.addEventListener('change', function() {
-        //Get the status switch
-        var status = document.getElementById('autoAuthentication').checked;
-        data['bools']['autoAuthentication'] = status;
-        saveData('settings', data);
-        //Update the text message
-        updateMessageWithTime();
-      });
 
       save.addEventListener('click', function() {
         //Update the text message

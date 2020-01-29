@@ -32,10 +32,8 @@
   "rules": [],
   "settings": {
     "bools": {
-      "autoAuthentication": true
     },
     "strings": {
-      "codeKey": "-code"
     }
   },
   "status": {
