@@ -320,7 +320,7 @@ deleteRule.addEventListener('click', e => {
 
 });
 
-/*
+
 window.onload = function() {
   loadApiTime();
   setInterval(loadApiTime, 30000);
@@ -346,7 +346,7 @@ function loadApiTime(){
 function showApiClock(){
   document.getElementById('apiClock').innerHTML =  "Homeware's API time " + this.responseText;
 }
-*/
+
 ////////////////////////////////////////
 //Triggers & targets Magic
 ////////////////////////////////////////
