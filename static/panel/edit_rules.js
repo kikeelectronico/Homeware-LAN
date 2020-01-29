@@ -327,8 +327,7 @@ window.onload = function() {
 };
 
 function loadApiTime(){
-  settingsRef.on('value', snap => {
-    apiClockURL = snap.val().strings.apiClockURL;
+    apiClockURL = '/clock';
 
     if(apiClockURL){
       var clock = new XMLHttpRequest();
@@ -338,7 +337,6 @@ function loadApiTime(){
     } else {
       document.getElementById('apiClock').innerHTML = "See here your API's clock. Configure the URL from Settings."
     }
-  })
 
 
 }
