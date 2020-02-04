@@ -31,23 +31,12 @@
   ],
   "rules": [],
   "settings": {
-    "bools": {
-    },
-    "strings": {
-    }
   },
   "status": {
     "light": {
       "brightness": 100,
       "on": false,
       "online": true
-    }
-  },
-  "token": {
-    "light": {
-      "authorization_code": {
-        "requestManualAuthorization": false
-      }
     }
   },
   "smartConnection": {
