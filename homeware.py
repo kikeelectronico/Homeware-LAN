@@ -543,20 +543,22 @@ def smarthome():
                 #Get ans analyze data
                 data = readJSON()
                 #Only the first input and the first command
-                ## TODO: Check for all the commands
-                devices = input['payload']['commands'][0]['devices']
-                executions = input['payload']['commands'][0]['execution']
-                i = 0
-                for device in devices:
-                    deviceId = device['id']
-                    obj['payload']['commands'][0]['ids'].append(deviceId)
-                    deviceParams = executions[i]['params']
-                    i += 1
-                    deviceParamsKeys = deviceParams.keys()
-                    for key in deviceParamsKeys:
-                        data['status'][deviceId][key] = deviceParams[key]
-                    publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
-                obj['payload']['commands'][0]['states'] = data['status']
+                n = 0
+                for command in input['payload']['commands']:
+                    devices = command['devices']
+                    executions = command['execution']
+                    for device in devices:
+                        deviceId = device['id']
+                        obj['payload']['commands'][n]['ids'].append(deviceId)
+                        deviceParams = executions[0]['params']
+
+                        deviceParamsKeys = deviceParams.keys()
+                        for key in deviceParamsKeys:
+                            data['status'][deviceId][key] = deviceParams[key]
+                        publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
+
+                    obj['payload']['commands'][n]['states'] = data['status']
+                    n += 1
                 writeJSON(data)
 
                 response = app.response_class(
