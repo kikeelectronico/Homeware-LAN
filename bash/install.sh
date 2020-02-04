@@ -33,4 +33,4 @@ echo "@reboot sudo systemctl start homeware" >> copy
 sudo crontab copy
 rm copy
 
-sudo systemctl start homeware
+#sudo systemctl start homeware
