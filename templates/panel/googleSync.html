@@ -35,8 +35,11 @@
       login.addEventListener('click', function(event){
         var http = new XMLHttpRequest();
         http.addEventListener("load", function(){
-
-          window.location = http.responseText;
+          if (http.responseText != 'fail')
+            window.location = http.responseText;
+          else {
+            alert('Incorrect User or Password');
+          }
         });
         http.open("GET", "/front/login/googleSync/");
         http.setRequestHeader('user', document.getElementById('user').value)

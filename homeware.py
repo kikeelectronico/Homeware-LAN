@@ -226,6 +226,8 @@ def front(operation, segment = "", value = ''):
             responseData = {}
             if user == config['user'] and plain_text == str.encode(password):
                 return responseURL
+            else
+                return "fail"
         response = app.response_class(
             response=json.dumps(responseData),
             status=200,
