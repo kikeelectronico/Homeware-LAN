@@ -13,6 +13,7 @@ app = Flask(__name__)
 
 #Global variables
 deviceAliveTimeout = 20000
+responseURL = '';
 
 #app
 def runapp():
@@ -214,6 +215,17 @@ def front(operation, segment = "", value = ''):
                 responseData = {
                     'status': 'fail'
                 }
+        elif segment == 'googleSync':
+            print(responseURL)
+            config = readConfig()
+            user = request.headers['user']
+            password = request.headers['pass']
+
+            cipher_suite = Fernet(str.encode(config['key'][2:len(config['key'])]))
+            plain_text = cipher_suite.decrypt(str.encode(config['pass'][2:len(config['pass'])]))
+            responseData = {}
+            if user == config['user'] and plain_text == str.encode(password):
+                return responseURL
         response = app.response_class(
             response=json.dumps(responseData),
             status=200,
@@ -397,7 +409,8 @@ def auth():
         #Compose the response URL
         responseURL = responseURI + '?code=' + str(code) + '&state=' +  state
         #Return the page
-        return '<center><h1 style=\"font-size: 6em;\">Homeware LAN</h1><br><a style=\"font-size: 4em;\" class=\"btn btn-primary\" href=\"' + responseURL + '\">Pulsa aquí para enlazar</a></center>'
+        #return '<center><h1 style=\"font-size: 6em;\">Homeware LAN</h1><br><a style=\"font-size: 4em;\" class=\"btn btn-primary\" href=\"' + responseURL + '\">Pulsa aquí para enlazar</a></center>'
+        return render_template('googleSync.html')
     else:
         return 'Algo ha ido mal en la autorización'
 
@@ -681,13 +694,19 @@ def on_message(client, userdata, msg):
     value = payload['value']
     intent = payload['intent']
 
-    data = readJSON();
-    data['status'][id][param] = value;
-    writeJSON(data)
+
     if intent == 'execute':
+        data = readJSON();
+        data['status'][id][param] = value;
+        writeJSON(data)
         publish.single("device/"+id, json.dumps(data['status'][id]), hostname="localhost")
     elif intent == 'rules':
+        data = readJSON();
+        data['status'][id][param] = value;
+        writeJSON(data)
         verifyRules()
+    elif intent == 'request':
+        publish.single("device/"+id, json.dumps(data['status'][id]), hostname="localhost")
 
 # MQTT reader
 def mqttReader():
