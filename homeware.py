@@ -55,8 +55,7 @@ def devices(process = "", id = ""):
                     device = d
                     break
             deviceString=json.dumps(device)
-            smartConnectionDataString=json.dumps(data['smartConnection'][id])
-            return render_template('panel/edit_device.html', deviceString=deviceString, smartConnectionDataString=smartConnectionDataString, deviceID=id)
+            return render_template('panel/edit_device.html', deviceString=deviceString, deviceID=id)
         else:
             return render_template('panel/edit_device.html', deviceID=id)
     else:
@@ -281,7 +280,6 @@ def front(operation, segment = "", value = ''):
             #Special operations
             elif operation == 'device':
                 data = readJSON()
-                token = readToken()
 
                 if segment == 'update' or segment == 'create':
                     incommingData = json.loads(value)
@@ -301,23 +299,10 @@ def front(operation, segment = "", value = ''):
 
                     #Update alive
                     data['alive'][deviceID] = incommingData['alive']
-                    #Update samrtConnection
-                    data['smartConnection'][deviceID] = incommingData['smartConnection']
                     #Update status
                     if not deviceID in data['status'].keys():
                         data['status'][deviceID] = {}
                     data['status'][deviceID]['online'] = True
-                    #Athorization code
-                    # code = ''
-                    # if data['settings']['bools']['autoAuthentication']:
-                    #     code = deviceID + data['settings']['strings']['codeKey']
-                    # else:
-                    #     code = '-'
-                    #
-                    # if segment == 'create':
-                    #     token[deviceID] = {}
-                    #     token[deviceID]['authorization_code'] = {}
-                    # token[deviceID]['authorization_code']['value'] = code
 
                 elif segment == 'delete':
                     temp_devices = [];
@@ -329,21 +314,12 @@ def front(operation, segment = "", value = ''):
                     status = data['status']
                     del status[value]
                     data['status'] = status
-                    # Delete token
-                    #token = data['token']
-                    #del token[value]
-                    #data['token'] = token
                     # Delete alive
                     alive = data['alive']
                     del alive[value]
                     data['alive'] = alive
-                    # Delete smartConnection
-                    smartConnection = data['smartConnection']
-                    del smartConnection[value]
-                    data['smartConnection'] = smartConnection
 
                 writeJSON(data)
-                writeToken(token)
 
                 response = app.response_class(
                     response=json.dumps(data),
