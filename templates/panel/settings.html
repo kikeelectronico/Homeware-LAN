@@ -24,7 +24,7 @@
             </div>
 
             <div class="container p-3 mb-2 bg-light text-dark">
-              <h3>Google's conexion data</h3>
+              <h3>Google's connection data</h3>
               <div class="form-row">
                 <div class="form-group col-md-3">
                     <input type="text" class="form-control" id="clientId">
@@ -190,15 +190,15 @@
         var title = 'Fail';
         var paragrahp = 'Something goes wrong';
 
-        if (settings == 'autoAuthentication'){
-          title = 'Automatic authentication';
-          paragraph = 'If <b>False</b> manual authentication must be done from the <i>Device</i> section:<br>  <ul><li>For new devices</li> <li>If the device lost its refresh token</li></ul> If <b>True</b> the devices will autoconnect using its <i>Authorization code</i>.';
-        } else if (settings == 'codeKey'){
-          title = 'Key for authorization code';
-          paragraph = 'The authorization code is compose with the device\'s id and the Key for authorization code. <br><br> For example, if the device\'s id is <b><i>"bedroom-light"</i></b> and the key is <b><i>"-code"</i></b> the athorization code will be <b><i>"bedroom-light-code"</i></b>.';
+        if (settings == 'clientSecret'){
+          title = 'Client Secret';
+          paragraph = 'It is used to authenticate with Google. If you change it here, you must change it on the Actions Console > Develop > Account Linking.';
+        } else if (settings == 'clientId'){
+          title = 'Client ID';
+          paragraph = 'It is used to authenticate with Google. If you change it here, you must change it on the Actions Console > Develop > Account Linking';
         } else if (settings == 'apiClockURL'){
           title = 'The clock\'s URL from your Homeware API';
-          paragraph = 'Go to <i>Functions</i> section in Firebase console. Look for the <i>clock</i> function and copy it\'s URL.';
+          paragraph = 'It is an static URL, you can not change it.';
         }
 
 
