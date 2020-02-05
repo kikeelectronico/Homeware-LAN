@@ -1,19 +1,19 @@
 
-function loadDevices(device, smartConnectionData, deviceID) {
+function loadDevices(device, deviceID) {
     //Status
     var operation = 'create';
     console.log(deviceID);
-    
+
 
     if(deviceID != ''){
       operation = 'update';
-      loadDeviceData(device, smartConnectionData);
+      loadDeviceData(device);
     }
     document.getElementById('operation').value = operation;
 
 }
 
-function loadDeviceData(device, smartConnectionData){
+function loadDeviceData(device){
   //Get the device info
   document.getElementById("id").value = device.id;
   document.getElementById("id").readOnly = true;
@@ -25,12 +25,6 @@ function loadDeviceData(device, smartConnectionData){
     document.getElementById("model").value = device.deviceInfo.model;
   }
   document.getElementById("name").value = device.name.name;
-
-  //Show smartConnection data
-  Object.keys(smartConnectionData.delay).forEach(function(h){
-    document.getElementById(h + "h").value = smartConnectionData.delay[h];
-  });
-  document.getElementById("updateTime").value = smartConnectionData.update;
 
 
   //Show traits

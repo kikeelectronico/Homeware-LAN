@@ -14,18 +14,5 @@
       "timestamp": 0,
       "value": "-"
     }
-  },
-  "light": {
-    "access_token": {
-      "timestamp": 0,
-      "value": "-"
-    },
-    "authorization_code": {
-      "value": "light-code"
-    },
-    "refresh_token": {
-      "timestamp": 0,
-      "value": "-"
-    }
   }
 }

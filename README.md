@@ -22,11 +22,23 @@ cd Homeware-LAN
 sudo sh bash/install.sh
 ```
 ```
-pyhton3 homeware.py
+sudo systemctl start homeware
 ```
 2. Open a web browser and go to your Raspberry Pi IP follow by ```:5001```. For example ```192.168.1.150:5001```.
 3. Follow the assistant instructions that appear on the web browser.
 4. Use the example at ESP8266example to connect to Homeware using an ESP8266. It is a simple MQTT.
+
+## How to update
+
+```
+cd Homeware-LAN
+```
+```
+git pull
+```
+```
+sudo systemctl restart homeware
+```
 
 ## Advice
 Use only released versions: <a href="https://github.com/kikeelectronico/Homeware-LAN/releases/latest">Last released</a>

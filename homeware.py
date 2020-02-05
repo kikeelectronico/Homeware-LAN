@@ -13,6 +13,7 @@ app = Flask(__name__)
 
 #Global variables
 deviceAliveTimeout = 20000
+responseURL = '';
 
 #app
 def runapp():
@@ -55,8 +56,7 @@ def devices(process = "", id = ""):
                     device = d
                     break
             deviceString=json.dumps(device)
-            smartConnectionDataString=json.dumps(data['smartConnection'][id])
-            return render_template('panel/edit_device.html', deviceString=deviceString, smartConnectionDataString=smartConnectionDataString, deviceID=id)
+            return render_template('panel/edit_device.html', deviceString=deviceString, deviceID=id)
         else:
             return render_template('panel/edit_device.html', deviceID=id)
     else:
@@ -215,6 +215,19 @@ def front(operation, segment = "", value = ''):
                 responseData = {
                     'status': 'fail'
                 }
+        elif segment == 'googleSync':
+            print(responseURL)
+            config = readConfig()
+            user = request.headers['user']
+            password = request.headers['pass']
+
+            cipher_suite = Fernet(str.encode(config['key'][2:len(config['key'])]))
+            plain_text = cipher_suite.decrypt(str.encode(config['pass'][2:len(config['pass'])]))
+            responseData = {}
+            if user == config['user'] and plain_text == str.encode(password):
+                return responseURL
+            else:
+                return "fail"
         response = app.response_class(
             response=json.dumps(responseData),
             status=200,
@@ -229,12 +242,21 @@ def front(operation, segment = "", value = ''):
         savedToken = readConfig()['token']['front'];
         if token == savedToken:
             #Read data
+            data = {}
             if operation == 'read':
-                data = readJSON()
-                #Get the requested data
-                if segment != '':
-                    for p in segment.split('>'):
-                        data = data[p]
+                if 'token' in segment:
+                    dataTmp = readToken()
+                    data = {
+                        "client_id": dataTmp["google"]["client_id"],
+                        "client_secret": dataTmp["google"]["client_secret"],
+                    }
+                else:
+                    data = readJSON()
+                    #Get the requested data
+                    if segment != '':
+                        for p in segment.split('>'):
+                            data = data[p]
+
                 response = app.response_class(
                     response=json.dumps(data),
                     status=200,
@@ -244,28 +266,34 @@ def front(operation, segment = "", value = ''):
             #Save simple data
             #Write data
             elif operation == 'write':
-                data = readJSON()
-                segments = segment.split('>')
-                #Esto es una ñapa, pero ahora mismo no se cómo solucionarlo
-                if len(segments) == 1:
-                    data[segment] = json.loads(value)
-                elif len(segments) == 2:
-                    data[segments[0]][segments[1]] = json.loads(value)
-                elif len(segments) == 3:
-                    data[segments[0]][segments[1]][segments[2]] = json.loads(value)
-
+                data = {}
+                if 'token' in segment:
+                    data = readToken()
+                    data["google"]["client_id"] = json.loads(value)['client_id']
+                    data["google"]["client_secret"] = json.loads(value)['client_secret']
+                    writeToken(data)
+                else:
+                    data = readJSON()
+                    segments = segment.split('>')
+                    #Esto es una ñapa, pero ahora mismo no se cómo solucionarlo
+                    if len(segments) == 1:
+                        data[segment] = json.loads(value)
+                    elif len(segments) == 2:
+                        data[segments[0]][segments[1]] = json.loads(value)
+                    elif len(segments) == 3:
+                        data[segments[0]][segments[1]][segments[2]] = json.loads(value)
+                    writeJSON(data)
 
                 response = app.response_class(
                     response=json.dumps(data),
                     status=200,
                     mimetype='application/json'
                 )
-                writeJSON(data)
+
                 return response
             #Special operations
             elif operation == 'device':
                 data = readJSON()
-                token = readToken()
 
                 if segment == 'update' or segment == 'create':
                     incommingData = json.loads(value)
@@ -285,23 +313,10 @@ def front(operation, segment = "", value = ''):
 
                     #Update alive
                     data['alive'][deviceID] = incommingData['alive']
-                    #Update samrtConnection
-                    data['smartConnection'][deviceID] = incommingData['smartConnection']
                     #Update status
                     if not deviceID in data['status'].keys():
                         data['status'][deviceID] = {}
                     data['status'][deviceID]['online'] = True
-                    #Athorization code
-                    # code = ''
-                    # if data['settings']['bools']['autoAuthentication']:
-                    #     code = deviceID + data['settings']['strings']['codeKey']
-                    # else:
-                    #     code = '-'
-                    #
-                    # if segment == 'create':
-                    #     token[deviceID] = {}
-                    #     token[deviceID]['authorization_code'] = {}
-                    # token[deviceID]['authorization_code']['value'] = code
 
                 elif segment == 'delete':
                     temp_devices = [];
@@ -313,21 +328,12 @@ def front(operation, segment = "", value = ''):
                     status = data['status']
                     del status[value]
                     data['status'] = status
-                    # Delete token
-                    #token = data['token']
-                    #del token[value]
-                    #data['token'] = token
                     # Delete alive
                     alive = data['alive']
                     del alive[value]
                     data['alive'] = alive
-                    # Delete smartConnection
-                    smartConnection = data['smartConnection']
-                    del smartConnection[value]
-                    data['smartConnection'] = smartConnection
 
                 writeJSON(data)
-                writeToken(token)
 
                 response = app.response_class(
                     response=json.dumps(data),
@@ -398,14 +404,18 @@ def auth():
     clientId = request.args.get('client_id')    #ClientId from the client
     responseURI = request.args.get('redirect_uri')
     state = request.args.get('state')
-
+    print('auth')
     if clientId == token['google']['client_id']:
+        print('id_correcto')
         #Create a new authorization_code
         code = tokenGenerator('google', 'authorization_code')
         #Compose the response URL
+        global responseURL
         responseURL = responseURI + '?code=' + str(code) + '&state=' +  state
+        print(responseURL)
         #Return the page
-        return '<center><h1 style=\"font-size: 6em;\">Homeware LAN</h1><br><a style=\"font-size: 4em;\" class=\"btn btn-primary\" href=\"' + responseURL + '\">Pulsa aquí para enlazar</a></center>'
+        #return '<center><h1 style=\"font-size: 6em;\">Homeware LAN</h1><br><a style=\"font-size: 4em;\" class=\"btn btn-primary\" href=\"' + responseURL + '\">Pulsa aquí para enlazar</a></center>'
+        return render_template('panel/googleSync.html')
     else:
         return 'Algo ha ido mal en la autorización'
 
@@ -543,20 +553,22 @@ def smarthome():
                 #Get ans analyze data
                 data = readJSON()
                 #Only the first input and the first command
-                ## TODO: Check for all the commands
-                devices = input['payload']['commands'][0]['devices']
-                executions = input['payload']['commands'][0]['execution']
-                i = 0
-                for device in devices:
-                    deviceId = device['id']
-                    obj['payload']['commands'][0]['ids'].append(deviceId)
-                    deviceParams = executions[i]['params']
-                    i += 1
-                    deviceParamsKeys = deviceParams.keys()
-                    for key in deviceParamsKeys:
-                        data['status'][deviceId][key] = deviceParams[key]
-                    publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
-                obj['payload']['commands'][0]['states'] = data['status']
+                n = 0
+                for command in input['payload']['commands']:
+                    devices = command['devices']
+                    executions = command['execution']
+                    for device in devices:
+                        deviceId = device['id']
+                        obj['payload']['commands'][n]['ids'].append(deviceId)
+                        deviceParams = executions[0]['params']
+
+                        deviceParamsKeys = deviceParams.keys()
+                        for key in deviceParamsKeys:
+                            data['status'][deviceId][key] = deviceParams[key]
+                        publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
+
+                    obj['payload']['commands'][n]['states'] = data['status']
+                    n += 1
                 writeJSON(data)
 
                 response = app.response_class(
@@ -687,13 +699,19 @@ def on_message(client, userdata, msg):
     value = payload['value']
     intent = payload['intent']
 
-    data = readJSON();
-    data['status'][id][param] = value;
-    writeJSON(data)
+
     if intent == 'execute':
+        data = readJSON();
+        data['status'][id][param] = value;
+        writeJSON(data)
         publish.single("device/"+id, json.dumps(data['status'][id]), hostname="localhost")
     elif intent == 'rules':
+        data = readJSON();
+        data['status'][id][param] = value;
+        writeJSON(data)
         verifyRules()
+    elif intent == 'request':
+        publish.single("device/"+id, json.dumps(data['status'][id]), hostname="localhost")
 
 # MQTT reader
 def mqttReader():

@@ -24,6 +24,33 @@
             </div>
 
             <div class="container p-3 mb-2 bg-light text-dark">
+              <h3>Google's conexion data</h3>
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" id="clientId">
+                </div>
+                <div class="form-group col-md-7 colAligmentL">
+                    <label for="clientId">Client ID</label>
+                </div>
+                <div class="form-group col-md-2 colAligmentA">
+                  <a class="badge badge-primary" data-toggle="modal" data-target="#modal" style="color:white;" onclick="updateModal('clientId')">Learn more</a>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                    <input type="text" class="form-control" id="clientSecret">
+                </div>
+                <div class="form-group col-md-7 colAligmentL">
+                    <label for="clientSecret">Client secret</label>
+                </div>
+                <div class="form-group col-md-2 colAligmentA">
+                  <a class="badge badge-primary" data-toggle="modal" data-target="#modal" style="color:white;" onclick="updateModal('clientSecret')">Learn more</a>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark">
               <h3>Homeware API</h3>
               <div class="form-row">
                 <div class="form-group col-md-7">
@@ -87,7 +114,8 @@
 
       data = {}
       window.addEventListener('load', function(event){
-        laodSettingsRequest();
+        //laodSettingsRequest();
+        laodTokenRequest();
       });
 
       function laodSettingsRequest(){
@@ -114,13 +142,32 @@
         });
       }
 
+      function laodTokenRequest(){
+        var http = new XMLHttpRequest();
+        http.addEventListener("load", function(){
+          loadToken(http.responseText);
+        });
+        http.open("GET", "/front/read/token");
+        http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+        http.send();
+      }
+
+      function loadToken(local_data){
+        var token = JSON.parse(local_data);
+
+        console.log(token);
+        document.getElementById('clientId').value = token['client_id'];
+        document.getElementById('clientSecret').value = token['client_secret'];
+
+      }
+
       save.addEventListener('click', function() {
         //Update the text message
         document.getElementById('textMessageAlert').innerHTML = '...';
-        data['bools']['autoAuthentication'] = document.getElementById('autoAuthentication').checked;
-        data['strings']['codeKey'] = document.getElementById('codeKey').value;
-        //data['strings']['apiClockURL'] = 'https://{{ domain }}/clock/';
-        saveData('settings', data);
+        data['client_id'] = document.getElementById('clientId').value;
+        data['client_secret'] = document.getElementById('clientSecret').value;
+
+        saveData('token', data);
         //Update the text message
         updateMessageWithTime();
       });
@@ -134,7 +181,7 @@
             document.getElementById('textMessageAlert').innerHTML = 'An error has happed.';
           }
         });
-        http.open("GET", "/front/write/settings/" + JSON.stringify(value) + '/');
+        http.open("GET", "/front/write/" + param + "/" + JSON.stringify(value) + '/');
         http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
         http.send();
       }

@@ -31,10 +31,6 @@
   ],
   "rules": [],
   "settings": {
-    "bools": {
-    },
-    "strings": {
-    }
   },
   "status": {
     "light": {
@@ -42,17 +38,5 @@
       "on": false,
       "online": true
     }
-  },
-  "token": {
-    "light": {
-      "authorization_code": {
-        "requestManualAuthorization": false
-      }
-    }
-  },
-  "smartConnection": {
-    "light" : {
-    "delay" : [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
-    "update" : "3600"
-  }}
+  }
 }
