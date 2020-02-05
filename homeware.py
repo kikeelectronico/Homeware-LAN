@@ -402,12 +402,14 @@ def auth():
     clientId = request.args.get('client_id')    #ClientId from the client
     responseURI = request.args.get('redirect_uri')
     state = request.args.get('state')
-
+    print('auth')
     if clientId == token['google']['client_id']:
+        print('id_correcto')
         #Create a new authorization_code
         code = tokenGenerator('google', 'authorization_code')
         #Compose the response URL
         responseURL = responseURI + '?code=' + str(code) + '&state=' +  state
+        print(responseURL)
         #Return the page
         #return '<center><h1 style=\"font-size: 6em;\">Homeware LAN</h1><br><a style=\"font-size: 4em;\" class=\"btn btn-primary\" href=\"' + responseURL + '\">Pulsa aquí para enlazar</a></center>'
         return render_template('googleSync.html')
