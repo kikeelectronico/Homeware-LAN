@@ -36,7 +36,7 @@
         var http = new XMLHttpRequest();
         http.addEventListener("load", function(){
 
-          alert(http.responseText);
+          window.location = http.responseText;
         });
         http.open("GET", "/front/login/googleSync/");
         http.setRequestHeader('user', document.getElementById('user').value)
