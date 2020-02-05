@@ -411,8 +411,8 @@ def auth():
         responseURL = responseURI + '?code=' + str(code) + '&state=' +  state
         print(responseURL)
         #Return the page
-        #return '<center><h1 style=\"font-size: 6em;\">Homeware LAN</h1><br><a style=\"font-size: 4em;\" class=\"btn btn-primary\" href=\"' + responseURL + '\">Pulsa aquí para enlazar</a></center>'
-        return render_template('googleSync.html')
+        return '<center><h1 style=\"font-size: 6em;\">Homeware LAN</h1><br><a style=\"font-size: 4em;\" class=\"btn btn-primary\" href=\"' + responseURL + '\">Pulsa aquí para enlazar</a></center>'
+        #return render_template('googleSync.html')
     else:
         return 'Algo ha ido mal en la autorización'
 
