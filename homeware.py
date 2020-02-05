@@ -229,12 +229,21 @@ def front(operation, segment = "", value = ''):
         savedToken = readConfig()['token']['front'];
         if token == savedToken:
             #Read data
+            data = {}
             if operation == 'read':
-                data = readJSON()
-                #Get the requested data
-                if segment != '':
-                    for p in segment.split('>'):
-                        data = data[p]
+                if 'token' in segment:
+                    dataTmp = readToken()
+                    data = {
+                        "client_id": dataTmp["google"]["client_id"],
+                        "client_secret": dataTmp["google"]["client_secret"],
+                    }
+                else:
+                    data = readJSON()
+                    #Get the requested data
+                    if segment != '':
+                        for p in segment.split('>'):
+                            data = data[p]
+
                 response = app.response_class(
                     response=json.dumps(data),
                     status=200,
@@ -244,23 +253,30 @@ def front(operation, segment = "", value = ''):
             #Save simple data
             #Write data
             elif operation == 'write':
-                data = readJSON()
-                segments = segment.split('>')
-                #Esto es una ñapa, pero ahora mismo no se cómo solucionarlo
-                if len(segments) == 1:
-                    data[segment] = json.loads(value)
-                elif len(segments) == 2:
-                    data[segments[0]][segments[1]] = json.loads(value)
-                elif len(segments) == 3:
-                    data[segments[0]][segments[1]][segments[2]] = json.loads(value)
-
+                data = {}
+                if 'token' in segment:
+                    data = readToken()
+                    data["google"]["client_id"] = json.loads(value)['client_id']
+                    data["google"]["client_secret"] = json.loads(value)['client_secret']
+                    writeToken(data)
+                else:
+                    data = readJSON()
+                    segments = segment.split('>')
+                    #Esto es una ñapa, pero ahora mismo no se cómo solucionarlo
+                    if len(segments) == 1:
+                        data[segment] = json.loads(value)
+                    elif len(segments) == 2:
+                        data[segments[0]][segments[1]] = json.loads(value)
+                    elif len(segments) == 3:
+                        data[segments[0]][segments[1]][segments[2]] = json.loads(value)
+                    writeJSON(data)
 
                 response = app.response_class(
                     response=json.dumps(data),
                     status=200,
                     mimetype='application/json'
                 )
-                writeJSON(data)
+
                 return response
             #Special operations
             elif operation == 'device':
