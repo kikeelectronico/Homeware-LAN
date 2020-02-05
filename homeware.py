@@ -408,6 +408,7 @@ def auth():
         #Create a new authorization_code
         code = tokenGenerator('google', 'authorization_code')
         #Compose the response URL
+        global responseURL
         responseURL = responseURI + '?code=' + str(code) + '&state=' +  state
         print(responseURL)
         #Return the page
