@@ -80,6 +80,13 @@ def rules(process = "", id = -1):
             return render_template('panel/edit_rules.html', ruleID=id)
         else:
             return render_template('panel/edit_rules.html', ruleID=id)
+    elif process == 'json':
+        if id != -1:
+            data = readJSON()
+
+            return render_template('panel/json_rules.html', ruleID=id)
+        else:
+            return render_template('panel/json_rules.html', ruleID=id)
     else:
         return render_template('panel/rules.html', domain=domain)
 
