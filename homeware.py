@@ -1,4 +1,5 @@
-from flask import Flask, request, render_template, redirect
+import os
+from flask import Flask, request, render_template, redirect, send_from_directory, send_file
 import json
 import time
 import random
@@ -374,6 +375,28 @@ def front(operation, segment = "", value = ''):
 
         else:
             return 'Bad token'
+
+#Files operation
+@app.route("/files/<operation>/<file>/<token>")
+@app.route("/files/<operation>/<file>/<token>/")
+def files(operation = '', file = '', token = ''):
+    #Get the access_token
+    frontToken = readConfig()['token']['front']
+    if token == frontToken:
+        if operation == 'buckup':
+            # return send_from_directory('/home/enrique/Homeware-LAN/', file + '.json', as_attachment=True)
+            ts = time.time()
+            result = send_file(file + '.json',
+               mimetype="application/json", # use appropriate type based on file
+               attachment_filename= file + '_' + str(ts) + '.json',
+               as_attachment=True,
+               conditional=False)
+            return result
+        else:
+            return 'Operation unknown'
+    else:
+        return 'Bad token'
+
 
 def tokenGenerator(agent, type):
     #Generate the token
