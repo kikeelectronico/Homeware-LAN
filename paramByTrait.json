@@ -10,7 +10,7 @@
         "value": 1
       },
       "temperatureK": 4000,
-      "spectrumRgb": 255
+      "spectrumRGB": 255
     }
   },
   "action.devices.traits.FanSpeed": {},
