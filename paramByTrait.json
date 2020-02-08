@@ -1,0 +1,36 @@
+{
+  "action.devices.traits.Toggles": {},
+  "action.devices.traits.ArmDisarm": {},
+  "action.devices.traits.CameraStream": {},
+  "action.devices.traits.ColorSetting": {
+    "color": {
+      "spectrumHsv": {
+        "hue": 240,
+        "saturation": 1,
+        "value": 1
+      },
+      "temperatureK": 4000,
+      "spectrumRgb": 255
+    }
+  },
+  "action.devices.traits.FanSpeed": {},
+  "action.devices.traits.LightEffects": {},
+  "action.devices.traits.Modes": {},
+  "action.devices.traits.OnOff": {
+    "on": true
+  },
+  "action.devices.traits.OpenClose": {},
+  "action.devices.traits.Scene": {},
+  "action.devices.traits.StartStop": {},
+  "action.devices.traits.TemperatureControl": {},
+  "action.devices.traits.TemperatureSetting": {},
+  "action.devices.traits.Timer": {},
+  "action.devices.traits.Dock": {},
+  "action.devices.traits.Locator": {},
+  "action.devices.traits.RunCycle": {},
+  "action.devices.traits.StatusReport": {},
+  "action.devices.traits.Brightness": {
+    "brightness": 100
+  },
+  "action.devices.traits.LockUnlock": {}
+}

@@ -399,18 +399,11 @@ save.addEventListener('click', e => {
   //Create or update the device
   var operation = document.getElementById('operation').value;
   var current_date = new Date().getTime();
-  var delay = new Array();
-  for(var i = 0; i < 24; i++){
-    delay[i] = parseInt(document.getElementById(i + "h").value);
-  }
+
   data = {
     devices: device,
     alive: {
       timestamp: current_date,
-    },
-    smartConnection: {
-      delay: delay,
-      update: document.getElementById("updateTime").value
     },
     status: {
       online: true

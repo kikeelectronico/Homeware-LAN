@@ -336,6 +336,13 @@ def front(operation, segment = "", value = ''):
                     #Update status
                     if not deviceID in data['status'].keys():
                         data['status'][deviceID] = {}
+                    #Create dummy status using selected traits
+                    with open('paramByTrait.json', 'r') as f:
+                        paramByTrait = json.load(f)
+                        for trait in incommingData['devices']['traits']:
+                            for paramKey in paramByTrait[trait].keys():
+                                data['status'][deviceID][paramKey] = paramByTrait[trait][paramKey]
+
                     data['status'][deviceID]['online'] = True
 
                 elif segment == 'delete':
@@ -422,7 +429,6 @@ def files(operation = '', file = '', token = ''):
             return 'Operation unknown'
     else:
         return 'Bad token'
-
 
 def tokenGenerator(agent, type):
     #Generate the token
