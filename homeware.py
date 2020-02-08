@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template, redirect, send_file
+from flask import Flask, request, render_template, redirect, send_file, url_for
 import json
 import time
 import random
@@ -8,9 +8,13 @@ import multiprocessing
 from cryptography.fernet import Fernet
 import paho.mqtt.publish as publish
 import paho.mqtt.client as mqtt
-from aux import readJSON, writeJSON, readConfig, writeConfig, readToken, writeToken
+from homewareData import readJSON, writeJSON, readConfig, writeConfig, readToken, writeToken
+
+UPLOAD_FOLDER = ''
+ALLOWED_EXTENSIONS = {'json'}
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #Global variables
 deviceAliveTimeout = 20000
@@ -93,12 +97,20 @@ def rules(process = "", id = -1):
 
 @app.route('/settings')
 @app.route('/settings/')
-def settings():
+@app.route('/settings/<msg>/')
+def settings(msg = ''):
 
     config = readConfig()
     domain = config['domain']
+    token = config['token']['front']
+    if msg == 'ok':
+        msg = 'Saved correctly'
+    elif 'fail' in msg:
+        msg = msg.split(':')[1]
+    else:
+        msg = 'none'
 
-    return render_template('panel/settings.html', domain=domain)
+    return render_template('panel/settings.html', domain=domain, token=token, msg=msg)
 
 @app.route('/assistant')
 @app.route('/assistant/')
@@ -376,9 +388,12 @@ def front(operation, segment = "", value = ''):
         else:
             return 'Bad token'
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 #Files operation
-@app.route("/files/<operation>/<file>/<token>")
-@app.route("/files/<operation>/<file>/<token>/")
+@app.route("/files/<operation>/<file>/<token>", methods=['GET','POST'])
 def files(operation = '', file = '', token = ''):
     #Get the access_token
     frontToken = readConfig()['token']['front']
@@ -388,10 +403,21 @@ def files(operation = '', file = '', token = ''):
             ts = time.time()
             result = send_file(file + '.json',
                mimetype="application/json", # use appropriate type based on file
-               attachment_filename= file + '_' + str(ts) + '.json',
+               attachment_filename= file + '.json', #file + '_' + str(ts) + '.json',
                as_attachment=True,
                conditional=False)
             return result
+        elif operation == 'restore':
+            if request.method == 'POST':
+                if 'file' not in request.files:
+                    return redirect('/settings/fail:No file selected/')
+                file = request.files['file']
+                if file.filename == '':
+                    return redirect('/settings/fail:Incorrect file name/')
+                if file and allowed_file(file.filename):
+                    filename = file.filename
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    return redirect('/settings/ok/')
         else:
             return 'Operation unknown'
     else:
