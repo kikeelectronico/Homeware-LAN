@@ -24,7 +24,7 @@
             </div>
 
             <div class="container p-3 mb-2 bg-light text-dark">
-              <h3>Google's conexion data</h3>
+              <h3>Google's connection data</h3>
               <div class="form-row">
                 <div class="form-group col-md-3">
                     <input type="text" class="form-control" id="clientId">
@@ -66,21 +66,50 @@
 
             </div>
 
+          </form>
 
-            <div class="container p-3 mb-2 bg-light text-dark" style="text-align: right">
-              <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#eventsLog" aria-expanded="false" aria-controls="eventsLog" id="showEventsLog">
-                Show events log
-              </button>
-            <div>
-            <div class="collapse" id="eventsLog">
-              <div class="card card-body" style="margin-top:20px;" id="eventsLogBox">
-
-                WIP
-
+          <div class="container p-3 mb-2 bg-light text-dark">
+            <h3>Buckup and restore</h3>
+            <hr>
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                  <button type="button" class="btn btn-primary" onclick="buckup()">Download file</button>
+              </div>
+              <div class="form-group col-md-3 colAligmentL">
+                  <label for="buckup">Buckup</label>
+              </div>
+            </div>
+            <hr>
+            <div class="form-row">
+              <div class="form-group col-md-7">
+                <form method=post enctype=multipart/form-data action="/files/restore/file/{{ token }}/">
+                  <input type="file" class="form-control-file" name =file>
+                  <br>
+                  <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+              </div>
+              <div class="form-group col-md-3 colAligmentL">
+                  <label for="buckup">Restore</label>
               </div>
             </div>
 
-          </form>
+          </div>
+
+
+          <div class="container p-3 mb-2 bg-light text-dark" style="text-align: right">
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#eventsLog" aria-expanded="false" aria-controls="eventsLog" id="showEventsLog">
+              Show events log
+            </button>
+          </div>
+          <div class="collapse" id="eventsLog">
+            <div class="card card-body" style="margin-top:20px;" id="eventsLogBox">
+
+              WIP
+
+            </div>
+          </div>
+
+
         </div>
       </div>
     </div>
@@ -116,6 +145,10 @@
       window.addEventListener('load', function(event){
         //laodSettingsRequest();
         laodTokenRequest();
+
+        if ('{{ msg }}' != 'none'){
+          document.getElementById('textMessageAlert').innerHTML = 'Upload: {{ msg }}';
+        }
       });
 
       function laodSettingsRequest(){
@@ -190,15 +223,15 @@
         var title = 'Fail';
         var paragrahp = 'Something goes wrong';
 
-        if (settings == 'autoAuthentication'){
-          title = 'Automatic authentication';
-          paragraph = 'If <b>False</b> manual authentication must be done from the <i>Device</i> section:<br>  <ul><li>For new devices</li> <li>If the device lost its refresh token</li></ul> If <b>True</b> the devices will autoconnect using its <i>Authorization code</i>.';
-        } else if (settings == 'codeKey'){
-          title = 'Key for authorization code';
-          paragraph = 'The authorization code is compose with the device\'s id and the Key for authorization code. <br><br> For example, if the device\'s id is <b><i>"bedroom-light"</i></b> and the key is <b><i>"-code"</i></b> the athorization code will be <b><i>"bedroom-light-code"</i></b>.';
+        if (settings == 'clientSecret'){
+          title = 'Client Secret';
+          paragraph = 'It is used to authenticate with Google. If you change it here, you must change it on the Actions Console > Develop > Account Linking.';
+        } else if (settings == 'clientId'){
+          title = 'Client ID';
+          paragraph = 'It is used to authenticate with Google. If you change it here, you must change it on the Actions Console > Develop > Account Linking';
         } else if (settings == 'apiClockURL'){
           title = 'The clock\'s URL from your Homeware API';
-          paragraph = 'Go to <i>Functions</i> section in Firebase console. Look for the <i>clock</i> function and copy it\'s URL.';
+          paragraph = 'It is an static URL, you can not change it.';
         }
 
 
@@ -244,6 +277,10 @@
           document.getElementById('eventsLogBox').innerHTML = html;
         })
       })*/
+
+      function buckup(){
+        window.location = "/files/buckup/homeware/" + getCookieValue('token')
+      }
     </script>
 
     <!-- Optional JavaScript -->
