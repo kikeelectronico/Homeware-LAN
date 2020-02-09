@@ -360,7 +360,7 @@ def front(operation, segment = "", value = ''):
                 if segment == 'update':
                     incommingData = json.loads(value)
                     data['rules'][int(incommingData['n'])] = incommingData['rule']
-                    
+
                 if segment == 'create':
                     incommingData = json.loads(value)
                     data['rules'].append(incommingData['rule'])
@@ -772,10 +772,10 @@ def mqttReader():
     client.loop_forever()
 
 if __name__ == "__main__":
-    runapp()
-    # #Flask App and Api
-    # flaskProcess = multiprocessing.Process(target=runapp)
-    # flaskProcess.start()
-    # #MQTT reader
-    # mqttProcess = multiprocessing.Process(target=mqttReader)
-    # mqttProcess.start()
+    #runapp()
+    #Flask App and Api
+    flaskProcess = multiprocessing.Process(target=runapp)
+    flaskProcess.start()
+    #MQTT reader
+    mqttProcess = multiprocessing.Process(target=mqttReader)
+    mqttProcess.start()
