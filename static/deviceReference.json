@@ -1,0 +1,118 @@
+{
+  "devices": {
+    "action.devices.types.LIGHT": [
+      "action.devices.traits.OnOff",
+      "action.devices.traits.Brightness",
+      "action.devices.traits.ColorSetting"
+    ],
+    "action.devices.types.OUTLET": [
+      "action.devices.traits.OnOff"
+    ],
+    "action.devices.types.SWITCH": [
+      "action.devices.traits.OnOff"
+    ]
+  },
+  "traits": {
+    "action.devices.traits.OnOff": {
+      "attributes": {
+        "commandOnlyOnOff": {
+          "type": "bool"
+        }
+      },
+      "param":{
+        "on": {
+          "type": "bool",
+          "value": true,
+          "manual": false
+        }
+      },
+      "commands": {
+        "action.devices.commands.OnOff": [
+          "on"
+        ]
+      }
+    },
+    "action.devices.traits.Brightness": {
+      "attributes": {
+        "commandOnlyBrightness": {
+          "type": "bool"
+        }
+      },
+      "param":{
+        "brightness": {
+          "type": "int",
+          "value": 100,
+          "manual": false
+        }
+      },
+      "commands": {
+        "action.devices.commands.BrightnessAbsolute": [
+          "brightness"
+        ]
+      }
+    },
+    "action.devices.traits.ColorSetting": {
+      "attributes": {
+        "colorModel": {
+          "type": "string",
+          "value": "rgb",
+          "manual": false
+        },
+        "commandOnlyColorSetting": {
+            "type": "bool",
+            "value": true,
+            "manual": false
+        },
+        "colorTemperatureRange": {
+          "type": "object",
+          "manual": false,
+          "content": {
+            "temperatureMinK": {
+              "type": "int",
+              "value": 4000
+            },
+            "temperatureMaxK": {
+              "type": "int",
+              "value": 4200
+            }
+          }
+        }
+      },
+      "param":{
+        "color": {
+          "type": "object",
+          "manual": false,
+          "content": {
+            "temperatureK": {
+              "type": "int",
+              "value": 4000
+            },
+            "spectrumRGB": {
+              "type": "int",
+              "value": 255
+            },
+            "spectrumHSV":{
+              "type": "object",
+              "content": {
+                "hue": {
+                  "type": "float"
+                },
+                "saturation": {
+                  "type": "float"
+                },
+                "value": {
+                  "type": "float"
+                }
+              }
+            }
+          }
+        }
+      },
+      "commands": {
+        "action.devices.commands.BrightnessAbsolute": [
+          "brightness"
+        ]
+      }
+    }
+  }
+}

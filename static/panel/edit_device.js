@@ -1,15 +1,16 @@
 
 function loadDevices(device, deviceID) {
-    //Status
-    var operation = 'create';
-    console.log(deviceID);
-
-
-    if(deviceID != ''){
-      operation = 'update';
-      loadDeviceData(device);
-    }
-    document.getElementById('operation').value = operation;
+  loadDeviceData(device);
+  // //Status
+  // var operation = 'create';
+  // console.log(deviceID);
+  //
+  //
+  // if(deviceID != ''){
+  //   operation = 'update';
+  //
+  // }
+  // document.getElementById('operation').value = operation;
 
 }
 
@@ -397,18 +398,9 @@ save.addEventListener('click', e => {
   console.log(device);
 
   //Create or update the device
-  var operation = document.getElementById('operation').value;
-  var current_date = new Date().getTime();
 
   data = {
     devices: device,
-    alive: {
-      timestamp: current_date,
-    },
-    status: {
-      online: true
-    }
-
   }
 
   //Send the data to the API
@@ -416,16 +408,15 @@ save.addEventListener('click', e => {
   http.addEventListener("load", function(){
     console.log(http.responseText);
   });
-  http.open("GET", "/front/device/" + operation + "/" + JSON.stringify(data));
+  http.open("GET", "/front/device/update/" + JSON.stringify(data));
   http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
   http.send();
 
-
-   $('#alertContainer').html('<div class="alert alert-success fade show" role="alert" id="savedAlert"> <b>Success!</b> The device has been saved correctly.</div>');
-   $('#savedAlert').alert()
-   setTimeout(function() {
-      $("#savedAlert").remove();
-    }, 5000);
+  $('#alertContainer').html('<div class="alert alert-success fade show" role="alert" id="savedAlert"> <b>Success!</b> The device has been saved correctly.</div>');
+  $('#savedAlert').alert()
+  setTimeout(function() {
+    $("#savedAlert").remove();
+  }, 5000);
 
 });
 
