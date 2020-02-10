@@ -619,7 +619,7 @@ def smarthome():
                         if command in criticalCommandsKeys:
                             paramsKeys = params.keys()
                             for key in paramsKeys:
-                                critacalData = "{" + data['status'][deviceId][key] + ":" + params[key] + "}"
+                                critacalData = "{" + key + ":" + params[key] + "}"
                                 publish.single("device/"+deviceId, criticalData, hostname="localhost")
                         else:
                             paramsKeys = params.keys()
