@@ -613,10 +613,9 @@ def smarthome():
                         command = executions[0]['command']
 
                         #Critical commands are commands with special treatment
-                        criticalCommands = {}
-                        criticalCommandsKeys = ["action.devices.commands.LockUnlock"]
+                        criticalCommands = ["action.devices.commands.LockUnlock"]
 
-                        if command in criticalCommandsKeys:
+                        if command in criticalCommands:
                             paramsKeys = params.keys()
                             for key in paramsKeys:
                                 criticalData = "{" + key + ":" + str(params[key]) + "}"
