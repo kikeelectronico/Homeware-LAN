@@ -609,12 +609,23 @@ def smarthome():
                     for device in devices:
                         deviceId = device['id']
                         obj['payload']['commands'][n]['ids'].append(deviceId)
-                        deviceParams = executions[0]['params']
+                        params = executions[0]['params']
+                        command = executions[0]['command']
 
-                        deviceParamsKeys = deviceParams.keys()
-                        for key in deviceParamsKeys:
-                            data['status'][deviceId][key] = deviceParams[key]
-                        publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
+                        #Critical commands are commands with special treatment
+                        criticalCommands = {}
+                        criticalCommandsKeys = ["action.devices.commands.LockUnlock"]
+
+                        if command in criticalCommandsKeys:
+                            paramsKeys = params.keys()
+                            for key in paramsKeys:
+                                critacalData = "{" + data['status'][deviceId][key] + ":" + params[key] + "}"
+                                publish.single("device/"+deviceId, criticalData, hostname="localhost")
+                        else:
+                            paramsKeys = params.keys()
+                            for key in paramsKeys:
+                                data['status'][deviceId][key] = params[key]
+                            publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
 
                     obj['payload']['commands'][n]['states'] = data['status']
                     n += 1

@@ -291,6 +291,14 @@
           "value": false,
           "manual": false
         }
+      },
+      "commands":{
+        "action.devices.commands.LockUnlock": {
+          "intent": "execute",
+          "param": "lock",
+          "type": "bool",
+          "manual": false
+        }
       }
     },
     "action.devices.traits.Scene": {
@@ -314,6 +322,15 @@
           "type": "bool",
           "value": false,
           "manual": false
+        }
+      },
+      "commands":{
+        "action.devices.commands.Dock": {
+          "intent": "execute",
+          "param": "dock",
+          "type": "bool",
+          "manual": true,
+          "value": true
         }
       }
     }
