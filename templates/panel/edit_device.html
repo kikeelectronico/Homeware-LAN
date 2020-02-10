@@ -41,7 +41,7 @@
               </div>
               <div class="form-group">
                 <label for="type">Type:</label>
-                <select class="form-control" id="type" onchange="updateTraits('no')">
+                <select class="form-control" id="type" onchange="updateTraits('no')" disabled>
                   <option>Select a device</option>
                 </select>
               </div>
@@ -80,7 +80,7 @@
                 </div>
                 <div class="form-group col-md-7">
                   <label for="synonyms_toggle">Synonymous:</label>
-                  <input type="text" class="form-control" id="synonyms_toggle" placeholder="Write synonyms separated by ;">
+                  <input type="text" class="form-control" id="synonyms_toggle" placeholder="Write synonyms separated by ,">
                 </div>
                 <div class="form-group col-md-1">
                   <label for="add_toggle_button">.</label>
@@ -111,7 +111,7 @@
                 </div>
                 <div class="form-group col-md-7">
                   <label for="synonyms_arm_levels">Synonymous:</label>
-                  <input type="text" class="form-control" id="synonyms_arm_levels" placeholder="Write synonyms separated by ;">
+                  <input type="text" class="form-control" id="synonyms_arm_levels" placeholder="Write synonyms separated by ,">
                 </div>
                 <div class="form-group col-md-1">
                   <label for="add_arm_levels_button">.</label>
@@ -168,7 +168,7 @@
                   <select class="form-control" id="colorModel">
                     <option>Choose</option>
                     <option>rgb</option>
-                    <option>hsv</option>
+                    <!--<option>hsv</option>-->
                     <option>no rgb, only color temperature</option>
                   </select>
                 </div>
@@ -176,10 +176,6 @@
               <hr>
               <div class="form-row">
                 <div class="form-group col-md-4">
-                  <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="customSwitch_colorTemperaturRange">
-                    <label class="custom-control-label" for="customSwitch_colorTemperaturRange">Color temperature control</label>
-                  </div>
                   <small class="form-text text-muted">Must be used if no RGB model is selected.</small>
                 </div>
                 <div class="form-group col-md-4">
@@ -225,7 +221,7 @@
                 </div>
                 <div class="form-group col-md-7">
                   <label for="synonyms_fan_speed">Synonymous:</label>
-                  <input type="text" class="form-control" id="synonyms_fan_speed" placeholder="Write synonyms separated by ;">
+                  <input type="text" class="form-control" id="synonyms_fan_speed" placeholder="Write synonyms separated by ,">
                 </div>
                 <div class="form-group col-md-1">
                   <label for="add_fan_speed_button">.</label>
@@ -295,6 +291,20 @@
               </div>
             </div>
 
+            <!-- commandOnlyBrightness -->
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Brightness">
+              <h3>Attribute: commandOnlyBrightness</h3>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyBrightness">
+                    <label class="custom-control-label" for="customSwitch_commandOnlyBrightness">commandOnlyBrightness</label>
+                    <small id="emailHelp" class="form-text text-muted">Enable it if the hardware can not confirm its status after execute a command.</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- OpenClose -->
             <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.OpenClose">
               <h3>Attribute: OpenClose</h3>
@@ -320,6 +330,15 @@
                     <input type="checkbox" class="custom-control-input" id="customSwitch_queryOnlyOpenClose">
                     <label class="custom-control-label" for="customSwitch_queryOnlyOpenClose">queryOnlyOpenClose</label>
                     <small class="form-text text-muted">Enable it if the hardware can not confirm its status after execute a command.</small>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_discreteOnlyOpenClose">
+                    <label class="custom-control-label" for="customSwitch_discreteOnlyOpenClose">discreteOnlyOpenClose</label>
+                    <small class="form-text text-muted">When set to true, this indicates that the device must either be fully open or fully closed.</small>
                   </div>
                 </div>
               </div>
@@ -454,6 +473,59 @@
               </div>
             </div>
 
+            <!-- Rotation -->
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Rotation">
+              <h3>Attribute: Rotation</h3>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="rotationDegreesMin">rotationDegreesMin</label>
+                  <input type="text" class="form-control" id="rotationDegreesMin" value="0">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="rotationDegreesMax">Minimum offset between heat-cool setpoints</label>
+                  <input type="number" class="form-control" id="rotationDegreesMax" value="360">
+                </div>
+                <small class="form-text text-muted">These represent the minimum and maximum degrees that a device can rotate. Must be positive values.</small>
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyRotation">
+                    <label class="custom-control-label" for="customSwitch_commandOnlyRotation">commandOnlyRotation</label>
+                    <small class="form-text text-muted">"Indicates if the device can only be queried for state information, and cannot be controlled."</small>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_supportsContinuousRotation">
+                    <label class="custom-control-label" for="customSwitch_supportsContinuousRotation">supportsContinuousRotation</label>
+                    <small class="form-text text-muted"> Set to true if the device allows continuous rotation. For example, a device currently at 270 degrees, rotated by 100 degrees clockwise, would go to 10 degrees.</small>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_supportsDegrees">
+                    <label class="custom-control-label" for="customSwitch_supportsDegrees">supportsDegrees</label>
+                    <small class="form-text text-muted">Set to true if the device allows rotation by degree.</small>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_supportsPercent">
+                    <label class="custom-control-label" for="customSwitch_supportsPercent">supportsPercent</label>
+                    <small class="form-text text-muted">Set to true if device allows rotation by percent. Note that one device may support either or both of these attributes (degrees and percent).</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Timer -->
             <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Timer">
               <h3>Attribute: Timer</h3>
@@ -512,7 +584,7 @@
                   <button class="btn btn-outline-secondary" type="button" id="add_default_name_button"  onclick="addName('default_names')">Add</button>
                 </div>
               </div>
-              <small id="emailHelp" class="form-text text-muted">A list separeted by ;</small>
+              <small id="emailHelp" class="form-text text-muted">A list separeted by ,</small>
             </div>
 
             <div class="container p-3 mb-2 bg-light text-dark ">
@@ -527,7 +599,7 @@
                   <button class="btn btn-outline-secondary" type="button" id="add_nick_names_button" onclick="addName('nick_names')">Add</button>
                 </div>
               </div>
-              <small id="emailHelp" class="form-text text-muted">A list separeted by ;</small>
+              <small id="emailHelp" class="form-text text-muted">A list separeted by ,</small>
             </div>
 
 
@@ -546,6 +618,7 @@
 
     <script src="/static/panel/coolNames.js"></script>
     <script src="/static/panel/edit_device.js"></script>
+    <script src="/static/panel/edit_device_dependencies.js"></script>
 
     <script>
       //Load things

@@ -1,16 +1,65 @@
 {
   "devices": {
+    "action.devices.types.AWNING": [
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.CLOSET": [
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.CLOSET": [
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.CURTAIN": [
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.DOOR": [
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.DRAWER": [
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.GARAGE": [
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.GATE": [
+      "action.devices.traits.OpenClose"
+    ],
     "action.devices.types.LIGHT": [
       "action.devices.traits.OnOff",
       "action.devices.traits.Brightness",
       "action.devices.traits.ColorSetting"
     ],
+    "action.devices.types.LOCK": [
+      "action.devices.traits.LockUnlock"
+    ],
     "action.devices.types.OUTLET": [
       "action.devices.traits.OnOff"
     ],
+    "action.devices.types.PERGOLA": [
+      "action.devices.traits.OpenClose",
+      "action.devices.traits.Rotation"
+    ],
+    "action.devices.types.SCENE": [
+      "action.devices.traits.Scene"
+    ],
+    "action.devices.types.SHUTTER": [
+      "action.devices.traits.OpenClose",
+      "action.devices.traits.Rotation"
+    ],
     "action.devices.types.SWITCH": [
       "action.devices.traits.OnOff"
+    ],
+    "action.devices.types.THERMOSTAT": [
+      "action.devices.traits.TemperatureSetting"
+    ],
+    "action.devices.types.VALVE": [
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.WINDOW": [
+      "action.devices.traits.OpenClose",
+      "action.devices.traits.LockUnlock"
     ]
+
   },
   "traits": {
     "action.devices.traits.OnOff": {
@@ -25,11 +74,6 @@
           "value": true,
           "manual": false
         }
-      },
-      "commands": {
-        "action.devices.commands.OnOff": [
-          "on"
-        ]
       }
     },
     "action.devices.traits.Brightness": {
@@ -44,11 +88,6 @@
           "value": 100,
           "manual": false
         }
-      },
-      "commands": {
-        "action.devices.commands.BrightnessAbsolute": [
-          "brightness"
-        ]
       }
     },
     "action.devices.traits.ColorSetting": {
@@ -107,11 +146,175 @@
             }
           }
         }
+      }
+    },
+    "action.devices.traits.TemperatureSetting": {
+      "attributes": {
+        "availableThermostatModes": {
+          "type": "select"
+        },
+        "thermostatTemperatureRange": {
+          "type": "object",
+          "content": {
+            "minThresholdCelsius": {
+              "type": "int"
+            },
+            "maxThresholdCelsius": {
+              "type": "int"
+            }
+          }
+        },
+        "thermostatTemperatureUnit": {
+          "type": "string"
+        },
+        "bufferRangeCelsius": {
+          "type": "int"
+        },
+        "commandOnlyTemperatureSetting": {
+          "type": "bool"
+        },
+        "queryOnlyTemperatureSetting": {
+          "type": "bool"
+        }
       },
-      "commands": {
-        "action.devices.commands.BrightnessAbsolute": [
-          "brightness"
-        ]
+      "param":{
+        "thermostatMode": {
+          "type": "string",
+          "value": "off",
+          "manual": false
+        },
+        "thermostatTemperatureSetpoint": {
+          "type": "int",
+          "value": 20,
+          "manual": false
+        },
+        "thermostatTemperatureAmbient": {
+          "type": "int",
+          "value": 22,
+          "manual": false
+        },
+        "thermostatTemperatureSetpointHigh": {
+          "type": "int",
+          "value": 28,
+          "manual": false
+        },
+        "thermostatTemperatureSetpointLow": {
+          "type": "int",
+          "value": 18,
+          "manual": false
+        },
+        "thermostatHumidityAmbient": {
+          "type": "int",
+          "value": 80,
+          "manual": false
+        }
+      }
+    },
+    "action.devices.traits.OpenClose": {
+      "attributes": {
+        "discreteOnlyOpenClose": {
+          "type": "bool"
+        },
+        "openDirection": {
+          "type": "array"
+        },
+        "queryOnlyOpenClose": {
+          "type": "bool"
+        }
+      },
+      "param":{
+        "discreteOnlyOpenClose": {
+          "type": "object",
+          "manual": false,
+          "content": {
+            "openPercent":{
+              "type": "int",
+              "value": 0
+            },
+            "openDirection":{
+              "type": "int",
+              "value": "down"
+            }
+          }
+        }
+      }
+    },
+    "action.devices.traits.Rotation": {
+      "attributes": {
+        "commandOnlyRotation": {
+          "type": "bool"
+        },
+        "supportsContinuousRotation": {
+          "type": "bool"
+        },
+        "supportsDegrees": {
+          "type": "bool"
+        },
+        "supportsPercent": {
+          "type": "bool"
+        },
+        "rotationDegreesRange": {
+          "type": "object",
+          "content": {
+            "rotationDegreesMin": {
+              "type": "int"
+            },
+            "rotationDegreesMax": {
+              "type": "int"
+            }
+          }
+        }
+      },
+      "param":{
+        "rotationPercent": {
+          "type": "int",
+          "manual": false,
+          "value": 0
+        },
+        "rotationDegrees": {
+          "type": "int",
+          "manual": false,
+          "value": 0
+        }
+      }
+    },
+    "action.devices.traits.LockUnlock": {
+      "attributes": {},
+      "param":{
+        "isLocked": {
+          "type": "bool",
+          "value": false,
+          "manual": false
+        },
+        "isJammed": {
+          "type": "bool",
+          "value": false,
+          "manual": false
+        }
+      }
+    },
+    "action.devices.traits.Scene": {
+      "attributes": {
+        "sceneReversible": {
+          "type": "bool"
+        }
+      },
+      "param":{
+        "deactivate": {
+          "type": "bool",
+          "value": true,
+          "manual": false
+        }
+      }
+    },
+    "action.devices.traits.Dock": {
+      "attributes": {},
+      "param":{
+        "isDocked": {
+          "type": "bool",
+          "value": false,
+          "manual": false
+        }
       }
     }
   }

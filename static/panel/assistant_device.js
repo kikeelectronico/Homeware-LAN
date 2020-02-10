@@ -16,11 +16,11 @@ function loadRender(){
   document.getElementById('formulario').innerHTML = this.responseText;
 
   if (step == 1){
-    Object.keys(deviceRefence['devices']).forEach(function(device){
+    Object.keys(deviceReference['devices']).forEach(function(device){
       document.getElementById('type').innerHTML += '<option value="' + device + '">' + getDeviceCoolName(device) + '</option>'
     })
   } else if (step == 3){
-    localDeviceTraits = deviceRefence['devices'][device['type']];
+    localDeviceTraits = deviceReference['devices'][device['type']];
     localDeviceTraits.forEach(function(trait){
       document.getElementById('traits').innerHTML += '<option value="' + trait + '">' + getTraitCoolName(trait) + '</option>'
     })
@@ -31,30 +31,33 @@ function loadRender(){
   } else if(step == 5){
     document.getElementById("next").innerHTML = 'Finish';
     var askForData = 0;
-    localDeviceTraits = deviceRefence['devices'][device['type']];
+    localDeviceTraits = deviceReference['devices'][device['type']];
     //Loop over the device traits
     localDeviceTraits.forEach(function(trait){
-      traitParams = deviceRefence['traits'][trait]['param']
-      //Loop over the trait params
-      Object.keys(traitParams).forEach(function(paramKey){
-        if(traitParams[paramKey]['manual']){
-          //Print data
-          askForData += 1;
-        } else {
-          var type = traitParams[paramKey]['type'];
-          if(type == 'string' || type == 'int' || type == 'bool'){
-            state[paramKey] = traitParams[paramKey]['value'];
-          } else if (type == 'object'){
-            state[paramKey] = {}
-            Object.keys(traitParams[paramKey]['content']).forEach(function(subParamKey){
-              var subtype = traitParams[paramKey]['content'][subParamKey]['type'];
-              if (subtype == 'int' || subtype == 'string' || subtype == 'bool'){
-                state[paramKey][subParamKey] = traitParams[paramKey]['content'][subParamKey]['value'];
-              }
-            });
+      //Should this param be created?
+      if(device['traits'].includes(trait)){
+        traitParams = deviceReference['traits'][trait]['param']
+        //Loop over the trait params
+        Object.keys(traitParams).forEach(function(paramKey){
+          if(traitParams[paramKey]['manual']){
+            //Print data
+            askForData += 1;
+          } else {
+            var type = traitParams[paramKey]['type'];
+            if(type == 'string' || type == 'int' || type == 'bool'){
+              state[paramKey] = traitParams[paramKey]['value'];
+            } else if (type == 'object'){
+              state[paramKey] = {}
+              Object.keys(traitParams[paramKey]['content']).forEach(function(subParamKey){
+                var subtype = traitParams[paramKey]['content'][subParamKey]['type'];
+                if (subtype == 'int' || subtype == 'string' || subtype == 'bool'){
+                  state[paramKey][subParamKey] = traitParams[paramKey]['content'][subParamKey]['value'];
+                }
+              });
+            }
           }
-        }
-      });
+        });
+      }
     });
   } else if(step == 6){
     document.getElementById("next").style.visibility = 'hidden';
@@ -67,7 +70,7 @@ function loadRender(){
 }
 
 function loadDeviceReference(){
-   deviceRefence = JSON.parse(this.responseText);
+   deviceReference = JSON.parse(this.responseText);
 
    var ajaxStep = new XMLHttpRequest();
    ajaxStep.addEventListener("load", loadRender);
@@ -79,7 +82,7 @@ next.addEventListener('click', e => {
   if(step == 1){
     device['id'] = document.getElementById('id').value;
     device['type'] = document.getElementById('type').value;
-    names = document.getElementById('nick_names').value.split(';');
+    names = document.getElementById('nick_names').value.split(',');
     device['name'] = {};
     device['name']['name'] = names[0];
     device['name']['defaultNames'] = names;
@@ -102,16 +105,32 @@ next.addEventListener('click', e => {
     device['attributes'] = {};
     //For each trait of the device
     device['traits'].forEach(function(trait){
-      var traitAttributes = deviceRefence['traits'][trait]['attributes'];
+      var traitAttributes = deviceReference['traits'][trait]['attributes'];
       //Find all the attributes related with that trait
       Object.keys(traitAttributes).forEach(function(attribute){
         //Get the correct value depending on the vartype
         var value = 'none';
         if (traitAttributes[attribute]['type'] == "bool"){
-          console.log(document.getElementById('customSwitch_' + attribute).checked);
           value = document.getElementById('customSwitch_' + attribute).checked;
         } else if (traitAttributes[attribute]['type'] == "string"){
           value = document.getElementById(attribute).value;
+        } else if (traitAttributes[attribute]['type'] == "array"){
+          value = document.getElementById(attribute).value.split(',');
+          console.log(value)
+          value.pop();
+          console.log(value)
+        } else if (traitAttributes[attribute]['type'] == "select"){
+          var modes = document.getElementById("availableThermostatModes");
+          for (var i = 0; i < modes.options.length; i++) {
+            if(modes.options[i].selected == true){
+              if(value == 'none'){
+                value = modes.options[i].value;
+              } else {
+                value = value + ',' + modes.options[i].value;
+              }
+            }
+          }
+
         } else if (traitAttributes[attribute]['type'] == "int"){
           value = parseInt(document.getElementById(attribute).value);
         } else if (traitAttributes[attribute]['type'] == "object"){
@@ -146,7 +165,7 @@ next.addEventListener('click', e => {
     save();
   }
 
-  console.clear();
+  //console.clear();
   console.log(device);
 
   step += 1;
@@ -177,45 +196,4 @@ function save(){
 
 
 
-}
-
-//////////////////
-// Step1
-//////////////////
-
-function addName(id){
-  names = document.getElementById(id).value.split(";");
-  names.pop();
-  var new_names = document.getElementById("add_" + id).value.split(";");
-  console.log(names);
-  var html = "";
-  var string = "";
-  names.forEach(function(name){
-    html += '<button type="button" class="btn btn-primary" style="margin: 5px;" title="Click to delete" onclick="deleteName(\'' + id + '\',\'' + name + '\')">' + name + '</button>';
-    string += name + ';';
-  });
-  new_names.forEach(function(name){
-    html += '<button type="button" class="btn btn-primary" style="margin: 5px;" title="Click to delete" onclick="deleteName(\'' + id + '\',\'' + name + '\')">' + name + '</button>';
-    string += name + ';';
-  });
-  document.getElementById("badge_" + id + "_container").innerHTML = html;
-  document.getElementById(id).value = string;
-  document.getElementById("add_" + id).value = "";
-}
-
-function deleteName(id, delete_name){
-  names = document.getElementById(id).value.split(";");
-  names.pop();
-  console.log(names);
-  var html = "";
-  var string = "";
-  names.forEach(function(name){
-    if (name != delete_name){
-      html += '<button type="button" class="btn btn-primary" style="margin: 5px;" title="Click to delete" onclick="deleteName(\'' + id + '\',\'' + name + '\')">' + name + '</button>';
-      string += name + ';';
-    }
-  });
-  document.getElementById("badge_" + id + "_container").innerHTML = html;
-  document.getElementById(id).value = string;
-  document.getElementById("add_" + id).value = "";
 }
