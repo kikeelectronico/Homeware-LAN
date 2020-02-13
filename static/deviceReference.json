@@ -223,7 +223,7 @@
         }
       },
       "param":{
-        "discreteOnlyOpenClose": {
+        "openState": {
           "type": "object",
           "manual": false,
           "content": {
