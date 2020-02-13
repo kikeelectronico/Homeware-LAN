@@ -624,16 +624,17 @@ def smarthome():
                             }
                         }
 
-                        if commandsOperation[command]['operation'] == 'execute':
-                            paramsKeys = params.keys()
-                            for key in paramsKeys:
-                                criticalData = "{" + key + ":" + str(params[key]) + "}"
-                                publish.single("device/"+deviceId, criticalData, hostname="localhost")
-                        elif commandsOperation[command]['operation'] == 'object':
-                            paramsKeys = params.keys()
-                            for key in paramsKeys:
-                                data['status'][deviceId][commandsOperation[command]['object']][key] = params[key]
-                            publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
+                        if command in commandsOperation.keys():
+                            if commandsOperation[command]['operation'] == 'execute':
+                                paramsKeys = params.keys()
+                                for key in paramsKeys:
+                                    criticalData = "{" + key + ":" + str(params[key]) + "}"
+                                    publish.single("device/"+deviceId, criticalData, hostname="localhost")
+                            elif commandsOperation[command]['operation'] == 'object':
+                                paramsKeys = params.keys()
+                                for key in paramsKeys:
+                                    data['status'][deviceId][commandsOperation[command]['object']][key] = params[key]
+                                publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
                         else:
                             paramsKeys = params.keys()
                             for key in paramsKeys:
