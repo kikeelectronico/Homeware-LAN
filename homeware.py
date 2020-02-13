@@ -613,13 +613,27 @@ def smarthome():
                         command = executions[0]['command']
 
                         #Critical commands are commands with special treatment
-                        criticalCommands = ["action.devices.commands.LockUnlock"]
+                        #criticalCommands = ["action.devices.commands.LockUnlock"]
+                        commandsOperation = {
+                            "action.devices.commands.LockUnlock": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.OpenClose": {
+                                "operation": "object",
+                                "object": "openState"
+                            }
+                        }
 
-                        if command in criticalCommands:
+                        if commandsOperation[command]['operation'] == 'execute':
                             paramsKeys = params.keys()
                             for key in paramsKeys:
                                 criticalData = "{" + key + ":" + str(params[key]) + "}"
                                 publish.single("device/"+deviceId, criticalData, hostname="localhost")
+                        elif commandsOperation[command]['operation'] == 'object':
+                            paramsKeys = params.keys()
+                            for key in paramsKeys:
+                                data['status'][deviceId][commandsOperation[command]['object']][key] = params[key]
+                            publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
                         else:
                             paramsKeys = params.keys()
                             for key in paramsKeys:
