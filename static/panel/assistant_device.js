@@ -154,6 +154,8 @@ next.addEventListener('click', e => {
           if(countSubattributes > 0){
             value = subattributes;
           }
+        } else if (traitAttributes[attribute]['type'] == "strigifyedObject"){
+          value = JSON.parse(document.getElementById(attribute).value);
         }
         //Store the value
         if(value != 'none'){

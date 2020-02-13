@@ -34,18 +34,6 @@ function deleteName(id, delete_name){
   document.getElementById(id).value = string;
   document.getElementById("add_" + id).value = "";
 }
-/*
-function getElementsByIdStartsWith(container, selectorTag, prefix) {
-    var items = [];
-    var myPosts = document.getElementById(container).getElementsByTagName(selectorTag);
-    for (var i = 0; i < myPosts.length; i++) {
-        //omitting undefined null check for brevity
-        if (myPosts[i].id.lastIndexOf(prefix, 0) === 0) {
-            items.push(myPosts[i]);
-        }
-    }
-    return items;
-}*/
 
 function updateTraits(deviceTrait){
   console.log(deviceReference);
@@ -146,7 +134,7 @@ function addToggle(){
   //Create the new toggle JSON
   var newToggle = {
     name: document.getElementById("name_toggle").value,
-    names_values: {
+    name_values: {
       name_synonym: [
 
       ],
@@ -154,8 +142,8 @@ function addToggle(){
     }
   }
 
-  var synonyms = document.getElementById("synonyms_toggle").value.split(";");
-  newToggle.names_values.name_synonym = synonyms;
+  var synonyms = document.getElementById("synonyms_toggle").value.split(",");
+  newToggle.name_values.name_synonym = synonyms;
   //Save the new JSON
   availableToggles.push(newToggle);
   document.getElementById("availableToggles").value = JSON.stringify(availableToggles);
@@ -170,6 +158,30 @@ function addToggle(){
   document.getElementById("synonyms_toggle").value = "";
 }
 
+function loadToggle(){
+  //Get lasst JSON
+  var availableToggles = [];
+  if (document.getElementById("availableToggles").value != "-1"){
+    availableToggles = JSON.parse(document.getElementById("availableToggles").value);
+
+    //Create the new HTML card
+    var html = "";
+    availableToggles.forEach(function(toggle){
+      console.log(toggle)
+      html += composeToggle(toggle['name'], toggle['name_values']['lang'], toggle['name_values']['name_synonym']);
+    });
+
+
+    document.getElementById("badge_toggles_container").innerHTML += html;
+
+    //Clear form
+    document.getElementById("name_toggle").value = "";
+    document.getElementById("synonyms_toggle").value = "";
+  }
+
+
+}
+
 function deleteToggle(name){
   var availableToggles = JSON.parse(document.getElementById("availableToggles").value);
   var newToggles = []
@@ -177,7 +189,7 @@ function deleteToggle(name){
   var html = "";
   Object(availableToggles).forEach(function(toggle){
     if (toggle.name != name){
-      html += composeToggle(toggle.name, toggle.names_values.lang, toggle.names_values.name_synonym);
+      html += composeToggle(toggle.name, toggle.name_values.lang, toggle.name_values.name_synonym);
       newToggles.push(toggle);
     }
   });
@@ -225,7 +237,7 @@ function addFanSpeed(){
     }
   }
 
-  var synonyms = document.getElementById("synonyms_fan_speed").value.split(";");
+  var synonyms = document.getElementById("synonyms_fan_speed").value.split(",");
   newFanSpeed.speed_values.speed_synonym = synonyms;
   //Save the new JSON
   availableFanSpeeds.push(newFanSpeed);
@@ -338,7 +350,7 @@ function addArmLevels(){
     }
   }
 
-  var synonyms = document.getElementById("synonyms_arm_levels").value.split(";");
+  var synonyms = document.getElementById("synonyms_arm_levels").value.split(",");
   newArmLevel.level_values.level_synonym = synonyms;
   //Save the new JSON
   availableArmLevels.push(newArmLevel);
@@ -394,9 +406,9 @@ function composeArmLevels(name, lang, synonyms){
 //StartStop Magic
 ////////////////////////////////////////
 function addZones(){
-  zones = document.getElementById("zones").value.split(";");
+  zones = document.getElementById("zones").value.split(",");
   zones.pop();
-  var new_zones = document.getElementById("name_zones").value.split(";");
+  var new_zones = document.getElementById("name_zones").value.split(",");
   console.log(zones);
   var html = "";
   var string = "";
@@ -414,7 +426,7 @@ function addZones(){
 }
 
 function deleteZone(delete_zone){
-  zones = document.getElementById("zones").value.split(";");
+  zones = document.getElementById("zones").value.split(",");
   zones.pop();
   console.log(zones);
   var html = "";

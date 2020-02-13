@@ -30,7 +30,6 @@ function loadDeviceData(){
   }
   document.getElementById("name").value = device.name.name;
 
-
   //Show traits
   updateTraits(device.traits);
 
@@ -89,10 +88,14 @@ function loadDeviceData(){
               document.getElementById(subAttributeKey).value = device.attributes[attributeKey][subAttributeKey];
           });
         }
+        else if (attributes[attributeKey]['type'] == "strigifyedObject" ){
+          document.getElementById(attributeKey).value = JSON.stringify(device.attributes[attributeKey]);
+        }
       });
     });
   }
 
+  loadToggle();
 }
 
 save.addEventListener('click', e => {
@@ -127,6 +130,9 @@ save.addEventListener('click', e => {
           else if (content[subAttributeKey]['type'] == "string" || content[subAttributeKey]['type'] == "int" )
             device.attributes[attributeKey][subAttributeKey] = document.getElementById(subAttributeKey).value;
         });
+      } else if (attributes[attributeKey]['type'] == "strigifyedObject" ){
+        console.log('in')
+        device.attributes[attributeKey] = JSON.parse(document.getElementById(attributeKey).value);
       }
     });
   });

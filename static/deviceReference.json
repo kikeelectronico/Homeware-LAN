@@ -1,5 +1,9 @@
 {
   "devices": {
+    "action.devices.types.AIRFRESHENER": [
+      "action.devices.traits.OnOff",
+      "action.devices.traits.Toggles"
+    ],
     "action.devices.types.AWNING": [
       "action.devices.traits.OpenClose"
     ],
@@ -315,6 +319,18 @@
           "value": false,
           "manual": false
         }
+      }
+    },
+    "action.devices.traits.Toggles": {
+      "attributes": {
+        "availableToggles": {
+          "type": "strigifyedObject"
+        },
+        "commandOnlyToggles": {
+          "type": "bool"
+        }
+      },
+      "param": {
       }
     }
   }
