@@ -621,6 +621,32 @@ def smarthome():
                             "action.devices.commands.OpenClose": {
                                 "operation": "object",
                                 "object": "openState"
+                            },
+                            "action.devices.commands.StartStop": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.PauseUnpause": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.TimerStart": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.TimerAdjust": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.TimerPause": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.TimerResume": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.TimerCancel": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.SetTemperature": {
+                                "operation": "rename",
+                                "from": "temperature",
+                                "to": "temperatureSetpointCelsius"
                             }
                         }
 
@@ -634,6 +660,11 @@ def smarthome():
                                 paramsKeys = params.keys()
                                 for key in paramsKeys:
                                     data['status'][deviceId][commandsOperation[command]['object']][key] = params[key]
+                                publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
+                            elif commandsOperation[command]['operation'] == 'rename':
+                                paramsKeys = params.keys()
+                                for key in paramsKeys:
+                                    data['status'][deviceId][commandsOperation[command]['to']] = params[key]
                                 publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
                         else:
                             paramsKeys = params.keys()

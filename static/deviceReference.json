@@ -7,6 +7,11 @@
     "action.devices.types.AWNING": [
       "action.devices.traits.OpenClose"
     ],
+    "action.devices.types.BOILER": [
+      "action.devices.traits.TemperatureControl",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.Toggles"
+    ],
     "action.devices.types.CLOSET": [
       "action.devices.traits.OpenClose"
     ],
@@ -28,6 +33,12 @@
     "action.devices.types.GATE": [
       "action.devices.traits.OpenClose"
     ],
+    "action.devices.types.GRILL": [
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
+    ],
     "action.devices.types.LIGHT": [
       "action.devices.traits.OnOff",
       "action.devices.traits.Brightness",
@@ -46,9 +57,16 @@
     "action.devices.types.SCENE": [
       "action.devices.traits.Scene"
     ],
+    "action.devices.types.SHOWER": [
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop"
+    ],
     "action.devices.types.SHUTTER": [
       "action.devices.traits.OpenClose",
       "action.devices.traits.Rotation"
+    ],
+    "action.devices.types.SPRINKLER": [
+      "action.devices.traits.StartStop"
     ],
     "action.devices.types.SWITCH": [
       "action.devices.traits.OnOff"
@@ -331,6 +349,89 @@
         }
       },
       "param": {
+      }
+    },
+    "action.devices.traits.StartStop": {
+      "attributes": {
+        "availableZones": {
+          "type": "array"
+        },
+        "pausable": {
+          "type": "bool"
+        }
+      },
+      "param": {
+        "isRunning": {
+          "type": "bool",
+          "manual": false,
+          "value": false
+        },
+        "isPaused": {
+          "type": "bool",
+          "manual": false,
+          "value": false
+        }
+      }
+    },
+    "action.devices.traits.Timer": {
+      "attributes": {
+        "maxTimerLimitSec": {
+          "type": "int"
+        },
+        "commandOnlyTimer": {
+          "type": "bool"
+        }
+      },
+      "param": {
+        "timerRemainingSec": {
+          "type": "int",
+          "manual": false,
+          "value": -1
+        },
+        "timerPaused": {
+          "type": "bool",
+          "manual": false,
+          "value": false
+        }
+      }
+    },
+    "action.devices.traits.TemperatureControl": {
+      "attributes": {
+        "temperatureStepCelsius": {
+          "type": "int"
+        },
+        "temperatureUnitForUX": {
+          "type": "string"
+        },
+        "queryOnlyTemperatureControl": {
+          "type": "bool"
+        },
+        "commandOnlyTemperatureControl": {
+          "type": "bool"
+        },
+        "temperatureRange": {
+          "type": "object",
+          "content": {
+            "minThresholdCelsius": {
+              "type": "int"
+            },
+            "maxThresholdCelsius": {
+              "type": "int"
+            }
+          }
+        }
+      },
+      "param": {
+        "temperatureSetpointCelsius": {
+          "type": "int",
+          "manual": false,
+          "value": 20
+        },
+        "temperatureAmbientCelsius": {
+          "type": "int",
+          "manual": false,
+          "value": 20
+        }
       }
     }
   }

@@ -406,27 +406,27 @@ function composeArmLevels(name, lang, synonyms){
 //StartStop Magic
 ////////////////////////////////////////
 function addZones(){
-  zones = document.getElementById("zones").value.split(",");
+  zones = document.getElementById("availableZones").value.split(",");
   zones.pop();
-  var new_zones = document.getElementById("name_zones").value.split(",");
+  var new_zones = document.getElementById("name_availableZones").value.split(",");
   console.log(zones);
   var html = "";
   var string = "";
   zones.forEach(function(zone){
     html += '<button type="button" class="btn btn-primary" style="margin: 5px;" title="Click to delete" onclick="deleteZone(\'' + zone + '\')">' + zone + '</button>';
-    string += zone + ';';
+    string += zone + ',';
   });
   new_zones.forEach(function(zone){
     html += '<button type="button" class="btn btn-primary" style="margin: 5px;" title="Click to delete" onclick="deleteZone(\'' + zone + '\')">' + zone + '</button>';
-    string += zone + ';';
+    string += zone + ',';
   });
   document.getElementById("badge_zones_container").innerHTML = html;
-  document.getElementById("zones").value = string;
-  document.getElementById("name_zones").value = "";
+  document.getElementById("availableZones").value = string;
+  document.getElementById("name_availableZones").value = "";
 }
 
 function deleteZone(delete_zone){
-  zones = document.getElementById("zones").value.split(",");
+  zones = document.getElementById("availableZones").value.split(",");
   zones.pop();
   console.log(zones);
   var html = "";
@@ -434,9 +434,9 @@ function deleteZone(delete_zone){
   zones.forEach(function(zone){
     if (zone != delete_zone){
       html += '<button type="button" class="btn btn-primary" style="margin: 5px;" title="Click to delete" onclick="deleteZone(\'' + zone + '\')">' + zone + '</button>';
-      string += zone + ';';
+      string += zone + ',';
     }
   });
   document.getElementById("badge_zones_container").innerHTML = html;
-  document.getElementById("zones").value = string;
+  document.getElementById("availableZones").value = string;
 }

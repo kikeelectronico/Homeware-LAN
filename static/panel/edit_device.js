@@ -96,6 +96,7 @@ function loadDeviceData(){
   }
 
   loadToggle();
+  addZones();
 }
 
 save.addEventListener('click', e => {
