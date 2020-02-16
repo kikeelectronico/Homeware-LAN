@@ -114,7 +114,7 @@ next.addEventListener('click', e => {
           value.pop();
           console.log(value)
         } else if (traitAttributes[attribute]['type'] == "select"){
-          var modes = document.getElementById("availableThermostatModes");
+          var modes = document.getElementById(attribute);
           for (var i = 0; i < modes.options.length; i++) {
             if(modes.options[i].selected == true){
               if(value == 'none'){
@@ -122,6 +122,15 @@ next.addEventListener('click', e => {
               } else {
                 value = value + ',' + modes.options[i].value;
               }
+            }
+          }
+
+        } else if (traitAttributes[attribute]['type'] == "selectToArray"){
+          var modes = document.getElementById(attribute);
+          value = []
+          for (var i = 0; i < modes.options.length; i++) {
+            if(modes.options[i].selected == true){
+              value.push(modes.options[i].value)
             }
           }
 

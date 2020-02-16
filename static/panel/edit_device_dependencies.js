@@ -75,10 +75,12 @@ function updateTraitsDependencies(){
     }
   }
 
-  updateThermostatModes([]);
+
 }
 
-function updateThermostatModes(deviceModes){
+function updateThermostatModes(){
+
+  deviceModes = device.attributes.availableThermostatModes;
 
   var modes = [
     "off",
@@ -107,6 +109,50 @@ function updateThermostatModes(deviceModes){
 
 }
 
+function updateCookModes(){
+
+  var modes = [
+    'UNKNOWN_COOKING_MODE',
+    'BAKE',
+    'BEAT',
+    'BLEND',
+    'BOIL',
+    'BREW',
+    'BROIL',
+    'CONVECTION_BAKE',
+    'COOK',
+    'DEFROST',
+    'DEHYDRATE',
+    'FERMENT',
+    'FRY',
+    'KNEAD',
+    'MICROWAVE',
+    'PRESSURE_COOK',
+    'PUREE',
+    'ROAST',
+    'SAUTE',
+    'SLOW_COOK',
+    'SOUS_VIDE',
+    'STEAM',
+    'STEW',
+    'WARM',
+    'WHIP'
+  ];
+
+
+  var html = "";
+
+      console.log(device.attributes.supportedCookingModes);
+  Object(modes).forEach(function(mode){
+        if(device.attributes.supportedCookingModes.indexOf(mode) >= 0){
+          html += '<option selected>' + mode + '</option>';
+        } else {
+          html += '<option>' + mode + '</option>';
+        }
+  });
+  document.getElementById("supportedCookingModes").innerHTML = html;
+
+}
 ////////////////////////////////////////
 //Toggle Magic
 ////////////////////////////////////////
@@ -501,7 +547,7 @@ function composeFillLevels(name, lang, synonyms){
 ////////////////////////////////////////
 //Cooking Modes Magic
 ////////////////////////////////////////
-
+/*
 function addCookingMode(){
   names = document.getElementById("supportedCookingModes").value.split(",");
   names.pop();
@@ -537,7 +583,7 @@ function deleteCookingModes(delete_name){
   document.getElementById("badge_supportedCookingModes_container").innerHTML = html;
   document.getElementById("supportedCookingModes").value = string;
 }
-
+*/
 ////////////////////////////////////////
 //Food Presets Magic
 ////////////////////////////////////////

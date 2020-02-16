@@ -64,7 +64,7 @@ function loadDeviceData(){
   //Show traits
   updateTraits(device.traits);
 
-  updateThermostatModes([]);
+  //updateThermostatModes([]);
   //Show default names
   var html = "";
   var string = "";
@@ -97,11 +97,11 @@ function loadDeviceData(){
       attributes = deviceReference['traits'][trait]['attributes'];
       //Go over all the attributes that can have the device
       Object.keys(attributes).forEach(function(attributeKey){
-        if (attributes[attributeKey]['type'] == "bool")
+        if (attributes[attributeKey]['type'] == "bool"){
           document.getElementById("customSwitch_" + attributeKey).checked = device.attributes[attributeKey];
-        else if (attributes[attributeKey]['type'] == "string" || attributes[attributeKey]['type'] == "int" )
+        } else if (attributes[attributeKey]['type'] == "string" || attributes[attributeKey]['type'] == "int" ){
           document.getElementById(attributeKey).value = device.attributes[attributeKey];
-        else if (attributes[attributeKey]['type'] == "jsoneditor"){
+        } else if (attributes[attributeKey]['type'] == "jsoneditor"){
           data = device.attributes[attributeKey];
           loadEditor();
         }
@@ -127,21 +127,22 @@ function loadDeviceData(){
           document.getElementById(attributeKey).value = JSON.stringify(device.attributes[attributeKey]);
         }
       });
+
+      if (trait == 'action.devices.traits.TemperatureSetting'){
+        updateThermostatModes();
+      } else if (trait == 'action.devices.traits.Cook'){
+        updateCookModes();
+        loadFoodPreset();
+      } else if (trait == 'action.devices.traits.StartStop'){
+          addZones();
+      } else if (trait == 'action.devices.traits.Toggles'){
+        loadToggle();
+      }
+
     });
   }
 
 
-
-  if (document.getElementById('availableToggles').value != -1){
-    loadToggle();
-  }
-  if (document.getElementById('foodPresets').value != -1){
-    loadFoodPreset();
-    addCookingMode();
-  }
-  if (document.getElementById('availableZones').value != -1){
-    addZones();
-  }
 }
 
 save.addEventListener('click', e => {
@@ -149,6 +150,18 @@ save.addEventListener('click', e => {
   device['name']['name'] = document.getElementById("name").value;
   device['name']['defaultNames'] = names = document.getElementById('default_names').value.split(",");
   device['name']['nicknames'] = names = document.getElementById('nick_names').value.split(",");
+
+
+  //Read new Traits
+  device['traits'] = []
+  var traits=document.getElementById("trais");
+  for (var i = 0; i < traits.options.length; i++) {
+    if(document.getElementById(traits.options[i].value)){
+     if(traits.options[i].selected ==true){
+        device['traits'].push(traits.options[i].value);
+      }
+    }
+  }
 
   //Go over all the attributes of the device
   device.traits.forEach(function(trait){
@@ -159,6 +172,31 @@ save.addEventListener('click', e => {
         device.attributes[attributeKey] = document.getElementById("customSwitch_" + attributeKey).checked;
       else if (attributes[attributeKey]['type'] == "string" || attributes[attributeKey]['type'] == "int" )
         device.attributes[attributeKey] = document.getElementById(attributeKey).value;
+      else if (attributes[attributeKey]['type'] == "select"){
+        var modes = document.getElementById(attributeKey);
+        for (var i = 0; i < modes.options.length; i++) {
+          if(modes.options[i].selected == true){
+            if(value == 'none'){
+              value = modes.options[i].value;
+            } else {
+              value = value + ',' + modes.options[i].value;
+            }
+          }
+        }
+        device.attributes[attributeKey] = value;
+
+      } else if (attributes[attributeKey]['type'] == "selectToArray"){
+        var modes = document.getElementById(attributeKey);
+        value = []
+        for (var i = 0; i < modes.options.length; i++) {
+          if(modes.options[i].selected == true){
+            value.push(modes.options[i].value)
+          }
+        }
+        device.attributes[attributeKey] = value;
+        console.log(value)
+
+      }
       else if (attributes[attributeKey]['type'] == "jsoneditor")
         device.attributes[attributeKey] = editor.get();
       else if (attributes[attributeKey]['type'] == "array"){

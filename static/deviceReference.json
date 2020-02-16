@@ -416,17 +416,6 @@
         "availableThermostatModes": {
           "type": "select"
         },
-        "thermostatTemperatureRange": {
-          "type": "object",
-          "content": {
-            "minThresholdCelsius": {
-              "type": "int"
-            },
-            "maxThresholdCelsius": {
-              "type": "int"
-            }
-          }
-        },
         "thermostatTemperatureUnit": {
           "type": "string"
         },
@@ -793,7 +782,7 @@
           "type": "strigifyedObject"
         },
         "supportedCookingModes": {
-          "type": "array"
+          "type": "selectToArray"
         }
       },
       "param": {
