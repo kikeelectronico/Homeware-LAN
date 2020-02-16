@@ -60,13 +60,6 @@ function loadRender(){
         });
       }
     });
-  } else if(step == 6){
-    document.getElementById("next").style.visibility = 'hidden';
-    window.location = '/devices/';
-    setTimeout(function() {
-      window.location = '/devices/';
-    }, 2000);
-
   }
 }
 
@@ -168,6 +161,11 @@ next.addEventListener('click', e => {
     });
   } else if(step == 5){
     save();
+    document.getElementById("next").style.visibility = 'hidden';
+    window.location = '/devices/';
+    setTimeout(function() {
+      window.location = '/devices/';
+    }, 2000);
   }
 
   //console.clear();

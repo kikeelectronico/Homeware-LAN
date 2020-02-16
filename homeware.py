@@ -666,6 +666,11 @@ def smarthome():
                                 "operation": "rename",
                                 "from": "updateModeSettings",
                                 "to": "currentModeSettings"
+                            },
+                            "action.devices.commands.SetHumidity": {
+                                "operation": "rename",
+                                "from": "humidity",
+                                "to": "humiditySetpointPercent"
                             }
                         }
 

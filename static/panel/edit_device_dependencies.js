@@ -47,29 +47,6 @@ function updateTraits(deviceTrait){
 
   var tratis = deviceReference['devices'];
 
-  //Traits that needs configuration
-  var traitsList = [
-    "action.devices.traits.Toggles",
-    "action.devices.traits.ArmDisarm",
-    "action.devices.traits.CameraStream",
-    "action.devices.traits.ColorSetting",
-    "action.devices.traits.FanSpeed",
-    "action.devices.traits.LightEffects",
-    "action.devices.traits.Modes",
-    "action.devices.traits.OnOff",
-    "action.devices.traits.OpenClose",
-    "action.devices.traits.Scene",
-    "action.devices.traits.StartStop",
-    "action.devices.traits.TemperatureControl",
-    "action.devices.traits.TemperatureSetting",
-    "action.devices.traits.Timer"
-
-  ];
-
-  traitsList.forEach(function(trait){
-    document.getElementById(trait).style.display = "none";
-  });
-
   var html = "";
   Object(tratis[document.getElementById("type").value]).forEach(function(trait){
 
@@ -514,6 +491,131 @@ function composeFillLevels(name, lang, synonyms){
         });
         html += '<br><br>';
         html += '<button type="button" class="btn btn-danger" onclick="deleteFillLevels(\'' + name + '\')">Delete</button>';
+      html += '</div>';
+    html += '</div>';
+  html += '</div>';
+
+  return html;
+}
+
+////////////////////////////////////////
+//Cooking Modes Magic
+////////////////////////////////////////
+
+function addCookingMode(){
+  names = document.getElementById("supportedCookingModes").value.split(",");
+  names.pop();
+  var new_names = document.getElementById("name_supportedCookingModes").value.split(",");
+  console.log(names);
+  var html = "";
+  var string = "";
+  names.forEach(function(name){
+    html += '<button type="button" class="btn btn-primary" style="margin: 5px;" title="Click to delete" onclick="deleteCookingModes(\'' + name + '\')">' + name + '</button>';
+    string += name + ',';
+  });
+  new_names.forEach(function(name){
+    html += '<button type="button" class="btn btn-primary" style="margin: 5px;" title="Click to delete" onclick="deleteCookingModes(\'' + name + '\')">' + name + '</button>';
+    string += name + ',';
+  });
+  document.getElementById("badge_supportedCookingModes_container").innerHTML = html;
+  document.getElementById("supportedCookingModes").value = string;
+  document.getElementById("name_supportedCookingModes").value = "";
+}
+
+function deleteCookingModes(delete_name){
+  names = document.getElementById("supportedCookingModes").value.split(",");
+  names.pop();
+  console.log(names);
+  var html = "";
+  var string = "";
+  names.forEach(function(name){
+    if (name != delete_name){
+      html += '<button type="button" class="btn btn-primary" style="margin: 5px;" title="Click to delete" onclick="deleteCookingModes(\'' + name + '\')">' + name + '</button>';
+      string += name + ',';
+    }
+  });
+  document.getElementById("badge_supportedCookingModes_container").innerHTML = html;
+  document.getElementById("supportedCookingModes").value = string;
+}
+
+////////////////////////////////////////
+//Food Presets Magic
+////////////////////////////////////////
+function addFoodPreset(){
+  //Get lasst JSON
+  var availableFoodPresets = [];
+  if (document.getElementById("foodPresets").value != "-1"){
+    availableFoodPresets = JSON.parse(document.getElementById("foodPresets").value);
+  }
+  //Create the new toggle JSON
+  var newFoodPreset = {
+    food_preset_name: document.getElementById("name_food_presets").value,
+    supported_units: document.getElementById("units_food_presets").value,
+    food_synonyms: {
+      synonym: [
+
+      ],
+      lang: document.getElementById("languaje_food_presets").value
+    }
+  }
+
+  var synonyms = document.getElementById("synonyms_food_presets").value.split(",");
+  newFoodPreset.food_synonyms.synonym = synonyms;
+  //Save the new JSON
+  availableFoodPresets.push(newFoodPreset);
+  document.getElementById("foodPresets").value = JSON.stringify(availableFoodPresets);
+  console.log(newFoodPreset);
+  //Create the new HTML card
+  var html = "";
+  html += composeFoodPreset(document.getElementById("name_food_presets").value, document.getElementById("languaje_food_presets").value, synonyms);
+  document.getElementById("badge_food_presets_container").innerHTML += html;
+
+  //Clear form
+  document.getElementById("name_food_presets").value = "";
+  document.getElementById("synonyms_food_presets").value = "";
+}
+
+function loadFoodPreset(){
+  var availableFoodPreset = JSON.parse(document.getElementById("foodPresets").value);
+
+  var html = "";
+  Object(availableFoodPreset).forEach(function(foodPreset){
+      html += composeFoodPreset(foodPreset.food_preset_name, foodPreset.food_synonyms.lang, foodPreset.food_synonyms.synonym);
+  });
+
+  document.getElementById("badge_food_presets_container").innerHTML = html
+}
+
+function deleteFoodPreset(name){
+  var availableFoodPreset = JSON.parse(document.getElementById("foodPresets").value);
+  var newFoodPreset = []
+
+  console.log(availableFoodPreset);
+  console.log(name);
+
+  var html = "";
+  Object(availableFoodPreset).forEach(function(foodPreset){
+    if (foodPreset.food_preset_name != name){
+      html += composeFoodPreset(foodPreset.food_preset_name, foodPreset.food_synonyms.lang, foodPreset.food_synonyms.synonym);
+      newFoodPreset.push(foodPreset);
+    }
+  });
+
+  document.getElementById("foodPresets").value = JSON.stringify(newFoodPreset);
+  document.getElementById("badge_food_presets_container").innerHTML = html
+}
+
+function composeFoodPreset(name, lang, synonyms){
+  var html = "";
+  html += '<div class="col-sm-6" style="margin-top: 10px;">';
+    html += '<div class="card">';
+      html += '<div class="card-body">';
+        html += '<h5 class="card-title">' + name + ' - ' + lang + '</h5>';
+        synonyms.forEach(function(word){
+          html += '<span class="badge badge-primary" style="margin: 5px;">' + word + '</span>';
+        });
+        html += '<br><br>';
+        html += '<button type="button" class="btn btn-danger" onclick="deleteFoodPreset(\'' + name + '\')">Delete</button>';
       html += '</div>';
     html += '</div>';
   html += '</div>';

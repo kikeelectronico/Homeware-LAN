@@ -31,6 +31,14 @@
       "action.devices.traits.Scene",
       "action.devices.traits.Toggles"
     ],
+    "action.devices.types.BLENDER": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
+    ],
     "action.devices.types.BLINDS": [
       "action.devices.traits.Modes",
       "action.devices.traits.OpenClose"
@@ -44,11 +52,43 @@
     "action.devices.types.CLOSET": [
       "action.devices.traits.OpenClose"
     ],
+    "action.devices.types.COFFE_MAKER": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.TemperatureControl",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.COOKTOP": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
+    ],
     "action.devices.types.CLOSET": [
       "action.devices.traits.OpenClose"
     ],
     "action.devices.types.CURTAIN": [
       "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.DEHUMIDIFIER": [
+      "action.devices.traits.FanSpeed",
+      "action.devices.traits.HumiditySetting",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.RunCycle",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.DEHYDRATOR": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
     ],
     "action.devices.types.DISHWASHER": [
       "action.devices.traits.OnOff",
@@ -81,6 +121,14 @@
       "action.devices.traits.OnOff",
       "action.devices.traits.Toggles"
     ],
+    "action.devices.types.FRYER": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
+    ],
     "action.devices.types.GARAGE": [
       "action.devices.traits.OpenClose"
     ],
@@ -88,6 +136,7 @@
       "action.devices.traits.OpenClose"
     ],
     "action.devices.types.GRILL": [
+      "action.devices.traits.Cook",
       "action.devices.traits.Modes",
       "action.devices.traits.OnOff",
       "action.devices.traits.StartStop",
@@ -105,6 +154,14 @@
       "action.devices.traits.FanSpeed",
       "action.devices.traits.Modes",
       "action.devices.traits.OnOff",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.HUMIDIFIER": [
+      "action.devices.traits.FanSpeed",
+      "action.devices.traits.HumiditySetting",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
       "action.devices.traits.Toggles"
     ],
     "action.devices.types.KETTLE": [
@@ -139,12 +196,44 @@
       "action.devices.traits.StartStop",
       "action.devices.traits.Toggles"
     ],
+    "action.devices.types.MICROWAVE": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.MULTICOOKER": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
+    ],
     "action.devices.types.OUTLET": [
       "action.devices.traits.OnOff"
+    ],
+    "action.devices.types.OVEN": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.TemperatureControl",
+      "action.devices.traits.Toggles"
     ],
     "action.devices.types.PERGOLA": [
       "action.devices.traits.OpenClose",
       "action.devices.traits.Rotation"
+    ],
+    "action.devices.types.PRESSURECOOKER": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
     ],
     "action.devices.types.RADIATOR": [
       "action.devices.traits.Modes",
@@ -175,8 +264,23 @@
       "action.devices.traits.StartStop",
       "action.devices.traits.TemperatureControl"
     ],
+    "action.devices.types.SOUSVIDE": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
+    ],
     "action.devices.types.SPRINKLER": [
       "action.devices.traits.StartStop"
+    ],
+    "action.devices.types.STANDMIXER": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Toggles"
     ],
     "action.devices.types.SWITCH": [
       "action.devices.traits.OnOff"
@@ -207,11 +311,18 @@
       "action.devices.traits.TemperatureControl",
       "action.devices.traits.Toggles"
     ],
-    "action.devices.types.WINDOW": [      
+    "action.devices.types.WINDOW": [
       "action.devices.traits.LockUnlock",
       "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.YOGURTMAKER": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
     ]
-
   },
   "traits": {
     "action.devices.traits.OnOff": {
@@ -642,6 +753,71 @@
         }
       },
       "param": {}
+    },
+    "action.devices.traits.HumiditySetting": {
+      "attributes": {
+        "humiditySetpointRange": {
+          "type": "object",
+          "content": {
+            "minPercent": {
+              "type": "int"
+            },
+            "maxPercent": {
+              "type": "int"
+            }
+          }
+        },
+        "commandOnlyHumiditySetting": {
+          "type": "bool"
+        },
+        "queryOnlyHumiditySetting": {
+          "type": "bool"
+        }
+      },
+      "param": {
+        "humiditySetpointPercent": {
+          "type": "int",
+          "manual": false,
+          "value": 30
+        },
+        "humidityAmbientPercent": {
+          "type": "int",
+          "manual": false,
+          "value": 20
+        }
+      }
+    },
+    "action.devices.traits.Cook": {
+      "attributes": {
+        "foodPresets": {
+          "type": "strigifyedObject"
+        },
+        "supportedCookingModes": {
+          "type": "array"
+        }
+      },
+      "param": {
+        "currentCookingMode": {
+          "type": "string",
+          "manual": false,
+          "value": ""
+        },
+        "currentFoodPreset": {
+          "type": "string",
+          "manual": false,
+          "value": ""
+        },
+        "currentFoodQuantity": {
+          "type": "int",
+          "manual": false,
+          "value": 0
+        },
+        "currentFoodUnit": {
+          "type": "string",
+          "manual": false,
+          "value": ""
+        }
+      }
     }
   }
 }

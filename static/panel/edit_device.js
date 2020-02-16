@@ -130,8 +130,18 @@ function loadDeviceData(){
     });
   }
 
-  loadToggle();
-  addZones();
+
+
+  if (document.getElementById('availableToggles').value != -1){
+    loadToggle();
+  }
+  if (document.getElementById('foodPresets').value != -1){
+    loadFoodPreset();
+    addCookingMode();
+  }
+  if (document.getElementById('availableZones').value != -1){
+    addZones();
+  }
 }
 
 save.addEventListener('click', e => {

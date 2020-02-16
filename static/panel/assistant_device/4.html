@@ -1,10 +1,10 @@
 <!-- RunCycle -->
-<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" name="trait_container" id="action.devices.traits.RunCycle">
+<div style="display: none;" name="trait_container" id="action.devices.traits.RunCycle">
 
 </div>
 
 <!-- StatusReport -->
-<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" name="trait_container" id="action.devices.traits.StatusReport">
+<div style="display: none;" name="trait_container" id="action.devices.traits.StatusReport">
 
 </div>
 
@@ -99,6 +99,7 @@
 </div>
 
 <!-- CameraStream -->
+<!--
 <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.CameraStream">
   <h3>Attribute: CameraStream</h3>
   <div class="form-group">
@@ -126,6 +127,7 @@
     </div>
   </div>
 </div>
+-->
 
 <!-- ColorSetting -->
 <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.ColorSetting">
@@ -165,7 +167,7 @@
       <div class="custom-control custom-switch">
         <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyColorSetting">
         <label class="custom-control-label" for="customSwitch_commandOnlyColorSetting">commandOnlyColorSetting</label>
-        <small class="form-text text-muted">Enable it if the hardware can not confirm its status after execute a command.</small>
+        <small class="form-text text-muted">True it if the hardware can not confirm its status after execute a command.</small>
       </div>
     </div>
   </div>
@@ -232,6 +234,97 @@
   </div>
 </div>
 
+<!-- Cook -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Cook">
+  <h3>Attribute: Cook</h3>
+  <h4>Food presets</h4>
+  <input type="hidden" value="-1" id="foodPresets">
+  <div class="row" id="badge_food_presets_container">
+    <!--Toggles cards-->
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-1">
+      <label for="languaje_food_presets">Languaje:</label>
+      <select class="form-control" id="languaje_food_presets">
+        <option>en</option>
+        <option>es</option>
+      </select>
+    </div>
+    <div class="form-group col-md-3">
+      <label for="name_food_presets">Name:</label>
+      <input type="text" class="form-control" id="name_food_presets" placeholder="Write a name">
+    </div>
+    <div class="form-group col-md-3">
+      <label for="units_food_presets">Units:</label>
+      <input type="text" class="form-control" id="units_food_presets" placeholder="Write the units separated by ,">
+    </div>
+    <div class="form-group col-md-7">
+      <label for="synonyms_food_presets">Synonymous:</label>
+      <input type="text" class="form-control" id="synonyms_food_presets" placeholder="Write synonyms separated by ,">
+    </div>
+    <div class="form-group col-md-1">
+      <label for="add_fan_speed_button">.</label>
+      <input type="button" class="form-control" id="add_fan_speed_button" value="Add" onclick="addFoodPreset()">
+    </div>
+  </div>
+  <hr>
+  <h4>Cooking modes</h4>
+
+  <input type="hidden" value="-1" id="supportedCookingModes">
+  <div class="row" id="badge_supportedCookingModes_container">
+    <!--Toggles cards-->
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-11">
+      <label for="name_supportedCookingModes">Modes:</label>
+      <input type="text" class="form-control" id="name_supportedCookingModes">
+      <small class="form-text text-muted">Separated by commas.</small>
+    </div>
+    <div class="form-group col-md-1">
+      <label for="add_toggle_button">.</label>
+      <input type="button" class="form-control" id="add_openDirection_button" value="Add" onclick="addCookingMode()">
+    </div>
+  </div>
+
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Supported cooking mode list
+  </button>
+  <div class="collapse" id="collapseExample">
+    <div class="card card-body">
+      <ul>
+        <li><code translate="no" dir="ltr">UNKNOWN_COOKING_MODE</code></li>
+        <li><code translate="no" dir="ltr">BAKE</code></li>
+        <li><code translate="no" dir="ltr">BEAT</code></li>
+        <li><code translate="no" dir="ltr">BLEND</code></li>
+        <li><code translate="no" dir="ltr">BOIL</code></li>
+        <li><code translate="no" dir="ltr">BREW</code></li>
+        <li><code translate="no" dir="ltr">BROIL</code></li>
+        <li><code translate="no" dir="ltr">CONVECTION_BAKE</code></li>
+        <li><code translate="no" dir="ltr">COOK</code></li>
+        <li><code translate="no" dir="ltr">DEFROST</code></li>
+        <li><code translate="no" dir="ltr">DEHYDRATE</code></li>
+        <li><code translate="no" dir="ltr">FERMENT</code></li>
+        <li><code translate="no" dir="ltr">FRY</code></li>
+        <li><code translate="no" dir="ltr">KNEAD</code></li>
+        <li><code translate="no" dir="ltr">MICROWAVE</code></li>
+        <li><code translate="no" dir="ltr">PRESSURE_COOK</code></li>
+        <li><code translate="no" dir="ltr">PUREE</code></li>
+        <li><code translate="no" dir="ltr">ROAST</code></li>
+        <li><code translate="no" dir="ltr">SAUTE</code></li>
+        <li><code translate="no" dir="ltr">SLOW_COOK</code></li>
+        <li><code translate="no" dir="ltr">SOUS_VIDE</code></li>
+        <li><code translate="no" dir="ltr">STEAM</code></li>
+        <li><code translate="no" dir="ltr">STEW</code></li>
+        <li><code translate="no" dir="ltr">WARM</code></li>
+        <li><code translate="no" dir="ltr">WHIP</code></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
 <!-- Fill -->
 <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" name="trait_container" id="action.devices.traits.Fill">
   <h3>Attribute: Fill</h3>
@@ -264,6 +357,7 @@
 </div>
 
 <!-- LightEffects -->
+<!--
 <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.LightEffects">
   <h3>Attribute: LightEffects</h3>
   <div class="form-row">
@@ -276,11 +370,7 @@
     </div>
   </div>
 </div>
-
-<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Modes">
-  <h3>Attribute: Modes</h3>
-  <p>This atribut hasn't been developed yet. If you really need it, open an issue on <a href="https://github.com/kikeelectronico/Homeware/issues" target="blanck">Github</a>. Meanwhile you can enter the attributes directly on the database.</p>
-</div>
+-->
 
 <!-- OnOff -->
 <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.OnOff">
@@ -290,7 +380,7 @@
       <div class="custom-control custom-switch">
         <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyOnOff">
         <label class="custom-control-label" for="customSwitch_commandOnlyOnOff">commandOnlyOnOff</label>
-        <small id="emailHelp" class="form-text text-muted">Enable it if the hardware can not confirm its status after execute a command.</small>
+        <small id="emailHelp" class="form-text text-muted">True it if the hardware can not confirm its status after execute a command.</small>
       </div>
     </div>
   </div>
@@ -304,7 +394,7 @@
       <div class="custom-control custom-switch">
         <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyBrightness">
         <label class="custom-control-label" for="customSwitch_commandOnlyBrightness">commandOnlyBrightness</label>
-        <small id="emailHelp" class="form-text text-muted">Enable it if the hardware can not confirm its status after execute a command.</small>
+        <small id="emailHelp" class="form-text text-muted">True it if the hardware can not confirm its status after execute a command.</small>
       </div>
     </div>
   </div>
@@ -406,6 +496,7 @@
       <label for="maxThresholdCelsius">Maximum temperature [Celsius]</label>
       <input type="number" class="form-control" id="maxThresholdCelsius">
     </div>
+    <small id="emailHelp" class="form-text text-muted">Minimum and maximum temperature that the device can handle.</small>
   </div>
   <hr>
   <div class="form-row">
@@ -416,6 +507,7 @@
     <div class="form-group col-md-6">
       <label for="temperatureUnitForUX">Units that will see the user</label>
       <input type="text" class="form-control" id="temperatureUnitForUX" value="C">
+      <small id="emailHelp" class="form-text text-muted">C of F</small>
     </div>
   </div>
   <hr>
@@ -424,7 +516,7 @@
       <div class="custom-control custom-switch">
         <input type="checkbox" class="custom-control-input" id="customSwitch_queryOnlyTemperatureControl">
         <label class="custom-control-label" for="customSwitch_queryOnlyTemperatureControl">queryOnlyTemperatureControl</label>
-        <small class="form-text text-muted">"Indicates if the device can only be queried for state information, and cannot be controlled."</small>
+        <small class="form-text text-muted">"True if the device can only be queried for state information, and cannot be controlled."</small>
       </div>
     </div>
   </div>
@@ -433,7 +525,7 @@
       <div class="custom-control custom-switch">
         <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyTemperatureControl">
         <label class="custom-control-label" for="customSwitch_commandOnlyTemperatureControl">commandOnlyTemperatureControl</label>
-        <small class="form-text text-muted">Enable it if the hardware can not confirm its status after execute a command.</small>
+        <small class="form-text text-muted">True it if the hardware can not confirm its status after execute a command.</small>
       </div>
     </div>
   </div>
@@ -462,9 +554,10 @@
     <div class="form-group col-md-6">
       <label for="thermostatTemperatureUnit">Unit</label>
       <input type="text" class="form-control" id="thermostatTemperatureUnit" value="C">
+      <small class="form-text text-muted">C or F</small>
     </div>
     <div class="form-group col-md-6">
-      <label for="bufferRangeCelsius">Minimum offset between heat-cool setpoints</label>
+      <label for="bufferRangeCelsius">Minimum offset between heat-cool setpoints if heatcool mode is available.</label>
       <input type="number" class="form-control" id="bufferRangeCelsius" value="2">
     </div>
   </div>
@@ -474,7 +567,7 @@
       <div class="custom-control custom-switch">
         <input type="checkbox" class="custom-control-input" id="customSwitch_queryOnlyTemperatureSetting">
         <label class="custom-control-label" for="customSwitch_queryOnlyTemperatureSetting">queryOnlyTemperatureSetting</label>
-        <small class="form-text text-muted">"Indicates if the device can only be queried for state information, and cannot be controlled."</small>
+        <small class="form-text text-muted">True if the device can only be queried for state information, and cannot be controlled.</small>
       </div>
     </div>
   </div>
@@ -483,7 +576,7 @@
       <div class="custom-control custom-switch">
         <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyTemperatureSetting">
         <label class="custom-control-label" for="customSwitch_commandOnlyTemperatureSetting">commandOnlyTemperatureSetting</label>
-        <small class="form-text text-muted">Enable it if the hardware can not confirm its status after execute a command.</small>
+        <small class="form-text text-muted">True it if the hardware can not confirm its status after execute a command.</small>
       </div>
     </div>
   </div>
@@ -542,6 +635,41 @@
   </div>
 </div>
 
+<!-- HumiditySetting -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.HumiditySetting">
+  <h3>Attribute: Humidity setting</h3>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="minPercent">minPercent</label>
+      <input type="text" class="form-control" id="minPercent" value="10">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="maxPercent">maxPercent</label>
+      <input type="number" class="form-control" id="maxPercent" value="80">
+    </div>
+    <small class="form-text text-muted">These represent the minimum and maximum humidity levels as percentages that the device can handle. Must be positive values.</small>
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyHumiditySetting">
+        <label class="custom-control-label" for="customSwitch_commandOnlyHumiditySetting">commandOnlyHumiditySetting</label>
+        <small class="form-text text-muted">Set to false if the device can confirm the state of the device after executing a command.</small>
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_queryOnlyHumiditySetting">
+        <label class="custom-control-label" for="customSwitch_queryOnlyHumiditySetting">queryOnlyHumiditySetting</label>
+        <small class="form-text text-muted">Indicates if the device can only be queried for state information and cannot be controlled.</small>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Timer -->
 <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Timer">
   <h3>Attribute: Timer</h3>
@@ -557,7 +685,7 @@
       <div class="custom-control custom-switch">
         <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyTimer">
         <label class="custom-control-label" for="customSwitch_commandOnlyTimer">commandOnlyTimer</label>
-        <small class="form-text text-muted">"Indicates if the device can only be queried for state information, and cannot be controlled."</small>
+        <small class="form-text text-muted">Indicates if the device can only be queried for state information, and cannot be controlled.</small>
       </div>
     </div>
   </div>
