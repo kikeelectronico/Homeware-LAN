@@ -1,13 +1,42 @@
 {
   "devices": {
+    "action.devices.types.AC_UNIT": [
+      "action.devices.traits.FanSpeed",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.TemperatureSetting",
+      "action.devices.traits.Toggles"
+    ],
     "action.devices.types.AIRFRESHENER": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.AIRPURIFIER": [
+      "action.devices.traits.FanSpeed",
+      "action.devices.traits.Modes",
       "action.devices.traits.OnOff",
       "action.devices.traits.Toggles"
     ],
     "action.devices.types.AWNING": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.BATHTUB": [
+      "action.devices.traits.Fill",
+      "action.devices.traits.OnOff"
+    ],
+    "action.devices.types.BED": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.Scene",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.BLINDS": [
+      "action.devices.traits.Modes",
       "action.devices.traits.OpenClose"
     ],
     "action.devices.types.BOILER": [
+      "action.devices.traits.Modes",
       "action.devices.traits.TemperatureControl",
       "action.devices.traits.OnOff",
       "action.devices.traits.Toggles"
@@ -21,11 +50,36 @@
     "action.devices.types.CURTAIN": [
       "action.devices.traits.OpenClose"
     ],
+    "action.devices.types.DISHWASHER": [
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Modes",
+      "action.devices.traits.Toggles",
+      "action.devices.traits.RunCycle"
+    ],
     "action.devices.types.DOOR": [
       "action.devices.traits.OpenClose"
     ],
     "action.devices.types.DRAWER": [
       "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.DRYER": [
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Modes",
+      "action.devices.traits.Toggles",
+      "action.devices.traits.RunCycle"
+    ],
+    "action.devices.types.FAN": [
+      "action.devices.traits.FanSpeed",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.FIREPLACE": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.Toggles"
     ],
     "action.devices.types.GARAGE": [
       "action.devices.traits.OpenClose"
@@ -34,9 +88,29 @@
       "action.devices.traits.OpenClose"
     ],
     "action.devices.types.GRILL": [
+      "action.devices.traits.Modes",
       "action.devices.traits.OnOff",
       "action.devices.traits.StartStop",
       "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.HEATER": [
+      "action.devices.traits.FanSpeed",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.TemperatureSetting",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.HOOD": [
+      "action.devices.traits.FanSpeed",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.KETTLE": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.TemperatureControl",
       "action.devices.traits.Toggles"
     ],
     "action.devices.types.LIGHT": [
@@ -47,6 +121,24 @@
     "action.devices.types.LOCK": [
       "action.devices.traits.LockUnlock"
     ],
+    "action.devices.types.MOP": [
+      "action.devices.traits.Dock",
+      "action.devices.traits.Locator",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.RunCycle",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.MOWER": [
+      "action.devices.traits.Dock",
+      "action.devices.traits.Locator",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.RunCycle",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Toggles"
+    ],
     "action.devices.types.OUTLET": [
       "action.devices.traits.OnOff"
     ],
@@ -54,16 +146,34 @@
       "action.devices.traits.OpenClose",
       "action.devices.traits.Rotation"
     ],
+    "action.devices.types.RADIATOR": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.REFRIGERATOR": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.TemperatureControl",
+      "action.devices.traits.Toggles"
+    ],
     "action.devices.types.SCENE": [
       "action.devices.traits.Scene"
     ],
-    "action.devices.types.SHOWER": [
-      "action.devices.traits.OnOff",
-      "action.devices.traits.StartStop"
+    "action.devices.types.SECURITYSYSTEM": [
+      "action.devices.traits.ArmDisarm",
+      "action.devices.traits.StatusReport"
     ],
     "action.devices.types.SHUTTER": [
+      "action.devices.traits.Modes",
       "action.devices.traits.OpenClose",
       "action.devices.traits.Rotation"
+    ],
+    "action.devices.types.SHOWER": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.TemperatureControl"
     ],
     "action.devices.types.SPRINKLER": [
       "action.devices.traits.StartStop"
@@ -74,12 +184,32 @@
     "action.devices.types.THERMOSTAT": [
       "action.devices.traits.TemperatureSetting"
     ],
+    "action.devices.types.VACUUM": [
+      "action.devices.traits.Dock",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Toggles"
+    ],
     "action.devices.types.VALVE": [
       "action.devices.traits.OpenClose"
     ],
-    "action.devices.types.WINDOW": [
-      "action.devices.traits.OpenClose",
-      "action.devices.traits.LockUnlock"
+    "action.devices.types.WASHER": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.RunCycle",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.WATERHEATER": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.TemperatureControl",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.WINDOW": [      
+      "action.devices.traits.LockUnlock",
+      "action.devices.traits.OpenClose"
     ]
 
   },
@@ -433,6 +563,85 @@
           "value": 20
         }
       }
+    },
+    "action.devices.traits.FanSpeed": {
+      "attributes": {
+        "availableFanSpeeds": {
+          "type": "strigifyedObject"
+        },
+        "reversible": {
+          "type": "bool"
+        },
+        "commandOnlyFanSpeed": {
+          "type": "bool"
+        }
+      },
+      "param": {
+        "currentFanSpeedSetting": {
+          "type": "string",
+          "manual": false,
+          "value": ""
+        }
+      }
+    },
+    "action.devices.traits.ArmDisarm": {
+      "attributes": {
+        "availableArmLevels": {
+          "type": "strigifyedObject"
+        }
+      },
+      "param": {
+        "isArmed": {
+          "type": "bool",
+          "manual": false,
+          "value": false
+        },
+        "currentArmLevel": {
+          "type": "string",
+          "manual": false,
+          "value": ""
+        },
+        "exitAllowance": {
+          "type": "int",
+          "manual": false,
+          "value": 20
+        }
+      }
+    },
+    "action.devices.traits.Fill": {
+      "attributes": {
+        "availableFillLevels": {
+          "type": "strigifyedObject"
+        }
+      },
+      "param": {
+        "isFilled": {
+          "type": "bool",
+          "manual": false,
+          "value": false
+        },
+        "currentFillLevel": {
+          "type": "string",
+          "manual": false,
+          "value": ""
+        }
+      }
+    },
+    "action.devices.traits.RunCycle": {
+      "attributes": {},
+      "param": {}
+    },
+    "action.devices.traits.StatusReport": {
+      "attributes": {},
+      "param": {}
+    },
+    "action.devices.traits.Modes": {
+      "attributes": {
+        "availableModes": {
+          "type": "jsoneditor"
+        }
+      },
+      "param": {}
     }
   }
 }

@@ -613,7 +613,6 @@ def smarthome():
                         command = executions[0]['command']
 
                         #Critical commands are commands with special treatment
-                        #criticalCommands = ["action.devices.commands.LockUnlock"]
                         commandsOperation = {
                             "action.devices.commands.LockUnlock": {
                                 "operation": "execute"
@@ -647,6 +646,26 @@ def smarthome():
                                 "operation": "rename",
                                 "from": "temperature",
                                 "to": "temperatureSetpointCelsius"
+                            },
+                            "action.devices.commands.Reverse": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.ArmDisarm": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.Fill": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.Locate": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.Dock": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.SetModes": {
+                                "operation": "rename",
+                                "from": "updateModeSettings",
+                                "to": "currentModeSettings"
                             }
                         }
 

@@ -1,3 +1,20 @@
+<!-- RunCycle -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" name="trait_container" id="action.devices.traits.RunCycle">
+
+</div>
+
+<!-- StatusReport -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" name="trait_container" id="action.devices.traits.StatusReport">
+
+</div>
+
+<!-- Modes -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" name="trait_container" id="action.devices.traits.Modes">
+  <h3>Attribute: Modes (JSON editor)</h3>
+  <p>Edit your JSON under your own risk. Modes must be edit by hand for now. Learn how to do it <a href="https://github.com/kikeelectronico/Homeware-LAN/wiki/Compose-a-JSON-for-Modes" target="_blank">here</a><p>
+  <div id="jsoneditor"></div>
+</div>
+
 <!-- Toggles -->
 <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Toggles">
   <h3>Attribute: Toggles</h3>
@@ -67,6 +84,7 @@
       <input type="button" class="form-control" id="add_arm_levels_button" value="Add" onclick="addArmLevels()">
     </div>
   </div>
+  <!--
   <hr>
   <div class="form-row">
     <div class="form-group col-md-12">
@@ -77,6 +95,7 @@
       </div>
     </div>
   </div>
+  -->
 </div>
 
 <!-- CameraStream -->
@@ -182,6 +201,7 @@
     </div>
   </div>
   <hr>
+  <!--
   <div class="form-row">
     <div class="form-group col-md-12">
       <div class="custom-control custom-switch">
@@ -191,6 +211,7 @@
       </div>
     </div>
   </div>
+  -->
   <div class="form-row">
     <div class="form-group col-md-12">
       <div class="custom-control custom-switch">
@@ -207,6 +228,37 @@
         <label class="custom-control-label" for="customSwitch_commandOnlyFanSpeed">commandOnlyFanSpeed</label>
         <small class="form-text text-muted">Enable it if the hardware can not confirm its status after execute a command.</small>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Fill -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" name="trait_container" id="action.devices.traits.Fill">
+  <h3>Attribute: Fill</h3>
+  <input type="hidden" value="-1" id="availableFillLevels">
+  <div class="row" id="badge_fill_levels_container">
+    <!--Toggles cards-->
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-1">
+      <label for="languaje_fill_levels">Languaje:</label>
+      <select class="form-control" id="languaje_fill_levels">
+        <option>en</option>
+        <option>es</option>
+      </select>
+    </div>
+    <div class="form-group col-md-3">
+      <label for="name_fill_levels">Name:</label>
+      <input type="text" class="form-control" id="name_fill_levels" placeholder="Write a name">
+    </div>
+    <div class="form-group col-md-7">
+      <label for="synonyms_fill_levels">Synonymous:</label>
+      <input type="text" class="form-control" id="synonyms_fill_levels" placeholder="Write synonyms separated by ,">
+    </div>
+    <div class="form-group col-md-1">
+      <label for="add_fill_levels_button">.</label>
+      <input type="button" class="form-control" id="add_fill_levels_button" value="Add" onclick="addFillLevels()">
     </div>
   </div>
 </div>

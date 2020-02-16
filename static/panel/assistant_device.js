@@ -28,6 +28,7 @@ function loadRender(){
     device['traits'].forEach(function(trait){
       document.getElementById(trait).style.display = "block";
     });
+    loadEditor();
   } else if(step == 5){
     document.getElementById("next").innerHTML = 'Finish';
     var askForData = 0;
@@ -133,6 +134,8 @@ next.addEventListener('click', e => {
 
         } else if (traitAttributes[attribute]['type'] == "int"){
           value = parseInt(document.getElementById(attribute).value);
+        } else if (traitAttributes[attribute]['type'] == "jsoneditor"){
+          value = editor.get();
         } else if (traitAttributes[attribute]['type'] == "object"){
           //For each subattributes
           var subattributes = {};
@@ -168,7 +171,7 @@ next.addEventListener('click', e => {
   }
 
   //console.clear();
-  console.log(device);
+  //console.log(device);
 
   step += 1;
   render();
@@ -198,4 +201,24 @@ function save(){
 
 
 
+}
+
+data = {}
+var editor;
+
+function loadEditor(){
+  const container = document.getElementById('jsoneditor')
+
+  const options = {
+    mode: 'tree',
+    modes: ['code', 'tree', 'preview'], // allowed modes
+    onError: function (err) {
+      alert(err.toString())
+    },
+    onModeChange: function (newMode, oldMode) {
+      console.log('Mode switched from', oldMode, 'to', newMode)
+    }
+  }
+
+  editor = new JSONEditor(container, options)
 }

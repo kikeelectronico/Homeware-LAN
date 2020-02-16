@@ -1,3 +1,7 @@
+////////////////////////////////////////
+//Name Magic
+////////////////////////////////////////
+
 function addName(id){
   names = document.getElementById(id).value.split(",");
   names.pop();
@@ -35,8 +39,12 @@ function deleteName(id, delete_name){
   document.getElementById("add_" + id).value = "";
 }
 
+////////////////////////////////////////
+//Traits Magic
+////////////////////////////////////////
+
 function updateTraits(deviceTrait){
-  console.log(deviceReference);
+
   var tratis = deviceReference['devices'];
 
   //Traits that needs configuration
@@ -54,7 +62,7 @@ function updateTraits(deviceTrait){
     "action.devices.traits.StartStop",
     "action.devices.traits.TemperatureControl",
     "action.devices.traits.TemperatureSetting",
-    "action.devices.traits.Timer",
+    "action.devices.traits.Timer"
 
   ];
 
@@ -293,7 +301,7 @@ function composeFanSpeed(name, lang, synonyms){
 ////////////////////////////////////////
 //Open Direction Magic
 ////////////////////////////////////////
-//Ok
+
 function addOpenDirection(){
   names = document.getElementById("openDirection").value.split(",");
   names.pop();
@@ -313,7 +321,7 @@ function addOpenDirection(){
   document.getElementById("openDirection").value = string;
   document.getElementById("name_openDirection").value = "";
 }
-//Ok
+
 function deleteOpenDirection(delete_name){
   names = document.getElementById("openDirection").value.split(",");
   names.pop();
@@ -409,7 +417,6 @@ function addZones(){
   zones = document.getElementById("availableZones").value.split(",");
   zones.pop();
   var new_zones = document.getElementById("name_availableZones").value.split(",");
-  console.log(zones);
   var html = "";
   var string = "";
   zones.forEach(function(zone){
@@ -439,4 +446,77 @@ function deleteZone(delete_zone){
   });
   document.getElementById("badge_zones_container").innerHTML = html;
   document.getElementById("availableZones").value = string;
+}
+
+////////////////////////////////////////
+//Fill Levels Magic
+////////////////////////////////////////
+function addFillLevels(){
+  //Get lasst JSON
+  var availableFillLevels = [];
+  if (document.getElementById("availableFillLevels").value != "-1"){
+    availableFillLevels = JSON.parse(document.getElementById("availableFillLevels").value);
+  }
+  //Create the new toggle JSON
+  var newFillLevel = {
+    level_name: document.getElementById("name_fill_levels").value,
+    level_values: {
+      level_synonym: [
+
+      ],
+      lang: document.getElementById("languaje_fill_levels").value
+    },
+    ordered: false
+  }
+
+  var synonyms = document.getElementById("synonyms_fill_levels").value.split(",");
+  newFillLevel.level_values.level_synonym = synonyms;
+  //Save the new JSON
+  availableFillLevels.push(newFillLevel);
+  document.getElementById("availableFillLevels").value = JSON.stringify(availableFillLevels);
+  console.log(newFillLevel);
+  //Create the new HTML card
+  var html = "";
+  html += composeFillLevels(document.getElementById("name_fill_levels").value, document.getElementById("languaje_fill_levels").value, synonyms);
+  document.getElementById("badge_fill_levels_container").innerHTML += html;
+
+  //Clear form
+  document.getElementById("name_fill_levels").value = "";
+  document.getElementById("synonyms_fill_levels").value = "";
+}
+
+function deleteFillLevels(name){
+  var availableFillLevels = JSON.parse(document.getElementById("availableFillLevels").value);
+  var newFillLevel = []
+
+  console.log(availableFillLevels);
+
+  var html = "";
+  Object(availableFillLevels).forEach(function(fillLevel){
+    if (fillLevel.level_name != name){
+      html += composeFillLevels(fillLevel.level_name, fillLevel.level_values.lang, fillLevel.level_values.level_synonym);
+      newFillLevel.push(fillLevel);
+    }
+  });
+
+  document.getElementById("availableFillLevels").value = JSON.stringify(newFillLevel);
+  document.getElementById("badge_fill_levels_container").innerHTML = html
+}
+
+function composeFillLevels(name, lang, synonyms){
+  var html = "";
+  html += '<div class="col-sm-6" style="margin-top: 10px;">';
+    html += '<div class="card">';
+      html += '<div class="card-body">';
+        html += '<h5 class="card-title">' + name + ' - ' + lang + '</h5>';
+        synonyms.forEach(function(word){
+          html += '<span class="badge badge-primary" style="margin: 5px;">' + word + '</span>';
+        });
+        html += '<br><br>';
+        html += '<button type="button" class="btn btn-danger" onclick="deleteFillLevels(\'' + name + '\')">Delete</button>';
+      html += '</div>';
+    html += '</div>';
+  html += '</div>';
+
+  return html;
 }

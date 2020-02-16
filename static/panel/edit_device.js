@@ -1,5 +1,24 @@
 device = {}
 deviceReference = {}
+data = {}
+var editor;
+
+function loadEditor(){
+  const container = document.getElementById('jsoneditor')
+
+  const options = {
+    mode: 'tree',
+    modes: ['code', 'tree', 'preview'], // allowed modes
+    onError: function (err) {
+      alert(err.toString())
+    },
+    onModeChange: function (newMode, oldMode) {
+      console.log('Mode switched from', oldMode, 'to', newMode)
+    }
+  }
+
+  editor = new JSONEditor(container, options, data)
+}
 
 function loadDevices(localDevice, deviceID) {
   var ajaxDeviceReference = new XMLHttpRequest();
@@ -14,6 +33,18 @@ function loadDevices(localDevice, deviceID) {
 
 function loadDeviceReference(){
   deviceReference = JSON.parse(this.responseText);
+
+  var ajaxStep = new XMLHttpRequest();
+  ajaxStep.addEventListener("load", loadRender);
+  ajaxStep.open("GET", "/static/panel/assistant_device/4.html");
+  ajaxStep.send();
+
+
+  //loadDeviceData();
+}
+
+function loadRender(){
+  document.getElementById('attributes').innerHTML = this.responseText;
   loadDeviceData();
 }
 
@@ -70,6 +101,10 @@ function loadDeviceData(){
           document.getElementById("customSwitch_" + attributeKey).checked = device.attributes[attributeKey];
         else if (attributes[attributeKey]['type'] == "string" || attributes[attributeKey]['type'] == "int" )
           document.getElementById(attributeKey).value = device.attributes[attributeKey];
+        else if (attributes[attributeKey]['type'] == "jsoneditor"){
+          data = device.attributes[attributeKey];
+          loadEditor();
+        }
         else if (attributes[attributeKey]['type'] == "array"){
           var list = device.attributes[attributeKey];
           var str = "";
@@ -114,6 +149,8 @@ save.addEventListener('click', e => {
         device.attributes[attributeKey] = document.getElementById("customSwitch_" + attributeKey).checked;
       else if (attributes[attributeKey]['type'] == "string" || attributes[attributeKey]['type'] == "int" )
         device.attributes[attributeKey] = document.getElementById(attributeKey).value;
+      else if (attributes[attributeKey]['type'] == "jsoneditor")
+        device.attributes[attributeKey] = editor.get();
       else if (attributes[attributeKey]['type'] == "array"){
         var csv = document.getElementById(attributeKey).value.split(',')
         var tmp = []
