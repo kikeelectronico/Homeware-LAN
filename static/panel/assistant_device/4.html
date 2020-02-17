@@ -1,0 +1,753 @@
+<!-- RunCycle -->
+<div style="display: none;" name="trait_container" id="action.devices.traits.RunCycle">
+
+</div>
+
+<!-- StatusReport -->
+<div style="display: none;" name="trait_container" id="action.devices.traits.StatusReport">
+
+</div>
+
+<!-- Modes -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" name="trait_container" id="action.devices.traits.Modes">
+  <h3>Attribute: Modes (JSON editor)</h3>
+  <p>Edit your JSON under your own risk. Modes must be edit by hand for now. Learn how to do it <a href="https://github.com/kikeelectronico/Homeware-LAN/wiki/Compose-a-JSON-for-Modes" target="_blank">here</a><p>
+  <div id="jsoneditor"></div>
+</div>
+
+<!-- Toggles -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Toggles">
+  <h3>Attribute: Toggles</h3>
+  <input type="hidden" value="-1" id="availableToggles">
+  <div class="row" id="badge_toggles_container">
+    <!--Toggles cards-->
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-1">
+      <label for="languaje_toogle">Languaje:</label>
+      <select class="form-control" id="languaje_toggle">
+        <option>en</option>
+        <option>es</option>
+      </select>
+    </div>
+    <div class="form-group col-md-3">
+      <label for="name_toggle">Name:</label>
+      <input type="text" class="form-control" id="name_toggle" placeholder="Write a name">
+    </div>
+    <div class="form-group col-md-7">
+      <label for="synonyms_toggle">Synonymous:</label>
+      <input type="text" class="form-control" id="synonyms_toggle" placeholder="Write synonyms separated by ,">
+    </div>
+    <div class="form-group col-md-1">
+      <label for="add_toggle_button">.</label>
+      <input type="button" class="form-control" id="add_toggle_button" value="Add" onclick="addToggle()">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyToggles">
+        <label class="custom-control-label" for="customSwitch_commandOnlyToggles">commandOnlyToggles</label>
+        <small class="form-text text-muted">Enable it if the hardware can not confirm its status after execute a command.</small>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseToggle" aria-expanded="false" aria-controls="collapseExample">
+    Learn More
+  </button>
+  <div class="collapse" id="collapseToggle">
+    <div class="card card-body">
+      <p>
+        Toggles are like switches. It could be on or off.<br><br>
+        For example in a washer machine it could exist a toggle for enabling fast centrifugation. In this case we create a toogle named <i>Fast centrifugation</i> and we select <i>en</i> has the word's languaje.<br><br>
+        It is possible that we use differents words for the same toggle: we can say <i>Ok Google, enable Fast centrifugation at the washer machine</i> or we can say <i>Ok Google, enable Heavy centrifugation at the washer machine</i>.<br><br>
+        <i>Heavy centrifugation</i> will be a synonym for the toggle's name. We wrtie the synonyms down into the <i>Synonymous</i> text box separated by commas.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ArmDisarm -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" name="trait_container" id="action.devices.traits.ArmDisarm">
+  <h3>Attribute: ArmDisarm</h3>
+  <input type="hidden" value="-1" id="availableArmLevels">
+  <div class="row" id="badge_arm_levels_container">
+    <!--Toggles cards-->
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-1">
+      <label for="languaje_arm_levels">Languaje:</label>
+      <select class="form-control" id="languaje_arm_levels">
+        <option>en</option>
+        <option>es</option>
+      </select>
+    </div>
+    <div class="form-group col-md-3">
+      <label for="name_arm_levels">Name:</label>
+      <input type="text" class="form-control" id="name_arm_levels" placeholder="Write a name">
+    </div>
+    <div class="form-group col-md-7">
+      <label for="synonyms_arm_levels">Synonymous:</label>
+      <input type="text" class="form-control" id="synonyms_arm_levels" placeholder="Write synonyms separated by ,">
+    </div>
+    <div class="form-group col-md-1">
+      <label for="add_arm_levels_button">.</label>
+      <input type="button" class="form-control" id="add_arm_levels_button" value="Add" onclick="addArmLevels()">
+    </div>
+  </div>
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseArmDisarm" aria-expanded="false" aria-controls="collapseExample">
+    Learn More
+  </button>
+  <div class="collapse" id="collapseArmDisarm">
+    <div class="card card-body">
+      <p>
+        A security system can have differents levels of status, for example, global arm or parcial arm. Imagine that parcial arm only enables the garage's sensors<br><br>
+        Write the main level's name down into the <i>Name</i> texto box. For example, parcial arm.<br><br>
+        Select the languaje.<br><br>
+        Write all possibles synonyms of the main name separated by commas. For example, garage only, incomplete arm.<br><br>
+        Add every level using the add button.
+      </p>
+    </div>
+  </div>
+  <!--
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_arm_levels_ordered">
+        <label class="custom-control-label" for="customSwitch_arm_levels_ordered">Ordered</label>
+        <small class="form-text text-muted">" If set to true, additional grammar for increase/decrease logic will apply, in the order (increasing) of the speeds array."</small>
+      </div>
+    </div>
+  </div>
+  -->
+</div>
+
+<!-- CameraStream -->
+<!--
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.CameraStream">
+  <h3>Attribute: CameraStream</h3>
+  <div class="form-group">
+    <label for="cameraStreamSupportedProtocols">cameraStreamSupportedProtocols</label>
+    <select multiple class="form-control" id="cameraStreamSupportedProtocols">
+      <option>hls</option>
+      <option>dash</option>
+    </select>
+    <small id="emailHelp" class="form-text text-muted">Select all you need using <i>Ctrl</i> key.</small>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_cameraStreamNeedAuthToken">
+        <label class="custom-control-label" for="customSwitch_cameraStreamNeedAuthToken">cameraStreamNeedAuthToken</label>
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_cameraStreamNeedDrmEncryption">
+        <label class="custom-control-label" for="customSwitch_cameraStreamNeedDrmEncryption">cameraStreamNeedDrmEncryption</label>
+      </div>
+    </div>
+  </div>
+</div>
+-->
+
+<!-- ColorSetting -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.ColorSetting">
+  <h3>Attribute: ColorSetting</h3>
+  <div class="form-row">
+    <div class="form-group col-md-5">
+      <label for="colorModel">Model:</label>
+      <select class="form-control" id="colorModel">
+        <option>Choose</option>
+        <option value="rgb">rgb</option>
+        <!--<option value="hsv">hsv</option>-->
+        <option value="none">no rgb, only color temperature</option>
+      </select>
+    </div>
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <!--<div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_colorTemperaturRange">
+        <label class="custom-control-label" for="customSwitch_colorTemperaturRange">Color temperature control</label>
+      </div>-->
+      <small class="form-text text-muted">Must be used if no RGB model is selected.</small>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="temperatureMinK">Minimum color temperature [K]</label>
+      <input type="number" class="form-control" id="temperatureMinK">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="temperatureMaxK">Maximum color temperature [K]</label>
+      <input type="number" class="form-control" id="temperatureMaxK">
+    </div>
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyColorSetting">
+        <label class="custom-control-label" for="customSwitch_commandOnlyColorSetting">commandOnlyColorSetting</label>
+        <small class="form-text text-muted">True it if the hardware can not confirm its status after execute a command.</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FanSpeed -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.FanSpeed">
+  <h3>Attribute: FanSpeed</h3>
+  <input type="hidden" value="-1" id="availableFanSpeeds">
+  <div class="row" id="badge_fan_speeds_container">
+    <!--Toggles cards-->
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-1">
+      <label for="languaje_fan_speeds">Languaje:</label>
+      <select class="form-control" id="languaje_fan_speeds">
+        <option>en</option>
+        <option>es</option>
+      </select>
+    </div>
+    <div class="form-group col-md-3">
+      <label for="name_fan_speed">Name:</label>
+      <input type="text" class="form-control" id="name_fan_speed" placeholder="Write a name">
+    </div>
+    <div class="form-group col-md-7">
+      <label for="synonyms_fan_speed">Synonymous:</label>
+      <input type="text" class="form-control" id="synonyms_fan_speed" placeholder="Write synonyms separated by ,">
+    </div>
+    <div class="form-group col-md-1">
+      <label for="add_fan_speed_button">.</label>
+      <input type="button" class="form-control" id="add_fan_speed_button" value="Add" onclick="addFanSpeed()">
+    </div>
+  </div>
+  <hr>
+  <!--
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_ordered">
+        <label class="custom-control-label" for="customSwitch_ordered">Ordered</label>
+        <small class="form-text text-muted">" If set to true, additional grammar for increase/decrease logic will apply, in the order (increasing) of the speeds array."</small>
+      </div>
+    </div>
+  </div>
+  -->
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_reversible">
+        <label class="custom-control-label" for="customSwitch_reversible">Reversible</label>
+        <small class="form-text text-muted">" If set to true, this device supports blowing the fan in both directions and can accept the command to reverse fan direction."</small>
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyFanSpeed">
+        <label class="custom-control-label" for="customSwitch_commandOnlyFanSpeed">commandOnlyFanSpeed</label>
+        <small class="form-text text-muted">Enable it if the hardware can not confirm its status after execute a command.</small>
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseFanSpeed" aria-expanded="false" aria-controls="collapseExample">
+    Learn More
+  </button>
+  <div class="collapse" id="collapseFanSpeed">
+    <div class="card card-body">
+      A fan can have differents speed levels, for example, High, Half, Low.<br><br>
+      Write the main level's name down into the <i>Name</i> texto box. For example, High.<br><br>
+      Select the languaje.<br><br>
+      Write all possibles synonyms of the main name separated by commas. For example, Full,full speed,hight speed.<br><br>
+      Add every level using the add button.
+    </div>
+  </div>
+</div>
+
+<!-- Cook -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Cook">
+  <h3>Attribute: Cook</h3>
+  <h4>Food presets</h4>
+  <input type="hidden" value="-1" id="foodPresets">
+  <div class="row" id="badge_food_presets_container">
+    <!--Toggles cards-->
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-1">
+      <label for="languaje_food_presets">Languaje:</label>
+      <select class="form-control" id="languaje_food_presets">
+        <option>en</option>
+        <option>es</option>
+      </select>
+    </div>
+    <div class="form-group col-md-3">
+      <label for="name_food_presets">Name:</label>
+      <input type="text" class="form-control" id="name_food_presets" placeholder="Write a name">
+    </div>
+    <div class="form-group col-md-3">
+      <label for="units_food_presets">Units:</label>
+      <input type="text" class="form-control" id="units_food_presets" placeholder="Write the units separated by ," value="NO_UNITS">
+    </div>
+    <div class="form-group col-md-7">
+      <label for="synonyms_food_presets">Synonymous:</label>
+      <input type="text" class="form-control" id="synonyms_food_presets" placeholder="Write synonyms separated by ,">
+    </div>
+    <div class="form-group col-md-1">
+      <label for="add_fan_speed_button">.</label>
+      <input type="button" class="form-control" id="add_fan_speed_button" value="Add" onclick="addFoodPreset()">
+    </div>
+  </div>
+  <h4>Cooking modes</h4>
+
+  <!--<input type="hidden" value="-1" id="supportedCookingModes">
+  <div class="row" id="badge_supportedCookingModes_container">
+
+  </div>-->
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-11">
+      <label for="name_supportedCookingModes">Modes:</label>
+      <!--<input type="text" class="form-control" id="name_supportedCookingModes">
+      <small class="form-text text-muted">Separated by commas.</small>-->
+      <select multiple class="form-control" id="supportedCookingModes">
+        <option>UNKNOWN_COOKING_MODE</option>
+        <option>BAKE</option>
+        <option>BEAT</option>
+        <option>BLEND</option>
+        <option>BOIL</option>
+        <option>BREW</option>
+        <option>BROIL</option>
+        <option>CONVECTION_BAKE</option>
+        <option>COOK</option>
+        <option>DEFROST</option>
+        <option>DEHYDRATE</option>
+        <option>FERMENT</option>
+        <option>FRY</option>
+        <option>KNEAD</option>
+        <option>MICROWAVE</option>
+        <option>PRESSURE_COOK</option>
+        <option>PUREE</option>
+        <option>ROAST</option>
+        <option>SAUTE</option>
+        <option>SLOW_COOK</option>
+        <option>SOUS_VIDE</option>
+        <option>STEAM</option>
+        <option>STEW</option>
+        <option>WARM</option>
+        <option>WHIP</option>
+      </select>
+    </div>
+    <!--<div class="form-group col-md-1">
+      <label for="add_toggle_button">.</label>
+      <input type="button" class="form-control" id="add_openDirection_button" value="Add" onclick="addCookingMode()">
+    </div>-->
+  </div>
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseCook" aria-expanded="false" aria-controls="collapseExample">
+    Learn More
+  </button>
+  <div class="collapse" id="collapseCook">
+    <div class="card card-body">
+      <p>
+        This devices usually have preprogrammed recipe. Food presets represent these recipe.<br><br>
+        <b>Name</b> is the main name for the receipt, for example <i>Cup of chocolate</i>.<br><br>
+        <b>Units</b> is the units in with the name is meseaured. In this case there is no units so we write <i>NO_UNITS</i> down.<br><br>
+        <b>Lang</b> is the languaje.<br><br>
+        <b>Synonym</b> are the other possibles ways of calling the receipt. For example, Glass of chocolate,chocolate,mug of chocolate.
+      </p>
+    </div>
+  </div>
+
+
+</div>
+
+<!-- Fill -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" name="trait_container" id="action.devices.traits.Fill">
+  <h3>Attribute: Fill</h3>
+  <input type="hidden" value="-1" id="availableFillLevels">
+  <div class="row" id="badge_fill_levels_container">
+    <!--Toggles cards-->
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-1">
+      <label for="languaje_fill_levels">Languaje:</label>
+      <select class="form-control" id="languaje_fill_levels">
+        <option>en</option>
+        <option>es</option>
+      </select>
+    </div>
+    <div class="form-group col-md-3">
+      <label for="name_fill_levels">Name:</label>
+      <input type="text" class="form-control" id="name_fill_levels" placeholder="Write a name">
+    </div>
+    <div class="form-group col-md-7">
+      <label for="synonyms_fill_levels">Synonymous:</label>
+      <input type="text" class="form-control" id="synonyms_fill_levels" placeholder="Write synonyms separated by ,">
+    </div>
+    <div class="form-group col-md-1">
+      <label for="add_fill_levels_button">.</label>
+      <input type="button" class="form-control" id="add_fill_levels_button" value="Add" onclick="addFillLevels()">
+    </div>
+  </div>
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseFill" aria-expanded="false" aria-controls="collapseExample">
+    Learn More
+  </button>
+  <div class="collapse" id="collapseFill">
+    <div class="card card-body">
+      <p>
+        A bathtub can have differents filling levels, for example, High, Half, Low.<br><br>
+        Write the main level's name down into the <i>Name</i> texto box. For example, High.<br><br>
+        Select the languaje.<br><br>
+        Write all possibles synonyms of the main name separated by commas. For example, Full,complete.<br><br>
+        Add every level using the add button.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- LightEffects -->
+<!--
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.LightEffects">
+  <h3>Attribute: LightEffects</h3>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_colorLoop">
+        <label class="custom-control-label" for="customSwitch_colorLoop">colorLoop</label>
+        <small class="form-text text-muted">"colorLoop" is the only Effect supported by Google.</small>
+      </div>
+    </div>
+  </div>
+</div>
+-->
+
+<!-- OnOff -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.OnOff">
+  <h3>Attribute: OnOff</h3>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyOnOff">
+        <label class="custom-control-label" for="customSwitch_commandOnlyOnOff">commandOnlyOnOff</label>
+        <small id="emailHelp" class="form-text text-muted">True it if the hardware can not confirm its status after execute a command.</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Brightness -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Brightness">
+  <h3>Attribute: Brightness</h3>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyBrightness">
+        <label class="custom-control-label" for="customSwitch_commandOnlyBrightness">commandOnlyBrightness</label>
+        <small id="emailHelp" class="form-text text-muted">True it if the hardware can not confirm its status after execute a command.</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OpenClose -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.OpenClose">
+  <h3>Attribute: OpenClose</h3>
+  <input type="hidden" value="-1" id="openDirection">
+  <div class="row" id="badge_openDirection_container">
+    <!--Toggles cards-->
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-11">
+      <label for="name_openDirection">Directions:</label>
+      <input type="text" class="form-control" id="name_openDirection" disabled>
+      <small class="form-text text-muted">Separated by commas.</small>
+    </div>
+    <div class="form-group col-md-1">
+      <label for="add_toggle_button">.</label>
+      <input type="button" class="form-control" id="add_openDirection_button" value="Add" onclick="addOpenDirection()">
+    </div>
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_queryOnlyOpenClose">
+        <label class="custom-control-label" for="customSwitch_queryOnlyOpenClose">queryOnlyOpenClose</label>
+        <small class="form-text text-muted">Enable it if the hardware can not confirm its status after execute a command.</small>
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_discreteOnlyOpenClose">
+        <label class="custom-control-label" for="customSwitch_discreteOnlyOpenClose">discreteOnlyOpenClose</label>
+        <small class="form-text text-muted">When set to true, this indicates that the device must either be fully open or fully closed.</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scene -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Scene">
+  <h3>Attribute: Scene</h3>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_sceneReversible">
+        <label class="custom-control-label" for="customSwitch_sceneReversible">sceneReversible</label>
+        <small class="form-text text-muted">"Indicating that this scene may be reversed. This is only relevant for scenes that modify state and remember previous state."</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- StartStop -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.StartStop">
+  <h3>Attribute: StartStop</h3>
+  <input type="hidden" value="-1" id="availableZones">
+  <div class="row" id="badge_zones_container">
+    <!--zones badges-->
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-11">
+      <label for="name_availableZones">Zones:</label>
+      <input type="text" class="form-control" id="name_availableZones">
+    </div>
+    <div class="form-group col-md-1">
+      <label for="add_zones_button">.</label>
+      <input type="button" class="form-control" id="add_zones_button" value="Add" onclick="addZones()">
+    </div>
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_pausable">
+        <label class="custom-control-label" for="customSwitch_pausable">pausable</label>
+        <small class="form-text text-muted">"Indicating whether the device can be paused during operation."</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TemperatureControl -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.TemperatureControl">
+  <h3>Attribute: TemperatureControl</h3>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="minThresholdCelsius">Minimum temperature [Celsius]</label>
+      <input type="number" class="form-control" id="minThresholdCelsius">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="maxThresholdCelsius">Maximum temperature [Celsius]</label>
+      <input type="number" class="form-control" id="maxThresholdCelsius">
+    </div>
+    <small id="emailHelp" class="form-text text-muted">Minimum and maximum temperature that the device can handle.</small>
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="temperatureStepCelsius">Relative temperature step [Celsius]</label>
+      <input type="number" class="form-control" id="temperatureStepCelsius">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="temperatureUnitForUX">Units that will see the user</label>
+      <input type="text" class="form-control" id="temperatureUnitForUX" value="C">
+      <small id="emailHelp" class="form-text text-muted">C of F</small>
+    </div>
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_queryOnlyTemperatureControl">
+        <label class="custom-control-label" for="customSwitch_queryOnlyTemperatureControl">queryOnlyTemperatureControl</label>
+        <small class="form-text text-muted">"True if the device can only be queried for state information, and cannot be controlled."</small>
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyTemperatureControl">
+        <label class="custom-control-label" for="customSwitch_commandOnlyTemperatureControl">commandOnlyTemperatureControl</label>
+        <small class="form-text text-muted">True it if the hardware can not confirm its status after execute a command.</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TemperatureSetting -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.TemperatureSetting">
+  <h3>Attribute: TemperatureSetting</h3>
+  <div class="form-group">
+    <label for="availableThermostatModes">Thermostat modes</label>
+    <select multiple class="form-control" id="availableThermostatModes">
+      <option>off</option>
+      <option>heat</option>
+      <option>cool</option>
+      <option>on</option>
+      <option>heatcool</option>
+      <option>auto</option>
+      <option>fan-only</option>
+      <option>purifier</option>
+      <option>eco</option>
+      <option>dry</option>
+    </select>
+    <small id="emailHelp" class="form-text text-muted">Select all you need using <i>Ctrl</i> key.</small>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="thermostatTemperatureUnit">Unit</label>
+      <input type="text" class="form-control" id="thermostatTemperatureUnit" value="C">
+      <small class="form-text text-muted">C or F</small>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="bufferRangeCelsius">Minimum offset between heat-cool setpoints if heatcool mode is available.</label>
+      <input type="number" class="form-control" id="bufferRangeCelsius" value="2">
+    </div>
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_queryOnlyTemperatureSetting">
+        <label class="custom-control-label" for="customSwitch_queryOnlyTemperatureSetting">queryOnlyTemperatureSetting</label>
+        <small class="form-text text-muted">True if the device can only be queried for state information, and cannot be controlled.</small>
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyTemperatureSetting">
+        <label class="custom-control-label" for="customSwitch_commandOnlyTemperatureSetting">commandOnlyTemperatureSetting</label>
+        <small class="form-text text-muted">True it if the hardware can not confirm its status after execute a command.</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Rotation -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Rotation">
+  <h3>Attribute: Rotation</h3>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="rotationDegreesMin">rotationDegreesMin</label>
+      <input type="text" class="form-control" id="rotationDegreesMin" value="0">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="rotationDegreesMax">Minimum offset between heat-cool setpoints</label>
+      <input type="number" class="form-control" id="rotationDegreesMax" value="360">
+    </div>
+    <small class="form-text text-muted">These represent the minimum and maximum degrees that a device can rotate. Must be positive values.</small>
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyRotation">
+        <label class="custom-control-label" for="customSwitch_commandOnlyRotation">commandOnlyRotation</label>
+        <small class="form-text text-muted">"Indicates if the device can only be queried for state information, and cannot be controlled."</small>
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_supportsContinuousRotation">
+        <label class="custom-control-label" for="customSwitch_supportsContinuousRotation">supportsContinuousRotation</label>
+        <small class="form-text text-muted"> Set to true if the device allows continuous rotation. For example, a device currently at 270 degrees, rotated by 100 degrees clockwise, would go to 10 degrees.</small>
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_supportsDegrees">
+        <label class="custom-control-label" for="customSwitch_supportsDegrees">supportsDegrees</label>
+        <small class="form-text text-muted">Set to true if the device allows rotation by degree.</small>
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_supportsPercent">
+        <label class="custom-control-label" for="customSwitch_supportsPercent">supportsPercent</label>
+        <small class="form-text text-muted">Set to true if device allows rotation by percent. Note that one device may support either or both of these attributes (degrees and percent).</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HumiditySetting -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.HumiditySetting">
+  <h3>Attribute: Humidity setting</h3>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="minPercent">minPercent</label>
+      <input type="text" class="form-control" id="minPercent" value="10">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="maxPercent">maxPercent</label>
+      <input type="number" class="form-control" id="maxPercent" value="80">
+    </div>
+    <small class="form-text text-muted">These represent the minimum and maximum humidity levels as percentages that the device can handle. Must be positive values.</small>
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyHumiditySetting">
+        <label class="custom-control-label" for="customSwitch_commandOnlyHumiditySetting">commandOnlyHumiditySetting</label>
+        <small class="form-text text-muted">Set to false if the device can confirm the state of the device after executing a command.</small>
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_queryOnlyHumiditySetting">
+        <label class="custom-control-label" for="customSwitch_queryOnlyHumiditySetting">queryOnlyHumiditySetting</label>
+        <small class="form-text text-muted">Indicates if the device can only be queried for state information and cannot be controlled.</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Timer -->
+<div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Timer">
+  <h3>Attribute: Timer</h3>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="maxTimerLimitSec">Longest timer setting [seconds]</label>
+      <input type="number" class="form-control" id="maxTimerLimitSec">
+    </div>
+  </div>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyTimer">
+        <label class="custom-control-label" for="customSwitch_commandOnlyTimer">commandOnlyTimer</label>
+        <small class="form-text text-muted">Indicates if the device can only be queried for state information, and cannot be controlled.</small>
+      </div>
+    </div>
+  </div>
+</div>

@@ -5,21 +5,23 @@
 
     <div id="navbarBlock"></div>
 
-    <div id="grid" class="container">
-      <div class="row rowP">
+    <div id="grid" class="container containerP">
+
+      <div class="row">
         <div class="col">
-          <button type="button" class="btn btn-primary" onclick="window.location.href='/devices/assistant/'">New device or scene</button>
+          <div id="alertContainer"></div>
         </div>
       </div>
-      <hr class="hrWhite">
-      <h2>Devices</h2>
-      <div class="row rowP" id="devicesList">
+      <div class="row">
+        <div class="col">
+          <div class="container p-3 mb-2 bg-light text-dark" style="text-align: right">
+            <button type="button" class="btn btn-primary" id="next">Next</button>
+          </div>
 
-      </div>
-      <hr class="hrWhite">
-      <h2>Scenes</h2>
-      <div class="row rowP" id="scenesList">
+          <form id="formulario">
 
+          </form>
+        </div>
       </div>
     </div>
 
@@ -30,8 +32,23 @@
       </div>
     </div>
 
+    <script src="/static/panel/coolNames.js"></script>
+    <script src="/static/panel/assistant_device.js"></script>
+    <script src="/static/panel/edit_device_dependencies.js"></script>
+
+    <script>
+      //Load things
+      window.addEventListener('load', function(event){
+        render();
+      })
+
+    </script>
+
+    <script src="https://www.gstatic.com/firebasejs/3.5.0/firebase.js"></script>
     <script src="/static/panel/load.js"></script>
-    <script src="/static/panel/devices.js"></script>
+    <script src="/static/panel/footer.js"></script>
+    <link href="/static/JSONeditor/jsoneditor.css" rel="stylesheet" type="text/css">
+    <script src="/static/JSONeditor/jsoneditor.js"></script>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -40,6 +57,5 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 
-    <script src="/static/panel/footer.js"></script>
   </body>
 </html>

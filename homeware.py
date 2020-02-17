@@ -64,6 +64,8 @@ def devices(process = "", id = ""):
             return render_template('panel/edit_device.html', deviceString=deviceString, deviceID=id)
         else:
             return render_template('panel/edit_device.html', deviceID=id)
+    elif process == 'assistant':
+        return render_template('panel/assistant_device.html', domain=domain)
     else:
         return render_template('panel/devices.html', domain=domain)
 
@@ -315,35 +317,23 @@ def front(operation, segment = "", value = ''):
             elif operation == 'device':
                 data = readJSON()
 
-                if segment == 'update' or segment == 'create':
+                if segment == 'update':
                     incommingData = json.loads(value)
                     deviceID = incommingData['devices']['id']
+                    temp_devices = [];
+                    for device in data['devices']:
+                        if device['id'] == incommingData['devices']['id']:
+                            temp_devices.append(incommingData['devices'])
+                        else:
+                            temp_devices.append(device)
+                    data['devices'] = temp_devices
 
-                    #Updating device or create device
-                    if segment == 'update':
-                        temp_devices = [];
-                        for device in data['devices']:
-                            if device['id'] == incommingData['devices']['id']:
-                                temp_devices.append(incommingData['devices'])
-                            else:
-                                temp_devices.append(device)
-                        data['devices'] = temp_devices
-                    else:
-                        data['devices'].append(incommingData['devices'])
-
-                    #Update alive
-                    data['alive'][deviceID] = incommingData['alive']
-                    #Update status
-                    if not deviceID in data['status'].keys():
-                        data['status'][deviceID] = {}
-                    #Create dummy status using selected traits
-                    with open('paramByTrait.json', 'r') as f:
-                        paramByTrait = json.load(f)
-                        for trait in incommingData['devices']['traits']:
-                            for paramKey in paramByTrait[trait].keys():
-                                data['status'][deviceID][paramKey] = paramByTrait[trait][paramKey]
-
-                    data['status'][deviceID]['online'] = True
+                elif segment == 'create':
+                    incommingData = json.loads(value)
+                    deviceID = incommingData['devices']['id']
+                    data['devices'].append(incommingData['devices'])
+                    data['status'][deviceID] = {}
+                    data['status'][deviceID] = incommingData['status']
 
                 elif segment == 'delete':
                     temp_devices = [];
@@ -355,10 +345,6 @@ def front(operation, segment = "", value = ''):
                     status = data['status']
                     del status[value]
                     data['status'] = status
-                    # Delete alive
-                    alive = data['alive']
-                    del alive[value]
-                    data['alive'] = alive
 
                 writeJSON(data)
 
@@ -374,6 +360,7 @@ def front(operation, segment = "", value = ''):
                 if segment == 'update':
                     incommingData = json.loads(value)
                     data['rules'][int(incommingData['n'])] = incommingData['rule']
+
                 if segment == 'create':
                     incommingData = json.loads(value)
                     data['rules'].append(incommingData['rule'])
@@ -622,12 +609,92 @@ def smarthome():
                     for device in devices:
                         deviceId = device['id']
                         obj['payload']['commands'][n]['ids'].append(deviceId)
-                        deviceParams = executions[0]['params']
+                        params = executions[0]['params']
+                        command = executions[0]['command']
 
-                        deviceParamsKeys = deviceParams.keys()
-                        for key in deviceParamsKeys:
-                            data['status'][deviceId][key] = deviceParams[key]
-                        publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
+                        #Critical commands are commands with special treatment
+                        commandsOperation = {
+                            "action.devices.commands.LockUnlock": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.OpenClose": {
+                                "operation": "object",
+                                "object": "openState"
+                            },
+                            "action.devices.commands.StartStop": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.PauseUnpause": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.TimerStart": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.TimerAdjust": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.TimerPause": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.TimerResume": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.TimerCancel": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.SetTemperature": {
+                                "operation": "rename",
+                                "from": "temperature",
+                                "to": "temperatureSetpointCelsius"
+                            },
+                            "action.devices.commands.Reverse": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.ArmDisarm": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.Fill": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.Locate": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.Dock": {
+                                "operation": "execute"
+                            },
+                            "action.devices.commands.SetModes": {
+                                "operation": "rename",
+                                "from": "updateModeSettings",
+                                "to": "currentModeSettings"
+                            },
+                            "action.devices.commands.SetHumidity": {
+                                "operation": "rename",
+                                "from": "humidity",
+                                "to": "humiditySetpointPercent"
+                            }
+                        }
+
+                        if command in commandsOperation.keys():
+                            if commandsOperation[command]['operation'] == 'execute':
+                                paramsKeys = params.keys()
+                                for key in paramsKeys:
+                                    criticalData = "{" + key + ":" + str(params[key]) + "}"
+                                    publish.single("device/"+deviceId, criticalData, hostname="localhost")
+                            elif commandsOperation[command]['operation'] == 'object':
+                                paramsKeys = params.keys()
+                                for key in paramsKeys:
+                                    data['status'][deviceId][commandsOperation[command]['object']][key] = params[key]
+                                publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
+                            elif commandsOperation[command]['operation'] == 'rename':
+                                paramsKeys = params.keys()
+                                for key in paramsKeys:
+                                    data['status'][deviceId][commandsOperation[command]['to']] = params[key]
+                                publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
+                        else:
+                            paramsKeys = params.keys()
+                            for key in paramsKeys:
+                                data['status'][deviceId][key] = params[key]
+                            publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
 
                     obj['payload']['commands'][n]['states'] = data['status']
                     n += 1
@@ -785,6 +852,7 @@ def mqttReader():
     client.loop_forever()
 
 if __name__ == "__main__":
+    #runapp()
     #Flask App and Api
     flaskProcess = multiprocessing.Process(target=runapp)
     flaskProcess.start()

@@ -1,0 +1,30 @@
+<div class="container p-3 mb-2 bg-light text-dark">
+  <h3>ID and type</h3>
+  <div class="form-group">
+    <label for="id">Device ID:</label>
+    <input type="text" class="form-control" id="id">
+  </div>
+  <div class="form-group">
+    <label for="type">Type:</label>
+    <select class="form-control" id="type">
+      <option>Select a device</option>
+    </select>
+  </div>
+</div>
+
+
+<input type="hidden" id="nick_names" value="">
+<div class="container p-3 mb-2 bg-light text-dark ">
+  <h3>Nick names</h3>
+  <div id="badge_nick_names_container">
+
+  </div>
+  <hr>
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" id="add_nick_names" placeholder="Write a new one and click Add">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button" id="add_nick_names_button" onclick="addName('nick_names')">Add</button>
+    </div>
+  </div>
+  <small id="emailHelp" class="form-text text-muted">A list separeted by ,</small>
+</div>

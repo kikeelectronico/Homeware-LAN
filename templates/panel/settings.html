@@ -188,7 +188,6 @@
       function loadToken(local_data){
         var token = JSON.parse(local_data);
 
-        console.log(token);
         document.getElementById('clientId').value = token['client_id'];
         document.getElementById('clientSecret').value = token['client_secret'];
 
