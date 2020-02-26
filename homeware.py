@@ -614,53 +614,14 @@ def smarthome():
 
                         #Critical commands are commands with special treatment
                         commandsOperation = {
-                            "action.devices.commands.LockUnlock": {
-                                "operation": "execute"
-                            },
                             "action.devices.commands.OpenClose": {
                                 "operation": "object",
                                 "object": "openState"
-                            },
-                            "action.devices.commands.StartStop": {
-                                "operation": "execute"
-                            },
-                            "action.devices.commands.PauseUnpause": {
-                                "operation": "execute"
-                            },
-                            "action.devices.commands.TimerStart": {
-                                "operation": "execute"
-                            },
-                            "action.devices.commands.TimerAdjust": {
-                                "operation": "execute"
-                            },
-                            "action.devices.commands.TimerPause": {
-                                "operation": "execute"
-                            },
-                            "action.devices.commands.TimerResume": {
-                                "operation": "execute"
-                            },
-                            "action.devices.commands.TimerCancel": {
-                                "operation": "execute"
                             },
                             "action.devices.commands.SetTemperature": {
                                 "operation": "rename",
                                 "from": "temperature",
                                 "to": "temperatureSetpointCelsius"
-                            },
-                            "action.devices.commands.Reverse": {
-                                "operation": "execute"
-                            },
-                            "action.devices.commands.ArmDisarm": {
-                                "operation": "execute"
-                            },
-                            "action.devices.commands.Fill": {
-                                "operation": "execute"
-                            },
-                            "action.devices.commands.Locate": {
-                                "operation": "execute"
-                            },
-                            "action.devices.commands.Dock": {
-                                "operation": "execute"
                             },
                             "action.devices.commands.SetModes": {
                                 "operation": "rename",
@@ -675,12 +636,7 @@ def smarthome():
                         }
 
                         if command in commandsOperation.keys():
-                            if commandsOperation[command]['operation'] == 'execute':
-                                paramsKeys = params.keys()
-                                for key in paramsKeys:
-                                    criticalData = "{" + key + ":" + str(params[key]) + "}"
-                                    publish.single("device/"+deviceId, criticalData, hostname="localhost")
-                            elif commandsOperation[command]['operation'] == 'object':
+                            if commandsOperation[command]['operation'] == 'object':
                                 paramsKeys = params.keys()
                                 for key in paramsKeys:
                                     data['status'][deviceId][commandsOperation[command]['object']][key] = params[key]
