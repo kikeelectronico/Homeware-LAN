@@ -764,7 +764,10 @@ def verifyRules():
         #Update targets if needed
         if verified == ammountTriggers:
             for target in rule['targets']:
-                data['status'][target['id']][target['param']] = target['value']
+                if str(target['value']) == 'toggle':
+                    data['status'][target['id']][target['param']] = not data['status'][target['id']][target['param']]
+                else:
+                    data['status'][target['id']][target['param']] = target['value']
                 publish.single("device/"+target['id'], json.dumps(data['status'][target['id']]), hostname="localhost")
 
     writeJSON(data)
