@@ -47,6 +47,12 @@ class Data:
         with open(self.secureFile, 'w') as f:
             json.dump(self.secureData, f)
 
+    def refresh(self):
+        with open(self.homewareFile, 'r') as f:
+            self.homewareData = json.load(f)
+        with open(self.secureFile, 'r') as f:
+            self.secureData = json.load(f)
+            
 # DEVICES
 
     def getDevices(self):

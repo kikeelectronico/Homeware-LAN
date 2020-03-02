@@ -53,7 +53,7 @@
           </form>
 
           <div class="container p-3 mb-2 bg-light text-dark">
-            <h3>Buckup and restore</h3>
+            <h3>Backup and restore</h3>
             <hr>
             <div class="form-row">
               <div class="form-group col-md-3">
@@ -66,7 +66,7 @@
             <hr>
             <div class="form-row">
               <div class="form-group col-md-7">
-                <form method=post enctype=multipart/form-data action="/files/restore/file/{{ token }}/">
+                <form method=post enctype=multipart/form-data action="/files/restore/file/" id="backupUploaderForm">
                   <input type="file" class="form-control-file" name =file>
                   <br>
                   <button type="submit" class="btn btn-primary">Upload</button>
@@ -133,6 +133,8 @@
         if ('{{ msg }}' != 'none'){
           document.getElementById('textMessageAlert').innerHTML = 'Upload: {{ msg }}';
         }
+
+        document.getElementById('backupUploaderForm').action += getCookieValue('token') + '/';
       });
 
       function laodSettingsRequest(){

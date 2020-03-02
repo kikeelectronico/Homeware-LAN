@@ -2,6 +2,7 @@ import os
 from flask import Flask, request, render_template, redirect, send_file, url_for
 import json
 import time
+from datetime import datetime
 import random
 import subprocess
 import multiprocessing
@@ -88,10 +89,6 @@ def rules(process = "", id = -1):
 @app.route('/settings/<msg>/')
 def settings(msg = ''):
 
-    # TODO -> Read token from Cookie instead of python
-    #config = readConfig()
-    token = 'I am not you token ;-)'#config['token']['front']
-
     if msg == 'ok':
         msg = 'Saved correctly'
     elif 'fail' in msg:
@@ -99,7 +96,7 @@ def settings(msg = ''):
     else:
         msg = 'none'
 
-    return render_template('panel/settings.html', token=token, msg=msg)
+    return render_template('panel/settings.html', msg=msg)
 
 @app.route('/assistant')
 @app.route('/assistant/')
@@ -253,12 +250,13 @@ def files(operation = '', file = '', token = ''):
     frontToken = hData.getToken('front')
     if token == frontToken:
         if operation == 'buckup':
-            ts = time.time()
+            now = datetime.now()
+            date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
             result = send_file(file + '.json',
-               mimetype="application/json", # use appropriate type based on file
-               attachment_filename= file + '.json', #file + '_' + str(ts) + '.json',
-               as_attachment=True,
-               conditional=False)
+               mimetype = "application/json", # use appropriate type based on file
+               attachment_filename = file + '_' + str(date_time) + '.json',
+               as_attachment = True,
+               conditional = False)
             return result
         elif operation == 'restore':
             if request.method == 'POST':
@@ -270,6 +268,8 @@ def files(operation = '', file = '', token = ''):
                 if file and allowed_file(file.filename):
                     filename = file.filename
                     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    subprocess.run(["mv", file.filename, "homeware.json"],  stdout=subprocess.PIPE)
+                    hData.refresh()
                     return redirect('/settings/ok/')
         else:
             return 'Operation unknown'
