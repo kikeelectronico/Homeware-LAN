@@ -52,7 +52,7 @@ class Data:
             self.homewareData = json.load(f)
         with open(self.secureFile, 'r') as f:
             self.secureData = json.load(f)
-            
+
 # DEVICES
 
     def getDevices(self):

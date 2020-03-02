@@ -20,31 +20,38 @@ function loadEditor(){
   editor = new JSONEditor(container, options, data)
 }
 
-function loadDevices(localDevice, deviceID) {
-  var ajaxDeviceReference = new XMLHttpRequest();
-  ajaxDeviceReference.addEventListener("load", loadDeviceReference);
-  ajaxDeviceReference.open("GET", "/static/deviceReference.json");
-  ajaxDeviceReference.send();
-
-  device = localDevice;
-  console.log(device);
-
+function requestDevices(deviceID) {
+  console.log(deviceID);
+  var ajaxDevice = new XMLHttpRequest();
+  ajaxDevice.addEventListener("load", requestDeviceReference);
+  ajaxDevice.open("GET", "/api/device/get/" + deviceID + '/');
+  ajaxDevice.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+  ajaxDevice.send();
 }
 
-function loadDeviceReference(){
+function requestDeviceReference() {
+
+  device = JSON.parse(this.responseText);
+
+  var ajaxDeviceReference = new XMLHttpRequest();
+  ajaxDeviceReference.addEventListener("load", requestDataForRender);
+  ajaxDeviceReference.open("GET", "/static/deviceReference.json");
+  ajaxDeviceReference.send();
+}
+
+function requestDataForRender(){
   deviceReference = JSON.parse(this.responseText);
 
   var ajaxStep = new XMLHttpRequest();
-  ajaxStep.addEventListener("load", loadRender);
+  ajaxStep.addEventListener("load", render);
   ajaxStep.open("GET", "/static/panel/assistant_device/4.html");
   ajaxStep.send();
 
-
-  //loadDeviceData();
 }
 
-function loadRender(){
+function render(){
   document.getElementById('attributes').innerHTML = this.responseText;
+
   loadDeviceData();
 }
 
@@ -148,6 +155,10 @@ function loadDeviceData(){
 save.addEventListener('click', e => {
   //Compose JSON
   device['name']['name'] = document.getElementById("name").value;
+  device['deviceInfo']['hwVersion'] = document.getElementById("hwVersion").value;
+  device['deviceInfo']['manufacturer'] = document.getElementById("manufacturer").value;
+  device['deviceInfo']['model'] = document.getElementById("model").value;
+  device['deviceInfo']['swVersion'] = document.getElementById("swVersion").value;
   device['name']['defaultNames'] = names = document.getElementById('default_names').value.split(",");
   device['name']['nicknames'] = names = document.getElementById('nick_names').value.split(",");
 
@@ -271,10 +282,3 @@ deleteDevice.addEventListener('click', e => {
 
 
 });
-
-function getParameterByName(name) {
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-    results = regex.exec(location.search);
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}

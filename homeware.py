@@ -52,16 +52,7 @@ def devices(process = "", id = ""):
 
     if process == 'edit':
         if id != '':
-            data = readJSON()
-            devices = data['devices']
-            #Find the device
-            device = {}
-            for d in devices:
-                if id == d['id']:
-                    device = d
-                    break
-            deviceString=json.dumps(device)
-            return render_template('panel/edit_device.html', deviceString=deviceString, deviceID=id)
+            return render_template('panel/edit_device.html', deviceID=id)
         else:
             return render_template('panel/devices.html')
     elif process == 'assistant':
@@ -201,7 +192,7 @@ def front(operation, segment = "", value = ''):
                 return response
             #Special operations
             elif segment == 'device':
-
+                devices = hData.getDevices()
                 if operation == 'update':
                     incommingData = json.loads(value)
                     hData.updateDevice(incommingData)
@@ -210,9 +201,14 @@ def front(operation, segment = "", value = ''):
                     hData.createDevice(incommingData)
                 elif operation == 'delete':
                     hData.deleteDevice(value)
+                elif operation == 'get':
+                    for device in devices:
+                        if device['id'] == value:
+                            devices = device
+                            break
 
                 response = app.response_class(
-                    response=json.dumps(hData.getDevices()),
+                    response=json.dumps(devices),
                     status=200,
                     mimetype='application/json'
                 )
