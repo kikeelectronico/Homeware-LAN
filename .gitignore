@@ -1,6 +1,7 @@
 config.json
 homeware.json
 token.json
+secure.json
 hardware.py
 
 # Byte-compiled / optimized / DLL files

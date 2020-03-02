@@ -50,22 +50,6 @@
 
             </div>
 
-            <div class="container p-3 mb-2 bg-light text-dark">
-              <h3>Homeware API</h3>
-              <div class="form-row">
-                <div class="form-group col-md-7">
-                    <input type="text" class="form-control" id="apiClockURL" value="https://{{ domain }}/clock" disabled>
-                </div>
-                <div class="form-group col-md-3 colAligmentL">
-                    <label for="apiClockURL">Clock's function URL</label>
-                </div>
-                <div class="form-group col-md-2 colAligmentA">
-                  <a class="badge badge-primary" data-toggle="modal" data-target="#modal" style="color:white;" onclick="updateModal('apiClockURL')">Learn more</a>
-                </div>
-              </div>
-
-            </div>
-
           </form>
 
           <div class="container p-3 mb-2 bg-light text-dark">
@@ -156,7 +140,7 @@
         http.addEventListener("load", function(){
           loadSettings(http.responseText);
         });
-        http.open("GET", "/front/read/settings");
+        http.open("GET", "/api/read/settings");
         http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
         http.send();
       }
@@ -178,9 +162,10 @@
       function laodTokenRequest(){
         var http = new XMLHttpRequest();
         http.addEventListener("load", function(){
+          console.log(http.responseText)
           loadToken(http.responseText);
         });
-        http.open("GET", "/front/read/token");
+        http.open("GET", "/api/secure/get");
         http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
         http.send();
       }
@@ -199,12 +184,12 @@
         data['client_id'] = document.getElementById('clientId').value;
         data['client_secret'] = document.getElementById('clientSecret').value;
 
-        saveData('token', data);
+        saveData('secure', data);
         //Update the text message
         updateMessageWithTime();
       });
 
-      function saveData(param, value){
+      function saveData(segment, value){
         var http = new XMLHttpRequest();
         http.addEventListener("load", function(){
           if (http.responseText != 'Bad token')
@@ -213,7 +198,7 @@
             document.getElementById('textMessageAlert').innerHTML = 'An error has happed.';
           }
         });
-        http.open("GET", "/front/write/" + param + "/" + JSON.stringify(value) + '/');
+        http.open("GET", "/api/" + segment + "/update/" + JSON.stringify(value) + '/');
         http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
         http.send();
       }

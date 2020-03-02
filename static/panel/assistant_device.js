@@ -195,7 +195,7 @@ function save(){
   http.addEventListener("load", function(){
     console.log(http.responseText);
   });
-  http.open("GET", "/front/device/create/" + JSON.stringify(data));
+  http.open("GET", "/api/device/create/" + JSON.stringify(data));
   http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
   http.send();
 

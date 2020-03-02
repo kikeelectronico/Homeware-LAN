@@ -14,9 +14,6 @@ def readConfig():
         data = json.load(f)
         return data
 
-def writeConfig(data):
-    with open('config.json', 'w') as f:
-        json.dump(data, f)
 
 def readToken():
     with open('token.json', 'r') as f:

@@ -5,10 +5,9 @@ import time
 import random
 import subprocess
 import multiprocessing
-from cryptography.fernet import Fernet
 import paho.mqtt.publish as publish
 import paho.mqtt.client as mqtt
-from homewareData import readJSON, writeJSON, readConfig, writeConfig, readToken, writeToken
+from data import Data
 
 UPLOAD_FOLDER = ''
 ALLOWED_EXTENSIONS = {'json'}
@@ -18,7 +17,10 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #Global variables
 deviceAliveTimeout = 20000
-responseURL = '';
+responseURL = ''
+
+#Init the data managment object
+hData = Data()
 
 #app
 def runapp():
@@ -33,11 +35,11 @@ def login():
 
 @app.route('/')
 def index():
-    try:
-        readConfig()
-        return render_template('panel/index.html')
-    except:
+    if hData.firstRun():
         return redirect("/assistant/", code=302)
+    else:
+        return render_template('panel/index.html')
+
 
 @app.route('/devices')
 @app.route('/devices/')
@@ -46,9 +48,6 @@ def index():
 @app.route('/devices/<process>/<id>')
 @app.route('/devices/<process>/<id>/')
 def devices(process = "", id = ""):
-
-    config = readConfig()
-    domain = config['domain']
 
     if process == 'edit':
         if id != '':
@@ -63,11 +62,11 @@ def devices(process = "", id = ""):
             deviceString=json.dumps(device)
             return render_template('panel/edit_device.html', deviceString=deviceString, deviceID=id)
         else:
-            return render_template('panel/edit_device.html', deviceID=id)
+            return render_template('panel/devices.html')
     elif process == 'assistant':
-        return render_template('panel/assistant_device.html', domain=domain)
+        return render_template('panel/assistant_device.html')
     else:
-        return render_template('panel/devices.html', domain=domain)
+        return render_template('panel/devices.html')
 
 @app.route('/rules')
 @app.route('/rules/')
@@ -77,34 +76,22 @@ def devices(process = "", id = ""):
 @app.route('/rules/<process>/<int:id>/')
 def rules(process = "", id = -1):
 
-    config = readConfig()
-    domain = config['domain']
-
     if process == 'edit':
-        if id != -1:
-            data = readJSON()
-
-            return render_template('panel/edit_rules.html', ruleID=id)
-        else:
             return render_template('panel/edit_rules.html', ruleID=id)
     elif process == 'json':
-        if id != -1:
-            data = readJSON()
-
-            return render_template('panel/json_rules.html', ruleID=id)
-        else:
             return render_template('panel/json_rules.html', ruleID=id)
     else:
-        return render_template('panel/rules.html', domain=domain)
+        return render_template('panel/rules.html')
 
 @app.route('/settings')
 @app.route('/settings/')
 @app.route('/settings/<msg>/')
 def settings(msg = ''):
 
-    config = readConfig()
-    domain = config['domain']
-    token = config['token']['front']
+    # TODO -> Read token from Cookie instead of python
+    #config = readConfig()
+    token = 'I am not you token ;-)'#config['token']['front']
+
     if msg == 'ok':
         msg = 'Saved correctly'
     elif 'fail' in msg:
@@ -112,7 +99,7 @@ def settings(msg = ''):
     else:
         msg = 'none'
 
-    return render_template('panel/settings.html', domain=domain, token=token, msg=msg)
+    return render_template('panel/settings.html', token=token, msg=msg)
 
 @app.route('/assistant')
 @app.route('/assistant/')
@@ -142,7 +129,6 @@ def assistant(step = 'welcome'):
         except:
             #Copy the DDBB template
             subprocess.run(["cp", "configuration_templates/template_homeware.json", "homeware.json"],  stdout=subprocess.PIPE)
-            subprocess.run(["cp", "configuration_templates/template_token.json", "token.json"],  stdout=subprocess.PIPE)
 
 
     return render_template('assistant/step_' + step + '.html', step=step, next=steps[step])
@@ -154,102 +140,28 @@ def test():
     publish.single("test", "payload", hostname="localhost")
     return 'Load'
 
-#Asistant operations
-@app.route('/assistant/operation/<segment>')
-@app.route('/assistant/operation/<segment>/')
-@app.route('/assistant/operation/<segment>/<value>')
-@app.route('/assistant/operation/<segment>/<value>/')
-def operation(segment, value=""):
-    if segment == 'user':
-        try:
-            readConfig()
-            return 'Your user has beed set in the past'
-        except:
-            data = {}
-            key = Fernet.generate_key()
-            data['key'] = str(key)
-            cipher_suite = Fernet(key)
-            ciphered_text = cipher_suite.encrypt(str.encode(value.split(':')[1]))   #required to be bytes
-            data['user'] = value.split(':')[0]
-            data['pass'] = str(ciphered_text)
-            writeConfig(data)
-            return 'Saved correctly!'
-    elif segment == 'domain':
-        config = readConfig()
-        config['domain'] = value
-        writeConfig(config)
-
-    return 'Load'
-
-#Front end operations
-@app.route("/front/<operation>/")
-@app.route("/front/<operation>/<segment>")
-@app.route("/front/<operation>/<segment>/")
-@app.route("/front/<operation>/<segment>/<value>")
-@app.route("/front/<operation>/<segment>/<value>/")
+#API
+@app.route("/api/<segment>/")
+@app.route("/api/<segment>/<operation>")
+@app.route("/api/<segment>/<operation>/")
+@app.route("/api/<segment>/<operation>/<value>")
+@app.route("/api/<segment>/<operation>/<value>/")
 def front(operation, segment = "", value = ''):
     #Log in doesn't require token
-    if operation == 'login':
-        if segment == 'user':
-            config = readConfig()
-            user = request.headers['user']
-            password = request.headers['pass']
+    if segment == 'user':
+        responseData = {}
+        if operation == 'setUser':
+            subprocess.run(["cp", "configuration_templates/template_token.json", "token.json"],  stdout=subprocess.PIPE)
+            return hData.setUser(value)
+        elif operation == 'domain':
+            return hData.setDomain(value)
+        elif operation == 'login':
+            responseData = hData.login(request.headers)
+        elif operation == 'validateUserToken':
+            responseData = hData.validateUserToken(request.headers)
+        elif operation == 'googleSync':
+            return hData.googleSync(request.headers)
 
-            cipher_suite = Fernet(str.encode(config['key'][2:len(config['key'])]))
-            plain_text = cipher_suite.decrypt(str.encode(config['pass'][2:len(config['pass'])]))
-            responseData = {}
-            if user == config['user'] and plain_text == str.encode(password):
-                #Generate the token
-                chars = 'abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-                token = ''
-                i = 0
-                while i < 40:
-                    token += random.choice(chars)
-                    i += 1
-                #Saved the new token
-                config = readConfig();
-                config['token'] = {
-                    'front': token
-                }
-                writeConfig(config)
-                #Prepare the response
-                responseData = {
-                    'status': 'in',
-                    'user': user,
-                    'token': token
-                }
-            else:
-                #Prepare the response
-                responseData = {
-                    'status': 'fail'
-                }
-
-        elif segment == 'token':
-            config = readConfig()
-            user = request.headers['user']
-            token = request.headers['token']
-
-            if user == config['user'] and token == config['token']['front']:
-                responseData = {
-                    'status': 'in'
-                }
-            else:
-                responseData = {
-                    'status': 'fail'
-                }
-        elif segment == 'googleSync':
-            print(responseURL)
-            config = readConfig()
-            user = request.headers['user']
-            password = request.headers['pass']
-
-            cipher_suite = Fernet(str.encode(config['key'][2:len(config['key'])]))
-            plain_text = cipher_suite.decrypt(str.encode(config['pass'][2:len(config['pass'])]))
-            responseData = {}
-            if user == config['user'] and plain_text == str.encode(password):
-                return responseURL
-            else:
-                return "fail"
         response = app.response_class(
             response=json.dumps(responseData),
             status=200,
@@ -261,92 +173,13 @@ def front(operation, segment = "", value = ''):
     else:
         #Verify the user token
         token = request.headers['authorization'].split(' ')[1]
-        savedToken = readConfig()['token']['front'];
+        savedToken = hData.getToken('front');
         if token == savedToken:
-            #Read data
-            data = {}
-            if operation == 'read':
-                if 'token' in segment:
-                    dataTmp = readToken()
-                    data = {
-                        "client_id": dataTmp["google"]["client_id"],
-                        "client_secret": dataTmp["google"]["client_secret"],
-                    }
-                else:
-                    data = readJSON()
-                    #Get the requested data
-                    if segment != '':
-                        for p in segment.split('>'):
-                            data = data[p]
-
-                response = app.response_class(
-                    response=json.dumps(data),
-                    status=200,
-                    mimetype='application/json'
-                )
-                return response
-            #Save simple data
-            #Write data
-            elif operation == 'write':
+            #Global
+            if segment == 'global':
                 data = {}
-                if 'token' in segment:
-                    data = readToken()
-                    data["google"]["client_id"] = json.loads(value)['client_id']
-                    data["google"]["client_secret"] = json.loads(value)['client_secret']
-                    writeToken(data)
-                else:
-                    data = readJSON()
-                    segments = segment.split('>')
-                    #Esto es una ñapa, pero ahora mismo no se cómo solucionarlo
-                    if len(segments) == 1:
-                        data[segment] = json.loads(value)
-                    elif len(segments) == 2:
-                        data[segments[0]][segments[1]] = json.loads(value)
-                    elif len(segments) == 3:
-                        data[segments[0]][segments[1]][segments[2]] = json.loads(value)
-                    writeJSON(data)
-
-                response = app.response_class(
-                    response=json.dumps(data),
-                    status=200,
-                    mimetype='application/json'
-                )
-
-                return response
-            #Special operations
-            elif operation == 'device':
-                data = readJSON()
-
-                if segment == 'update':
-                    incommingData = json.loads(value)
-                    deviceID = incommingData['devices']['id']
-                    temp_devices = [];
-                    for device in data['devices']:
-                        if device['id'] == incommingData['devices']['id']:
-                            temp_devices.append(incommingData['devices'])
-                        else:
-                            temp_devices.append(device)
-                    data['devices'] = temp_devices
-
-                elif segment == 'create':
-                    incommingData = json.loads(value)
-                    deviceID = incommingData['devices']['id']
-                    data['devices'].append(incommingData['devices'])
-                    data['status'][deviceID] = {}
-                    data['status'][deviceID] = incommingData['status']
-
-                elif segment == 'delete':
-                    temp_devices = [];
-                    for device in data['devices']:
-                        if device['id'] != value:
-                            temp_devices.append(device)
-                    data['devices'] = temp_devices
-                    # Delete status
-                    status = data['status']
-                    del status[value]
-                    data['status'] = status
-
-                writeJSON(data)
+                if operation == 'get':
+                    data = hData.homewareData
 
                 response = app.response_class(
                     response=json.dumps(data),
@@ -354,26 +187,53 @@ def front(operation, segment = "", value = ''):
                     mimetype='application/json'
                 )
                 return response
-            #Special operations
-            elif operation == 'rule':
-                data = readJSON()
-                if segment == 'update':
+
+            #Secure operations
+            #Security data
+            elif segment == 'secure':
+
+                if operation == 'update':
                     incommingData = json.loads(value)
-                    data['rules'][int(incommingData['n'])] = incommingData['rule']
-
-                if segment == 'create':
-                    incommingData = json.loads(value)
-                    data['rules'].append(incommingData['rule'])
-
-                elif segment == 'delete':
-                    temp_rules = data['rules']
-                    del temp_rules[int(value)]
-                    data['rules'] = temp_rules
-
-                writeJSON(data)
+                    hData.updateSecure(incommingData)
 
                 response = app.response_class(
-                    response=json.dumps(data),
+                    response=json.dumps(hData.getSecure()),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return response
+            #Special operations
+            elif segment == 'device':
+
+                if operation == 'update':
+                    incommingData = json.loads(value)
+                    hData.updateDevice(incommingData)
+                elif operation == 'create':
+                    incommingData = json.loads(value)
+                    hData.createDevice(incommingData)
+                elif operation == 'delete':
+                    hData.deleteDevice(value)
+
+                response = app.response_class(
+                    response=json.dumps(hData.getDevices()),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return response
+            #Special operations
+            elif segment == 'rule':
+
+                if operation == 'update':
+                    incommingData = json.loads(value)
+                    hData.updateRule(incommingData)
+                if operation == 'create':
+                    incommingData = json.loads(value)
+                    hData.createRule(incommingData)
+                elif operation == 'delete':
+                    hData.deleteRule(value)
+
+                response = app.response_class(
+                    response=json.dumps(hData.getRules()),
                     status=200,
                     mimetype='application/json'
                 )
@@ -390,10 +250,9 @@ def allowed_file(filename):
 @app.route("/files/<operation>/<file>/<token>/", methods=['GET','POST'])
 def files(operation = '', file = '', token = ''):
     #Get the access_token
-    frontToken = readConfig()['token']['front']
+    frontToken = hData.getToken('front')
     if token == frontToken:
         if operation == 'buckup':
-            # return send_from_directory('/home/enrique/Homeware-LAN/', file + '.json', as_attachment=True)
             ts = time.time()
             result = send_file(file + '.json',
                mimetype="application/json", # use appropriate type based on file
@@ -434,13 +293,11 @@ def tokenGenerator(agent, type):
 
     #Save the token
     ts = int(time.time()*1000)
-    data = readToken()
+    #data = readToken()
     legalTypes = ['access_token', 'authorization_code', 'refresh_token']
 
     if type in legalTypes:
-        data[agent][type]['value'] = token
-        data[agent][type]['timestamp'] = ts
-        writeToken(data)
+        hData.updateToken(agent,type,token,ts)
         return token
     else:
         return 'Something goes wrong'
@@ -449,12 +306,12 @@ def tokenGenerator(agent, type):
 @app.route("/auth")
 @app.route("/auth/")
 def auth():
-    token = readToken();                #Tokens from the DDBB
+    token = hData.getToken('google')               #Tokens from the DDBB
     clientId = request.args.get('client_id')    #ClientId from the client
     responseURI = request.args.get('redirect_uri')
     state = request.args.get('state')
     print('auth')
-    if clientId == token['google']['client_id']:
+    if clientId == token['client_id']:
         print('id_correcto')
         #Create a new authorization_code
         code = tokenGenerator('google', 'authorization_code')
@@ -491,11 +348,10 @@ def token():
 
 
     #Get the tokens and ids from DDBB
-    data = readJSON()
-    token = readToken()
+    token = hData.getToken(agent)
     obj = {}
     #Verify the code
-    if code == token[agent][grantType]['value']:
+    if code == token[grantType]['value']:
         #Tokens lifetime
         secondsInDay = 86400;
         #Create a new token
@@ -511,14 +367,6 @@ def token():
         elif grantType == 'refresh_token':
             obj['access_token'] = access_token
             obj['refresh_token'] = code
-
-
-        #Clear authorization_code if autoAuthentication is not permited
-        if agent == 'google':
-            data = readJSON()
-            token[agent]['authorization_code']['value'] = random.randrange(1000000000)
-            writeJSON(data)
-
 
         ## TODO:
         #Create an alert on the status register
@@ -556,9 +404,8 @@ def smarthome():
         agent = 'google';
     #Get the access_token
     tokenClient = request.headers['authorization'].split(' ')[1]
-    data = readJSON()
-    token = readToken()
-    if tokenClient == token[agent]['access_token']['value']:
+    token = hData.getToken(agent)
+    if tokenClient == token['access_token']['value']:
         #Anlalyze the inputs
         inputs = body['inputs']
         requestId = body['requestId']
@@ -569,7 +416,7 @@ def smarthome():
                 obj['requestId'] = requestId
                 obj['payload'] = {}
                 obj['payload']['agentUserId'] = '123'
-                obj['payload']['devices'] = data['devices']
+                obj['payload']['devices'] = hData.getDevices()
                 response = app.response_class(
                     response=json.dumps(obj),
                     status=200,
@@ -577,12 +424,11 @@ def smarthome():
                 )
                 return response
             elif input['intent'] == 'action.devices.QUERY':
-                updatestates()
-                data = readJSON()
+                #updatestates()
                 obj = {}
                 obj['requestId'] = requestId
                 obj['payload'] = {}
-                obj['payload']['devices'] = data['status']
+                obj['payload']['devices'] = hData.getStatus()
                 response = app.response_class(
                     response=json.dumps(obj),
                     status=200,
@@ -599,8 +445,6 @@ def smarthome():
                 obj['payload']['commands'][0]['ids'] = []
                 obj['payload']['commands'][0]['status'] = 'SUCCESS'
                 obj['payload']['commands'][0]['states'] = {}
-                #Get ans analyze data
-                data = readJSON()
                 #Only the first input and the first command
                 n = 0
                 for command in input['payload']['commands']:
@@ -639,22 +483,21 @@ def smarthome():
                             if commandsOperation[command]['operation'] == 'object':
                                 paramsKeys = params.keys()
                                 for key in paramsKeys:
-                                    data['status'][deviceId][commandsOperation[command]['object']][key] = params[key]
-                                publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
+                                    hData.updateParamStatus(deviceId, commandsOperation[command]['object'], { key: params[key]})
+                                publish.single("device/"+deviceId, json.dumps(hData.getStatus()[deviceId]), hostname="localhost")
                             elif commandsOperation[command]['operation'] == 'rename':
                                 paramsKeys = params.keys()
                                 for key in paramsKeys:
-                                    data['status'][deviceId][commandsOperation[command]['to']] = params[key]
-                                publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
+                                    hData.updateParamStatus(deviceId, commandsOperation[command]['to'], params[key])
+                                publish.single("device/"+deviceId, json.dumps(hData.getStatus()[deviceId]), hostname="localhost")
                         else:
                             paramsKeys = params.keys()
                             for key in paramsKeys:
-                                data['status'][deviceId][key] = params[key]
-                            publish.single("device/"+deviceId, json.dumps(data['status'][deviceId]), hostname="localhost")
+                                hData.updateParamStatus(deviceId, key, params[key])
+                            publish.single("device/"+deviceId, json.dumps(hData.getStatus()[deviceId]), hostname="localhost")
 
-                    obj['payload']['commands'][n]['states'] = data['status']
+                    obj['payload']['commands'][n]['states'] = hData.getStatus()
                     n += 1
-                writeJSON(data)
 
                 response = app.response_class(
                     response=json.dumps(obj),
@@ -692,30 +535,29 @@ def page_not_found(error):
 @app.route("/cron")
 @app.route("/cron/")
 def cron():
-    updatestates()
+    #updatestates()
     verifyRules()
 
     return "Done"
-
-def updatestates():
-    #Get JSON
-    data = readJSON()
-    alive = data['alive']
-    # Get te actual timestamp
-    ts = int(time.time()*1000)
-
-    for device in alive:
-        if False: #ts - int(alive[device]['timestamp']) > deviceAliveTimeout:
-            data['status'][device]['online'] = False
-        else:
-            data['status'][device]['online'] = True
-    #Save the new data
-    writeJSON(data)
+#
+# def updatestates():
+#     #Get JSON
+#     data = readJSON()
+#     alive = data['alive']
+#     # Get te actual timestamp
+#     ts = int(time.time()*1000)
+#
+#     for device in alive:
+#         if False: #ts - int(alive[device]['timestamp']) > deviceAliveTimeout:
+#             data['status'][device]['online'] = False
+#         else:
+#             data['status'][device]['online'] = True
+#     #Save the new data
+#     writeJSON(data)
 
 def verifyRules():
-    data = readJSON()
-    status = data['status']
-    rules = data['rules']
+    status = hData.getStatus()
+    rules = hData.getRules()
 
     ts = time.localtime(time.time())
     h = ts.tm_hour
@@ -765,12 +607,11 @@ def verifyRules():
         if verified == ammountTriggers:
             for target in rule['targets']:
                 if str(target['value']) == 'toggle':
-                    data['status'][target['id']][target['param']] = not data['status'][target['id']][target['param']]
+                    hData.updateParamStatus(target['id'], target['param'], not status[target['id']][target['param']])
                 else:
-                    data['status'][target['id']][target['param']] = target['value']
-                publish.single("device/"+target['id'], json.dumps(data['status'][target['id']]), hostname="localhost")
+                    hData.updateParamStatus(target['id'], target['param'], target['value'])
+                publish.single("device/"+target['id'], json.dumps(hData.getStatus()[target['id']]), hostname="localhost")
 
-    writeJSON(data)
 
 ########################### MQTT reader ###########################
 
@@ -789,17 +630,13 @@ def on_message(client, userdata, msg):
 
 
     if intent == 'execute':
-        data = readJSON();
-        data['status'][id][param] = value;
-        writeJSON(data)
-        publish.single("device/"+id, json.dumps(data['status'][id]), hostname="localhost")
+        hData.updateParamStatus(id,param,value)
+        publish.single("device/"+id, json.dumps(hData.getStatus()[id]), hostname="localhost")
     elif intent == 'rules':
-        data = readJSON();
-        data['status'][id][param] = value;
-        writeJSON(data)
+        hData.updateParamStatus(id,param,value)
         verifyRules()
     elif intent == 'request':
-        publish.single("device/"+id, json.dumps(data['status'][id]), hostname="localhost")
+        publish.single("device/"+id, json.dumps(hData.getStatus()[id]), hostname="localhost")
 
 # MQTT reader
 def mqttReader():
@@ -811,7 +648,7 @@ def mqttReader():
     client.loop_forever()
 
 if __name__ == "__main__":
-    #runapp()
+    # runapp()
     #Flask App and Api
     flaskProcess = multiprocessing.Process(target=runapp)
     flaskProcess.start()

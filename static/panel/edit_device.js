@@ -236,7 +236,7 @@ save.addEventListener('click', e => {
   http.addEventListener("load", function(){
     console.log(http.responseText);
   });
-  http.open("GET", "/front/device/update/" + JSON.stringify(data));
+  http.open("GET", "/api/device/update/" + JSON.stringify(data));
   http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
   http.send();
 
@@ -257,7 +257,7 @@ deleteDevice.addEventListener('click', e => {
     http.addEventListener("load", function(){
         window.location = '/devices/';
     });
-    http.open("GET", "/front/device/delete/" + deviceID);
+    http.open("GET", "/api/device/delete/" + deviceID);
     http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
     http.send();
   } else {
