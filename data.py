@@ -43,6 +43,12 @@ class Data:
                     'password': ''
                 }
                 self.save()
+            #Create apikey content v0.3 to v0.4
+            try:
+                ddns = self.secureData['apikey']
+            except:
+                self.secureData['apikey'] = ''
+                self.save()
         except:
             print('Hi')
 
