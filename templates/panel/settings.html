@@ -121,7 +121,7 @@
             <h3>Backup and restore</h3>
             <hr>
             <div class="form-row">
-              <div class="form-group col-md-3">
+              <div class="form-group col-md-7">
                   <button type="button" class="btn btn-primary" onclick="buckup()">Download file</button>
               </div>
               <div class="form-group col-md-3 colAligmentL">
@@ -142,6 +142,24 @@
                   <label for="buckup">Restore</label>
               </div>
             </div>
+
+          </div>
+
+          <div class="container p-3 mb-2 bg-light text-dark">
+            <h3>API Key</h3>
+            <hr>
+            <div class="form-row">
+              <div class="form-group col-md-7">
+                  <input type="text" class="form-control" id="apikey" disabled>
+              </div>
+              <div class="form-group col-md-3 colAligmentL">
+                  <label for="apikey">API Key</label>
+              </div>
+              <div class="form-group col-md-2 colAligmentL">
+                  <button type="button" class="btn btn-primary" onclick="generateAPIKey()">Generate</button>
+              </div>
+            </div>
+            <span>The API Key gives you access to the Homeware's API. Please do not generate an API Key if you are not sure of what you are doing.</span>
 
           </div>
 
@@ -194,7 +212,7 @@
       data = {}
       window.addEventListener('load', function(event){
         //laodSettingsRequest();
-        laodTokenRequest();
+        requestSettings();
 
         if ('{{ msg }}' != 'none'){
           document.getElementById('textMessageAlert').innerHTML = 'Upload: {{ msg }}';
@@ -203,42 +221,18 @@
         document.getElementById('backupUploaderForm').action += getCookieValue('token') + '/';
       });
 
-      function laodSettingsRequest(){
-        var http = new XMLHttpRequest();
-        http.addEventListener("load", function(){
-          loadSettings(http.responseText);
-        });
-        http.open("GET", "/api/read/settings");
-        http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-        http.send();
-      }
-
-      function loadSettings(local_data){
-        var settings = JSON.parse(local_data);
-        data = settings;
-
-        Object.keys(settings['strings']).forEach(function(setting){
-          if(setting != 'apiClockURL')
-            document.getElementById(setting).value = settings['strings'][setting];
-        });
-
-        Object.keys(settings['bools']).forEach(function(setting){
-          document.getElementById(setting).checked = settings['bools'][setting];
-        });
-      }
-
-      function laodTokenRequest(){
+      function requestSettings(){
         var http = new XMLHttpRequest();
         http.addEventListener("load", function(){
           console.log(http.responseText)
-          loadToken(http.responseText);
+          loadSettings(http.responseText);
         });
         http.open("GET", "/api/secure/get");
         http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
         http.send();
       }
 
-      function loadToken(local_data){
+      function loadSettings(local_data){
         var token = JSON.parse(local_data);
 
         document.getElementById('clientId').value = token['client_id'];
@@ -370,6 +364,21 @@
 
       function buckup(){
         window.location = "/files/buckup/homeware/" + getCookieValue('token')
+      }
+
+      function generateAPIKey(){
+        if(confirm('The current API Key will be override.')){
+          var http = new XMLHttpRequest();
+          http.addEventListener("load", function(){
+            apikey = JSON.parse(http.responseText);
+            console.log(apikey)
+            document.getElementById('apikey').value = apikey['apikey'];
+          });
+          http.open("GET", "/api/secure/apikey");
+          http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+          http.send();
+
+        }
       }
     </script>
 

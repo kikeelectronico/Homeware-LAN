@@ -199,6 +199,18 @@ class Data:
         self.secureData['ddns']['enabled'] = enabled
         self.secureData['ddns']['last'] = last
         self.save()
+
+    def generateAPIKey(self):
+        chars = 'abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+        token = ''
+        i = 0
+        while i < 40:
+            token += random.choice(chars)
+            i += 1
+        self.secureData['token']['apikey'] = token
+        self.save()
+        return token
+
 # LOGIN
 
     def login(self, headers):
