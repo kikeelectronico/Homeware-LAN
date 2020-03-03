@@ -1,5 +1,7 @@
 import os
 from flask import Flask, request, render_template, redirect, send_file, url_for
+import requests
+from base64 import b64encode
 import json
 import time
 from datetime import datetime
@@ -125,7 +127,8 @@ def assistant(step = 'welcome'):
 @app.route('/test')
 @app.route('/test/')
 def test():
-    publish.single("test", "payload", hostname="localhost")
+    #publish.single("test", "payload", hostname="localhost")
+    ddnsUpdater()
     return 'Load'
 
 #API
@@ -533,6 +536,7 @@ def page_not_found(error):
 def cron():
     #updatestates()
     verifyRules()
+    ddnsUpdater()
 
     return "Done"
 #
@@ -607,6 +611,51 @@ def verifyRules():
                 else:
                     hData.updateParamStatus(target['id'], target['param'], target['value'])
                 publish.single("device/"+target['id'], json.dumps(hData.getStatus()[target['id']]), hostname="localhost")
+
+def ddnsUpdater():
+    ddns = hData.getDDNS()
+    ipServer = 'http://ip1.dynupdate.no-ip.com/'
+    if ddns['enabled']:
+
+        ipRequest = requests.get(url=ipServer)
+        newIP = ipRequest.text
+        if not newIP == ddns['ip']:
+
+            noipServer = 'https://dynupdate.no-ip.com/nic/update'
+            params = {
+                'hostname': ddns['hostname'],
+                'myip': newIP
+            }
+            user = ddns['username'] + ':' + ddns['password']
+            userEncoded = str(b64encode(bytes(user, 'utf-8')))
+            headers = {
+                'User-Agent': 'Homeware Homeware/v0.4 hola@rinconingenieril.es',
+                'Authorization': 'Basic ' + userEncoded[2:len(userEncoded)-1]
+            }
+            noipRequest = requests.get(url= noipServer, params=params, headers=headers)
+            #Analyze the response
+            code = noipRequest.text.split(' ')[0]
+            print(noipRequest.text)
+            status = {
+                'good': 'Running',
+                'nochg': 'Running, but the last request shouldn\'t have been done.',
+                'nohost': 'Host name does not exists',
+                'badauth': 'Invalid username and/or password',
+                'badagent': 'Bad agent. Please open an issue on the Homeware-LAN github and do not enable the DDNS funtionality.',
+                '!donator': 'Not donator. Please open an issue on the Homeware-LAN github and do not enable the DDNS funtionality.',
+                'abuse': 'User blocked due to abuse',
+                '911': 'Something goes wrong. Do not enabled until 30 minutes has pass.'
+            }
+            now = datetime.now()
+            last = str(now.strftime("%m/%d/%Y, %H:%M:%S"))
+            if not 'good' in code and not 'nochg' in code:
+                code = noipRequest.text.split('\r')[0]
+                hData.updateDDNS(newIP, status[code], code, False, last)
+            else:
+                hData.updateDDNS(newIP, status[code], code, True, last)
+
+
+
 
 
 ########################### MQTT reader ###########################

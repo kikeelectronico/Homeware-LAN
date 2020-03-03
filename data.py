@@ -26,6 +26,22 @@ class Data:
                     self.secureData['token']['google'] = json.load(f)['google']
                 with open(self.secureFile, 'w') as f:
                     json.dump(self.secureData, f)
+            #Create DDNS content v0.3 to v0.4
+            try:
+                ddns = self.secureData['ddns']
+            except:
+                self.secureData['ddns'] = {
+                    'enabled': False,
+                    'status': 'Disabled',
+                    'code': 'unknown',
+                    'last': 'unknown',
+                    'ip': 'unknown',
+                    'provider': 'ddns',
+                    'hostname': self.secureData['domain'],
+                    'username': '',
+                    'password': ''
+                }
+                self.save()
         except:
             print('Hi')
 
@@ -127,13 +143,19 @@ class Data:
     def getSecure(self):
         data = {
             "client_id": self.secureData['token']["google"]["client_id"],
-            "client_secret": self.secureData['token']["google"]["client_secret"]
+            "client_secret": self.secureData['token']["google"]["client_secret"],
+            "ddns": self.secureData['ddns']
         }
         return data
 
     def updateSecure(self, incommingData):
         self.secureData['token']["google"]["client_id"] = incommingData['client_id']
         self.secureData['token']["google"]["client_secret"] = incommingData['client_secret']
+        self.secureData['ddns']['username'] = incommingData['ddns']['username']
+        self.secureData['ddns']['password'] = incommingData['ddns']['password']
+        self.secureData['ddns']['provider'] = incommingData['ddns']['provider']
+        self.secureData['ddns']['hostname'] = incommingData['ddns']['hostname']
+        self.secureData['ddns']['enabled'] = incommingData['ddns']['enabled']
         self.save()
 
     def getToken(self,agent):
@@ -164,6 +186,16 @@ class Data:
         self.secureData['domain'] = value
         self.save()
 
+    def getDDNS(self):
+        return self.secureData['ddns']
+
+    def updateDDNS(self, ip, status, code, enabled, last):
+        self.secureData['ddns']['ip'] = ip
+        self.secureData['ddns']['status'] = status
+        self.secureData['ddns']['code'] = code
+        self.secureData['ddns']['enabled'] = enabled
+        self.secureData['ddns']['last'] = last
+        self.save()
 # LOGIN
 
     def login(self, headers):
