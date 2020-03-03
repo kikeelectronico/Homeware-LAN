@@ -247,9 +247,10 @@ save.addEventListener('click', e => {
   http.addEventListener("load", function(){
     console.log(http.responseText);
   });
-  http.open("GET", "/api/device/update/" + JSON.stringify(data));
+  http.open("POST", "/api/device/update/");
   http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-  http.send();
+  http.setRequestHeader("Content-type", "application/json");
+  http.send(JSON.stringify(data));
 
   $('#alertContainer').html('<div class="alert alert-success fade show" role="alert" id="savedAlert"> <b>Success!</b> The device has been saved correctly.</div>');
   $('#savedAlert').alert()

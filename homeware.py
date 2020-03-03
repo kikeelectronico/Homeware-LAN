@@ -189,10 +189,10 @@ def front(operation, segment = "", value = ''):
             elif segment == 'device':
                 devices = hData.getDevices()
                 if operation == 'update':
-                    incommingData = json.loads(value)
+                    incommingData = request.get_json()
                     hData.updateDevice(incommingData)
                 elif operation == 'create':
-                    incommingData = json.loads(value)
+                    incommingData = request.get_json()
                     hData.createDevice(incommingData)
                 elif operation == 'delete':
                     hData.deleteDevice(value)
@@ -213,10 +213,10 @@ def front(operation, segment = "", value = ''):
             elif segment == 'rule':
                 rules = hData.getRules()
                 if operation == 'update':
-                    incommingData = json.loads(value)
+                    incommingData = request.get_json()
                     hData.updateRule(incommingData)
                 if operation == 'create':
-                    incommingData = json.loads(value)
+                    incommingData = request.get_json()
                     hData.createRule(incommingData)
                 elif operation == 'delete':
                     hData.deleteRule(value)

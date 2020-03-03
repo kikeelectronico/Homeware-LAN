@@ -52,9 +52,10 @@ save.addEventListener('click', e => {
   segment = 'update'
   if (n == -1)
     segment = 'create'
-  http.open("GET", "/api/rule/" + segment + "/" + JSON.stringify(outgoingData));
+  http.open("POST", "/api/rule/" + segment + "/");
   http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-  http.send();
+  http.setRequestHeader("Content-type", "application/json");
+  http.send(JSON.stringify(outgoingData));
 
 
 });
