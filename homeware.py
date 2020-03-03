@@ -108,17 +108,10 @@ def assistant(step = 'welcome'):
         'google': 'initialize',
         'initialize': ''
     }
-
-    if step == 'initialize':
-        #Try to open the json as a security method
-        try:
-            with open('homeware.json', 'r') as f:
-                data = json.load(f)
-                return data
-            print('Nothing to do here')
-        except:
-            #Copy the DDBB template
-            subprocess.run(["cp", "configuration_templates/template_homeware.json", "homeware.json"],  stdout=subprocess.PIPE)
+    if step == 'welcome':
+        subprocess.run(["cp", "configuration_templates/template_secure.json", "secure.json"],  stdout=subprocess.PIPE)
+        subprocess.run(["cp", "configuration_templates/template_homeware.json", "homeware.json"],  stdout=subprocess.PIPE)
+        hData.refresh()
 
 
     return render_template('assistant/step_' + step + '.html', step=step, next=steps[step])
@@ -132,18 +125,17 @@ def test():
     return 'Load'
 
 #API
-@app.route("/api/<segment>/")
-@app.route("/api/<segment>/<operation>")
-@app.route("/api/<segment>/<operation>/")
-@app.route("/api/<segment>/<operation>/<value>")
-@app.route("/api/<segment>/<operation>/<value>/")
+@app.route("/api/<segment>/", methods=['GET', 'POST'])
+@app.route("/api/<segment>/<operation>", methods=['GET', 'POST'])
+@app.route("/api/<segment>/<operation>/", methods=['GET', 'POST'])
+@app.route("/api/<segment>/<operation>/<value>", methods=['GET', 'POST'])
+@app.route("/api/<segment>/<operation>/<value>/", methods=['GET', 'POST'])
 def front(operation, segment = "", value = ''):
     #Log in doesn't require token
     if segment == 'user':
         responseData = {}
         if operation == 'setUser':
-            subprocess.run(["cp", "configuration_templates/template_token.json", "token.json"],  stdout=subprocess.PIPE)
-            return hData.setUser(value)
+            return hData.setUser(request.get_json())
         elif operation == 'domain':
             return hData.setDomain(value)
         elif operation == 'login':
@@ -184,7 +176,7 @@ def front(operation, segment = "", value = ''):
             elif segment == 'secure':
 
                 if operation == 'update':
-                    incommingData = json.loads(value)
+                    incommingData = request.get_json()
                     hData.updateSecure(incommingData)
 
                 response = app.response_class(
@@ -205,10 +197,11 @@ def front(operation, segment = "", value = ''):
                 elif operation == 'delete':
                     hData.deleteDevice(value)
                 elif operation == 'get':
-                    for device in devices:
-                        if device['id'] == value:
-                            devices = device
-                            break
+                    if not value == '':
+                        for device in devices:
+                            if device['id'] == value:
+                                devices = device
+                                break
 
                 response = app.response_class(
                     response=json.dumps(devices),
@@ -218,7 +211,7 @@ def front(operation, segment = "", value = ''):
                 return response
             #Special operations
             elif segment == 'rule':
-
+                rules = hData.getRules()
                 if operation == 'update':
                     incommingData = json.loads(value)
                     hData.updateRule(incommingData)
@@ -227,9 +220,12 @@ def front(operation, segment = "", value = ''):
                     hData.createRule(incommingData)
                 elif operation == 'delete':
                     hData.deleteRule(value)
+                elif operation == 'get':
+                    if not value == '':
+                        rules = rule[int(value)]
 
                 response = app.response_class(
-                    response=json.dumps(hData.getRules()),
+                    response=json.dumps(rules),
                     status=200,
                     mimetype='application/json'
                 )

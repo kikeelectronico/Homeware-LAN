@@ -303,9 +303,10 @@
             document.getElementById('textMessageAlert').innerHTML = 'An error has happed.';
           }
         });
-        http.open("GET", "/api/" + segment + "/update/" + JSON.stringify(value) + '/');
+        http.open("POST", "/api/" + segment + "/update/");
         http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-        http.send();
+        http.setRequestHeader("Content-type", "application/json");
+        http.send(JSON.stringify(value));
       }
 
       function updateModal(settings){

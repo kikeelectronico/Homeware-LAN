@@ -166,24 +166,23 @@ class Data:
         self.secureData['token'][agent][type]['timestamp'] = timestamp
         self.save()
 
-    def setUser(self, value):
-        try:
-            with open(self.secureFile, 'r') as f:
-                self.secureData = json.load(f)
-            return 'Your user has beed set in the past'
-        except:
+    def setUser(self, incommingData):
+        if self.secureData['user'] == '':
             data = {}
             key = Fernet.generate_key()
             self.secureData['key'] = str(key)
             cipher_suite = Fernet(key)
-            ciphered_text = cipher_suite.encrypt(str.encode(value.split(':')[1]))   #required to be bytes
-            self.secureData['user'] = value.split(':')[0]
+            ciphered_text = cipher_suite.encrypt(str.encode(incommingData['pass']))   #required to be bytes
+            self.secureData['user'] = incommingData['user']
             self.secureData['pass'] = str(ciphered_text)
             self.save()
             return 'Saved correctly!'
+        else:
+            return 'Your user has beed set in the past'
 
     def setDomain(self, value):
         self.secureData['domain'] = value
+        self.secureData['ddns']['hostname'] = value
         self.save()
 
     def getDDNS(self):
