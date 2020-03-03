@@ -5,6 +5,7 @@ from cryptography.fernet import Fernet
 
 class Data:
 
+    version = 'v0.4'
     homewareData = {}
     homewareFile = 'homeware.json'
     secureData = {}
@@ -44,6 +45,9 @@ class Data:
                 self.save()
         except:
             print('Hi')
+
+    def getVersion(self):
+        return {'version': self.version}
 
 # FILES
 

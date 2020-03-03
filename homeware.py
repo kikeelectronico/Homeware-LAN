@@ -121,118 +121,165 @@ def assistant(step = 'welcome'):
 @app.route('/test/')
 def test():
     #publish.single("test", "payload", hostname="localhost")
-    ddnsUpdater()
     return 'Load'
 
 #API
+@app.route("/api", methods=['GET', 'POST'])
+@app.route("/api/", methods=['GET', 'POST'])
 @app.route("/api/<segment>/", methods=['GET', 'POST'])
 @app.route("/api/<segment>/<operation>", methods=['GET', 'POST'])
 @app.route("/api/<segment>/<operation>/", methods=['GET', 'POST'])
 @app.route("/api/<segment>/<operation>/<value>", methods=['GET', 'POST'])
 @app.route("/api/<segment>/<operation>/<value>/", methods=['GET', 'POST'])
-def front(operation, segment = "", value = ''):
-    #Log in doesn't require token
-    if segment == 'user':
-        responseData = {}
-        if operation == 'setUser':
-            return hData.setUser(request.get_json())
-        elif operation == 'domain':
-            return hData.setDomain(value)
-        elif operation == 'login':
-            responseData = hData.login(request.headers)
-        elif operation == 'validateUserToken':
-            responseData = hData.validateUserToken(request.headers)
-        elif operation == 'googleSync':
-            return hData.googleSync(request.headers)
-
-        response = app.response_class(
-            response=json.dumps(responseData),
-            status=200,
-            mimetype='application/json'
-        )
-        return response
-
-    #Operations not related with login
+def front(operation = "", segment = "", value = ''):
+    responseData = {}
+    if segment == "":
+        responseData = {
+            'error': 'A segment must be given',
+            'code': 0,
+            'note': 'See the documentation'
+        }
+    elif operation == "":
+        responseData = {
+            'error': 'An operation must be given',
+            'code': 1,
+            'note': 'See the documentation'
+        }
     else:
-        #Verify the user token
-        token = request.headers['authorization'].split(' ')[1]
-        savedToken = hData.getToken('front');
-        if token == savedToken:
-            #Global
-            if segment == 'global':
-                data = {}
-                if operation == 'get':
-                    data = hData.homewareData
+        #Log in doesn't require token
+        if segment == 'user':
 
-                response = app.response_class(
-                    response=json.dumps(data),
-                    status=200,
-                    mimetype='application/json'
-                )
-                return response
+            if operation == 'setUser':
+                return hData.setUser(request.get_json())
+            elif operation == 'domain':
+                if value == '':
+                    responseData = {
+                        'error': 'A domain must be given',
+                        'code': 10,
+                        'note': 'See the documentation'
+                    }
+                else:
+                    return hData.setDomain(value)
+            elif operation == 'login':
+                responseData = hData.login(request.headers)
+            elif operation == 'validateUserToken':
+                responseData = hData.validateUserToken(request.headers)
+            elif operation == 'googleSync':
+                return hData.googleSync(request.headers)
+            else:
+                responseData = {
+                    'error': 'Operation not supported',
+                    'code': 9,
+                    'note': 'See the documentation'
+                }
 
-            #Secure operations
-            #Security data
-            elif segment == 'secure':
-
-                if operation == 'update':
-                    incommingData = request.get_json()
-                    hData.updateSecure(incommingData)
-
-                response = app.response_class(
-                    response=json.dumps(hData.getSecure()),
-                    status=200,
-                    mimetype='application/json'
-                )
-                return response
-            #Special operations
-            elif segment == 'device':
-                devices = hData.getDevices()
-                if operation == 'update':
-                    incommingData = request.get_json()
-                    hData.updateDevice(incommingData)
-                elif operation == 'create':
-                    incommingData = request.get_json()
-                    hData.createDevice(incommingData)
-                elif operation == 'delete':
-                    hData.deleteDevice(value)
-                elif operation == 'get':
-                    if not value == '':
-                        for device in devices:
-                            if device['id'] == value:
-                                devices = device
-                                break
-
-                response = app.response_class(
-                    response=json.dumps(devices),
-                    status=200,
-                    mimetype='application/json'
-                )
-                return response
-            #Special operations
-            elif segment == 'rule':
-                rules = hData.getRules()
-                if operation == 'update':
-                    incommingData = request.get_json()
-                    hData.updateRule(incommingData)
-                if operation == 'create':
-                    incommingData = request.get_json()
-                    hData.createRule(incommingData)
-                elif operation == 'delete':
-                    hData.deleteRule(value)
-                elif operation == 'get':
-                    if not value == '':
-                        rules = rule[int(value)]
-
-                response = app.response_class(
-                    response=json.dumps(rules),
-                    status=200,
-                    mimetype='application/json'
-                )
-                return response
-
+        #Operations not related with login
         else:
-            return 'Bad token'
+            #Verify the user token
+            token = request.headers['authorization'].split(' ')[1]
+            savedToken = hData.getToken('front');
+            if token == savedToken:
+                #Global
+                if segment == 'global':
+                    #
+                    if operation == 'version':
+                        responseData = hData.getVersion()
+                    elif operation == 'get':
+                        responseData = hData.homewareData
+                    else:
+                        responseData = {
+                            'error': 'Operation not supported',
+                            'code': 2,
+                            'note': 'See the documentation'
+                        }
+                #Secure operations
+                elif segment == 'secure':
+                    #
+                    if operation == 'update':
+                        incommingData = request.get_json()
+                        hData.updateSecure(incommingData)
+                        responseData = hData.getSecure()
+                    else:
+                        responseData = {
+                            'error': 'Operation not supported',
+                            'code': 3,
+                            'note': 'See the documentation'
+                        }
+                #Special operations
+                elif segment == 'device':
+                    #
+                    if operation == 'update':
+                        incommingData = request.get_json()
+                        hData.updateDevice(incommingData)
+                    elif operation == 'create':
+                        incommingData = request.get_json()
+                        hData.createDevice(incommingData)
+                    elif operation == 'delete':
+                        hData.deleteDevice(value)
+                    elif operation == 'get':
+                        if not value == '':
+                            for device in hData.getDevices():
+                                if device['id'] == value:
+                                    responseData = device
+                                    break
+                            responseData = {
+                                'error': 'Device not found',
+                                'code': 4,
+                                'note': 'See the documentation'
+                            }
+                        else:
+                            responseData = hData.getDevices()
+                    else:
+                        responseData = {
+                            'error': 'Operation not supported',
+                            'code': 5,
+                            'note': 'See the documentation'
+                        }
+                #Special operations
+                elif segment == 'rule':
+                    #
+                    if operation == 'update':
+                        incommingData = request.get_json()
+                        hData.updateRule(incommingData)
+                    if operation == 'create':
+                        incommingData = request.get_json()
+                        hData.createRule(incommingData)
+                    elif operation == 'delete':
+                        hData.deleteRule(value)
+                    elif operation == 'get':
+                        rules = hData.getRules()
+                        try:
+                            if not value == '':
+                                if 0 <= int(value) < len(rules):
+                                    responseData = rules[int(value)]
+                                else:
+                                    responseData = {
+                                        'error': 'Rule not found',
+                                        'code': 6,
+                                        'note': 'See the documentation'
+                                    }
+                            else:
+                                responseData = rules
+                        except:
+                            responseData = {
+                                'error': 'Invalid rule ID, it must be a integer',
+                                'code': 7,
+                                'note': 'See the documentation'
+                            }
+
+            else:
+                responseData = {
+                    'error': 'Bad token',
+                    'code': 8,
+                    'note': 'See the documentation'
+                }
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
 
 def allowed_file(filename):
     return '.' in filename and \
