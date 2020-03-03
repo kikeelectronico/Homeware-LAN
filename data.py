@@ -45,9 +45,9 @@ class Data:
                 self.save()
             #Create apikey content v0.3 to v0.4
             try:
-                ddns = self.secureData['apikey']
+                ddns = self.secureData['token']['apikey']
             except:
-                self.secureData['apikey'] = ''
+                self.secureData['token']['apikey'] = ''
                 self.save()
         except:
             print('Hi')
