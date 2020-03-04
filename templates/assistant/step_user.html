@@ -35,9 +35,13 @@
             document.getElementById('alertContainer').innerHTML = '<div class="alert alert-danger" role="alert"> ' + xmlHttp.responseText + ' </div>';
           }
         }
-        url = 'http://' + window.location.hostname + ':5001/assistant/operation/' + name + '/' + document.getElementById('user').value + ':' + document.getElementById('pass').value;
-        xmlHttp.open( "GET", url, true ); // false for synchronous request
-        xmlHttp.send( null );
+        url = 'http://' + window.location.hostname + ':5001/api/user/setUser/';
+        xmlHttp.open( "POST", url, true );
+        xmlHttp.setRequestHeader("Content-type", "application/json");
+        xmlHttp.send(JSON.stringify({
+          'user': document.getElementById('user').value,
+          'pass': document.getElementById('pass').value
+        }));
       }
     </script>
 

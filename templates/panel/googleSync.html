@@ -41,7 +41,7 @@
             alert('Incorrect User or Password');
           }
         });
-        http.open("GET", "/front/login/googleSync/");
+        http.open("GET", "/api/user/googleSync/");
         http.setRequestHeader('user', document.getElementById('user').value)
         http.setRequestHeader('pass', document.getElementById('pass').value)
         http.send();

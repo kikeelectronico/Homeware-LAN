@@ -11,7 +11,7 @@ function laodDevicesRequest(){
     data = JSON.parse(http.responseText);
     loadCards();
   });
-  http.open("GET", "/front/read/");
+  http.open("GET", "/api/global/get/");
   http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
   http.send();
 }
@@ -94,7 +94,7 @@ function  loadCards(){
       }
       //Get alerts
       var alert = '';
-      
+
 
       html += '<div class="card cardDevice" style="margin-bottom: 15px; margin-right: 3%;">';
         html += '<div class="colorRectangle" style="background-color:#' + color + '; opacity:' + opacity + '"></div>';
@@ -138,7 +138,7 @@ function saveData(param, value){
       document.getElementById('textMessageAlert').innerHTML = 'An error has happed.';
     }
   });
-  http.open("GET", "/front/write/" + param + "/" + JSON.stringify(value) + '/');
+  http.open("GET", "/api/write/" + param + "/" + JSON.stringify(value) + '/');
   http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'));
   http.send();
 }

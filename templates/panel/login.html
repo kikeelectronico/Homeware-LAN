@@ -45,7 +45,7 @@
             alert('Login has failed');
           }
         });
-        http.open("GET", "/front/login/user/");
+        http.open("GET", "/api/user/login/");
         http.setRequestHeader('authorization', 'baerer {{ token }}')
         http.setRequestHeader('user', document.getElementById('user').value)
         http.setRequestHeader('pass', document.getElementById('pass').value)

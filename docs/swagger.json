@@ -1,0 +1,185 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Homeware's API documentation.",
+    "version": "v0.4",
+    "title": "Homeware's API",
+    "contact": {
+      "email": "hola@rinconingenieril.es"
+    },
+    "license": {
+      "name": "MIT License",
+      "url": "https://github.com/kikeelectronico/Homeware-LAN/blob/master/LICENSE"
+    }
+  },
+  "host": "https://your.domain.com",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "Devices",
+      "description": "Everything about the devices definition"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/device/get": {
+      "get": {
+        "tags": [
+          "Devices"
+        ],
+        "summary": "Get all the devices info",
+        "description": "Returns all the devices and theirs definition.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key.",
+            "required": true,
+            "type": "string",
+            "example": "baerer {yor-API-Key}",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns an array with all the devices.",
+            "schema": {
+              "$ref": "#/definitions/deviceList"
+            }
+          }
+        }
+      }
+    },
+    "/device/get/{id}": {
+      "get": {
+        "tags": [
+          "Devices"
+        ],
+        "summary": "Get a device info",
+        "description": "Returns the device and its definition.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the device that wants to be consulted.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "switch001"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns an array with all the devices.",
+            "schema": {
+              "$ref": "#/definitions/device"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "device": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "switch000"
+        },
+        "type": {
+          "type": "string",
+          "example": "action.devices.types.SWITCH",
+          "description": "See all abailable types on the Wiki: https://github.com/kikeelectronico/Homeware-LAN/wiki"
+        },
+        "name": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "Switch"
+            },
+            "defaultNames": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "Switch"
+              }
+            },
+            "nicknames": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "Switch"
+              }
+            }
+          }
+        },
+        "deviceInfo": {
+          "type": "object",
+          "properties": {
+            "hwVersion": {
+              "type": "string",
+              "example": "0.1"
+            },
+            "swVersion": {
+              "type": "string",
+              "example": "0.1"
+            },
+            "manufacturer": {
+              "type": "string",
+              "example": "Happy engineering"
+            },
+            "model": {
+              "type": "string",
+              "example": "The happy device"
+            }
+          }
+        },
+        "traits": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "example": "action.devices.traits.OnOff"
+          },
+          "description": "See all abailable types on the Wiki: https://github.com/kikeelectronico/Homeware-LAN/wiki"
+        }
+      }
+    },
+    "deviceList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/device"
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Homeware",
+    "url": "https://github.com/kikeelectronico/Homeware-LAN"
+  }
+}

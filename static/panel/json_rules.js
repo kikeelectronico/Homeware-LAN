@@ -4,10 +4,11 @@ var editor;
 function laodDevicesRequest(ruleID){
   var http = new XMLHttpRequest();
   http.addEventListener("load", function(){
+    console.log(JSON.parse(http.responseText))
     data = JSON.parse(http.responseText)[ruleID];
     loadRule(data, ruleID);
   });
-  http.open("GET", "/front/read/rules");
+  http.open("GET", "/api/rule/get");
   http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
   http.send();
 }
@@ -51,9 +52,10 @@ save.addEventListener('click', e => {
   segment = 'update'
   if (n == -1)
     segment = 'create'
-  http.open("GET", "/front/rule/" + segment + "/" + JSON.stringify(outgoingData));
+  http.open("POST", "/api/rule/" + segment + "/");
   http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-  http.send();
+  http.setRequestHeader("Content-type", "application/json");
+  http.send(JSON.stringify(outgoingData));
 
 
 });
@@ -68,7 +70,7 @@ deleteRule.addEventListener('click', e => {
     http.addEventListener("load", function(){
       window.location.href = "/rules/";
     });
-    http.open("GET", "/front/rule/delete/" + n + "/");
+    http.open("GET", "/api/rule/delete/" + n + "/");
     http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
     http.send();
 

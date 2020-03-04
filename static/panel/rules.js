@@ -9,7 +9,7 @@ function laodDevicesRequest(){
     data = JSON.parse(http.responseText);
     loadCards();
   });
-  http.open("GET", "/front/read/");
+  http.open("GET", "/api/global/get/");
   http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
   http.send();
 }

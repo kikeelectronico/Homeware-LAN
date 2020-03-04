@@ -26,8 +26,20 @@
               <input type="hidden" id="operation" value="-1">
               <input type="hidden" id="triggerType" value="-1">
             </div>
-
-
+<!--
+            <div class="container p-3 mb-2 bg-light text-dark">
+              <h3>Name and tags</h3>
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="test" class="form-control" id="name">
+              </div>
+              <div class="form-group">
+                <label for="tags">Tags</label>
+                <input type="test" class="form-control" id="tags">
+              </div>
+              <small id="tagsHelp" class="form-text text-muted">Tags must be separated by commas ','. </small>
+            </div>
+-->
             <div class="container p-3 mb-2 bg-light text-dark" id="deviceTriggered">
               <h3>Triggers</h3>
               <input type="hidden" value="-1" id="availableTriggers">
@@ -58,7 +70,7 @@
                 </div>
                 <div class="form-group col-md-3">
                   <label for="triggerValue">Trigger value</label>
-                  <input type="text" class="form-control" id="triggerValue" placeholder="true, false or a number">
+                  <input type="text" class="form-control" id="triggerValue" placeholder="'true', 'false', a string or a number">
                 </div>
                 <div class="form-group col-md-1">
                   <label for="add_arm_levels_button">.</label>
@@ -108,20 +120,6 @@
                   </div>
                 </div>
 
-              <!--
-                <div class="form-group col-md-3">
-                  <label for="weekDays">Week days</label>
-                  <select multiple class="custom-select mr-sm-2" id="weekDays">
-                    <option value="0">Sunday</option>
-                    <option value="1">Monday</option>
-                    <option value="2">Tuesday</option>
-                    <option value="3">Wednesday</option>
-                    <option value="4">Thursday</option>
-                    <option value="5">Friday</option>
-                    <option value="6">Saturday</option>
-                  </select>
-                </div>
-              -->
                 <div class="form-group col-md-1">
                   <label for="add_arm_levels_button">.</label>
                   <input type="button" class="form-control" id="add_time_triggers_button" value="Add">
@@ -152,7 +150,7 @@
                 </div>
                 <div class="form-group col-md-3">
                   <label for="targetValue">Target value</label>
-                  <input type="text" class="form-control" id="targetValue" placeholder="true, false or a number">
+                  <input type="text" class="form-control" id="targetValue" placeholder="'true', 'false', 'toggle', a string or a number">
                 </div>
                 <div class="form-group col-md-1">
                   <label for="add_arm_levels_button">.</label>

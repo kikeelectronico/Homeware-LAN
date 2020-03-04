@@ -135,8 +135,6 @@
     <script src="/static/panel/coolNames.js"></script>
     <script src="/static/panel/edit_device.js"></script>
     <script src="/static/panel/edit_device_dependencies.js"></script>
-    <link href="/static/JSONeditor/jsoneditor.css" rel="stylesheet" type="text/css">
-    <script src="/static/JSONeditor/jsoneditor.js"></script>
 
     <script>
       //Load things
@@ -148,10 +146,7 @@
           document.getElementById('type').innerHTML += '<option value="' + device + '">' + getDeviceCoolName(device) + '</option>';
         })
 
-        if ('{{ deviceID }}' != ''){
-          device = JSON.parse('{{ deviceString|safe }}');
-          loadDevices(device, '{{ deviceID }}');
-        }
+        requestDevices('{{ deviceID }}');
       })
 
     </script>

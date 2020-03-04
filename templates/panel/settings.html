@@ -24,7 +24,8 @@
             </div>
 
             <div class="container p-3 mb-2 bg-light text-dark">
-              <h3>Google's connection data</h3>
+              <h3>Actions on Google</h3>
+              <hr>
               <div class="form-row">
                 <div class="form-group col-md-3">
                     <input type="text" class="form-control" id="clientId">
@@ -47,20 +48,68 @@
                   <a class="badge badge-primary" data-toggle="modal" data-target="#modal" style="color:white;" onclick="updateModal('clientSecret')">Learn more</a>
                 </div>
               </div>
-
+              <span id="actionOnGoogleAuxiliarData"></span>
             </div>
 
             <div class="container p-3 mb-2 bg-light text-dark">
-              <h3>Homeware API</h3>
+              <h3>DDNS provider</h3>
+              <hr>
               <div class="form-row">
-                <div class="form-group col-md-7">
-                    <input type="text" class="form-control" id="apiClockURL" value="https://{{ domain }}/clock" disabled>
+                <div class="form-group col-md-4">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="ddnsEnabled">
+                    <label class="custom-control-label" for="ddnsEnabled">Enable</label>
+                  </div>
                 </div>
-                <div class="form-group col-md-3 colAligmentL">
-                    <label for="apiClockURL">Clock's function URL</label>
+              </div>
+              <div class="form-row">
+                <div class="col-md-8">
+                  <div class="form-row">
+                    <div class="form-group col-md-7">
+                      <select class="form-control" id="ddnsProvider">
+                        <option>noip</option>
+                      </select>
+                    </div>
+                    <div class="form-group col-md-2 colAligmentL">
+                        <label for="ddnsProvider">Provider</label>
+                    </div>
+                    <div class="form-group col-md-2 colAligmentA">
+                      <a class="badge badge-primary" data-toggle="modal" data-target="#modal" style="color:white;" onclick="updateModal('ddns')">Learn more</a>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-7">
+                        <input type="text" class="form-control" id="ddnsUsername">
+                    </div>
+                    <div class="form-group col-md-2 colAligmentL">
+                        <label for="ddnsUsername">Username</label>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-7">
+                        <input type="password" class="form-control" id="ddnsPassword">
+                    </div>
+                    <div class="form-group col-md-2 colAligmentL">
+                        <label for="ddnsPassword">Password</label>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-7">
+                        <input type="text" class="form-control" id="ddnsHostname" disabled>
+                    </div>
+                    <div class="form-group col-md-2 colAligmentL">
+                        <label for="ddnsHostname">Hostname</label>
+                    </div>
+                  </div>
                 </div>
-                <div class="form-group col-md-2 colAligmentA">
-                  <a class="badge badge-primary" data-toggle="modal" data-target="#modal" style="color:white;" onclick="updateModal('apiClockURL')">Learn more</a>
+                <div class="col-md-4">
+                  <span style="font-weight: bold; font-size: 20px; margin-right: 20px;">Status</span>
+                  <span class="badge badge-secondary" id="ddnsStatusBadge">Disabled</span>
+                  <br>
+                  <br>
+                  <span id="ddnsLastUpdate">Last update: </span><br>
+                  <span id="ddnsIP">IP: </span>
+
                 </div>
               </div>
 
@@ -69,10 +118,10 @@
           </form>
 
           <div class="container p-3 mb-2 bg-light text-dark">
-            <h3>Buckup and restore</h3>
+            <h3>Backup and restore</h3>
             <hr>
             <div class="form-row">
-              <div class="form-group col-md-3">
+              <div class="form-group col-md-7">
                   <button type="button" class="btn btn-primary" onclick="buckup()">Download file</button>
               </div>
               <div class="form-group col-md-3 colAligmentL">
@@ -80,10 +129,11 @@
               </div>
             </div>
             <hr>
+
             <div class="form-row">
               <div class="form-group col-md-7">
-                <form method=post enctype=multipart/form-data action="/files/restore/file/{{ token }}/">
-                  <input type="file" class="form-control-file" name =file>
+                <form method=post enctype=multipart/form-data action="/files/restore/file/" id="backupUploaderForm">
+                  <input type="file" class="form-control-file" name="file">
                   <br>
                   <button type="submit" class="btn btn-primary">Upload</button>
                 </form>
@@ -92,6 +142,24 @@
                   <label for="buckup">Restore</label>
               </div>
             </div>
+
+          </div>
+
+          <div class="container p-3 mb-2 bg-light text-dark">
+            <h3>API Key</h3>
+            <hr>
+            <div class="form-row">
+              <div class="form-group col-md-7">
+                  <input type="text" class="form-control" id="apikey" disabled>
+              </div>
+              <div class="form-group col-md-3 colAligmentL">
+                  <label for="apikey">API Key</label>
+              </div>
+              <div class="form-group col-md-2 colAligmentL">
+                  <button type="button" class="btn btn-primary" onclick="generateAPIKey()">Generate</button>
+              </div>
+            </div>
+            <span>The API Key gives you access to the Homeware's API. Please do not generate an API Key if you are not sure of what you are doing.</span>
 
           </div>
 
@@ -144,52 +212,58 @@
       data = {}
       window.addEventListener('load', function(event){
         //laodSettingsRequest();
-        laodTokenRequest();
+        requestSettings();
 
         if ('{{ msg }}' != 'none'){
           document.getElementById('textMessageAlert').innerHTML = 'Upload: {{ msg }}';
         }
+
+        document.getElementById('backupUploaderForm').action += getCookieValue('token') + '/';
       });
 
-      function laodSettingsRequest(){
+      function requestSettings(){
         var http = new XMLHttpRequest();
         http.addEventListener("load", function(){
+          console.log(http.responseText)
           loadSettings(http.responseText);
         });
-        http.open("GET", "/front/read/settings");
+        http.open("GET", "/api/secure/get");
         http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
         http.send();
       }
 
       function loadSettings(local_data){
-        var settings = JSON.parse(local_data);
-        data = settings;
-
-        Object.keys(settings['strings']).forEach(function(setting){
-          if(setting != 'apiClockURL')
-            document.getElementById(setting).value = settings['strings'][setting];
-        });
-
-        Object.keys(settings['bools']).forEach(function(setting){
-          document.getElementById(setting).checked = settings['bools'][setting];
-        });
-      }
-
-      function laodTokenRequest(){
-        var http = new XMLHttpRequest();
-        http.addEventListener("load", function(){
-          loadToken(http.responseText);
-        });
-        http.open("GET", "/front/read/token");
-        http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-        http.send();
-      }
-
-      function loadToken(local_data){
         var token = JSON.parse(local_data);
 
         document.getElementById('clientId').value = token['client_id'];
         document.getElementById('clientSecret').value = token['client_secret'];
+        document.getElementById('actionOnGoogleAuxiliarData').innerHTML = '<b>Authorization URL:</b> https://' + token['ddns']['hostname'] + '/auth/<br>';
+        document.getElementById('actionOnGoogleAuxiliarData').innerHTML += '<b>Token URL:</b> https://' + token['ddns']['hostname'] + '/token/<br>';
+        document.getElementById('actionOnGoogleAuxiliarData').innerHTML += '<b>Fulfillment URL:</b> https://' + token['ddns']['hostname'] + '/smarthome/<br>';
+
+
+
+        document.getElementById('ddnsUsername').value = token['ddns']['username'];
+        document.getElementById('ddnsPassword').value = token['ddns']['password'];
+        document.getElementById('ddnsProvider').select = token['ddns']['provider'];
+        document.getElementById('ddnsHostname').value = token['ddns']['hostname'];
+        document.getElementById('ddnsEnabled').checked = token['ddns']['enabled'];
+        document.getElementById('ddnsLastUpdate').innerHTML = '<b>Last update:</b> ' + token['ddns']['last'];
+        document.getElementById('ddnsIP').innerHTML = '<b>IP:</b> ' + token['ddns']['ip'];
+
+        badgeClass = {
+          'unknown': 'badge-secondary',
+          'good': 'badge-success',
+          'nochg': 'badge-warning',
+          'nohost': 'badge-danger',
+          'badauth': 'badge-danger',
+          'badagent': 'badge-danger',
+          '!donator': 'badge-danger',
+          'abuse': 'badge-danger',
+          '911': 'badge-danger'
+        }
+        document.getElementById('ddnsStatusBadge').innerHTML = token['ddns']['status'];
+        document.getElementById('ddnsStatusBadge').className = 'badge ' + badgeClass[token['ddns']['code']]
 
       }
 
@@ -198,13 +272,23 @@
         document.getElementById('textMessageAlert').innerHTML = '...';
         data['client_id'] = document.getElementById('clientId').value;
         data['client_secret'] = document.getElementById('clientSecret').value;
+        data['ddns'] = {};
+        data['ddns']['username'] = document.getElementById('ddnsUsername').value;
+        data['ddns']['password'] = document.getElementById('ddnsPassword').value;
+        data['ddns']['provider'] = document.getElementById('ddnsProvider').value;
+        data['ddns']['hostname'] = document.getElementById('ddnsHostname').value;
+        data['ddns']['enabled'] = document.getElementById('ddnsEnabled').checked;
+        if(document.getElementById('ddnsEnabled').checked)
+          document.getElementById('ddnsStatusBadge').innerHTML = 'Waiting to request'
+        else
+          document.getElementById('ddnsStatusBadge').innerHTML = 'Disabled'
 
-        saveData('token', data);
+        saveData('secure', data);
         //Update the text message
         updateMessageWithTime();
       });
 
-      function saveData(param, value){
+      function saveData(segment, value){
         var http = new XMLHttpRequest();
         http.addEventListener("load", function(){
           if (http.responseText != 'Bad token')
@@ -213,9 +297,10 @@
             document.getElementById('textMessageAlert').innerHTML = 'An error has happed.';
           }
         });
-        http.open("GET", "/front/write/" + param + "/" + JSON.stringify(value) + '/');
+        http.open("POST", "/api/" + segment + "/update/");
         http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-        http.send();
+        http.setRequestHeader("Content-type", "application/json");
+        http.send(JSON.stringify(value));
       }
 
       function updateModal(settings){
@@ -279,6 +364,21 @@
 
       function buckup(){
         window.location = "/files/buckup/homeware/" + getCookieValue('token')
+      }
+
+      function generateAPIKey(){
+        if(confirm('The current API Key will be override.')){
+          var http = new XMLHttpRequest();
+          http.addEventListener("load", function(){
+            apikey = JSON.parse(http.responseText);
+            console.log(apikey)
+            document.getElementById('apikey').value = apikey['apikey'];
+          });
+          http.open("GET", "/api/secure/apikey");
+          http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+          http.send();
+
+        }
       }
     </script>
 
