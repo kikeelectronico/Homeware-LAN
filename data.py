@@ -275,7 +275,7 @@ class Data:
         cipher_suite = Fernet(str.encode(self.secureData['key'][2:len(self.secureData['key'])]))
         plain_text = cipher_suite.decrypt(str.encode(self.secureData['pass'][2:len(self.secureData['pass'])]))
         responseData = {}
-        if user == config['user'] and plain_text == str.encode(password):
+        if user == self.secureData['user'] and plain_text == str.encode(password):
             return responseURL
         else:
             return "fail"
