@@ -66,8 +66,8 @@ def devices(process = "", id = ""):
 @app.route('/rules/')
 @app.route('/rules/<process>/')
 @app.route('/rules/<process>/')
-@app.route('/rules/<process>/<int:id>')
-@app.route('/rules/<process>/<int:id>/')
+@app.route('/rules/<process>/<id>')
+@app.route('/rules/<process>/<id>/')
 def rules(process = "", id = -1):
 
     if process == 'edit':

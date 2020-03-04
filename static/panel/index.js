@@ -1,4 +1,4 @@
-var actual = 'v0.4';
+var actual = 'v0.4.2';
 document.getElementById('HomeWareStatus').innerHTML += '<p> <b>Current version:</b> ' + actual + ' </p>';
 
 
