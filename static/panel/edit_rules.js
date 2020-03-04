@@ -152,7 +152,7 @@ save.addEventListener('click', e => {
   //Save the data in the database
   var n = document.getElementById("n").value;
   outgoingData = {
-    "n": n,
+    "id": n,
     "rule": rule
   }
   var http = new XMLHttpRequest();
@@ -167,7 +167,7 @@ save.addEventListener('click', e => {
   segment = 'update'
   if (n == -1)
     segment = 'create'
-  http.open("POST", "/api/rule/" + segment + "/");
+  http.open("POST", "/api/rules/" + segment + "/");
   http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
   http.setRequestHeader("Content-type", "application/json");
   http.send(JSON.stringify(outgoingData));
@@ -305,7 +305,7 @@ deleteRule.addEventListener('click', e => {
     http.addEventListener("load", function(){
       window.location.href = "/rules/";
     });
-    http.open("GET", "/api/rule/delete/" + n + "/");
+    http.open("GET", "/api/rules/delete/" + n + "/");
     http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
     http.send();
 

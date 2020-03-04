@@ -17,14 +17,31 @@
   "tags": [
     {
       "name": "Devices",
-      "description": "Everything about the devices definition"
+      "description": "Everything about the devices definition and status."
+    },
+    {
+      "name": "Rules",
+      "description": "Everything about the rules."
+    },
+    {
+      "name": "Global",
+      "description": "General endpoints"
+    },
+    {
+      "name": "User",
+      "description": "User login and sync"
+    },
+    {
+      "name": "Settings",
+      "description": "System settings"
     }
   ],
   "schemes": [
-    "https"
+    "https",
+    "http"
   ],
   "paths": {
-    "/device/get": {
+    "/devices/get/": {
       "get": {
         "tags": [
           "Devices"
@@ -38,7 +55,7 @@
           {
             "name": "Authorization",
             "in": "header",
-            "description": "Authorization code: API Key.",
+            "description": "Authorization code: API Key or admin Token.",
             "required": true,
             "type": "string",
             "example": "baerer {yor-API-Key}",
@@ -54,11 +71,31 @@
             "schema": {
               "$ref": "#/definitions/deviceList"
             }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An API Key or admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/device/get/{id}": {
+    "/devices/get/{id}/": {
       "get": {
         "tags": [
           "Devices"
@@ -72,7 +109,7 @@
           {
             "name": "Authorization",
             "in": "header",
-            "description": "Authorization code: API Key.",
+            "description": "Authorization code: API Key or admin Token.",
             "required": true,
             "type": "string",
             "schema": {
@@ -94,9 +131,1350 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful operation. Returns an array with all the devices.",
+            "description": "Successful operation. Returns the requested device.",
             "schema": {
               "$ref": "#/definitions/device"
+            }
+          },
+          "404": {
+            "description": "Not found. The device does not exists.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Device not found"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 404
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An API Key or admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/devices/delete/{id}/": {
+      "get": {
+        "tags": [
+          "Devices"
+        ],
+        "summary": "Delete a device",
+        "description": "Delete a device.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the device that wants to be deleted.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "switch001"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "Success"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 200
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An API Key or admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/devices/create/": {
+      "post": {
+        "tags": [
+          "Devices"
+        ],
+        "summary": "Create a device",
+        "description": "Create a device.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          },
+         {
+           "in": "body",
+           "name": "body",
+           "description": "New device description.",
+           "required": true,
+           "schema": {
+             "$ref": "#/definitions/createDevice"
+           }
+         }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "Success"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 200
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An API Key or admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/devices/update/": {
+      "post": {
+        "tags": [
+          "Devices"
+        ],
+        "summary": "Update a device",
+        "description": "Update a device.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          },
+         {
+           "in": "body",
+           "name": "body",
+           "description": "New device description.",
+           "required": true,
+           "schema": {
+             "$ref": "#/definitions/updateDevice"
+           }
+         }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "Success"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 200
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An API Key or admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/status/get/": {
+      "get": {
+        "tags": [
+          "Devices"
+        ],
+        "summary": "Get all the devices status",
+        "description": "Returns all the devices and theirs status.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "example": "baerer {yor-API-Key}",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns an array with all the devices' status.",
+            "schema": {
+              "$ref": "#/definitions/statusList"
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An API Key or admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found. The device does not exists.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Device not found"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 404
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/status/get/{id}/": {
+      "get": {
+        "tags": [
+          "Devices"
+        ],
+        "summary": "Get a device status",
+        "description": "Returns the device and its status.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the device that wants to be consulted.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "switch001"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns an array with the status of the device.",
+            "schema": {
+              "$ref": "#/definitions/status"
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An API Key or admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found. The device does not exists.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Device not found"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 404
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/status/update/": {
+      "post": {
+        "tags": [
+          "Devices"
+        ],
+        "summary": "Update the status of a device",
+        "description": "Update the status of a device.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          },
+         {
+           "in": "body",
+           "name": "body",
+           "description": "New devie description.",
+           "required": true,
+           "schema": {
+             "$ref": "#/definitions/updateStatus"
+           }
+         }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "Success"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 200
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An API Key or admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rules/get/": {
+      "get": {
+        "tags": [
+          "Rules"
+        ],
+        "summary": "Get all the rules info",
+        "description": "Returns all the rules and theirs definition.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "example": "baerer {yor-API-Key}",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns an array with all the rules.",
+            "schema": {
+              "$ref": "#/definitions/rulesList"
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An API Key or admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rules/get/{id}/": {
+      "get": {
+        "tags": [
+          "Rules"
+        ],
+        "summary": "Get a rule info",
+        "description": "Returns the rule and its definition or admin Token.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the rule that wants to be consulted.",
+            "required": true,
+            "type": "int",
+            "schema": {
+              "type": "int",
+              "example": "1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns the requested rule.",
+            "schema": {
+              "$ref": "#/definitions/rule"
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An API Key or admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found. The rule does not exists.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Rule not found"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 404
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rules/delete/{id}/": {
+      "get": {
+        "tags": [
+          "Rules"
+        ],
+        "summary": "Delete a rule",
+        "description": "Delete a rule.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the rule that wants to be deleted.",
+            "required": true,
+            "type": "int",
+            "schema": {
+              "type": "int",
+              "example": "1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "Success"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 200
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An API Key or admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found. The rule does not exists.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Rule not found"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 404
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rules/create/": {
+      "post": {
+        "tags": [
+          "Rules"
+        ],
+        "summary": "Create a rule",
+        "description": "Create a rule.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          },
+         {
+           "in": "body",
+           "name": "body",
+           "description": "New rule description.",
+           "required": true,
+           "schema": {
+             "$ref": "#/definitions/createRule"
+           }
+         }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "Success"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 200
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An API Key or admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found. The rule does not exists.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Rule not found"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 404
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rules/update/": {
+      "post": {
+        "tags": [
+          "Rules"
+        ],
+        "summary": "Update a rule",
+        "description": "Update a rule.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          },
+         {
+           "in": "body",
+           "name": "body",
+           "description": "New rule description.",
+           "required": true,
+           "schema": {
+             "$ref": "#/definitions/updateRule"
+           }
+         }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "Success"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 200
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An API Key or admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/global/version/": {
+      "get": {
+        "tags": [
+          "Global"
+        ],
+        "summary": "Get the Homeware's version.",
+        "description": "Returns the Homeware's version.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "example": "baerer {yor-API-Key}",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns the version.",
+            "schema": {
+              "$ref": "#/definitions/version"
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An API Key or admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/set/": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Set the admin username and password.",
+        "description": "Set the admin username and password.",
+        "produces": [
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User credentials.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userCredentials"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "example": "Saved correctly!"
+            }
+          },
+          "403": {
+            "description": "Fail",
+            "schema": {
+              "type": "string",
+              "example": "Your user has beed set in the past"
+            }
+          }
+        }
+      }
+    },
+    "/user/login/": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Validate the credentials and return a session token",
+        "description": "Validate the credentials for the admin user and return an unique session token",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "header",
+            "description": "The username.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "myAdminUser"
+            }
+          },
+          {
+            "name": "pass",
+            "in": "header",
+            "description": "The password.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "myAdminPassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns the user data and token.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "in"
+                },
+                "user": {
+                  "type": "string",
+                  "example": "myAdminUser"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "sessionToken"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Fail.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "fail"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/validateToken/": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Validate the session token",
+        "description": "Validate the unique session token",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "header",
+            "description": "The username.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "myAdminUser"
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The session token that has been obtain during login.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "sessionToken"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns the user data and token.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "in"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Fail.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "fail"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/apiKey/": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Generate a mew API Key",
+        "description": "Generate a new API Key. This operation can only be done with a user Token not with an API Key.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: Admin Token.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "baerer {admin-session-token}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns the new API key.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "in"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/get/": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Return the secure settings",
+        "description": "Return the secure settings. This operation can only be done with a user Token not with an API Key.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: Admin Token.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "baerer {admin-session-token}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns the new API key.",
+            "schema": {
+              "$ref": "#/definitions/settings"
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/update/": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Update the secure settings",
+        "description": "This operation can only be done with a user Token not with an API Key.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: Admin Token.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "baerer {admin-session-token}"
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "New settings. All values must be set.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/settings"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns the new API key.",
+            "schema": {
+              "$ref": "#/definitions/settings"
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/domain/{domain}/": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Set the DDNS domain up",
+        "description": "Set the DDNS domain up.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "path",
+            "description": "The domain that must be set.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "you.domain.com"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns the requested device.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "Success"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 200
+                }
+              }
             }
           }
         }
@@ -174,6 +1552,207 @@
       "type": "array",
       "items": {
         "$ref": "#/definitions/device"
+      }
+    },
+    "status": {
+      "type": "object",
+      "properties": {
+        "online": {
+          "type": "bool",
+          "example": true
+        }
+      }
+    },
+    "statusList": {
+      "type": "object",
+      "properties": {
+        "deviceID": {
+          "$ref": "#/definitions/status"
+        }
+      }
+    },
+    "createDevice": {
+      "type": "object",
+      "properties": {
+        "device": {
+          "$ref": "#/definitions/device"
+        },
+        "status":{
+          "$ref": "#/definitions/status"
+        }
+      }
+    },
+    "updateDevice": {
+      "type": "object",
+      "properties": {
+        "device": {
+          "$ref": "#/definitions/device"
+        }
+      }
+    },
+    "updateStatus": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "array",
+          "example": "sitch001"
+        },
+        "param": {
+          "type": "array",
+          "example": "on"
+        },
+        "value": {
+          "type": "bool",
+          "example": true
+        }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "properties": {
+        "triggers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/trigger"
+          }
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/target"
+          }
+        }
+      }
+    },
+    "rulesList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/rule"
+      }
+    },
+    "trigger": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "switch001"
+        },
+        "param": {
+          "type": "string",
+          "example": "on"
+        },
+        "operator": {
+          "type": "string",
+          "enum": ["1", "2", "3", "4"],
+          "example": "1",
+          "description": "1 -> =,2 -> <,3 -> >, 4 -> Time -> h:m:index_of_days_of_the_week (0 = Sunday)"
+        },
+        "value": {
+          "type": "string,bool,int",
+          "example": "true"
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "switch001"
+        },
+        "param": {
+          "type": "string",
+          "example": "on"
+        },
+        "value": {
+          "type": "string,bool,int",
+          "example": "true"
+        }
+      }
+    },
+    "createRule": {
+      "type": "object",
+      "properties": {
+        "rule": {
+          "$ref": "#/definitions/rule"
+        }
+      }
+    },
+    "updateRule": {
+      "type": "object",
+      "properties": {
+        "rule": {
+          "$ref": "#/definitions/rule"
+        },
+        "id":{
+          "type": "int",
+          "example": 1
+        }
+      }
+    },
+    "version": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "example": "v0.4"
+        }
+      }
+    },
+    "userCredentials": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "string",
+          "example": "myAdminUser"
+        },
+        "pass": {
+          "type": "string",
+          "example": "myAdminPassword"
+        }
+      }
+    },
+    "settings": {
+      "type": "object",
+      "properties": {
+        "google": {
+          "type": "object",
+          "properties": {
+            "client_id": {
+              "type": "string",
+              "example": "123"
+            },
+            "client_secret": {
+              "type": "string",
+              "example": "456"
+            }
+          }
+        },
+        "ddns": {
+          "type": "object",
+          "properties": {
+            "username": {
+              "type": "string",
+              "example": "username"
+            },
+            "password": {
+              "type": "string",
+              "example": "password"
+            },
+            "provider": {
+              "type": "string",
+              "example": "noip"
+            },
+            "hostname": {
+              "type": "string",
+              "example": "your.domain.com"
+            },
+            "enabled": {
+              "type": "bool",
+              "example": false
+            }
+          }
+        }
       }
     }
   },

@@ -46,7 +46,7 @@
         xmlHttp.onreadystatechange = function() {
           console.log(xmlHttp.responseText)
         }
-        url = 'http://' + window.location.hostname + ':5001/api/user/domain/' + document.getElementById('domain').value;
+        url = 'http://' + window.location.hostname + ':5001/api/settings/domain/' + document.getElementById('domain').value;
         xmlHttp.open( "GET", url, true ); // false for synchronous request
         xmlHttp.send( null );
 

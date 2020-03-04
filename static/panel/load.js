@@ -13,7 +13,7 @@ window.addEventListener('load', function(event){
         window.location = '/login/';
       }
     });
-    http.open("GET", "/api/user/validateUserToken/");
+    http.open("GET", "/api/user/validateToken/");
     http.setRequestHeader('user', user)
     http.setRequestHeader('token', token)
     http.send();
