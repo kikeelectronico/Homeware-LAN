@@ -124,7 +124,7 @@ class Data:
         return self.homewareData['rules']
 
     def updateRule(self, incommingData):
-        self.homewareData['rules'][int(incommingData['n'])] = incommingData['rule']
+        self.homewareData['rules'][int(incommingData['id'])] = incommingData['rule']
         self.save()
 
     def createRule(self, incommingData):
@@ -152,15 +152,17 @@ class Data:
 
     def getSecure(self):
         data = {
-            "client_id": self.secureData['token']["google"]["client_id"],
-            "client_secret": self.secureData['token']["google"]["client_secret"],
+            "google": {
+                "client_id": self.secureData['token']["google"]["client_id"],
+                "client_secret": self.secureData['token']["google"]["client_secret"],
+            },
             "ddns": self.secureData['ddns']
         }
         return data
 
     def updateSecure(self, incommingData):
-        self.secureData['token']["google"]["client_id"] = incommingData['client_id']
-        self.secureData['token']["google"]["client_secret"] = incommingData['client_secret']
+        self.secureData['token']["google"]["client_id"] = incommingData['google']['client_id']
+        self.secureData['token']["google"]["client_secret"] = incommingData['google']['client_secret']
         self.secureData['ddns']['username'] = incommingData['ddns']['username']
         self.secureData['ddns']['password'] = incommingData['ddns']['password']
         self.secureData['ddns']['provider'] = incommingData['ddns']['provider']
@@ -266,7 +268,7 @@ class Data:
 
         return responseData
 
-    def googleSync(self, headers):
+    def googleSync(self, headers, responseURL):
         user = headers['user']
         password = headers['pass']
 

@@ -227,7 +227,7 @@
           console.log(http.responseText)
           loadSettings(http.responseText);
         });
-        http.open("GET", "/api/secure/get");
+        http.open("GET", "/api/settings/get");
         http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
         http.send();
       }
@@ -235,8 +235,8 @@
       function loadSettings(local_data){
         var token = JSON.parse(local_data);
 
-        document.getElementById('clientId').value = token['client_id'];
-        document.getElementById('clientSecret').value = token['client_secret'];
+        document.getElementById('clientId').value = token['google']['client_id'];
+        document.getElementById('clientSecret').value = token['google']['client_secret'];
         document.getElementById('actionOnGoogleAuxiliarData').innerHTML = '<b>Authorization URL:</b> https://' + token['ddns']['hostname'] + '/auth/<br>';
         document.getElementById('actionOnGoogleAuxiliarData').innerHTML += '<b>Token URL:</b> https://' + token['ddns']['hostname'] + '/token/<br>';
         document.getElementById('actionOnGoogleAuxiliarData').innerHTML += '<b>Fulfillment URL:</b> https://' + token['ddns']['hostname'] + '/smarthome/<br>';
@@ -270,8 +270,9 @@
       save.addEventListener('click', function() {
         //Update the text message
         document.getElementById('textMessageAlert').innerHTML = '...';
-        data['client_id'] = document.getElementById('clientId').value;
-        data['client_secret'] = document.getElementById('clientSecret').value;
+        data['google'] = {};
+        data['google']['client_id'] = document.getElementById('clientId').value;
+        data['google']['client_secret'] = document.getElementById('clientSecret').value;
         data['ddns'] = {};
         data['ddns']['username'] = document.getElementById('ddnsUsername').value;
         data['ddns']['password'] = document.getElementById('ddnsPassword').value;
@@ -283,7 +284,7 @@
         else
           document.getElementById('ddnsStatusBadge').innerHTML = 'Disabled'
 
-        saveData('secure', data);
+        saveData('settings', data);
         //Update the text message
         updateMessageWithTime();
       });
@@ -374,7 +375,7 @@
             console.log(apikey)
             document.getElementById('apikey').value = apikey['apikey'];
           });
-          http.open("GET", "/api/secure/apikey");
+          http.open("GET", "/api/settings/apikey");
           http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
           http.send();
 

@@ -24,7 +24,7 @@ function requestDevices(deviceID) {
   console.log(deviceID);
   var ajaxDevice = new XMLHttpRequest();
   ajaxDevice.addEventListener("load", requestDeviceReference);
-  ajaxDevice.open("GET", "/api/device/get/" + deviceID + '/');
+  ajaxDevice.open("GET", "/api/devices/get/" + deviceID + '/');
   ajaxDevice.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
   ajaxDevice.send();
 }
@@ -247,7 +247,7 @@ save.addEventListener('click', e => {
   http.addEventListener("load", function(){
     console.log(http.responseText);
   });
-  http.open("POST", "/api/device/update/");
+  http.open("POST", "/api/devices/update/");
   http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
   http.setRequestHeader("Content-type", "application/json");
   http.send(JSON.stringify(data));
@@ -269,7 +269,7 @@ deleteDevice.addEventListener('click', e => {
     http.addEventListener("load", function(){
         window.location = '/devices/';
     });
-    http.open("GET", "/api/device/delete/" + deviceID);
+    http.open("GET", "/api/devices/delete/" + deviceID);
     http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
     http.send();
   } else {

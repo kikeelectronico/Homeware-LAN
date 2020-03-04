@@ -35,7 +35,7 @@
             document.getElementById('alertContainer').innerHTML = '<div class="alert alert-danger" role="alert"> ' + xmlHttp.responseText + ' </div>';
           }
         }
-        url = 'http://' + window.location.hostname + ':5001/api/user/setUser/';
+        url = 'http://' + window.location.hostname + ':5001/api/user/set/';
         xmlHttp.open( "POST", url, true );
         xmlHttp.setRequestHeader("Content-type", "application/json");
         xmlHttp.send(JSON.stringify({
