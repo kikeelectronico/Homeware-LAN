@@ -713,7 +713,7 @@ def magic():
         hData.refresh();
         verifyRules()
         ddnsUpdater()
-        time.slep(15)
+        time.sleep(15)
 
 def verifyRules():
     status = hData.getStatus()
