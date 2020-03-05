@@ -714,7 +714,7 @@ def magic():
         print('go ddns')
         ddnsUpdater()
         print('go sleep')
-        time.sleep(10)
+        time.sleep(30)
 
 def verifyRules():
     status = hData.getStatus()
@@ -728,7 +728,6 @@ def verifyRules():
     w = week[pw]
 
     for rule in rules:
-        print(rule)
         ammountTriggers = 1
         verified = 0
         triggers = []
@@ -766,8 +765,6 @@ def verifyRules():
                 else:
                     verified+=1
         #Update targets if needed
-        print(verified)
-        print(ammountTriggers)
         if verified == ammountTriggers:
             print('verified')
             for target in rule['targets']:
