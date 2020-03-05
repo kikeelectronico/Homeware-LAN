@@ -775,6 +775,7 @@ def verifyRules():
                 else:
 
                     print(target['id'])
+                    print(target['value'])
                     hData.updateParamStatus(target['id'], target['param'], target['value'])
                 publish.single("device/"+target['id'], json.dumps(hData.getStatus()[target['id']]), hostname="localhost")
 
