@@ -823,6 +823,7 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     print(msg.topic+" "+str(msg.payload))
+    print(hData.getStatus())
     #Get the data
     payload = json.loads(msg.payload)
     id = payload['id']
