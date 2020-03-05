@@ -707,15 +707,6 @@ def cron():
 #     #Save the new data
 #     writeJSON(data)
 
-def magic():
-    while True:
-        print('go rules')
-        verifyRules()
-        print('go ddns')
-        ddnsUpdater()
-        print('go sleep')
-        time.sleep(30)
-
 def verifyRules():
     status = hData.getStatus()
     rules = hData.getRules()
@@ -766,16 +757,10 @@ def verifyRules():
                     verified+=1
         #Update targets if needed
         if verified == ammountTriggers:
-            print('verified')
             for target in rule['targets']:
-
-                print('target')
                 if str(target['value']) == 'toggle':
                     hData.updateParamStatus(target['id'], target['param'], not status[target['id']][target['param']])
                 else:
-
-                    print(target['id'])
-                    print(target['value'])
                     hData.updateParamStatus(target['id'], target['param'], target['value'])
                 publish.single("device/"+target['id'], json.dumps(hData.getStatus()[target['id']]), hostname="localhost")
 
@@ -861,9 +846,6 @@ if __name__ == "__main__":
     flaskProcess = multiprocessing.Process(target=runapp)
     #MQTT reader
     mqttProcess = multiprocessing.Process(target=mqttReader)
-    #Repeated task
-    magicProcess = multiprocessing.Process(target=magic)
 
     flaskProcess.start()
     mqttProcess.start()
-    magicProcess.start()
