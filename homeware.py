@@ -707,6 +707,14 @@ def cron():
 #     #Save the new data
 #     writeJSON(data)
 
+def magic():
+    while True:
+        print('Doing magic')
+        hData.refresh();
+        verifyRules()
+        ddnsUpdater()
+        time.slep(15)
+
 def verifyRules():
     status = hData.getStatus()
     rules = hData.getRules()
@@ -844,8 +852,10 @@ if __name__ == "__main__":
     # runapp()
     #Flask App and Api
     flaskProcess = multiprocessing.Process(target=runapp)
+    flaskProcess.start()
     #MQTT reader
     mqttProcess = multiprocessing.Process(target=mqttReader)
-
-    flaskProcess.start()
     mqttProcess.start()
+    #Repeated task
+    magicProcess = multiprocessing.Process(target=magic)
+    magicProcess.start()
