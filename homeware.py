@@ -719,6 +719,7 @@ def magic():
 def verifyRules():
     status = hData.getStatus()
     rules = hData.getRules()
+    print(rules)
 
     ts = time.localtime(time.time())
     h = ts.tm_hour
@@ -765,6 +766,8 @@ def verifyRules():
                 else:
                     verified+=1
         #Update targets if needed
+        print(verified)
+        print(ammountTriggers)
         if verified == ammountTriggers:
             print('verified')
             for target in rule['targets']:
