@@ -12,6 +12,8 @@ import paho.mqtt.publish as publish
 import paho.mqtt.client as mqtt
 from data import Data
 
+import concurrent.futures
+
 UPLOAD_FOLDER = ''
 ALLOWED_EXTENSIONS = {'json'}
 
@@ -685,8 +687,8 @@ def page_not_found(error):
 @app.route("/cron/")
 def cron():
     #updatestates()
-    verifyRules()
-    ddnsUpdater()
+    #verifyRules()
+    #ddnsUpdater()
 
     return "Done"
 #
@@ -704,6 +706,12 @@ def cron():
 #             data['status'][device]['online'] = True
 #     #Save the new data
 #     writeJSON(data)
+
+def magic():
+    while True:
+        verifyRules()
+        ddnsUpdater()
+        time.sleep(30)
 
 def verifyRules():
     status = hData.getStatus()
@@ -804,10 +812,6 @@ def ddnsUpdater():
             else:
                 hData.updateDDNS(newIP, status[code], code, True, last)
 
-
-
-
-
 ########################### MQTT reader ###########################
 
 def on_connect(client, userdata, flags, rc):
@@ -846,7 +850,11 @@ if __name__ == "__main__":
     # runapp()
     #Flask App and Api
     flaskProcess = multiprocessing.Process(target=runapp)
-    flaskProcess.start()
     #MQTT reader
     mqttProcess = multiprocessing.Process(target=mqttReader)
+    #Repeated task
+    magicProcess = multiprocessing.Process(target=magic)
+
+    flaskProcess.start()
     mqttProcess.start()
+    magicProcess.start()
