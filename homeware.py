@@ -766,7 +766,10 @@ def verifyRules():
                     verified+=1
         #Update targets if needed
         if verified == ammountTriggers:
+            print('verified')
             for target in rule['targets']:
+
+                print('target')
                 if str(target['value']) == 'toggle':
                     hData.updateParamStatus(target['id'], target['param'], not status[target['id']][target['param']])
                 else:
