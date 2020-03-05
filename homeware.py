@@ -683,6 +683,15 @@ def page_not_found(error):
 def page_not_found(error):
     return 'La qué has liado pollito'
 
+@app.route("/cron")
+@app.route("/cron/")
+def cron():
+    #updatestates()
+    verifyRules()
+    ddnsUpdater()
+
+    return "Done"
+    
 #
 # def updatestates():
 #     #Get JSON
@@ -699,12 +708,6 @@ def page_not_found(error):
 #     #Save the new data
 #     writeJSON(data)
 
-def magic():
-    while True:
-        hData.refresh();
-        verifyRules()
-        ddnsUpdater()
-        time.sleep(30)
 
 def verifyRules():
     status = hData.getStatus()
@@ -847,6 +850,3 @@ if __name__ == "__main__":
     #MQTT reader
     mqttProcess = multiprocessing.Process(target=mqttReader)
     mqttProcess.start()
-    #Repeated task
-    magicProcess = multiprocessing.Process(target=magic)
-    magicProcess.start()
