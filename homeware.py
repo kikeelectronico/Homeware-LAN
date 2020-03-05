@@ -823,6 +823,7 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     print(msg.topic+" "+str(msg.payload))
+    print(hData.getStatus())
     #Get the data
     payload = json.loads(msg.payload)
     id = payload['id']
@@ -856,8 +857,8 @@ if __name__ == "__main__":
     #MQTT reader
     mqttProcess = multiprocessing.Process(target=mqttReader)
     #Repeated task
-    magicProcess = multiprocessing.Process(target=magic)
+    #magicProcess = multiprocessing.Process(target=magic)
 
     flaskProcess.start()
     mqttProcess.start()
-    magicProcess.start()
+    #magicProcess.start()
