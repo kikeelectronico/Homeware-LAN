@@ -719,7 +719,6 @@ def magic():
 def verifyRules():
     status = hData.getStatus()
     rules = hData.getRules()
-    print(rules)
 
     ts = time.localtime(time.time())
     h = ts.tm_hour
@@ -729,6 +728,7 @@ def verifyRules():
     w = week[pw]
 
     for rule in rules:
+        print(rule)
         ammountTriggers = 1
         verified = 0
         triggers = []
