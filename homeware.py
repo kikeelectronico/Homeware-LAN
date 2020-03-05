@@ -709,9 +709,12 @@ def cron():
 
 def magic():
     while True:
+        print('go rules')
         verifyRules()
+        print('go ddns')
         ddnsUpdater()
-        time.sleep(30)
+        print('go sleep')
+        time.sleep(10)
 
 def verifyRules():
     status = hData.getStatus()
