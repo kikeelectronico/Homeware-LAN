@@ -683,14 +683,6 @@ def page_not_found(error):
 def page_not_found(error):
     return 'La qué has liado pollito'
 
-@app.route("/cron")
-@app.route("/cron/")
-def cron():
-    #updatestates()
-    verifyRules()
-    ddnsUpdater()
-
-    return "Done"
 #
 # def updatestates():
 #     #Get JSON
@@ -709,11 +701,10 @@ def cron():
 
 def magic():
     while True:
-        print('Doing magic')
         hData.refresh();
         verifyRules()
         ddnsUpdater()
-        time.sleep(15)
+        time.sleep(30)
 
 def verifyRules():
     status = hData.getStatus()
