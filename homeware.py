@@ -709,12 +709,10 @@ def cron():
 
 def magic():
     while True:
-        # print('go rules')
-        # verifyRules()
-        # print('go ddns')
-        # ddnsUpdater()
-
-        print(hData.getVersion())
+        print('go rules')
+        verifyRules()
+        print('go ddns')
+        ddnsUpdater()
         print('go sleep')
         time.sleep(10)
 
@@ -767,6 +765,7 @@ def verifyRules():
                 else:
                     verified+=1
         #Update targets if needed
+        print(verified)
         if verified == ammountTriggers:
             for target in rule['targets']:
                 if str(target['value']) == 'toggle':
