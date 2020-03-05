@@ -765,12 +765,13 @@ def verifyRules():
                 else:
                     verified+=1
         #Update targets if needed
-        print(verified)
         if verified == ammountTriggers:
             for target in rule['targets']:
                 if str(target['value']) == 'toggle':
                     hData.updateParamStatus(target['id'], target['param'], not status[target['id']][target['param']])
                 else:
+
+                    print(target['id'])
                     hData.updateParamStatus(target['id'], target['param'], target['value'])
                 publish.single("device/"+target['id'], json.dumps(hData.getStatus()[target['id']]), hostname="localhost")
 
