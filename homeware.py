@@ -835,7 +835,7 @@ def on_message(client, userdata, msg):
         publish.single("device/"+id, json.dumps(hData.getStatus()[id]), hostname="localhost")
     elif intent == 'rules':
         #hData.updateParamStatus(id,param,value)
-        headers = {}
+        headers = {'content-type': 'application/json'}
         with open('secure.json', 'r') as f:
             headers['Authorization'] = 'baerer ' + json.load(f)['token']['front']
 
@@ -844,7 +844,7 @@ def on_message(client, userdata, msg):
             'param': payload['param'],
             'value': payload['value'],
         }
-        pet = requests.post(url='http://127.0.0.1:5001/api/status/update/', data=data, headers=headers)
+        pet = requests.post(url='http://127.0.0.1:5001/api/status/update/', data=json.dumps(data), headers=headers)
         print(pet.text)
         print(data)
         print(headers)
