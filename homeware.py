@@ -832,7 +832,11 @@ def on_message(client, userdata, msg):
 
     if intent == 'execute':
         hData.updateParamStatus(id,param,value)
-        requests.get(url='http://127.0.0.1:5001/refresh/')
+        with open(self.secureFile, 'r') as f:
+            token = json.load(f)
+            print(token)
+
+        requests.post(url='http://127.0.0.1:5001/refresh/')
         publish.single("device/"+id, json.dumps(hData.getStatus()[id]), hostname="localhost")
     elif intent == 'rules':
         hData.updateParamStatus(id,param,value)
