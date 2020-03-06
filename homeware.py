@@ -51,10 +51,7 @@ def index():
 @app.route('/devices/<process>/<id>')
 @app.route('/devices/<process>/<id>/')
 def devices(process = "", id = ""):
-    if flags['file_a']:
-        print('in')
-    else:
-        print('out')
+
     if process == 'edit':
         if id != '':
             return render_template('panel/edit_device.html', deviceID=id)
@@ -125,6 +122,12 @@ def assistant(step = 'welcome'):
 def test():
     #publish.single("test", "payload", hostname="localhost")
     return 'Load'
+
+@app.route('/refresh')
+@app.route('/refresh/')
+def refresh():
+    hData.refresh()
+    return 'Done'
 
 #API
 @app.route("/api", methods=['GET', 'POST'])
@@ -829,9 +832,11 @@ def on_message(client, userdata, msg):
 
     if intent == 'execute':
         hData.updateParamStatus(id,param,value)
+        requests.get(url='127.0.0.1:5001/refresh/')
         publish.single("device/"+id, json.dumps(hData.getStatus()[id]), hostname="localhost")
     elif intent == 'rules':
         hData.updateParamStatus(id,param,value)
+        requests.get(url='127.0.0.1:5001/refresh/')
         flags['file_a'] = True
         verifyRules()
     elif intent == 'request':
@@ -848,7 +853,6 @@ def mqttReader():
 
 if __name__ == "__main__":
     # runapp()
-    flags = multiprocessing.Manager().dict({'file_a' : False, 'file_b' : False, 'file_c' : True})
     #Flask App and Api
     flaskProcess = multiprocessing.Process(target=runapp)
     flaskProcess.start()
