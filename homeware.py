@@ -840,6 +840,9 @@ def on_message(client, userdata, msg):
         publish.single("device/"+id, json.dumps(hData.getStatus()[id]), hostname="localhost")
     elif intent == 'rules':
         hData.updateParamStatus(id,param,value)
+        with open(self.secureFile, 'r') as f:
+            token = json.load(f)
+            print(token)
         requests.get(url='http://127.0.0.1:5001/refresh/')
         flags['file_a'] = True
         verifyRules()
