@@ -831,26 +831,32 @@ def on_message(client, userdata, msg):
 
 
     if intent == 'execute':
-        hData.updateParamStatus(id,param,value)
-        publish.single("device/"+id, json.dumps(hData.getStatus()[id]), hostname="localhost")
-    elif intent == 'rules':
-        #hData.updateParamStatus(id,param,value)
         headers = {'content-type': 'application/json'}
         with open('secure.json', 'r') as f:
             headers['Authorization'] = 'baerer ' + json.load(f)['token']['front']
-
         data = {
             'id': payload['id'],
             'param': payload['param'],
             'value': payload['value'],
         }
-        pet = requests.post(url='http://127.0.0.1:5001/api/status/update/', data=json.dumps(data), headers=headers)
-        print(pet.text)
-        print(data)
-        print(headers)
-        verifyRules()
+        requests.post(url='http://127.0.0.1:5001/api/status/update/', data=json.dumps(data), headers=headers)
+
+        with open('homeware.json', 'r') as f:
+            publish.single("device/"+id, json.dumps(json.load(f)['status'][id]), hostname="localhost")
+    elif intent == 'rules':
+        headers = {'content-type': 'application/json'}
+        with open('secure.json', 'r') as f:
+            headers['Authorization'] = 'baerer ' + json.load(f)['token']['front']
+        data = {
+            'id': payload['id'],
+            'param': payload['param'],
+            'value': payload['value'],
+        }
+        requests.post(url='http://127.0.0.1:5001/api/status/update/', data=json.dumps(data), headers=headers)
+        requests.get(url='http://127.0.0.1:5001/cron/')
     elif intent == 'request':
-        publish.single("device/"+id, json.dumps(hData.getStatus()[id]), hostname="localhost")
+        with open('homeware.json', 'r') as f:
+            publish.single("device/"+id, json.dumps(json.load(f)['status'][id]), hostname="localhost")
 
 # MQTT reader
 def mqttReader():
