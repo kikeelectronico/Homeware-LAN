@@ -850,4 +850,3 @@ if __name__ == "__main__":
     #MQTT reader
     mqttProcess = multiprocessing.Process(target=mqttReader)
     mqttProcess.start()
-    
