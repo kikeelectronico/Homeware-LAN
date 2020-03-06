@@ -51,7 +51,10 @@ def index():
 @app.route('/devices/<process>/<id>')
 @app.route('/devices/<process>/<id>/')
 def devices(process = "", id = ""):
-    hData.refresh()
+    if flags['file_a']:
+        print('in')
+    else:
+        print('out')
     if process == 'edit':
         if id != '':
             return render_template('panel/edit_device.html', deviceID=id)
@@ -829,6 +832,7 @@ def on_message(client, userdata, msg):
         publish.single("device/"+id, json.dumps(hData.getStatus()[id]), hostname="localhost")
     elif intent == 'rules':
         hData.updateParamStatus(id,param,value)
+        flags['file_a'] = True
         verifyRules()
     elif intent == 'request':
         publish.single("device/"+id, json.dumps(hData.getStatus()[id]), hostname="localhost")
@@ -844,6 +848,7 @@ def mqttReader():
 
 if __name__ == "__main__":
     # runapp()
+    flags = multiprocessing.Manager().dict({'file_a' : False, 'file_b' : False, 'file_c' : True})
     #Flask App and Api
     flaskProcess = multiprocessing.Process(target=runapp)
     flaskProcess.start()
