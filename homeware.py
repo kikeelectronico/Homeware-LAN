@@ -51,7 +51,7 @@ def index():
 @app.route('/devices/<process>/<id>')
 @app.route('/devices/<process>/<id>/')
 def devices(process = "", id = ""):
-
+    hData.refresh()
     if process == 'edit':
         if id != '':
             return render_template('panel/edit_device.html', deviceID=id)
