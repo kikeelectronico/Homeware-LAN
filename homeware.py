@@ -846,6 +846,8 @@ def on_message(client, userdata, msg):
         }
         pet = requests.post(url='http://127.0.0.1:5001/api/status/update/', data=data, headers=headers)
         print(pet.text)
+        print(data)
+        print(headers)
         verifyRules()
     elif intent == 'request':
         publish.single("device/"+id, json.dumps(hData.getStatus()[id]), hostname="localhost")
