@@ -12,8 +12,6 @@ import paho.mqtt.publish as publish
 import paho.mqtt.client as mqtt
 from data import Data
 
-import concurrent.futures
-
 UPLOAD_FOLDER = ''
 ALLOWED_EXTENSIONS = {'json'}
 
@@ -691,7 +689,6 @@ def cron():
     ddnsUpdater()
 
     return "Done"
-    
 #
 # def updatestates():
 #     #Get JSON
@@ -707,7 +704,6 @@ def cron():
 #             data['status'][device]['online'] = True
 #     #Save the new data
 #     writeJSON(data)
-
 
 def verifyRules():
     status = hData.getStatus()
@@ -808,6 +804,10 @@ def ddnsUpdater():
             else:
                 hData.updateDDNS(newIP, status[code], code, True, last)
 
+
+
+
+
 ########################### MQTT reader ###########################
 
 def on_connect(client, userdata, flags, rc):
@@ -850,3 +850,4 @@ if __name__ == "__main__":
     #MQTT reader
     mqttProcess = multiprocessing.Process(target=mqttReader)
     mqttProcess.start()
+    
