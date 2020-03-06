@@ -14,7 +14,7 @@ sudo apt-get install mosquitto mosquitto-clients
 #Get current crontab
 crontab -l > copy
 #Set the new cron job up
-echo "* * * * * curl http://127.0.0.1/cron/" >> copy
+echo "* * * * * curl http://127.0.0.1:5001/cron/" >> copy
 #Save the cron file
 crontab copy
 rm copy
