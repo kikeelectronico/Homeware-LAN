@@ -1,11 +1,22 @@
-var actual = 'v0.4.2';
-document.getElementById('HomeWareStatus').innerHTML += '<p> <b>Current version:</b> ' + actual + ' </p>';
+var actual = 'unknown';
 
+function requestActual(){
+  var actual = new XMLHttpRequest();
+  actual.addEventListener('load', requestLatest);
+  actual.open('GET', '/api/global/version/');
+  actual.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+  actual.send();
+}
 
-var latest = new XMLHttpRequest();
-latest.addEventListener('load', showLatest);
-latest.open('GET', 'https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest');
-latest.send();
+function requestLatest(){
+  actual = JSON.parse(this.responseText)['version'];
+  document.getElementById('HomeWareStatus').innerHTML += '<p> <b>Current version:</b> ' + actual + ' </p>';
+
+  var latest = new XMLHttpRequest();
+  latest.addEventListener('load', showLatest);
+  latest.open('GET', 'https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest');
+  latest.send();
+}
 
 function showLatest(){
   var latestRelease = JSON.parse(this.responseText);
