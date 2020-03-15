@@ -10,7 +10,9 @@ import subprocess
 import multiprocessing
 import paho.mqtt.publish as publish
 import paho.mqtt.client as mqtt
+
 from data import Data
+from renderHelper import RenderHelper
 
 UPLOAD_FOLDER = ''
 ALLOWED_EXTENSIONS = {'json'}
@@ -24,6 +26,9 @@ responseURL = ''
 
 #Init the data managment object
 hData = Data()
+
+#Init the RenderHelper
+renderHelper = RenderHelper()
 
 #app
 def runapp():
@@ -41,7 +46,7 @@ def index():
     if hData.firstRun():
         return redirect("/assistant/", code=302)
     else:
-        return render_template('panel/index.html')
+        return render_template('panel/index.html', basic = renderHelper.basic)
 
 
 @app.route('/devices')
@@ -54,13 +59,13 @@ def devices(process = "", id = ""):
 
     if process == 'edit':
         if id != '':
-            return render_template('panel/edit_device.html', deviceID=id)
+            return render_template('panel/device_edit.html', deviceID=id, basic = renderHelper.basic)
         else:
-            return render_template('panel/devices.html')
+            return render_template('panel/devices.html', basic = renderHelper.basic)
     elif process == 'assistant':
-        return render_template('panel/assistant_device.html')
+        return render_template('panel/device_assistant.html', basic = renderHelper.basic)
     else:
-        return render_template('panel/devices.html')
+        return render_template('panel/devices.html', basic = renderHelper.basic)
 
 @app.route('/rules')
 @app.route('/rules/')
@@ -71,11 +76,11 @@ def devices(process = "", id = ""):
 def rules(process = "", id = -1):
 
     if process == 'edit':
-            return render_template('panel/edit_rules.html', ruleID=id)
+            return render_template('panel/rule_edit.html', ruleID=id, basic = renderHelper.basic)
     elif process == 'json':
-            return render_template('panel/json_rules.html', ruleID=id)
+            return render_template('panel/rule_json.html', ruleID=id, basic = renderHelper.basic)
     else:
-        return render_template('panel/rules.html')
+        return render_template('panel/rules.html', basic = renderHelper.basic)
 
 @app.route('/settings')
 @app.route('/settings/')
@@ -89,7 +94,7 @@ def settings(msg = ''):
     else:
         msg = 'none'
 
-    return render_template('panel/settings.html', msg=msg)
+    return render_template('panel/settings.html', msg=msg, basic = renderHelper.basic)
 
 @app.route('/assistant')
 @app.route('/assistant/')

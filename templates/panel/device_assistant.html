@@ -1,9 +1,13 @@
 <!doctype html>
 <html lang="en">
-  <head> </head>
-  <body style="visibility: hidden;">
+  <head>
+    {{ basic['head']|safe }}
+  </head>
+  <body>
 
-    <div id="navbarBlock"></div>
+    <div id="navbarBlock">
+      {{ basic['navbar']|safe }}
+    </div>
 
     <div id="grid" class="container containerP">
 
@@ -32,9 +36,10 @@
       </div>
     </div>
 
+    <script src="/static/panel/load.js"></script>
     <script src="/static/panel/coolNames.js"></script>
-    <script src="/static/panel/assistant_device.js"></script>
-    <script src="/static/panel/edit_device_dependencies.js"></script>
+    <script src="/static/panel/device_assistant.js"></script>
+    <script src="/static/panel/device_dependencies.js"></script>
 
     <script>
       //Load things
@@ -45,8 +50,6 @@
     </script>
 
     <script src="https://www.gstatic.com/firebasejs/3.5.0/firebase.js"></script>
-    <script src="/static/panel/load.js"></script>
-    <script src="/static/panel/footer.js"></script>
     <link href="/static/JSONeditor/jsoneditor.css" rel="stylesheet" type="text/css">
     <script src="/static/JSONeditor/jsoneditor.js"></script>
 
