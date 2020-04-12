@@ -5,7 +5,7 @@ from cryptography.fernet import Fernet
 
 class Data:
 
-    version = 'v0.5'
+    version = 'v0.5.1'
     homewareData = {}
     homewareFile = 'homeware.json'
     secureData = {}
