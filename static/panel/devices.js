@@ -1,9 +1,5 @@
 
 data = {}
-window.addEventListener('load', function(event){
-  laodDevicesRequest();
-  setInterval(function(){laodDevicesRequest();}, 5000);
-});
 
 function laodDevicesRequest(){
   var http = new XMLHttpRequest();

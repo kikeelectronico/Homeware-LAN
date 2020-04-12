@@ -68,7 +68,7 @@ function loadDeviceReference(){
 
    var ajaxStep = new XMLHttpRequest();
    ajaxStep.addEventListener("load", loadRender);
-   ajaxStep.open("GET", "/static/panel/assistant_device/" + step + ".html");
+   ajaxStep.open("GET", "/static/panel/device_assistant/" + step + ".html");
    ajaxStep.send();
 }
 

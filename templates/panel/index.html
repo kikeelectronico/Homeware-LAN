@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="en">
   <head>
-
+    {{ basic['head']|safe }}
   </head>
-  <body style="visibility: hidden;">
+  <body>
 
     <div id="navbarBlock">
-
+      {{ basic['navbar']|safe }}
     </div>
 
     <div id="grid" style="margin-top: 20px;">
@@ -37,9 +37,14 @@
       </div>
     </div>
 
-    <script src="/static/panel/index.js"></script>
     <script src="/static/panel/load.js"></script>
-    <script src="/static/panel/footer.js"></script>
+    <script src="/static/panel/index.js"></script>
+
+    <script type="text/javascript">
+      window.addEventListener('load', function(){
+        requestActual();
+      });
+    </script>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

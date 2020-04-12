@@ -5,7 +5,7 @@ This API creates an integration between hardware devices like ESP8266 or Arduino
 
 <img alt="Super Grover" src="https://github.com/kikeelectronico/homeware/raw/master/images/cloud.png" />
 
-Homeware is not finished yet.
+Homeware-LAN is not finished yet. Homeware-LAN is not design for production environments.
 
 ## How to
 

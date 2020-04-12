@@ -1,7 +1,4 @@
 data = {}
-window.addEventListener('load', function(event){
-  laodDevicesRequest();
-});
 
 function laodDevicesRequest(){
   var http = new XMLHttpRequest();

@@ -10,7 +10,9 @@ import subprocess
 import multiprocessing
 import paho.mqtt.publish as publish
 import paho.mqtt.client as mqtt
+
 from data import Data
+from renderHelper import RenderHelper
 
 UPLOAD_FOLDER = ''
 ALLOWED_EXTENSIONS = {'json'}
@@ -24,6 +26,9 @@ responseURL = ''
 
 #Init the data managment object
 hData = Data()
+
+#Init the RenderHelper
+renderHelper = RenderHelper()
 
 #app
 def runapp():
@@ -41,7 +46,7 @@ def index():
     if hData.firstRun():
         return redirect("/assistant/", code=302)
     else:
-        return render_template('panel/index.html')
+        return render_template('panel/index.html', basic = renderHelper.basic)
 
 
 @app.route('/devices')
@@ -54,28 +59,28 @@ def devices(process = "", id = ""):
 
     if process == 'edit':
         if id != '':
-            return render_template('panel/edit_device.html', deviceID=id)
+            return render_template('panel/device_edit.html', deviceID=id, basic = renderHelper.basic)
         else:
-            return render_template('panel/devices.html')
+            return render_template('panel/devices.html', basic = renderHelper.basic)
     elif process == 'assistant':
-        return render_template('panel/assistant_device.html')
+        return render_template('panel/device_assistant.html', basic = renderHelper.basic)
     else:
-        return render_template('panel/devices.html')
+        return render_template('panel/devices.html', basic = renderHelper.basic)
 
 @app.route('/rules')
 @app.route('/rules/')
 @app.route('/rules/<process>/')
 @app.route('/rules/<process>/')
-@app.route('/rules/<process>/<int:id>')
-@app.route('/rules/<process>/<int:id>/')
+@app.route('/rules/<process>/<id>')
+@app.route('/rules/<process>/<id>/')
 def rules(process = "", id = -1):
 
     if process == 'edit':
-            return render_template('panel/edit_rules.html', ruleID=id)
+            return render_template('panel/rule_edit.html', ruleID=id, basic = renderHelper.basic)
     elif process == 'json':
-            return render_template('panel/json_rules.html', ruleID=id)
+            return render_template('panel/rule_json.html', ruleID=id, basic = renderHelper.basic)
     else:
-        return render_template('panel/rules.html')
+        return render_template('panel/rules.html', basic = renderHelper.basic)
 
 @app.route('/settings')
 @app.route('/settings/')
@@ -89,7 +94,7 @@ def settings(msg = ''):
     else:
         msg = 'none'
 
-    return render_template('panel/settings.html', msg=msg)
+    return render_template('panel/settings.html', msg=msg, basic = renderHelper.basic)
 
 @app.route('/assistant')
 @app.route('/assistant/')
@@ -122,6 +127,12 @@ def assistant(step = 'welcome'):
 def test():
     #publish.single("test", "payload", hostname="localhost")
     return 'Load'
+
+@app.route('/refresh')
+@app.route('/refresh/')
+def refresh():
+    hData.refresh()
+    return 'Done'
 
 #API
 @app.route("/api", methods=['GET', 'POST'])
@@ -825,13 +836,32 @@ def on_message(client, userdata, msg):
 
 
     if intent == 'execute':
-        hData.updateParamStatus(id,param,value)
-        publish.single("device/"+id, json.dumps(hData.getStatus()[id]), hostname="localhost")
+        headers = {'content-type': 'application/json'}
+        with open('secure.json', 'r') as f:
+            headers['Authorization'] = 'baerer ' + json.load(f)['token']['front']
+        data = {
+            'id': payload['id'],
+            'param': payload['param'],
+            'value': payload['value'],
+        }
+        requests.post(url='http://127.0.0.1:5001/api/status/update/', data=json.dumps(data), headers=headers)
+
+        with open('homeware.json', 'r') as f:
+            publish.single("device/"+id, json.dumps(json.load(f)['status'][id]), hostname="localhost")
     elif intent == 'rules':
-        hData.updateParamStatus(id,param,value)
-        verifyRules()
+        headers = {'content-type': 'application/json'}
+        with open('secure.json', 'r') as f:
+            headers['Authorization'] = 'baerer ' + json.load(f)['token']['front']
+        data = {
+            'id': payload['id'],
+            'param': payload['param'],
+            'value': payload['value'],
+        }
+        requests.post(url='http://127.0.0.1:5001/api/status/update/', data=json.dumps(data), headers=headers)
+        requests.get(url='http://127.0.0.1:5001/cron/')
     elif intent == 'request':
-        publish.single("device/"+id, json.dumps(hData.getStatus()[id]), hostname="localhost")
+        with open('homeware.json', 'r') as f:
+            publish.single("device/"+id, json.dumps(json.load(f)['status'][id]), hostname="localhost")
 
 # MQTT reader
 def mqttReader():
