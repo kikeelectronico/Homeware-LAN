@@ -388,7 +388,7 @@ def front(operation = "", segment = "", value = ''):
             if accessLevel >= 100:
                 if operation == 'upgrade':
                     # subprocess.run(["sudo", "systemctl", "start", "homewareUpgrader"],  stdout=subprocess.PIPE)
-                    subprocess.run(["sudo", "nohup", "sh", "homewareUpgrader.sh", "&"],  stdout=subprocess.PIPE)
+                    subprocess.run(["sudo", "sh", "homewareUpgrader.sh"],  stdout=subprocess.PIPE)
                     responseData = {
                         'code': '202'
                     }
