@@ -1,10 +1,10 @@
 [Unit]
-Description=Homeware LAN
+Description=Homeware LAN Upgrader
 After=network-online.target
 
 [Service]
-ExecStart=sh /home/pi/Homeware-LAN/homeware.sh
-WorkingDirectory=/home/pi/Homeware-LAN/
+ExecStart=python3 /home/pi/Homeware-LAN/bash/homewareUpgrader.sh
+WorkingDirectory=/home/pi/Homeware-LAN/bash/
 StandardOutput=inherit
 StandardError=inherit
 Restart=always

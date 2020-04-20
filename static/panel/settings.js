@@ -184,7 +184,7 @@ function requestLatest(){
 function showLatest(){
   var latestRelease = JSON.parse(this.responseText);
   if (actual != latestRelease.tag_name){
-    document.getElementById('HomeWareStatus').innerHTML += '<p style="background-color:#81F79F; padding:20px;"> <b>New version available:</b> ' + latestRelease.tag_name + ' <br> <b>Description:</b> ' + latestRelease.body + ' <br>  </p> <button type="button" class="btn btn-primary" onclick="downloadAndUpdate()">Upgrade</button> ';
+    document.getElementById('HomeWareStatus').innerHTML += '<p style="background-color:#81F79F; padding:20px;"> <b>New version available:</b> ' + latestRelease.tag_name + ' <br> <b>Description:</b> ' + latestRelease.body + ' <br>  </p> <button type="button" class="btn btn-primary" onclick="downloadAndUpgrade()">Upgrade</button> ';
   } else {
     document.getElementById('HomeWareStatus').innerHTML += 'Your system is up to date';
   }
@@ -194,11 +194,40 @@ function downloadAndUpgrade(){
   if(confirm('Are you sure that you want to upgrade your Homeware-LAN installation?')){
     buckup();
     if(confirm("A security file should be downloaded. Do you have it?")){
-        alert('The system will be down during at least 2 minutes. The page will be reloaded automatically when the system will be ready.')
+        var http = new XMLHttpRequest();
+        http.addEventListener("load", function(){
+          console.log(http.responseText)
+          code = JSON.parse(http.responseText)['code']
+          if(code == '202'){
+            alert('The system will be down during at least 2 minutes. The page will be reloaded automatically when the system will be ready.')
+            setTimeout(reloadIfApiIsAlive(),20000)
+          } else {
+            alert('Something goes wrong.')
+          }
+        });
+        http.open("GET", "/api/system/upgrade");
+        http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+        http.send();
     } else {
       alert('We can not continue with out the file. Sorry.')
     }
   } else {
     alert('Nothing has been done.')
   }
+}
+
+function reloadIfApiIsAlive(){
+  var http = new XMLHttpRequest();
+  http.addEventListener("load", function(){
+    console.log(http.responseText)
+    if( http.responseText == 'Load'){
+      window.location.href = '/'
+    } else {
+      console.log('Waiting')
+      setTimeout(reloadIfApiIsAlive(),20000)
+    }
+  });
+  http.open("GET", "/test/");
+  http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+  http.send();
 }
