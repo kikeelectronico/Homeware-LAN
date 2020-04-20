@@ -225,6 +225,9 @@ class Data:
         user = headers['user']
         password = headers['pass']
 
+        print(user)
+        print(password)
+
         cipher_suite = Fernet(str.encode(self.secureData['key'][2:len(self.secureData['key'])]))
         plain_text = cipher_suite.decrypt(str.encode(self.secureData['pass'][2:len(self.secureData['pass'])]))
         responseData = {}
