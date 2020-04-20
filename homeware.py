@@ -141,7 +141,6 @@ def refresh():
 @app.route("/api/<segment>/<operation>/<value>", methods=['GET', 'POST'])
 @app.route("/api/<segment>/<operation>/<value>/", methods=['GET', 'POST'])
 def front(operation = "", segment = "", value = ''):
-    print('hi')
 
     #Verify the access level
     accessLevel = 0
