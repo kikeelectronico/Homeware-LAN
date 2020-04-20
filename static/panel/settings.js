@@ -158,3 +158,47 @@ function generateAPIKey(){
 
   }
 }
+
+
+// Version upgrade
+var actual = 'unknown';
+
+function requestActual(){
+  var actual = new XMLHttpRequest();
+  actual.addEventListener('load', requestLatest);
+  actual.open('GET', '/api/global/version/');
+  actual.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+  actual.send();
+}
+
+function requestLatest(){
+  actual = JSON.parse(this.responseText)['version'];
+  document.getElementById('HomeWareStatus').innerHTML += '<p> <b>Current version:</b> ' + actual + ' </p>';
+
+  var latest = new XMLHttpRequest();
+  latest.addEventListener('load', showLatest);
+  latest.open('GET', 'https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest');
+  latest.send();
+}
+
+function showLatest(){
+  var latestRelease = JSON.parse(this.responseText);
+  if (actual != latestRelease.tag_name){
+    document.getElementById('HomeWareStatus').innerHTML += '<p style="background-color:#81F79F; padding:20px;"> <b>New version available:</b> ' + latestRelease.tag_name + ' <br> <b>Description:</b> ' + latestRelease.body + ' <br>  </p> <button type="button" class="btn btn-primary" onclick="downloadAndUpdate()">Upgrade</button> ';
+  } else {
+    document.getElementById('HomeWareStatus').innerHTML += 'Your system is up to date';
+  }
+}
+
+function downloadAndUpgrade(){
+  if(confirm('Are you sure that you want to upgrade your Homeware-LAN installation?')){
+    buckup();
+    if(confirm("A security file should be downloaded. Do you have it?")){
+        alert('The system will be down during at least 2 minutes. The page will be reloaded automatically when the system will be ready.')
+    } else {
+      alert('We can not continue with out the file. Sorry.')
+    }
+  } else {
+    alert('Nothing has been done.')
+  }
+}
