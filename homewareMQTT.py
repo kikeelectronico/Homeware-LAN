@@ -1,4 +1,5 @@
 import requests
+import json
 import paho.mqtt.publish as publish
 import paho.mqtt.client as mqtt
 
@@ -32,6 +33,7 @@ def on_message(client, userdata, msg):
         with open('homeware.json', 'r') as f:
             publish.single("device/"+id, json.dumps(json.load(f)['status'][id]), hostname="localhost")
     elif intent == 'rules':
+        print('In rules')
         headers = {'content-type': 'application/json'}
         with open('secure.json', 'r') as f:
             headers['Authorization'] = 'baerer ' + json.load(f)['token']['front']
@@ -42,6 +44,7 @@ def on_message(client, userdata, msg):
         }
         requests.post(url='http://127.0.0.1:5001/api/status/update/', data=json.dumps(data), headers=headers)
         requests.get(url='http://127.0.0.1:5001/cron/')
+        print('Out rules')
     elif intent == 'request':
         with open('homeware.json', 'r') as f:
             publish.single("device/"+id, json.dumps(json.load(f)['status'][id]), hostname="localhost")
@@ -52,7 +55,7 @@ def mqttReader():
     client.on_connect = on_connect
     client.on_message = on_message
 
-    client.connect("localhost", 1883, 60)
+    client.connect("192.168.1.5", 1883, 60)
     client.loop_forever()
 
 if __name__ == "__main__":

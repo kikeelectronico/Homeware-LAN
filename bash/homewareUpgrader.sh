@@ -11,11 +11,11 @@ sudo systemctl stop homeware
 #Pull from the repository
 git pull
 
+sudo sh upgraderInstructions.sh
+
 #Start both services
 sudo systemctl start homewareMQTT
 sudo systemctl start homeware
-
-sudo sh upgraderInstructions.sh
 
 echo "\r\The upgrader has finished.\r\n"
 #Stop the upgrader

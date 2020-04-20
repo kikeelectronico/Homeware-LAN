@@ -6,9 +6,9 @@ fi
 if ! grep -Fxq "v0.5.2" installations.txt
 then
   #Intall the new services
-  sudo cp configuration_templates/homeware.service /lib/systemd/system/
-  sudo cp configuration_templates/homewareMQTT.service /lib/systemd/system/
-  sudo cp configuration_templates/homewareUpgrader.service /lib/systemd/system/
+  sudo cp ../configuration_templates/homeware.service /lib/systemd/system/
+  sudo cp ../configuration_templatesconfiguration_templates/homewareMQTT.service /lib/systemd/system/
+  sudo cp ../configuration_templatesconfiguration_templates/homewareUpgrader.service /lib/systemd/system/
 
   #Get current sudo crontab
   sudo crontab -l > copy
