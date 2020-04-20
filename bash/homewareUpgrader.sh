@@ -2,7 +2,7 @@
 
 exec 1>upgrader.log 2>&1
 
-echo "The upgrader has strarted.\r\n"
+echo "The upgrader has started.\r\n"
 
 #Stop both services
 sudo systemctl stop homewareMQTT
