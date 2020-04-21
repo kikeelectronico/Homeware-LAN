@@ -227,11 +227,13 @@ function downloadAndUpgrade(){
   } else if (upgradeStep == 2){
     document.getElementById('upgradeModalTitle').innerHTML = "Wait";
     document.getElementById('upgradeModalParagraph').innerHTML = "The system will be down some time. The page will be reloaded automatically into home page when the system will be ready.";
+    document.getElementById('buttonClose').style.visibility = "hidden";
+    document.getElementById('buttonNext').style.visibility = "hidden";
     var http = new XMLHttpRequest();
     http.addEventListener("load", function(){
       code = JSON.parse(http.responseText)['code']
       if(code == '202'){
-        setTimeout(reloadIfApiIsAlive(),20000)
+        setTimeout(reloadIfApiIsAlive(),2000)
       } else {
         alert('Something goes wrong.')
       }
@@ -240,7 +242,7 @@ function downloadAndUpgrade(){
     http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
     http.send();
   }
-  
+
 }
 
 function reloadIfApiIsAlive(){
@@ -250,10 +252,11 @@ function reloadIfApiIsAlive(){
       window.location.href = '/'
     } else {
       console.log('Waiting')
-      setTimeout(reloadIfApiIsAlive(),20000)
+      setTimeout(reloadIfApiIsAlive(),2000)
     }
   });
   http.open("GET", "/test/");
+  http.timeout = 2000;
   http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
   http.send();
 }
