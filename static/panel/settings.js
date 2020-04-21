@@ -254,7 +254,6 @@ function reloadIfApiIsAlive(){
     }
   });
   http.open("GET", "/test/");
-  http.timeout = 2000;
   http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
   http.send();
 }
