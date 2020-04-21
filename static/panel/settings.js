@@ -199,7 +199,7 @@ function requestLatest(){
 function showLatest(){
   var latestRelease = JSON.parse(this.responseText);
   if (actual != latestRelease.tag_name){
-    document.getElementById('HomewareNewStatus').innerHTML = '<p style="background-color:#81F79F; padding:20px;"> <b>New version available:</b> ' + latestRelease.tag_name + ' <br> <b>Description:</b> ' + latestRelease.body.replace(/\n/g, "<br />"); + ' <br>  </p> <button type="button" class="btn btn-primary" onclick="downloadAndUpgrade()">Upgrade</button> ';
+    document.getElementById('HomewareNewStatus').innerHTML = '<p style="border: 3px solid #81F79F; padding:20px;"> <button type="button" class="btn btn-primary" onclick="downloadAndUpgrade()">Upgrade</button> <br><br> <b>New version available:</b> ' + latestRelease.tag_name + ' <br> <b>Description:</b><br><br> ' + latestRelease.body.replace(/\n/g, "<br />"); + ' <br>  </p>  ';
   } else {
     document.getElementById('HomewareNewStatus').innerHTML = 'Your system is up to date';
   }
