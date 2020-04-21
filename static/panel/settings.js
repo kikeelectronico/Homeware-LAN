@@ -209,7 +209,7 @@ function downloadAndUpgrade(){
   if(confirm('Are you sure that you want to upgrade your Homeware-LAN installation?')){
     buckup();
     if(confirm("A security file should be downloaded. Do you have it?")){
-        alert('The system will be down some time. The page will be reloaded automatically when the system will be ready.')
+        alert('The system will be down some time. The page will be reloaded automatically into home page when the system will be ready.')
         var http = new XMLHttpRequest();
         http.addEventListener("load", function(){
           console.log(http.responseText)
