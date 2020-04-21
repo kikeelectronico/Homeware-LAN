@@ -102,7 +102,7 @@ function  loadCards(){
             html += '</div>';
             html += '<div class="row">';
               html += '<div class="col">' + paragraph + '</div>';
-              html += '<div class="col" style="vertical-align:top; text-align:right;"><a href="/devices/edit/' + device.id + '" class="btn btn-primary">Edit</a>' + alert + '</div>';
+              html += '<div class="col" style="vertical-align:top; text-align:right;"><a href="/devices/edit/' + device.id + '" class="btn btn-primary">Edit</a> <br><br> <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#modal" style="color:white;" onclick="updateModal(\'' + device.name.nicknames[0] + '\',\'' + device.id + '\')">Status</button>' + alert + '</div>';
             html += '</div>';
           html += '</div>';
         html += '</div>';
@@ -137,4 +137,20 @@ function saveData(param, value){
   http.open("GET", "/api/write/" + param + "/" + JSON.stringify(value) + '/');
   http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'));
   http.send();
+}
+
+function updateModal(title, id){
+  var status = data['status'][id]
+  console.log(status)
+
+  params = Object.keys(status)
+  paragraph = ""
+  for(i = 0; i < params.length; i++){
+    paragraph += '<b>' + getParamCoolName(params[i]) + ':</b> ' + status[params[i]] + '<br>';
+  }
+
+
+  document.getElementById('statusModalTitle').innerHTML = title;
+  document.getElementById('statusModalParagraph').innerHTML = paragraph;
+
 }
