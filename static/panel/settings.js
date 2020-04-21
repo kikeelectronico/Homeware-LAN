@@ -205,29 +205,42 @@ function showLatest(){
   }
 }
 
+var upgradeStep = 0;
+
+function resetStep(){
+  upgradeStep = 0;
+  $('#modalUpgrade').modal('hide')
+}
+
 function downloadAndUpgrade(){
-  if(confirm('Are you sure that you want to upgrade your Homeware-LAN installation?')){
+
+  if (upgradeStep == 0){
+    document.getElementById('upgradeModalTitle').innerHTML = "Upgrade";
+    document.getElementById('upgradeModalParagraph').innerHTML = "Are you sure that you want to upgrade your Homeware-LAN installation?";
+    $('#modalUpgrade').modal('show')
+    upgradeStep = 1;
+  } else if (upgradeStep == 1){
     buckup();
-    if(confirm("A security file should be downloaded. Do you have it?")){
-        alert('The system will be down some time. The page will be reloaded automatically into home page when the system will be ready.')
-        var http = new XMLHttpRequest();
-        http.addEventListener("load", function(){
-          code = JSON.parse(http.responseText)['code']
-          if(code == '202'){
-            setTimeout(reloadIfApiIsAlive(),20000)
-          } else {
-            alert('Something goes wrong.')
-          }
-        });
-        http.open("GET", "/api/system/upgrade");
-        http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-        http.send();
-    } else {
-      alert('We can not continue with out the file. Sorry.')
-    }
-  } else {
-    alert('Nothing has been done.')
+    document.getElementById('upgradeModalTitle').innerHTML = "Backup";
+    document.getElementById('upgradeModalParagraph').innerHTML = "A security file should be downloaded. Do you have it?";
+    upgradeStep = 2;
+  } else if (upgradeStep == 2){
+    document.getElementById('upgradeModalTitle').innerHTML = "Wait";
+    document.getElementById('upgradeModalParagraph').innerHTML = "The system will be down some time. The page will be reloaded automatically into home page when the system will be ready.";
+    var http = new XMLHttpRequest();
+    http.addEventListener("load", function(){
+      code = JSON.parse(http.responseText)['code']
+      if(code == '202'){
+        setTimeout(reloadIfApiIsAlive(),20000)
+      } else {
+        alert('Something goes wrong.')
+      }
+    });
+    http.open("GET", "/api/system/upgrade");
+    http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    http.send();
   }
+  
 }
 
 function reloadIfApiIsAlive(){
