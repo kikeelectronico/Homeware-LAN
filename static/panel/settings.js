@@ -212,7 +212,6 @@ function downloadAndUpgrade(){
         alert('The system will be down some time. The page will be reloaded automatically into home page when the system will be ready.')
         var http = new XMLHttpRequest();
         http.addEventListener("load", function(){
-          console.log(http.responseText)
           code = JSON.parse(http.responseText)['code']
           if(code == '202'){
             setTimeout(reloadIfApiIsAlive(),20000)
@@ -234,7 +233,6 @@ function downloadAndUpgrade(){
 function reloadIfApiIsAlive(){
   var http = new XMLHttpRequest();
   http.addEventListener("load", function(){
-    console.log(http.responseText)
     if( http.responseText == 'Load'){
       window.location.href = '/'
     } else {
