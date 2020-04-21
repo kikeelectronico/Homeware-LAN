@@ -14,7 +14,13 @@
           <p>Google needs to know where Homeware is.</p>
           <p>Follow the instructions on this wiki <a href="https://github.com/kikeelectronico/Homeware-LAN/wiki/Connect-Homeware-LAN-with-Google" target="blanck">https://github.com/kikeelectronico/Homeware-LAN/wiki/Connect-Homeware-LAN-with-Google</a>.</p>
           <p>During the process you will use the following Client Information. You will be able to change it from the <i>Settings</i> page in the future.</p>
-          <span id="actionOnGoogleData"></span>
+          <span id="actionOnGoogleData">
+            <b>Client ID:</b> 123<br>
+            <b>Client Secret:</b> 456<br>
+            <b>Authorization URL:</b> https://&lt;your.domain.com&gt;/auth/<br>
+            <b>Token URL:</b> https://&lt;your.domain.com&gt;/token/<br>
+            <b>Fulfillment URL:</b> https://&lt;your.domain.com&gt;/smarthome/<br>
+          </span>
           <br>
           <button type="button" class="btn btn-primary btn-lg" style="float: right;" onclick="process()">Next</button>
         </div>
@@ -24,43 +30,6 @@
       function process(){
         location.href = '/assistant/{{ next }}';
       }
-      window.addEventListener("load", requestData);
-      function requestData(){
-        var http = new XMLHttpRequest();
-        http.addEventListener("load", function(){
-          console.log(http.responseText)
-          loadData(http.responseText);
-        });
-        http.open("GET", "/api/secure/get/");
-        http.setRequestHeader('authorization', 'baerer noset')
-        http.send();
-      }
-
-      function loadData(local_data){
-        var token = JSON.parse(local_data);
-
-        document.getElementById('actionOnGoogleData').innerHTML = '<b>Client ID:</b> '  + token['client_id'] + '<br>';
-        document.getElementById('actionOnGoogleData').innerHTML += '<b>Client Secret:</b> ' + token['client_secret'] + '<br>';
-        document.getElementById('actionOnGoogleData').innerHTML += '<b>Authorization URL:</b> https://' + token['ddns']['hostname'] + '/auth/<br>';
-        document.getElementById('actionOnGoogleData').innerHTML += '<b>Token URL:</b> https://' + token['ddns']['hostname'] + '/token/<br>';
-        document.getElementById('actionOnGoogleData').innerHTML += '<b>Fulfillment URL:</b> https://' + token['ddns']['hostname'] + '/smarthome/<br>';
-
-
-      }
-      // function operation(name){
-      //   var xmlHttp = new XMLHttpRequest();
-      //   xmlHttp.onreadystatechange = function() {
-      //     console.log(xmlHttp.responseText)
-      //     if (xmlHttp.responseText == 'Saved correctly!'){
-      //       document.getElementById('alertContainer').innerHTML = '<div class="alert alert-success" role="alert"> ' + xmlHttp.responseText + ' </div>';
-      //     } else {
-      //       document.getElementById('alertContainer').innerHTML = '<div class="alert alert-danger" role="alert"> ' + xmlHttp.responseText + ' </div>';
-      //     }
-      //   }
-      //   url = 'http://' + window.location.hostname + ':5001/assistant/operation/' + name + '/' + document.getElementById('user').value + ':' + document.getElementById('pass').value;
-      //   xmlHttp.open( "GET", url, true ); // false for synchronous request
-      //   xmlHttp.send( null );
-      // }
     </script>
 
     <script src="https://apis.google.com/js/platform.js" async defer></script>
