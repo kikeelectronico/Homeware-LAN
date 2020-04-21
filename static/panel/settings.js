@@ -250,7 +250,7 @@ function reloadIfApiIsAlive(){
       window.location.href = '/'
     } else {
       console.log('Waiting')
-      setTimeout(reloadIfApiIsAlive(),2000)
+      setTimeout(reloadIfApiIsAlive(),5000)
     }
   });
   http.open("GET", "/test/");
