@@ -5,7 +5,7 @@ from cryptography.fernet import Fernet
 
 class Data:
 
-    version = 'v0.5.1'
+    version = 'v0.5.2'
     homewareData = {}
     homewareFile = 'homeware.json'
     secureData = {}
@@ -156,7 +156,8 @@ class Data:
                 "client_id": self.secureData['token']["google"]["client_id"],
                 "client_secret": self.secureData['token']["google"]["client_secret"],
             },
-            "ddns": self.secureData['ddns']
+            "ddns": self.secureData['ddns'],
+            "apikey": self.secureData['token']['apikey']
         }
         return data
 
@@ -224,6 +225,7 @@ class Data:
     def login(self, headers):
         user = headers['user']
         password = headers['pass']
+
 
         cipher_suite = Fernet(str.encode(self.secureData['key'][2:len(self.secureData['key'])]))
         plain_text = cipher_suite.decrypt(str.encode(self.secureData['pass'][2:len(self.secureData['pass'])]))
