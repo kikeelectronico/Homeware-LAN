@@ -226,9 +226,7 @@ function downloadAndUpgrade(){
     upgradeStep = 2;
   } else if (upgradeStep == 2){
     document.getElementById('upgradeModalTitle').innerHTML = "Wait";
-    document.getElementById('upgradeModalParagraph').innerHTML = "The system will be down some time. The page will be reloaded automatically into home page when the system will be ready.";
-    document.getElementById('buttonClose').style.visibility = "hidden";
-    document.getElementById('buttonNext').style.visibility = "hidden";
+    document.getElementById('upgradeModalParagraphContainer').innerHTML = "The system will be down some time. The page will be reloaded automatically into home page when the system will be ready.";
     var http = new XMLHttpRequest();
     http.addEventListener("load", function(){
       code = JSON.parse(http.responseText)['code']
