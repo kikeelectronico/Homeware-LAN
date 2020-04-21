@@ -6,10 +6,8 @@ import json
 import time
 from datetime import datetime
 import random
-import subprocess
-import multiprocessing
 import paho.mqtt.publish as publish
-import paho.mqtt.client as mqtt
+import subprocess
 
 from data import Data
 from renderHelper import RenderHelper
@@ -209,7 +207,6 @@ def front(operation = "", segment = "", value = ''):
                     'code': 401,
                     'note': 'See the documentation'
                 }
-
         elif segment == 'devices':
             if accessLevel >= 10:
                 if operation == 'update':
@@ -260,7 +257,6 @@ def front(operation = "", segment = "", value = ''):
                     'code': 401,
                     'note': 'See the documentation'
                 }
-
         elif segment == 'status':
             if accessLevel >= 10:
                 if operation == 'update':
@@ -295,7 +291,6 @@ def front(operation = "", segment = "", value = ''):
                     'code': 401,
                     'note': 'See the documentation'
                 }
-
         elif segment == 'rules':
             if accessLevel >= 10:
                 if operation == 'update':
@@ -344,7 +339,6 @@ def front(operation = "", segment = "", value = ''):
                     'code': 401,
                     'note': 'See the documentation'
                 }
-
         elif segment == 'settings':
             if accessLevel >= 100:
                 if operation == 'update':
@@ -384,6 +378,26 @@ def front(operation = "", segment = "", value = ''):
                             'status': 'Success',
                             'code': 200
                         }
+            else:
+                responseData = {
+                    'error': 'Bad authentication',
+                    'code': 401,
+                    'note': 'See the documentation'
+                }
+        elif segment == 'system':
+            if accessLevel >= 100:
+                if operation == 'upgrade':
+                    # subprocess.run(["sudo", "systemctl", "start", "homewareUpgrader"],  stdout=subprocess.PIPE)
+                    subprocess.run(["sudo", "sh", "bash/update.sh"],  stdout=subprocess.PIPE)
+                    responseData = {
+                        'code': '202'
+                    }
+                else:
+                    responseData = {
+                        'error': 'Operation not supported',
+                        'code': 400,
+                        'note': 'See the documentation'
+                    }
             else:
                 responseData = {
                     'error': 'Bad authentication',
@@ -690,7 +704,7 @@ def page_not_found(error):
 
 @app.errorhandler(500)
 def page_not_found(error):
-    return 'La qué has liado pollito'
+    return 'La qué has liado pollito.'
 
 @app.route("/cron")
 @app.route("/cron/")
@@ -815,68 +829,5 @@ def ddnsUpdater():
             else:
                 hData.updateDDNS(newIP, status[code], code, True, last)
 
-
-
-
-
-########################### MQTT reader ###########################
-
-def on_connect(client, userdata, flags, rc):
-    print("Connected with result code "+str(rc))
-    client.subscribe("device/control")
-
-def on_message(client, userdata, msg):
-    print(msg.topic+" "+str(msg.payload))
-    #Get the data
-    payload = json.loads(msg.payload)
-    id = payload['id']
-    param = payload['param']
-    value = payload['value']
-    intent = payload['intent']
-
-
-    if intent == 'execute':
-        headers = {'content-type': 'application/json'}
-        with open('secure.json', 'r') as f:
-            headers['Authorization'] = 'baerer ' + json.load(f)['token']['front']
-        data = {
-            'id': payload['id'],
-            'param': payload['param'],
-            'value': payload['value'],
-        }
-        requests.post(url='http://127.0.0.1:5001/api/status/update/', data=json.dumps(data), headers=headers)
-
-        with open('homeware.json', 'r') as f:
-            publish.single("device/"+id, json.dumps(json.load(f)['status'][id]), hostname="localhost")
-    elif intent == 'rules':
-        headers = {'content-type': 'application/json'}
-        with open('secure.json', 'r') as f:
-            headers['Authorization'] = 'baerer ' + json.load(f)['token']['front']
-        data = {
-            'id': payload['id'],
-            'param': payload['param'],
-            'value': payload['value'],
-        }
-        requests.post(url='http://127.0.0.1:5001/api/status/update/', data=json.dumps(data), headers=headers)
-        requests.get(url='http://127.0.0.1:5001/cron/')
-    elif intent == 'request':
-        with open('homeware.json', 'r') as f:
-            publish.single("device/"+id, json.dumps(json.load(f)['status'][id]), hostname="localhost")
-
-# MQTT reader
-def mqttReader():
-    client = mqtt.Client()
-    client.on_connect = on_connect
-    client.on_message = on_message
-
-    client.connect("localhost", 1883, 60)
-    client.loop_forever()
-
 if __name__ == "__main__":
-    # runapp()
-    #Flask App and Api
-    flaskProcess = multiprocessing.Process(target=runapp)
-    flaskProcess.start()
-    #MQTT reader
-    mqttProcess = multiprocessing.Process(target=mqttReader)
-    mqttProcess.start()
+    runapp()

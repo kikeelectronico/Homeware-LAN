@@ -1,9 +1,9 @@
 [Unit]
-Description=Homeware LAN
+Description=Homeware LAN MQTT
 After=network-online.target
 
 [Service]
-ExecStart=sh /home/pi/Homeware-LAN/homeware.sh
+ExecStart=python3 /home/pi/Homeware-LAN/homewareMQTT.py
 WorkingDirectory=/home/pi/Homeware-LAN/
 StandardOutput=inherit
 StandardError=inherit

@@ -1,7 +1,6 @@
 function requestSettings(){
   var http = new XMLHttpRequest();
   http.addEventListener("load", function(){
-    console.log(http.responseText)
     loadSettings(http.responseText);
   });
   http.open("GET", "/api/settings/get");
@@ -11,14 +10,13 @@ function requestSettings(){
 
 function loadSettings(local_data){
   var token = JSON.parse(local_data);
+  console.log(token)
 
   document.getElementById('clientId').value = token['google']['client_id'];
   document.getElementById('clientSecret').value = token['google']['client_secret'];
   document.getElementById('actionOnGoogleAuxiliarData').innerHTML = '<b>Authorization URL:</b> https://' + token['ddns']['hostname'] + '/auth/<br>';
   document.getElementById('actionOnGoogleAuxiliarData').innerHTML += '<b>Token URL:</b> https://' + token['ddns']['hostname'] + '/token/<br>';
   document.getElementById('actionOnGoogleAuxiliarData').innerHTML += '<b>Fulfillment URL:</b> https://' + token['ddns']['hostname'] + '/smarthome/<br>';
-
-
 
   document.getElementById('ddnsUsername').value = token['ddns']['username'];
   document.getElementById('ddnsPassword').value = token['ddns']['password'];
@@ -27,6 +25,8 @@ function loadSettings(local_data){
   document.getElementById('ddnsEnabled').checked = token['ddns']['enabled'];
   document.getElementById('ddnsLastUpdate').innerHTML = '<b>Last update:</b> ' + token['ddns']['last'];
   document.getElementById('ddnsIP').innerHTML = '<b>IP:</b> ' + token['ddns']['ip'];
+
+  document.getElementById('apikey').value = token['apikey'];
 
   badgeClass = {
     'unknown': 'badge-secondary',
@@ -44,9 +44,18 @@ function loadSettings(local_data){
 
 }
 
-save.addEventListener('click', function() {
+saveGoogle.addEventListener('click', function() {
+  save();
+});
+
+saveDDNS.addEventListener('click', function() {
+  save();
+});
+
+function save(){
   //Update the text message
-  document.getElementById('textMessageAlert').innerHTML = '...';
+  document.getElementById('textMessageAlertGoogle').innerHTML = '...';
+  document.getElementById('textMessageAlertDDNS').innerHTML = '...';
   data['google'] = {};
   data['google']['client_id'] = document.getElementById('clientId').value;
   data['google']['client_secret'] = document.getElementById('clientSecret').value;
@@ -64,7 +73,7 @@ save.addEventListener('click', function() {
   saveData('settings', data);
   //Update the text message
   updateMessageWithTime();
-});
+}
 
 function saveData(segment, value){
   var http = new XMLHttpRequest();
@@ -72,7 +81,8 @@ function saveData(segment, value){
     if (http.responseText != 'Bad token')
       console.log(http.responseText);
     else {
-      document.getElementById('textMessageAlert').innerHTML = 'An error has happed.';
+      document.getElementById('textMessageAlertGoogle').innerHTML = 'An error has happed.';
+      document.getElementById('textMessageAlertDDNS').innerHTML = 'An error has happed.';
     }
   });
   http.open("POST", "/api/" + segment + "/update/");
@@ -94,6 +104,9 @@ function updateModal(settings){
   } else if (settings == 'apiClockURL'){
     title = 'The clock\'s URL from your Homeware API';
     paragraph = 'It is an static URL, you can not change it.';
+  } else if (settings == 'ddns'){
+    title = 'Dinamic Domain Name Server';
+    paragraph = 'Set up the access data to the DDNS provider account. Open an issue on Github if you want a DDNS provider that is not listed.';
   }
 
 
@@ -115,7 +128,8 @@ function updateMessageWithTime(){
   var h = addZero(d.getHours());
   var m = addZero(d.getMinutes());
   var s = addZero(d.getSeconds());
-  document.getElementById('textMessageAlert').innerHTML = 'Saved at ' + h + ":" + m + ":" + s;
+  document.getElementById('textMessageAlertGoogle').innerHTML = 'Saved at ' + h + ":" + m + ":" + s;
+  document.getElementById('textMessageAlertDDNS').innerHTML = 'Saved at ' + h + ":" + m + ":" + s;
 }
 
 // TODO
@@ -157,4 +171,78 @@ function generateAPIKey(){
     http.send();
 
   }
+}
+
+
+// Version upgrade
+var actual = 'unknown';
+
+function requestActual(){
+  var actual = new XMLHttpRequest();
+  actual.addEventListener('load', requestLatest);
+  actual.open('GET', '/api/global/version/');
+  actual.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+  actual.send();
+}
+
+function requestLatest(){
+  actual = JSON.parse(this.responseText)['version'];
+  document.getElementById('HomewareCurrentStatus').innerHTML += '<p><b>Current version:</b> ' + actual + '</p>';
+  document.getElementById('HomewareNewStatus').innerHTML += 'Conecting...';
+
+  var latest = new XMLHttpRequest();
+  latest.addEventListener('load', showLatest);
+  latest.open('GET', 'https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest');
+  latest.send();
+}
+
+function showLatest(){
+  var latestRelease = JSON.parse(this.responseText);
+  if (actual != latestRelease.tag_name){
+    document.getElementById('HomewareNewStatus').innerHTML = '<p style="border: 3px solid #81F79F; padding:20px;"> <button type="button" class="btn btn-primary" onclick="downloadAndUpgrade()">Upgrade</button> <br><br> <b>New version available:</b> ' + latestRelease.tag_name + ' <br> <b>Description:</b><br><br> ' + latestRelease.body.replace(/\n/g, "<br />"); + ' <br>  </p>  ';
+  } else {
+    document.getElementById('HomewareNewStatus').innerHTML = 'Your system is up to date';
+  }
+}
+
+function downloadAndUpgrade(){
+  if(confirm('Are you sure that you want to upgrade your Homeware-LAN installation?')){
+    buckup();
+    if(confirm("A security file should be downloaded. Do you have it?")){
+        alert('The system will be down some time. The page will be reloaded automatically into home page when the system will be ready.')
+        var http = new XMLHttpRequest();
+        http.addEventListener("load", function(){
+          console.log(http.responseText)
+          code = JSON.parse(http.responseText)['code']
+          if(code == '202'){
+            setTimeout(reloadIfApiIsAlive(),20000)
+          } else {
+            alert('Something goes wrong.')
+          }
+        });
+        http.open("GET", "/api/system/upgrade");
+        http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+        http.send();
+    } else {
+      alert('We can not continue with out the file. Sorry.')
+    }
+  } else {
+    alert('Nothing has been done.')
+  }
+}
+
+function reloadIfApiIsAlive(){
+  var http = new XMLHttpRequest();
+  http.addEventListener("load", function(){
+    console.log(http.responseText)
+    if( http.responseText == 'Load'){
+      window.location.href = '/'
+    } else {
+      console.log('Waiting')
+      setTimeout(reloadIfApiIsAlive(),20000)
+    }
+  });
+  http.open("GET", "/test/");
+  http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+  http.send();
 }

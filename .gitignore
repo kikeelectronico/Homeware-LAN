@@ -3,6 +3,8 @@ homeware.json
 token.json
 secure.json
 hardware.py
+upgrader.log
+installations.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
