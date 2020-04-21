@@ -156,7 +156,8 @@ class Data:
                 "client_id": self.secureData['token']["google"]["client_id"],
                 "client_secret": self.secureData['token']["google"]["client_secret"],
             },
-            "ddns": self.secureData['ddns']
+            "ddns": self.secureData['ddns'],
+            "apikey": self.secureData['token']['apikey']
         }
         return data
 

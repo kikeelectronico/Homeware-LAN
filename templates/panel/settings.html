@@ -17,193 +17,244 @@
         </div>
       </div>
 
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <a class="nav-item nav-link active" id="nav-contact-tab" data-toggle="tab" href="#nav-status" role="tab" aria-controls="nav-apikey" aria-selected="false">Status</a>
+          <a class="nav-item nav-link" id="nav-home-tab" data-toggle="tab" href="#nav-google" role="tab" aria-controls="nav-home" aria-selected="true">Google</a>
+          <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-dns" role="tab" aria-controls="nav-profile" aria-selected="false">DDNS</a>
+          <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-mqtt" role="tab" aria-controls="nav-profile" aria-selected="false">MQTT</a>
+          <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-backup" role="tab" aria-controls="nav-contact" aria-selected="false">Backup and restore</a>
+          <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-apikey" role="tab" aria-controls="nav-apikey" aria-selected="false">API Key</a>
+          <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-log" role="tab" aria-controls="nav-apikey" aria-selected="false">Events</a>
+        </div>
+      </nav>
 
-      <div class="row">
-        <div class="col">
-          <form id=formulario"">
-
-            <div class="container p-3 mb-2 bg-light text-dark" style="text-align: right">
-              <span class="textMessageAlert" id="textMessageAlert">Up to date</span>
-              <button type="button" class="btn btn-primary" id="save">Save</button>
-              <!--<input type="hidden" id="n" value="-1">-->
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-status" role="tabpanel" aria-labelledby="nav-contact-tab">
+          <div class="row">
+            <div class="col">
+              <div class="container p-3 mb-2 bg-light text-dark" id="HomeWareStatus">
+                <h3>Homeware status</h3>
+                <hr>
+                <span id="HomewareCurrentStatus"></span>
+                <span id="HomewareNewStatus"></span>
+              </div>
             </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="nav-google" role="tabpanel" aria-labelledby="nav-home-tab">
+          <div class="row">
+            <div class="col">
+              <form id="formularioGoogle">
 
-            <div class="container p-3 mb-2 bg-light text-dark">
-              <h3>Actions on Google</h3>
-              <hr>
-              <div class="form-row">
-                <div class="form-group col-md-3">
-                    <input type="text" class="form-control" id="clientId">
+                <div class="container p-3 mb-2 bg-light text-dark" style="text-align: right">
+                  <span class="textMessageAlert" id="textMessageAlertGoogle">Up to date</span>
+                  <button type="button" class="btn btn-primary" id="saveGoogle">Save</button>
+                  <!--<input type="hidden" id="n" value="-1">-->
                 </div>
-                <div class="form-group col-md-7 colAligmentL">
-                    <label for="clientId">Client ID</label>
-                </div>
-                <div class="form-group col-md-2 colAligmentA">
-                  <a class="badge badge-primary" data-toggle="modal" data-target="#modal" style="color:white;" onclick="updateModal('clientId')">Learn more</a>
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group col-md-3">
-                    <input type="text" class="form-control" id="clientSecret">
-                </div>
-                <div class="form-group col-md-7 colAligmentL">
-                    <label for="clientSecret">Client secret</label>
-                </div>
-                <div class="form-group col-md-2 colAligmentA">
-                  <a class="badge badge-primary" data-toggle="modal" data-target="#modal" style="color:white;" onclick="updateModal('clientSecret')">Learn more</a>
-                </div>
-              </div>
-              <span id="actionOnGoogleAuxiliarData"></span>
-            </div>
 
-            <div class="container p-3 mb-2 bg-light text-dark">
-              <h3>DDNS provider</h3>
-              <hr>
-              <div class="form-row">
-                <div class="form-group col-md-4">
-                  <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="ddnsEnabled">
-                    <label class="custom-control-label" for="ddnsEnabled">Enable</label>
-                  </div>
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="col-md-8">
+                <div class="container p-3 mb-2 bg-light text-dark">
+                  <h3>Actions on Google</h3>
+                  <hr>
                   <div class="form-row">
-                    <div class="form-group col-md-7">
-                      <select class="form-control" id="ddnsProvider">
-                        <option>noip</option>
-                      </select>
+                    <div class="form-group col-md-3">
+                        <input type="text" class="form-control" id="clientId">
                     </div>
-                    <div class="form-group col-md-2 colAligmentL">
-                        <label for="ddnsProvider">Provider</label>
+                    <div class="form-group col-md-7 colAligmentL">
+                        <label for="clientId">Client ID</label>
                     </div>
                     <div class="form-group col-md-2 colAligmentA">
-                      <a class="badge badge-primary" data-toggle="modal" data-target="#modal" style="color:white;" onclick="updateModal('ddns')">Learn more</a>
+                      <a class="badge badge-primary" data-toggle="modal" data-target="#modal" style="color:white;" onclick="updateModal('clientId')">Learn more</a>
                     </div>
                   </div>
                   <div class="form-row">
-                    <div class="form-group col-md-7">
-                        <input type="text" class="form-control" id="ddnsUsername">
+                    <div class="form-group col-md-3">
+                        <input type="text" class="form-control" id="clientSecret">
                     </div>
-                    <div class="form-group col-md-2 colAligmentL">
-                        <label for="ddnsUsername">Username</label>
+                    <div class="form-group col-md-7 colAligmentL">
+                        <label for="clientSecret">Client secret</label>
+                    </div>
+                    <div class="form-group col-md-2 colAligmentA">
+                      <a class="badge badge-primary" data-toggle="modal" data-target="#modal" style="color:white;" onclick="updateModal('clientSecret')">Learn more</a>
+                    </div>
+                  </div>
+                  <span id="actionOnGoogleAuxiliarData"></span>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="nav-dns" role="tabpanel" aria-labelledby="nav-profile-tab">
+          <div class="row">
+            <div class="col">
+              <form id="formularioDDNS">
+
+                <div class="container p-3 mb-2 bg-light text-dark" style="text-align: right">
+                  <span class="textMessageAlert" id="textMessageAlertDDNS">Up to date</span>
+                  <button type="button" class="btn btn-primary" id="saveDDNS">Save</button>
+                </div>
+
+
+                <div class="container p-3 mb-2 bg-light text-dark">
+                  <h3>DDNS provider</h3>
+                  <hr>
+                  <div class="form-row">
+                    <div class="form-group col-md-4">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="ddnsEnabled">
+                        <label class="custom-control-label" for="ddnsEnabled">Enable</label>
+                      </div>
                     </div>
                   </div>
                   <div class="form-row">
-                    <div class="form-group col-md-7">
-                        <input type="password" class="form-control" id="ddnsPassword">
+                    <div class="col-md-8">
+                      <div class="form-row">
+                        <div class="form-group col-md-7">
+                          <select class="form-control" id="ddnsProvider">
+                            <option>noip</option>
+                          </select>
+                        </div>
+                        <div class="form-group col-md-2 colAligmentL">
+                            <label for="ddnsProvider">Provider</label>
+                        </div>
+                        <div class="form-group col-md-2 colAligmentA">
+                          <a class="badge badge-primary" data-toggle="modal" data-target="#modal" style="color:white;" onclick="updateModal('ddns')">Learn more</a>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-7">
+                            <input type="text" class="form-control" id="ddnsUsername">
+                        </div>
+                        <div class="form-group col-md-2 colAligmentL">
+                            <label for="ddnsUsername">Username</label>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-7">
+                            <input type="password" class="form-control" id="ddnsPassword">
+                        </div>
+                        <div class="form-group col-md-2 colAligmentL">
+                            <label for="ddnsPassword">Password</label>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-7">
+                            <input type="text" class="form-control" id="ddnsHostname" disabled>
+                        </div>
+                        <div class="form-group col-md-2 colAligmentL">
+                            <label for="ddnsHostname">Hostname</label>
+                        </div>
+                      </div>
                     </div>
-                    <div class="form-group col-md-2 colAligmentL">
-                        <label for="ddnsPassword">Password</label>
+                    <div class="col-md-4">
+                      <span style="font-weight: bold; font-size: 20px; margin-right: 20px;">Status</span>
+                      <span class="badge badge-secondary" id="ddnsStatusBadge">Disabled</span>
+                      <br>
+                      <br>
+                      <span id="ddnsLastUpdate">Last update: </span><br>
+                      <span id="ddnsIP">IP: </span>
+
                     </div>
                   </div>
-                  <div class="form-row">
-                    <div class="form-group col-md-7">
-                        <input type="text" class="form-control" id="ddnsHostname" disabled>
-                    </div>
-                    <div class="form-group col-md-2 colAligmentL">
-                        <label for="ddnsHostname">Hostname</label>
-                    </div>
+
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="nav-mqtt" role="tabpanel" aria-labelledby="nav-profile-tab">
+          <div class="row">
+            <div class="col">
+              <form id="formularioMQTT">
+
+                <div class="container p-3 mb-2 bg-light text-dark" style="text-align: right">
+                  <span class="textMessageAlert" id="textMessageAlertMQTT">Up to date</span>
+                  <button type="button" class="btn btn-primary" id="saveMQTT">Save</button>
+                </div>
+
+
+                <div class="container p-3 mb-2 bg-light text-dark">
+                  <h3>MQTT</h3>
+                  <hr>
+                  WIP
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="nav-backup" role="tabpanel" aria-labelledby="nav-contact-tab">
+          <div class="row">
+            <div class="col">
+              <div class="container p-3 mb-2 bg-light text-dark">
+                <h3>Backup and restore</h3>
+                <hr>
+                <div class="form-row">
+                  <div class="form-group col-md-7">
+                      <button type="button" class="btn btn-primary" onclick="buckup()">Download file</button>
+                  </div>
+                  <div class="form-group col-md-3 colAligmentL">
+                      <label for="buckup">Buckup</label>
                   </div>
                 </div>
-                <div class="col-md-4">
-                  <span style="font-weight: bold; font-size: 20px; margin-right: 20px;">Status</span>
-                  <span class="badge badge-secondary" id="ddnsStatusBadge">Disabled</span>
-                  <br>
-                  <br>
-                  <span id="ddnsLastUpdate">Last update: </span><br>
-                  <span id="ddnsIP">IP: </span>
+                <hr>
+
+                <div class="form-row">
+                  <div class="form-group col-md-7">
+                    <form method=post enctype=multipart/form-data action="/files/restore/file/" id="backupUploaderForm">
+                      <input type="file" class="form-control-file" name="file">
+                      <br>
+                      <button type="submit" class="btn btn-primary">Upload</button>
+                    </form>
+                  </div>
+                  <div class="form-group col-md-3 colAligmentL">
+                      <label for="buckup">Restore</label>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="nav-apikey" role="tabpanel" aria-labelledby="nav-contact-tab">
+          <div class="row">
+            <div class="col">
+              <div class="container p-3 mb-2 bg-light text-dark">
+                <h3>API Key</h3>
+                <hr>
+                <div class="form-row">
+                  <div class="form-group col-md-7">
+                      <input type="text" class="form-control" id="apikey" disabled>
+                  </div>
+                  <div class="form-group col-md-3 colAligmentL">
+                      <label for="apikey">API Key</label>
+                  </div>
+                  <div class="form-group col-md-2 colAligmentL">
+                      <button type="button" class="btn btn-primary" onclick="generateAPIKey()">Generate</button>
+                  </div>
+                </div>
+                <span>The API Key gives you access to the Homeware's API. Please do not generate an API Key if you are not sure of what you are doing.</span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="nav-log" role="tabpanel" aria-labelledby="nav-contact-tab">
+          <div class="row">
+            <div class="col">
+              <div class="container p-3 mb-2 bg-light text-dark" style="text-align: right">
+                <div class="card card-body" style="margin-top:20px;" id="eventsLogBox">
+
+                  WIP
 
                 </div>
               </div>
-
-            </div>
-
-          </form>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <div class="container p-3 mb-2 bg-light text-dark">
-            <h3>Backup and restore</h3>
-            <hr>
-            <div class="form-row">
-              <div class="form-group col-md-7">
-                  <button type="button" class="btn btn-primary" onclick="buckup()">Download file</button>
-              </div>
-              <div class="form-group col-md-3 colAligmentL">
-                  <label for="buckup">Buckup</label>
-              </div>
-            </div>
-            <hr>
-
-            <div class="form-row">
-              <div class="form-group col-md-7">
-                <form method=post enctype=multipart/form-data action="/files/restore/file/" id="backupUploaderForm">
-                  <input type="file" class="form-control-file" name="file">
-                  <br>
-                  <button type="submit" class="btn btn-primary">Upload</button>
-                </form>
-              </div>
-              <div class="form-group col-md-3 colAligmentL">
-                  <label for="buckup">Restore</label>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <div class="container p-3 mb-2 bg-light text-dark">
-            <h3>API Key</h3>
-            <hr>
-            <div class="form-row">
-              <div class="form-group col-md-7">
-                  <input type="text" class="form-control" id="apikey" disabled>
-              </div>
-              <div class="form-group col-md-3 colAligmentL">
-                  <label for="apikey">API Key</label>
-              </div>
-              <div class="form-group col-md-2 colAligmentL">
-                  <button type="button" class="btn btn-primary" onclick="generateAPIKey()">Generate</button>
-              </div>
-            </div>
-            <span>The API Key gives you access to the Homeware's API. Please do not generate an API Key if you are not sure of what you are doing.</span>
-
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <div class="container p-3 mb-2 bg-light text-dark" id="HomeWareStatus">
-            <h2>Homeware Status</h2>
-
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <div class="container p-3 mb-2 bg-light text-dark" style="text-align: right">
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#eventsLog" aria-expanded="false" aria-controls="eventsLog" id="showEventsLog">
-              Show events log
-            </button>
-          </div>
-          <div class="collapse" id="eventsLog">
-            <div class="card card-body" style="margin-top:20px;" id="eventsLogBox">
-
-              WIP
-
             </div>
           </div>
         </div>
       </div>
-
     </div>
 
 
