@@ -41,6 +41,16 @@
               </div>
             </div>
           </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="container p-3 mb-2 bg-light text-dark" id="HomeWareStatus">
+                <h3>Homeware dependencies</h3>
+                <hr>
+                WIP
+              </div>
+            </div>
+          </div>
         </div>
         <div class="tab-pane fade" id="nav-google" role="tabpanel" aria-labelledby="nav-home-tab">
           <div class="row">
@@ -189,30 +199,32 @@
           <div class="row">
             <div class="col">
               <div class="container p-3 mb-2 bg-light text-dark">
-                <h3>Backup and restore</h3>
+                <h3>Backup</h3>
                 <hr>
                 <div class="form-row">
                   <div class="form-group col-md-7">
                       <button type="button" class="btn btn-primary" onclick="buckup()">Download file</button>
                   </div>
-                  <div class="form-group col-md-3 colAligmentL">
-                      <label for="buckup">Buckup</label>
-                  </div>
                 </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="container p-3 mb-2 bg-light text-dark">
+                <h3>Restore</h3>
                 <hr>
 
-                <div class="form-row">
-                  <div class="form-group col-md-7">
-                    <form method=post enctype=multipart/form-data action="/files/restore/file/" id="backupUploaderForm">
-                      <input type="file" class="form-control-file" name="file">
-                      <br>
-                      <button type="submit" class="btn btn-primary">Upload</button>
-                    </form>
+                  <div class="form-row">
+                    <div class="form-group col-md-7">
+                      <form method=post enctype=multipart/form-data action="/files/restore/file/" id="backupUploaderForm">
+                        <input type="file" class="form-control-file" name="file">
+                        <br>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                      </form>
+                    </div>
                   </div>
-                  <div class="form-group col-md-3 colAligmentL">
-                      <label for="buckup">Restore</label>
-                  </div>
-                </div>
 
               </div>
             </div>
@@ -270,6 +282,23 @@
           </div>
           <div class="modal-body" id="learMoreModalParagraph">
             ...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Waiting -->
+    <div class="modal fade" id="modalUpgrade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="upgradeModalTitle">Title</h5>
+          </div>
+          <div class="modal-body" id="upgradeModalParagraphContainer">
+            <span id="upgradeModalParagraph">Paragrah</span>
+            <br><br>
+            <button type="button" class="btn btn-primary" onclick="resetStep()" id="buttonClose">Close</button>
+            <button type="button" class="btn btn-warning" onclick="downloadAndUpgrade()" id="buttonNext">Next</button>
           </div>
         </div>
       </div>
