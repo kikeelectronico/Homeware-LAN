@@ -18,7 +18,7 @@ class Data:
         self.redis = redis.Redis("localhost")
         self.ddbb = Root()
 
-        # self.ddbb.transfer = False 
+        self.ddbb.transfer = False
 
         if not self.ddbb.transfer == True:
             print('Must create the database')
@@ -59,6 +59,12 @@ class Data:
             'status': self.ddbb.homewareData['status']
         }
         return data
+
+    def setData(self):
+        with open(self.homewareFile, 'w') as f:
+            json.dump(self.ddbb.homewareData, f)
+        with open(self.secureFile, 'w') as f:
+            json.dump(self.ddbb.secureData, f)
 
 # DEVICES
 

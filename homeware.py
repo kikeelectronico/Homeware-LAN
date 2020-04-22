@@ -124,6 +124,7 @@ def assistant(step = 'welcome'):
 @app.route('/test/')
 def test():
     #publish.single("test", "payload", hostname="localhost")
+    hData.setData()
     return 'Load'
 
 @app.route('/refresh')
@@ -698,7 +699,8 @@ def smarthome():
             else:
                 print('Intent desconocido')
     else:
-        print('Token incorrecto')
+        print('Token incorrecto',tokenClient)
+
         return "A"
 
 #Clock endpoint
