@@ -150,7 +150,7 @@ class Data:
         self.ddbb.secureData['ddns']['provider'] = incommingData['ddns']['provider']
         self.ddbb.secureData['ddns']['hostname'] = incommingData['ddns']['hostname']
         self.ddbb.secureData['ddns']['enabled'] = incommingData['ddns']['enabled']
-        self.save()
+        # self.save()
 
     def getToken(self,agent):
         return self.ddbb.secureData['token'][agent]
@@ -158,7 +158,7 @@ class Data:
     def updateToken(self,agent,type,value,timestamp):
         self.ddbb.secureData['token'][agent][type]['value'] = value
         self.ddbb.secureData['token'][agent][type]['timestamp'] = timestamp
-        self.save()
+        # self.save()
 
     def setUser(self, incommingData):
         if self.ddbb.secureData['user'] == '':
@@ -177,7 +177,7 @@ class Data:
     def setDomain(self, value):
         self.ddbb.secureData['domain'] = value
         self.ddbb.secureData['ddns']['hostname'] = value
-        self.save()
+        # self.save()
 
     def getDDNS(self):
         return self.ddbb.secureData['ddns']
@@ -188,7 +188,7 @@ class Data:
         self.ddbb.secureData['ddns']['code'] = code
         self.ddbb.secureData['ddns']['enabled'] = enabled
         self.ddbb.secureData['ddns']['last'] = last
-        self.save()
+        # self.save()
 
     def generateAPIKey(self):
         chars = 'abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -233,7 +233,7 @@ class Data:
                 'status': 'fail'
             }
 
-        self.save()
+        # self.save()
         return responseData
 
     def validateUserToken(self, headers):
