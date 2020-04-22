@@ -35,23 +35,23 @@ then
   sudo cp ../configuration_templates/homewareRedis.service /lib/systemd/system/
 
   #Install redis
-  sudo pip3 install redis
-  sudo pip3 install redisworks
-  sudo mkdir redis
-  cd redis
-  wget http://download.redis.io/redis-stable.tar.gz
-  tar xvzf redis-stable.tar.gz
-  cd redis-stable
-  sudo make
-  sudo make install
-
-  #Get current sudo crontab
-  sudo crontab -l > copy
-  #Set the new cron job up
-  echo "@reboot sudo systemctl start homewareRedis" >> copy
-  #Save the cron file
-  sudo crontab copy
-  rm copy
+  # sudo pip3 install redis
+  # sudo pip3 install redisworks
+  # sudo mkdir redis
+  # cd redis
+  # wget http://download.redis.io/redis-stable.tar.gz
+  # tar xvzf redis-stable.tar.gz
+  # cd redis-stable
+  # sudo make
+  # sudo make install
+  #
+  # #Get current sudo crontab
+  # sudo crontab -l > copy
+  # #Set the new cron job up
+  # echo "@reboot sudo systemctl start homewareRedis" >> copy
+  # #Save the cron file
+  # sudo crontab copy
+  # rm copy
   echo "v0.6\r\n" >> installations.txt
   echo "v0.6 dependencies have been installed.\r\n"
 fi
