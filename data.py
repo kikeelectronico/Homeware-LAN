@@ -18,7 +18,7 @@ class Data:
         self.redis = redis.Redis("localhost")
         self.ddbb = Root()
 
-        # self.ddbb.transfer = False
+        # self.ddbb.transfer = False 
 
         if not self.ddbb.transfer == True:
             print('Must create the database')
