@@ -1,6 +1,7 @@
 import json
 import random
 from cryptography.fernet import Fernet
+import redis
 from redisworks import Root
 
 
@@ -14,6 +15,7 @@ class Data:
 
 
     def __init__(self):
+        self.redis = redis.Redis("localhost")
         self.ddbb = Root()
 
         self.ddbb.transfer = False
@@ -32,6 +34,31 @@ class Data:
 
     def getVersion(self):
         return {'version': self.version}
+
+    def redisStatus(self):
+        status = {}
+        try:
+            response = self.redis.client_list()
+            status =  {
+                'enable': True,
+                'status': 'Running'
+            }
+        except redis.ConnectionError:
+            status = {
+                'enable': True,
+                'status': 'Stoped'
+            }
+        return status
+
+    def firstRun(self):
+        return False
+
+    def getGlobal(self):
+        data = {
+            'devices': self.ddbb.homewareData['devices'],
+            'status': self.ddbb.homewareData['status']
+        }
+        return data
 
 # DEVICES
 

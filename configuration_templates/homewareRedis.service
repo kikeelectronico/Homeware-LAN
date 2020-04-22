@@ -1,0 +1,14 @@
+[Unit]
+Description=Homeware LAN Redis
+After=network-online.target
+
+[Service]
+ExecStart=sh /home/pi/Homeware-LAN/redis/redis-stable/redis-server
+WorkingDirectory=/home/pi/Homeware-LAN/redis/redis-stable/
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target

@@ -194,7 +194,7 @@ def front(operation = "", segment = "", value = ''):
                 if operation == 'version':
                     responseData = hData.getVersion()
                 elif operation == 'get':
-                    responseData = hData.homewareData
+                    responseData = hData.getGlobal()
                 else:
                     responseData = {
                         'error': 'Operation not supported',
@@ -391,6 +391,18 @@ def front(operation = "", segment = "", value = ''):
                     subprocess.run(["sudo", "sh", "bash/update.sh"],  stdout=subprocess.PIPE)
                     responseData = {
                         'code': '202'
+                    }
+                elif operation == 'status':
+                    responseData = {
+                        'api': {
+                            'enable': True,
+                            'status': 'Running'
+                        },
+                        'mqtt': {
+                            'enable': True,
+                            'status': 'Running'
+                        },
+                        'redis': hData.redisStatus()
                     }
                 else:
                     responseData = {
