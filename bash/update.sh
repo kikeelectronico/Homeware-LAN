@@ -36,7 +36,6 @@ then
 
   #Install redis
   sudo pip3 install redis
-  sudo pip3 install redisworks
   sudo mkdir redis
   cd redis
   wget http://download.redis.io/redis-stable.tar.gz
