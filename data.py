@@ -147,9 +147,9 @@ class Data:
     def updateParamStatus(self, device, param, value):
         # self.ddbb.homewareData['status'][device][param] = value
 
-        rules = json.loads(self.redis.get('rules'))
-        rules[device][param] = value
-        self.redis.set('rules',json.dumps(rules))
+        status = json.loads(self.redis.get('status'))
+        status[device][param] = value
+        self.redis.set('status',json.dumps(status))
         # self.save()
 
 # SECURE
