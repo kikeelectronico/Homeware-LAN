@@ -56,7 +56,8 @@ class Data:
     def getGlobal(self):
         data = {
             'devices': json.loads(self.redis.get('devices')),
-            'status': json.loads(self.redis.get('status'))
+            'status': json.loads(self.redis.get('status')),
+            'rules': json.loads(self.redis.get('rules'))
         }
         return data
 
