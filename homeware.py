@@ -724,8 +724,8 @@ def page_not_found(error):
 @app.route("/cron/")
 def cron():
     #updatestates()
-    verifyRules()
-    ddnsUpdater()
+    # verifyRules()
+    # ddnsUpdater()
 
     return "Done"
 #
