@@ -72,8 +72,12 @@ class Data:
 # ALIVE
 
     def updateAlive(self, core):
-        ts = time.time()
-        alive = json.loads(self.redis.get('alive'))
+        ts = int(time.time())
+        alive = {}
+        try:
+            alive = json.loads(self.redis.get('alive'))
+        except
+            alive = {}
         alive[core] = ts
         self.redis.set('alive', json.dumps(alive))
 
