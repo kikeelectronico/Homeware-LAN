@@ -8,7 +8,7 @@ from data import Data
 hData = Data()
 
 #Constants
-TOPICS = ["device/control"]
+TOPICS = ["device/control", "homeware/alive"]
 
 ########################### MQTT reader ###########################
 
@@ -25,6 +25,8 @@ def on_message(client, userdata, msg):
         if msg.topic == "device/control":
             payload = json.loads(msg.payload)
             control(payload)
+        elif msg.topic == "homeware/alive":
+            hData.updateAlive('mqtt')
     else:
         print('Alert')
 

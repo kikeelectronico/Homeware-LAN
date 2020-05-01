@@ -112,4 +112,5 @@ if __name__ == "__main__":
     while(True):
         verifyRules()
         ddnsUpdater()
+        hData.updateAlive('tasks')
         time.sleep(5)

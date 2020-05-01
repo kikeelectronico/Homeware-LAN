@@ -2,6 +2,7 @@ import json
 import random
 from cryptography.fernet import Fernet
 import redis
+import time
 
 
 class Data:
@@ -67,6 +68,18 @@ class Data:
             self.redis.set('devices',json.dumps(data['devices']))
             self.redis.set('status',json.dumps(data['status']))
             self.redis.set('rules',json.dumps(data['rules']))
+
+# ALIVE
+
+    def updateAlive(self, core):
+        ts = time.time()
+        alive = json.loads(self.redis.get('alive'))
+        alive[core] = ts
+        self.redis.set('alive', json.dumps(alive))
+
+    def getAlive(self):
+        return json.loads(self.redis.get('alive'))
+
 
 # DEVICES
 

@@ -48,7 +48,7 @@ function requestStatus(){
   http.addEventListener("load", function(){
     loadStatus(http.responseText);
   });
-  http.open("GET", "/api/system/status");
+  http.open("GET", "/api/system/status/");
   http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
   http.send();
 }
@@ -68,6 +68,9 @@ function loadStatus(status){
   document.getElementById('mqttEnable').checked = status['mqtt']['enable'];
   document.getElementById('mqttBadge').innerHTML = status['mqtt']['status'];
   document.getElementById('mqttBadge').className = classes[status['mqtt']['status']];
+  document.getElementById('tasksEnable').checked = status['tasks']['enable'];
+  document.getElementById('tasksBadge').innerHTML = status['tasks']['status'];
+  document.getElementById('tasksBadge').className = classes[status['tasks']['status']];
   document.getElementById('redisEnable').checked = status['redis']['enable'];
   document.getElementById('redisBadge').innerHTML = status['redis']['status'];
   document.getElementById('redisBadge').className = classes[status['redis']['status']];
