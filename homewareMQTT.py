@@ -35,7 +35,7 @@ def on_message(client, userdata, msg):
         hData.updateParamStatus(data['id'],data['param'],data['value'])
         # requests.post(url='http://127.0.0.1:5001/api/status/update/', data=json.dumps(data), headers=headers)
 
-        publish.single("device/"+id, hData.getStatus()[id]), hostname="localhost")
+        publish.single("device/"+id, hData.getStatus()[id], hostname="localhost")
 
         # with open('homeware.json', 'r') as f:
         #     publish.single("device/"+id, json.dumps(json.load(f)['status'][id]), hostname="localhost")
@@ -54,7 +54,8 @@ def on_message(client, userdata, msg):
         # requests.get(url='http://127.0.0.1:5001/cron/')
         # print('Out rules')
     elif intent == 'request':
-        publish.single("device/"+id, hData.getStatus()[id]), hostname="localhost")
+        publish.single("device/"+id, hData.getStatus()[id], hostname="localhost")
+
         # with open('homeware.json', 'r') as f:
         #     publish.single("device/"+id, json.dumps(json.load(f)['status'][id]), hostname="localhost")
 
