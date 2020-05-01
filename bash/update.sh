@@ -5,34 +5,18 @@ exec 1>logs/upgrader_`date +%s`.log 2>&1
 echo "The upgrader has started.\r\n"
 
 #Pull from the repository
-git pull
+sudo git pull
 
-if ! test -f installations.txt; then
-    echo "v0.5.1" >> installations.txt
-    echo "\r\nThe installations file has been created.\r\n"
-fi
+echo "v0.5.1" >> installations.txt
+echo "\r\nThe installations file has been created.\r\n"
 
-if ! grep -Fxq "v0.5.2" installations.txt
+File=installations.txt
+if grep -q v0.6 "$File";
 then
   #Intall the new services
   sudo cp configuration_templates/homeware.service /lib/systemd/system/
   sudo cp configuration_templates/homewareMQTT.service /lib/systemd/system/
   sudo cp configuration_templates/homewareTasks.service /lib/systemd/system/
-
-  #Get current sudo crontab
-  sudo crontab -l > copy
-  #Set the new cron job up
-  echo "@reboot sudo systemctl start homewareMQTT" >> copy
-  #Save the cron file
-  sudo crontab copy
-  rm copy
-  echo "v0.5.2\r\n" >> installations.txt
-  echo "v0.5.2 dependencies have been installed.\r\n"
-fi
-
-if ! grep -Fxq "v0.6" installations.txt
-then
-  #Intall the new services
   sudo cp configuration_templates/homewareRedis.service /lib/systemd/system/
 
   #Install redis
@@ -48,10 +32,13 @@ then
   #Get current sudo crontab
   sudo crontab -l > copy
   #Set the new cron job up
+  echo "@reboot sudo systemctl start homewareMQTT" >> copy
+  echo "@reboot sudo systemctl start homewareTasks" >> copy
   echo "@reboot sudo systemctl start homewareRedis" >> copy
   #Save the cron file
   sudo crontab copy
   rm copy
+
   echo "v0.6\r\n" >> installations.txt
   echo "v0.6 dependencies have been installed.\r\n"
 fi
