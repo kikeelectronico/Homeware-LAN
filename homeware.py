@@ -406,12 +406,15 @@ def front(operation = "", segment = "", value = ''):
                         'redis': hData.redisStatus()
                     }
 
-                    ts = int(time.time())
-                    alive = hData.getAlive()
-                    if (ts - int(alive['mqtt'])) < 10:
-                        responseData['mqtt']['status'] = "Running"
-                    if (ts - int(alive['tasks'])) < 10:
-                        responseData['tasks']['status'] = "Running"
+                    try:
+                        ts = int(time.time())
+                        alive = hData.getAlive()
+                        if (ts - int(alive['mqtt'])) < 10:
+                            responseData['mqtt']['status'] = "Running"
+                        if (ts - int(alive['tasks'])) < 10:
+                            responseData['tasks']['status'] = "Running"
+                    except:
+                        print("fail")
 
 
                 else:
