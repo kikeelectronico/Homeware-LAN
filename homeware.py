@@ -449,6 +449,9 @@ def files(operation = '', file = '', token = ''):
     frontToken = hData.getToken('front')
     if token == frontToken:
         if operation == 'buckup':
+            # Create file
+            hData.createFile('homeware')
+            # Download file
             now = datetime.now()
             date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
             result = send_file(file + '.json',

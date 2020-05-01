@@ -69,6 +69,16 @@ class Data:
         }
         return data
 
+    def createFile(self,file):
+        data = {
+            'devices': json.loads(self.redis.get('devices')),
+            'status': json.loads(self.redis.get('status')),
+            'rules': json.loads(self.redis.get('rules'))
+        }
+        file = open(self.homewareFile, 'w')
+        file.write(json.dumps(data))
+        file.close()
+
     def load(self):
         with open(self.homewareFile, 'r') as f:
             data = json.load(f)
