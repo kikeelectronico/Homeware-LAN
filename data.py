@@ -34,8 +34,8 @@ class Data:
         else:
             print('DDBB up and running')
 
-        userName = json.loads(self.redis.get('secure'))['user']
-        userToken = json.loads(self.redis.get('secure'))['token']['front']
+        self.userName = json.loads(self.redis.get('secure'))['user']
+        self.userToken = json.loads(self.redis.get('secure'))['token']['front']
 
 
     def getVersion(self):
@@ -299,8 +299,8 @@ class Data:
                 'token': token
             }
 
-            userName = user
-            userToken = token
+            self.userName = user
+            self.userToken = token
         else:
             #Prepare the response
             responseData = {
@@ -317,7 +317,7 @@ class Data:
         # secure = json.loads(self.redis.get('secure'))
 
         responseData = {}
-        if user == userName and token == userToken:
+        if user == self.userName and token == self.userToken:
             responseData = {
                 'status': 'in'
             }
