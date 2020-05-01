@@ -76,7 +76,7 @@ class Data:
         alive = {}
         try:
             alive = json.loads(self.redis.get('alive'))
-        except
+        except:
             alive = {}
         alive[core] = ts
         self.redis.set('alive', json.dumps(alive))
