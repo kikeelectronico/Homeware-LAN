@@ -456,7 +456,7 @@ def files(operation = '', file = '', token = ''):
                     filename = file.filename
                     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                     subprocess.run(["mv", file.filename, "homeware.json"],  stdout=subprocess.PIPE)
-                    hData.refresh()
+                    hData.load()
                     return redirect('/settings/ok/')
         else:
             return 'Operation unknown'

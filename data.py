@@ -61,13 +61,12 @@ class Data:
         }
         return data
 
-    def setData(self):
-
-        self.redis.set('nombre',json.dumps({"nombre":"javi"}))
-        # with open(self.homewareFile, 'w') as f:
-        #     json.dump(self.ddbb.homewareData, f)
-        # with open(self.secureFile, 'w') as f:
-        #     json.dump(self.ddbb.secureData, f)
+    def load(self):
+        with open(self.homewareFile, 'r') as f:
+            data = json.load(f)
+            self.redis.set('devices',json.dumps(data['devices']))
+            self.redis.set('status',json.dumps(data['status']))
+            self.redis.set('rules',json.dumps(data['rules']))
 
 # DEVICES
 
