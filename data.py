@@ -12,6 +12,7 @@ class Data:
     homewareFile = 'homeware.json'
     secureData = {}
     secureFile = 'secure.json'
+    apikey = ''
     userToken = ''
     userName = ''
 
@@ -36,6 +37,7 @@ class Data:
 
         self.userName = json.loads(self.redis.get('secure'))['user']
         self.userToken = json.loads(self.redis.get('secure'))['token']['front']
+        self.apikey = json.loads(self.redis.get('secure'))['token']['apikey']
 
 
     def getVersion(self):
@@ -204,7 +206,10 @@ class Data:
         # self.save()
 
     def getToken(self,agent):
-        return json.loads(self.redis.get('secure'))['token'][agent]
+        if agent == 'front':
+            return self.userToken
+        elif agent == 'apikey':
+            return self.apikey
 
     def updateToken(self,agent,type,value,timestamp):
         secure = json.loads(self.redis.get('secure'))
@@ -267,7 +272,7 @@ class Data:
         secure = json.loads(self.redis.get('secure'))
         secure['token']['apikey'] = token
         self.redis.set('secure',json.dumps(secure))
-        # self.save()
+        self.apikey = token
         return token
 
 # LOGIN
