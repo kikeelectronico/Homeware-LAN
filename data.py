@@ -12,6 +12,8 @@ class Data:
     homewareFile = 'homeware.json'
     secureData = {}
     secureFile = 'secure.json'
+    userToken = ''
+    userName = ''
 
 
     def __init__(self):
@@ -31,6 +33,9 @@ class Data:
 
         else:
             print('DDBB up and running')
+
+        userName = json.loads(self.redis.get('secure'))['user']
+        userToken = json.loads(self.redis.get('secure'))['token']['front']
 
 
     def getVersion(self):
@@ -293,6 +298,9 @@ class Data:
                 'user': user,
                 'token': token
             }
+
+            userName = user
+            userToken = token
         else:
             #Prepare the response
             responseData = {
@@ -306,10 +314,10 @@ class Data:
         user = headers['user']
         token = headers['token']
 
-        secure = json.loads(self.redis.get('secure'))
+        # secure = json.loads(self.redis.get('secure'))
 
         responseData = {}
-        if user == secure['user'] and token == secure['token']['front']:
+        if user == userName and token == userToken:
             responseData = {
                 'status': 'in'
             }
