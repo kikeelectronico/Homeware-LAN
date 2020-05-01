@@ -210,6 +210,8 @@ class Data:
             return self.userToken
         elif agent == 'apikey':
             return self.apikey
+        else:
+            return json.loads(self.redis.get('secure'))['token'][agent]
 
     def updateToken(self,agent,type,value,timestamp):
         secure = json.loads(self.redis.get('secure'))
