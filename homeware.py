@@ -388,7 +388,17 @@ def front(operation = "", segment = "", value = ''):
                         'code': '202'
                     }
                 elif operation == 'status':
-                    publish.single("homeware/alive", "all", hostname="localhost")
+
+                    # Try to get username and password
+                    try:
+                        mqttData = hData.getMQTT()
+                        if not mqttData['user'] == "":
+                            client.username_pw_set(mqttData['user'], mqttData['password'])
+                            publish.single("homeware/alive", "all", hostname="localhost", auth={'username':mqttData['user'], 'password': mqttData['password']})
+                        else:
+                            publish.single("homeware/alive", "all", hostname="localhost")
+                    except:
+                        publish.single("homeware/alive", "all", hostname="localhost")
 
                     responseData = {
                         'api': {

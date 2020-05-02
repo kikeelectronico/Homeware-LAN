@@ -86,6 +86,7 @@ class Data:
             self.redis.set('status',json.dumps(data['status']))
             self.redis.set('rules',json.dumps(data['rules']))
 
+
 # ALIVE
 
     def updateAlive(self, core):
@@ -199,6 +200,12 @@ class Data:
             "ddns": secure['ddns'],
             "apikey": secure['token']['apikey']
         }
+        try:
+            data['mqtt'] = secure['mqtt']
+        except:
+            data['mqtt'] = {"user":"","password":""}
+
+
         return data
 
     def updateSecure(self, incommingData):
@@ -211,9 +218,15 @@ class Data:
         secure['ddns']['provider'] = incommingData['ddns']['provider']
         secure['ddns']['hostname'] = incommingData['ddns']['hostname']
         secure['ddns']['enabled'] = incommingData['ddns']['enabled']
+        secure['mqtt']['user'] = incommingData['mqtt']['user']
+        secure['mqtt']['password'] = incommingData['mqtt']['password']
 
         self.redis.set('secure',json.dumps(secure))
         # self.save()
+
+    def getMQTT(self):
+        return json.loads(self.redis.get('secure'))['mqtt']
+
 
     def getToken(self,agent):
         if agent == 'front':
