@@ -108,7 +108,7 @@ function save(){
     document.getElementById('ddnsStatusBadge').innerHTML = 'Waiting to request'
   else
     document.getElementById('ddnsStatusBadge').innerHTML = 'Disabled'
-
+  data['mqtt'] = {};
   data['mqtt']['user'] = document.getElementById('mqttUser').value;
   data['mqtt']['password'] = document.getElementById('mqttPassword').value;
 
