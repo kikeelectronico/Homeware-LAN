@@ -10,7 +10,6 @@ function requestSettings(){
 
 function loadSettings(local_data){
   var token = JSON.parse(local_data);
-  console.log(token)
 
   document.getElementById('clientId').value = token['google']['client_id'];
   document.getElementById('clientSecret').value = token['google']['client_secret'];
@@ -43,6 +42,43 @@ function loadSettings(local_data){
   document.getElementById('ddnsStatusBadge').className = 'badge ' + badgeClass[token['ddns']['code']]
 
 }
+
+function requestStatus(){
+  var http = new XMLHttpRequest();
+  http.addEventListener("load", function(){
+    loadStatus(http.responseText);
+  });
+  http.open("GET", "/api/system/status/");
+  http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+  http.send();
+}
+
+function loadStatus(status){
+  var status = JSON.parse(status);
+
+  classes = {
+    'Running': 'badge badge-success',
+    'Warning': 'badge badge-warning',
+    'Stoped': 'badge badge-danger'
+  }
+
+  document.getElementById('apiEnable').checked = status['api']['enable'];
+  document.getElementById('apiBadge').innerHTML = status['api']['status'];
+  document.getElementById('apiBadge').className = classes[status['api']['status']];
+  document.getElementById('mqttEnable').checked = status['mqtt']['enable'];
+  document.getElementById('mqttBadge').innerHTML = status['mqtt']['status'];
+  document.getElementById('mqttBadge').className = classes[status['mqtt']['status']];
+  document.getElementById('tasksEnable').checked = status['tasks']['enable'];
+  document.getElementById('tasksBadge').innerHTML = status['tasks']['status'];
+  document.getElementById('tasksBadge').className = classes[status['tasks']['status']];
+  document.getElementById('redisEnable').checked = status['redis']['enable'];
+  document.getElementById('redisBadge').innerHTML = status['redis']['status'];
+  document.getElementById('redisBadge').className = classes[status['redis']['status']];
+
+  setTimeout(requestStatus, 5000);
+
+}
+
 
 saveGoogle.addEventListener('click', function() {
   save();

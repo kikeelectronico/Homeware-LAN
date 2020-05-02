@@ -1,213 +1,278 @@
 import json
 import random
 from cryptography.fernet import Fernet
+import redis
+import time
 
 
 class Data:
 
-    version = 'v0.5.2'
+    version = 'v0.6'
     homewareData = {}
     homewareFile = 'homeware.json'
     secureData = {}
     secureFile = 'secure.json'
+    apikey = ''
+    userToken = ''
+    userName = ''
 
 
     def __init__(self):
-        try:
+        self.redis = redis.Redis("localhost")
+
+        if not self.redis.get('transfer'):
+            print('Must create the database')
             with open(self.homewareFile, 'r') as f:
-                self.homewareData = json.load(f)
-            #Create the secure file if doesn't exists: v0.3 to v0.4
-            try:
-                with open(self.secureFile, 'r') as f:
-                    self.secureData = json.load(f)
-            except:
-                with open('config.json', 'r') as f:
-                    self.secureData = json.load(f)
-                with open('token.json', 'r') as f:
-                    self.secureData['token']['google'] = json.load(f)['google']
-                with open(self.secureFile, 'w') as f:
-                    json.dump(self.secureData, f)
-            #Create DDNS content v0.3 to v0.4
-            try:
-                ddns = self.secureData['ddns']
-            except:
-                self.secureData['ddns'] = {
-                    'enabled': False,
-                    'status': 'Disabled',
-                    'code': 'unknown',
-                    'last': 'unknown',
-                    'ip': 'unknown',
-                    'provider': 'ddns',
-                    'hostname': self.secureData['domain'],
-                    'username': '',
-                    'password': ''
-                }
-                self.save()
-            #Create apikey content v0.3 to v0.4
-            try:
-                ddns = self.secureData['token']['apikey']
-            except:
-                self.secureData['token']['apikey'] = ''
-                self.save()
-        except:
-            print('Hi')
+                data = json.load(f)
+                self.redis.set('devices',json.dumps(data['devices']))
+                self.redis.set('status',json.dumps(data['status']))
+                self.redis.set('rules',json.dumps(data['rules']))
+            with open(self.secureFile, 'r') as f:
+                data = json.load(f)
+                self.redis.set('secure',json.dumps(data))
+            self.redis.set('transfer', "true");
+
+        else:
+            print('DDBB up and running')
+
+        self.userName = json.loads(self.redis.get('secure'))['user']
+        self.userToken = json.loads(self.redis.get('secure'))['token']['front']
+        self.apikey = json.loads(self.redis.get('secure'))['token']['apikey']
+
 
     def getVersion(self):
         return {'version': self.version}
 
-# FILES
+    def redisStatus(self):
+        status = {}
+        try:
+            response = self.redis.client_list()
+            status =  {
+                'enable': True,
+                'status': 'Running'
+            }
+        except redis.ConnectionError:
+            status = {
+                'enable': True,
+                'status': 'Stoped'
+            }
+        return status
 
     def firstRun(self):
-        try:
-            with open(self.homewareFile, 'r') as f:
-                self.homewareData = json.load(f)
-            with open(self.secureFile, 'r') as f:
-                self.secureData = json.load(f)
-            return False
-        except:
-            return True
+        return False
 
-    def save(self):
-        with open(self.homewareFile, 'w') as f:
-            json.dump(self.homewareData, f)
-        with open(self.secureFile, 'w') as f:
-            json.dump(self.secureData, f)
+    def getGlobal(self):
+        data = {
+            'devices': json.loads(self.redis.get('devices')),
+            'status': json.loads(self.redis.get('status')),
+            'rules': json.loads(self.redis.get('rules'))
+        }
+        return data
 
-    def refresh(self):
+    def createFile(self,file):
+        data = {
+            'devices': json.loads(self.redis.get('devices')),
+            'status': json.loads(self.redis.get('status')),
+            'rules': json.loads(self.redis.get('rules'))
+        }
+        file = open(self.homewareFile, 'w')
+        file.write(json.dumps(data))
+        file.close()
+
+    def load(self):
         with open(self.homewareFile, 'r') as f:
-            self.homewareData = json.load(f)
-        with open(self.secureFile, 'r') as f:
-            self.secureData = json.load(f)
+            data = json.load(f)
+            self.redis.set('devices',json.dumps(data['devices']))
+            self.redis.set('status',json.dumps(data['status']))
+            self.redis.set('rules',json.dumps(data['rules']))
+
+# ALIVE
+
+    def updateAlive(self, core):
+        ts = int(time.time())
+        alive = {}
+        try:
+            alive = json.loads(self.redis.get('alive'))
+        except:
+            alive = {}
+        alive[core] = ts
+        self.redis.set('alive', json.dumps(alive))
+
+    def getAlive(self):
+        return json.loads(self.redis.get('alive'))
+
 
 # DEVICES
 
     def getDevices(self):
-        with open(self.homewareFile, 'w') as f:
-            json.dump(self.homewareData, f)
-        return self.homewareData['devices']
+        # with open(self.homewareFile, 'w') as f:
+        #     json.dump(self.homewareData, f)
+        return json.loads(self.redis.get('devices'))
 
     def updateDevice(self, incommingData):
         deviceID = incommingData['devices']['id']
         temp_devices = [];
-        for device in self.homewareData['devices']:
+        for device in json.loads(self.redis.get('devices')):
             if device['id'] == deviceID:
                 temp_devices.append(incommingData['devices'])
             else:
                 temp_devices.append(device)
-        self.homewareData['devices'] = temp_devices
-        self.save()
+        # self.ddbb.homewareData['devices'] = temp_devices
+        self.redis.set('devices',json.dumps(temp_devices))
+        # self.save()
 
     def createDevice(self, incommingData):
         deviceID = incommingData['devices']['id']
-        self.homewareData['devices'].append(incommingData['devices'])
-        self.homewareData['status'][deviceID] = {}
-        self.homewareData['status'][deviceID] = incommingData['status']
-        self.save()
+
+        devices = json.loads(self.redis.get('devices'))
+        devices.append(incommingData['devices'])
+        self.redis.set('devices',json.dumps(devices))
+
+        status = json.loads(self.redis.get('status'))
+        status[deviceID] = {}
+        status[deviceID] = incommingData['status']
+        self.redis.set('status',json.dumps(status))
+        # self.save()
 
     def deleteDevice(self, value):
         temp_devices = [];
-        for device in self.homewareData['devices']:
+        for device in json.loads(self.redis.get('devices')):
             if device['id'] != value:
                 temp_devices.append(device)
-        self.homewareData['devices'] = temp_devices
+        self.redis.set('devices',json.dumps(temp_devices))
         # Delete status
-        status = self.homewareData['status']
+        status = json.loads(self.redis.get('status'))
         del status[value]
-        self.homewareData['status'] = status
-        self.save()
+        self.redis.set('status',json.dumps(status))
+        # self.save()
 
 # RULES
 
     def getRules(self):
-        with open(self.homewareFile, 'w') as f:
-            json.dump(self.homewareData, f)
-        return self.homewareData['rules']
+        # with open(self.homewareFile, 'w') as f:
+        #     json.dump(self.homewareData, f)
+        return json.loads(self.redis.get('rules'))
 
     def updateRule(self, incommingData):
-        self.homewareData['rules'][int(incommingData['id'])] = incommingData['rule']
-        self.save()
+        rules = json.loads(self.redis.get('rules'))
+        rules[int(incommingData['id'])] = incommingData['rule']
+        self.redis.set('rules',json.dumps(rules))
+        # self.save()
 
     def createRule(self, incommingData):
-        self.homewareData['rules'].append(incommingData['rule'])
-        self.save()
+        rules = json.loads(self.redis.get('rules'))
+        rules.append(incommingData['rule'])
+        self.redis.set('rules',json.dumps(rules))
+        # self.save()
 
     def deleteRule(self, value):
-        temp_rules = self.homewareData['rules']
+        temp_rules = json.loads(self.redis.get('rules'))
         del temp_rules[int(value)]
-        self.homewareData['rules'] = temp_rules
-        self.save()
+        self.redis.set('rules',json.dumps(temp_rules))
+        # self.save()
 
 # STATUS
 
     def getStatus(self):
-        with open(self.homewareFile, 'w') as f:
-            json.dump(self.homewareData, f)
-        return self.homewareData['status']
+        # with open(self.homewareFile, 'w') as f:
+        #     json.dump(self.homewareData, f)
+        return json.loads(self.redis.get('status'))
 
     def updateParamStatus(self, device, param, value):
-        self.homewareData['status'][device][param] = value
-        self.save()
+        # self.ddbb.homewareData['status'][device][param] = value
+
+        status = json.loads(self.redis.get('status'))
+        status[device][param] = value
+        self.redis.set('status',json.dumps(status))
+        # self.save()
 
 # SECURE
 
     def getSecure(self):
+
+        secure = json.loads(self.redis.get('secure'))
         data = {
             "google": {
-                "client_id": self.secureData['token']["google"]["client_id"],
-                "client_secret": self.secureData['token']["google"]["client_secret"],
+                "client_id": secure['token']["google"]["client_id"],
+                "client_secret": secure['token']["google"]["client_secret"],
             },
-            "ddns": self.secureData['ddns'],
-            "apikey": self.secureData['token']['apikey']
+            "ddns": secure['ddns'],
+            "apikey": secure['token']['apikey']
         }
         return data
 
     def updateSecure(self, incommingData):
-        self.secureData['token']["google"]["client_id"] = incommingData['google']['client_id']
-        self.secureData['token']["google"]["client_secret"] = incommingData['google']['client_secret']
-        self.secureData['ddns']['username'] = incommingData['ddns']['username']
-        self.secureData['ddns']['password'] = incommingData['ddns']['password']
-        self.secureData['ddns']['provider'] = incommingData['ddns']['provider']
-        self.secureData['ddns']['hostname'] = incommingData['ddns']['hostname']
-        self.secureData['ddns']['enabled'] = incommingData['ddns']['enabled']
-        self.save()
+        secure = json.loads(self.redis.get('secure'))
+
+        secure['token']["google"]["client_id"] = incommingData['google']['client_id']
+        secure['token']["google"]["client_secret"] = incommingData['google']['client_secret']
+        secure['ddns']['username'] = incommingData['ddns']['username']
+        secure['ddns']['password'] = incommingData['ddns']['password']
+        secure['ddns']['provider'] = incommingData['ddns']['provider']
+        secure['ddns']['hostname'] = incommingData['ddns']['hostname']
+        secure['ddns']['enabled'] = incommingData['ddns']['enabled']
+
+        self.redis.set('secure',json.dumps(secure))
+        # self.save()
 
     def getToken(self,agent):
-        return self.secureData['token'][agent]
+        if agent == 'front':
+            return self.userToken
+        elif agent == 'apikey':
+            return self.apikey
+        else:
+            return json.loads(self.redis.get('secure'))['token'][agent]
 
     def updateToken(self,agent,type,value,timestamp):
-        self.secureData['token'][agent][type]['value'] = value
-        self.secureData['token'][agent][type]['timestamp'] = timestamp
-        self.save()
+        secure = json.loads(self.redis.get('secure'))
+
+        secure['token'][agent][type]['value'] = value
+        secure['token'][agent][type]['timestamp'] = timestamp
+
+        self.redis.set('secure',json.dumps(secure))
+        # self.save()
 
     def setUser(self, incommingData):
-        if self.secureData['user'] == '':
+        if json.loads(self.redis.get('secure'))['user'] == '':
             data = {}
             key = Fernet.generate_key()
-            self.secureData['key'] = str(key)
+            secure = json.loads(self.redis.get('secure'))
+            secure['key'] = str(key)
             cipher_suite = Fernet(key)
             ciphered_text = cipher_suite.encrypt(str.encode(incommingData['pass']))   #required to be bytes
-            self.secureData['user'] = incommingData['user']
-            self.secureData['pass'] = str(ciphered_text)
-            self.save()
+            secure['user'] = incommingData['user']
+            secure['pass'] = str(ciphered_text)
+            self.redis.set('secure',json.dumps(secure))
             return 'Saved correctly!'
         else:
             return 'Your user has beed set in the past'
 
     def setDomain(self, value):
-        self.secureData['domain'] = value
-        self.secureData['ddns']['hostname'] = value
-        self.save()
+        secure = json.loads(self.redis.get('secure'))
+
+        secure['domain'] = value
+        secure['ddns']['hostname'] = value
+
+        self.redis.set('secure',json.dumps(secure))
+
+
+        # self.save()
 
     def getDDNS(self):
-        return self.secureData['ddns']
+        return json.loads(self.redis.get('secure'))['ddns']
 
     def updateDDNS(self, ip, status, code, enabled, last):
-        self.secureData['ddns']['ip'] = ip
-        self.secureData['ddns']['status'] = status
-        self.secureData['ddns']['code'] = code
-        self.secureData['ddns']['enabled'] = enabled
-        self.secureData['ddns']['last'] = last
-        self.save()
+
+        secure = json.loads(self.redis.get('secure'))
+
+        secure['ddns']['ip'] = ip
+        secure['ddns']['status'] = status
+        secure['ddns']['code'] = code
+        secure['ddns']['enabled'] = enabled
+        secure['ddns']['last'] = last
+
+        self.redis.set('secure',json.dumps(secure))
+        # self.save()
 
     def generateAPIKey(self):
         chars = 'abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -216,8 +281,10 @@ class Data:
         while i < 40:
             token += random.choice(chars)
             i += 1
-        self.secureData['token']['apikey'] = token
-        self.save()
+        secure = json.loads(self.redis.get('secure'))
+        secure['token']['apikey'] = token
+        self.redis.set('secure',json.dumps(secure))
+        self.apikey = token
         return token
 
 # LOGIN
@@ -226,11 +293,12 @@ class Data:
         user = headers['user']
         password = headers['pass']
 
+        secure = json.loads(self.redis.get('secure'))
 
-        cipher_suite = Fernet(str.encode(self.secureData['key'][2:len(self.secureData['key'])]))
-        plain_text = cipher_suite.decrypt(str.encode(self.secureData['pass'][2:len(self.secureData['pass'])]))
+        cipher_suite = Fernet(str.encode(secure['key'][2:len(secure['key'])]))
+        plain_text = cipher_suite.decrypt(str.encode(secure['pass'][2:len(secure['pass'])]))
         responseData = {}
-        if user == self.secureData['user'] and plain_text == str.encode(password):
+        if user == secure['user'] and plain_text == str.encode(password):
             #Generate the token
             chars = 'abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
             token = ''
@@ -239,27 +307,34 @@ class Data:
                 token += random.choice(chars)
                 i += 1
             #Saved the new token
-            self.secureData['token']['front'] = token
+            secure['token']['front'] = token
+            self.redis.set('secure',json.dumps(secure))
             #Prepare the response
             responseData = {
                 'status': 'in',
                 'user': user,
                 'token': token
             }
+
+            self.userName = user
+            self.userToken = token
         else:
             #Prepare the response
             responseData = {
                 'status': 'fail'
             }
 
-        self.save()
+        # self.save()
         return responseData
 
     def validateUserToken(self, headers):
         user = headers['user']
         token = headers['token']
+
+        # secure = json.loads(self.redis.get('secure'))
+
         responseData = {}
-        if user == self.secureData['user'] and token == self.secureData['token']['front']:
+        if user == self.userName and token == self.userToken:
             responseData = {
                 'status': 'in'
             }
@@ -274,10 +349,12 @@ class Data:
         user = headers['user']
         password = headers['pass']
 
-        cipher_suite = Fernet(str.encode(self.secureData['key'][2:len(self.secureData['key'])]))
-        plain_text = cipher_suite.decrypt(str.encode(self.secureData['pass'][2:len(self.secureData['pass'])]))
+        secure = json.loads(self.redis.get('secure'))
+
+        cipher_suite = Fernet(str.encode(secure['key'][2:len(secure['key'])]))
+        plain_text = cipher_suite.decrypt(str.encode(secure['pass'][2:len(secure['pass'])]))
         responseData = {}
-        if user == self.secureData['user'] and plain_text == str.encode(password):
+        if user == secure['user'] and plain_text == str.encode(password):
             return responseURL
         else:
             return "fail"

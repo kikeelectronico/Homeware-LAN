@@ -5,6 +5,7 @@ secure.json
 hardware.py
 upgrader.log
 installations.txt
+/redis
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

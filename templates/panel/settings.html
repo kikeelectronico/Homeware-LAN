@@ -26,11 +26,12 @@
           <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-backup" role="tab" aria-controls="nav-contact" aria-selected="false">Backup and restore</a>
           <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-apikey" role="tab" aria-controls="nav-apikey" aria-selected="false">API Key</a>
           <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-log" role="tab" aria-controls="nav-apikey" aria-selected="false">Events</a>
+          <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-components" role="tab" aria-controls="nav-apikey" aria-selected="false">Components</a>
         </div>
       </nav>
 
       <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="nav-status" role="tabpanel" aria-labelledby="nav-contact-tab">
+        <div class="tab-pane fade  show active" id="nav-status" role="tabpanel" aria-labelledby="nav-contact-tab">
           <div class="row">
             <div class="col">
               <div class="container p-3 mb-2 bg-light text-dark" id="HomeWareStatus">
@@ -266,6 +267,77 @@
             </div>
           </div>
         </div>
+        <div class="tab-pane fade" id="nav-components" role="tabpanel" aria-labelledby="nav-contact-tab">
+          <div class="row">
+            <div class="col">
+              <div class="container p-3 mb-2 bg-light text-dark">
+                <h3>Homeware Core</h3>
+                <hr>
+                <div class="row">
+                  <div class="col-md-7">
+                      Homeware API
+                  </div>
+                  <div class="col-md-3 colAligmentL">
+                    <span class="badge badge-success" id="apiBadge">Running</span>
+                  </div>
+                  <div class="col-md-2 colAligmentL">
+                    <div class="custom-control custom-switch">
+                      <input type="checkbox" class="custom-control-input" id="apiEnable" checked disabled>
+                      <label class="custom-control-label" for="apiEnable" title="This is an essential component, it can not be disabled.">Enable</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-7">
+                      Homeware MQTT
+                  </div>
+                  <div class="col-md-3 colAligmentL">
+                    <span class="badge badge-success" id="mqttBadge">Running</span>
+                  </div>
+                  <div class="col-md-2 colAligmentL">
+                    <div class="custom-control custom-switch">
+                      <input type="checkbox" class="custom-control-input" id="mqttEnable" checked disabled>
+                      <label class="custom-control-label" for="mqttEnable" title="This is an essential component, it can not be disabled.">Enable</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-7">
+                      Homeware Tasks
+                  </div>
+                  <div class="col-md-3 colAligmentL">
+                    <span class="badge badge-success" id="tasksBadge">Running</span>
+                  </div>
+                  <div class="col-md-2 colAligmentL">
+                    <div class="custom-control custom-switch">
+                      <input type="checkbox" class="custom-control-input" id="tasksEnable" checked disabled>
+                      <label class="custom-control-label" for="redisEnable" title="This is an essential component, it can not be disabled.">Enable</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-7">
+                      Redis database
+                  </div>
+                  <div class="col-md-3 colAligmentL">
+                    <span class="badge badge-success" id="redisBadge">Running</span>
+                  </div>
+                  <div class="col-md-2 colAligmentL">
+                    <div class="custom-control custom-switch">
+                      <input type="checkbox" class="custom-control-input" id="redisEnable" checked disabled>
+                      <label class="custom-control-label" for="redisEnable" title="This is an essential component, it can not be disabled.">Enable</label>
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <h3>Plugins</h3>
+                <hr>
+                WIP
+
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -319,6 +391,7 @@
       window.addEventListener('load', function(event){
         requestActual();
         requestSettings();
+        requestStatus();
         if ('{{ msg }}' != 'none'){
           document.getElementById('textMessageAlert').innerHTML = 'Upload: {{ msg }}';
         }
