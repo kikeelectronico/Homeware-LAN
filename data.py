@@ -218,6 +218,7 @@ class Data:
         secure['ddns']['provider'] = incommingData['ddns']['provider']
         secure['ddns']['hostname'] = incommingData['ddns']['hostname']
         secure['ddns']['enabled'] = incommingData['ddns']['enabled']
+        secure['mqtt'] = {}
         secure['mqtt']['user'] = incommingData['mqtt']['user']
         secure['mqtt']['password'] = incommingData['mqtt']['password']
 

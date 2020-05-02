@@ -91,6 +91,10 @@ saveDDNS.addEventListener('click', function() {
   save();
 });
 
+saveMQTT.addEventListener('click', function() {
+  save();
+});
+
 function save(){
   //Update the text message
   document.getElementById('textMessageAlertGoogle').innerHTML = '...';
