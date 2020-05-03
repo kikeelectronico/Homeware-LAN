@@ -1,18 +1,15 @@
 #!/bin/bash
 
-exec 1>logs/upgrader_`date +%s`.log 2>&1
+# exec 1>logs/upgrader_`date +%s`.log 2>&1
 
 echo "The upgrader has started.\r\n"
 
 #Pull from the repository
 sudo git pull
 
-echo "v0.5.1" >> installations.txt
 echo "\r\nThe installations file has been created.\r\n"
 
-File=installations.txt
-if grep -q v0.6 "$File";
-then
+
   #Intall the new services
   sudo cp configuration_templates/homeware.service /lib/systemd/system/
   sudo cp configuration_templates/homewareMQTT.service /lib/systemd/system/
@@ -41,7 +38,7 @@ then
 
   echo "v0.6\r\n" >> installations.txt
   echo "v0.6 dependencies have been installed.\r\n"
-fi
+
 
 #Start services
 sudo systemctl restart homewareMQTT
