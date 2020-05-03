@@ -35,6 +35,7 @@ def runapp():
 ########################### APP ###########################
 
 @app.route('/robots.txt')
+@app.route('/Robots.txt')
 def robots():
     response = "User-agent: *\nDisallow: /";
     return Response(response, mimetype='text/txt')
