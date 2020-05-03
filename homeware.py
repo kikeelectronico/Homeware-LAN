@@ -119,7 +119,7 @@ def assistant(step = 'welcome'):
         'google': 'initialize',
         'initialize': ''
     }
-    if step == 'welcome':
+    if step == 'initialize':
         hData.setAssistantDone()
 
     if not hData.getAssistantDone():
