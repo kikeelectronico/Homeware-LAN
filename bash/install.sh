@@ -33,6 +33,6 @@ echo "@reboot sudo systemctl start homeware" >> copy
 sudo crontab copy
 rm copy
 
-sudo sh update.sh
+sudo sh bash/update.sh
 
 #sudo systemctl start homeware
