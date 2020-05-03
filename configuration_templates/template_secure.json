@@ -20,7 +20,8 @@
         "timestamp": 1579452782954,
         "value": "-"
       }
-    }
+    },
+    "apikey": ""
   },
   "ddns": {
     "enabled": false,

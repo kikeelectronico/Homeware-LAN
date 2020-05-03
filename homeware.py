@@ -49,7 +49,7 @@ def login():
 
 @app.route('/')
 def index():
-    if hData.firstRun():
+    if not hData.getAssistantDone():
         return redirect("/assistant/", code=302)
     else:
         return render_template('panel/index.html', basic = renderHelper.basic)
@@ -120,12 +120,13 @@ def assistant(step = 'welcome'):
         'initialize': ''
     }
     if step == 'welcome':
-        subprocess.run(["cp", "configuration_templates/template_secure.json", "secure.json"],  stdout=subprocess.PIPE)
-        subprocess.run(["cp", "configuration_templates/template_homeware.json", "homeware.json"],  stdout=subprocess.PIPE)
-        hData.load()
+        hData.setAssistantDone()
 
+    if not hData.getAssistantDone():
+        return render_template('assistant/step_' + step + '.html', step=step, next=steps[step])
+    else:
+        return redirect("/", code=302)
 
-    return render_template('assistant/step_' + step + '.html', step=step, next=steps[step])
 
 ########################### API ###########################
 @app.route('/test')
@@ -367,7 +368,7 @@ def front(operation = "", segment = "", value = ''):
                         'code': 400,
                         'note': 'See the documentation'
                     }
-            elif accessLevel >= 0:
+            elif accessLevel >= 0 and not hData.getAssistantDone():
                 if operation == 'domain':
                     if value == '':
                         responseData = {
