@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template, redirect, send_file, url_for
+from flask import Flask, request, render_template, redirect, send_file, url_for, Response
 import requests
 from base64 import b64encode
 import json
@@ -33,6 +33,13 @@ def runapp():
     app.run(host='0.0.0.0', port=5001, debug=True)
 
 ########################### APP ###########################
+
+@app.route('/robots.txt')
+def robots():
+    response = "User-agent: *\nDisallow: /";
+    return Response(response, mimetype='text/txt')
+
+
 
 @app.route('/login')
 @app.route('/login/')
