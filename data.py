@@ -3,6 +3,7 @@ import random
 from cryptography.fernet import Fernet
 import redis
 import time
+import subprocess
 
 
 class Data:
@@ -22,14 +23,28 @@ class Data:
 
         if not self.redis.get('transfer'):
             print('Must create the database')
-            with open(self.homewareFile, 'r') as f:
-                data = json.load(f)
-                self.redis.set('devices',json.dumps(data['devices']))
-                self.redis.set('status',json.dumps(data['status']))
-                self.redis.set('rules',json.dumps(data['rules']))
-            with open(self.secureFile, 'r') as f:
-                data = json.load(f)
-                self.redis.set('secure',json.dumps(data))
+            try:
+                with open(self.homewareFile, 'r') as f:
+                    data = json.load(f)
+                    self.redis.set('devices',json.dumps(data['devices']))
+                    self.redis.set('status',json.dumps(data['status']))
+                    self.redis.set('rules',json.dumps(data['rules']))
+                with open(self.secureFile, 'r') as f:
+                    data = json.load(f)
+                    self.redis.set('secure',json.dumps(data))
+            except:
+                subprocess.run(["cp", "configuration_templates/template_secure.json", "secure.json"],  stdout=subprocess.PIPE)
+                subprocess.run(["cp", "configuration_templates/template_homeware.json", "homeware.json"],  stdout=subprocess.PIPE)
+
+                with open(self.homewareFile, 'r') as f:
+                    data = json.load(f)
+                    self.redis.set('devices',json.dumps(data['devices']))
+                    self.redis.set('status',json.dumps(data['status']))
+                    self.redis.set('rules',json.dumps(data['rules']))
+                with open(self.secureFile, 'r') as f:
+                    data = json.load(f)
+                    self.redis.set('secure',json.dumps(data))
+
             self.redis.set('transfer', "true");
 
         else:
@@ -85,7 +100,19 @@ class Data:
             self.redis.set('devices',json.dumps(data['devices']))
             self.redis.set('status',json.dumps(data['status']))
             self.redis.set('rules',json.dumps(data['rules']))
+# ASSISTANT
 
+    def getAssistantDone(self):
+        try:
+            if not self.redis.get('assistantDone') == None:
+                return True
+            else:
+                return False
+        except:
+            return False
+
+    def setAssistantDone(self):
+        self.redis.set('assistantDone',"True")
 
 # ALIVE
 
