@@ -36,7 +36,15 @@ def mqttReader():
     client.on_connect = on_connect
     client.on_message = on_message
 
-    client.connect("192.168.1.5", 1883, 60)
+    # Try to get username and password
+    try:
+        mqttData = hData.getMQTT()
+        if not mqttData['user'] == "":
+            client.username_pw_set(mqttData['user'], mqttData['password'])
+    except:
+        print('MQTT credentials free')
+
+    client.connect("localhost", 1883, 60)
     client.loop_forever()
 
 def control(payload):

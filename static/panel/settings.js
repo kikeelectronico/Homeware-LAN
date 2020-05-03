@@ -25,6 +25,9 @@ function loadSettings(local_data){
   document.getElementById('ddnsLastUpdate').innerHTML = '<b>Last update:</b> ' + token['ddns']['last'];
   document.getElementById('ddnsIP').innerHTML = '<b>IP:</b> ' + token['ddns']['ip'];
 
+  document.getElementById('mqttUser').value = token['mqtt']['user'];
+  document.getElementById('mqttPassword').value = token['mqtt']['password'];
+
   document.getElementById('apikey').value = token['apikey'];
 
   badgeClass = {
@@ -88,6 +91,10 @@ saveDDNS.addEventListener('click', function() {
   save();
 });
 
+saveMQTT.addEventListener('click', function() {
+  save();
+});
+
 function save(){
   //Update the text message
   document.getElementById('textMessageAlertGoogle').innerHTML = '...';
@@ -105,6 +112,9 @@ function save(){
     document.getElementById('ddnsStatusBadge').innerHTML = 'Waiting to request'
   else
     document.getElementById('ddnsStatusBadge').innerHTML = 'Disabled'
+  data['mqtt'] = {};
+  data['mqtt']['user'] = document.getElementById('mqttUser').value;
+  data['mqtt']['password'] = document.getElementById('mqttPassword').value;
 
   saveData('settings', data);
   //Update the text message

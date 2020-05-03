@@ -64,7 +64,16 @@ def verifyRules():
                     hData.updateParamStatus(target['id'], target['param'], not status[target['id']][target['param']])
                 else:
                     hData.updateParamStatus(target['id'], target['param'], target['value'])
-                publish.single("device/"+target['id'], json.dumps(hData.getStatus()[target['id']]), hostname="localhost")
+                # Try to get username and password
+                try:
+                    mqttData = hData.getMQTT()
+                    if not mqttData['user'] == "":
+                        client.username_pw_set(mqttData['user'], mqttData['password'])
+                        publish.single("device/"+target['id'], json.dumps(hData.getStatus()[target['id']]), hostname="localhost", auth={'username':mqttData['user'], 'password': mqttData['password']})
+                    else:
+                        publish.single("device/"+target['id'], json.dumps(hData.getStatus()[target['id']]), hostname="localhost")
+                except:
+                    publish.single("device/"+target['id'], json.dumps(hData.getStatus()[target['id']]), hostname="localhost")
 
 def ddnsUpdater():
     ddns = hData.getDDNS()

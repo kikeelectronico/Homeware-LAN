@@ -17,7 +17,7 @@
 
     <div id="loginForm" class="container-fluid" style="height: 100%; position: absolute; top:0;">
       <div class="container" style="width: 50%; height: 30%; background-color: white; border-radius: 25px; margin-top: 20%; padding: 50px;">
-
+        <form action="#" onsubmit="loginRequest()">
           <div class="form-group">
             <label for="user">User</label>
             <input type="text" class="form-control" id="user" placeholder="Enter your user">
@@ -27,12 +27,12 @@
             <input type="password" class="form-control" id="pass" placeholder="Password">
           </div>
           <button type="submit" id="login" class="btn btn-primary">Log In</button>
-
+        </form>
       </div>
     </div>
 
     <script>
-      login.addEventListener('click', function(event){
+      function loginRequest(){
         var http = new XMLHttpRequest();
         http.addEventListener("load", function(){
           response = JSON.parse(http.responseText);
@@ -50,7 +50,7 @@
         http.setRequestHeader('user', document.getElementById('user').value)
         http.setRequestHeader('pass', document.getElementById('pass').value)
         http.send();
-      })
+      }
     </script>
 
 
