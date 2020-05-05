@@ -46,4 +46,7 @@ sudo systemctl restart homewareTasks
 sudo systemctl restart homewareRedis
 sudo systemctl restart homeware
 
+cd redis/redis-stable
+redis-cli set assistantDone True
+
 echo "\r\The upgrader has finished.\r\n"
