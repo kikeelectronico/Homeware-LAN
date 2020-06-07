@@ -9,6 +9,15 @@ from data import Data
 #Init the data managment object
 hData = Data()
 
+def verifyTasks():
+    tasks = hData.getTasks()
+    status = hData.getStatus()
+
+    for taskData in tasks:
+        task = taskData['trigger']
+        execution_value = operationExecutor(task, status)
+        print(taskData['title'], execution_value, sep=": ")
+
 def verifyRules():
     status = hData.getStatus()
     rules = hData.getRules()
@@ -117,9 +126,88 @@ def ddnsUpdater():
             else:
                 hData.updateDDNS(newIP, status[code], code, True, last)
 
+def operationExecutor(operation, status):
+    if operation['type'] == "d2b":
+        return d2bExecutor(operation['operation'], status)
+    elif operation['type'] == "d2i":
+        return d2iExecutor(operation['operation'], status)
+    elif operation['type'] == "time":
+        return timeExecutor(operation['operation'])
+    elif operation['type'] == "or":
+        return orExecutor(operation['operation'], status)
+    elif operation['type'] == "and":
+        return andExecutor(operation['operation'], status)
+
+def orExecutor(operations, status):
+    execution_values = []
+    for operation in operations:
+        execution_values.append(operationExecutor(operation, status))
+    return any(execution_values)
+
+def andExecutor(operations, status):
+    execution_values = []
+    for operation in operations:
+        execution_values.append(operationExecutor(operation, status))
+    return all(execution_values)
+
+def d2bExecutor(operation, status):
+    op = operation.split(':')
+    device = op[0]
+    param = op[1]
+    sign = op[2]
+    value = True if op[3] == "True" else False
+
+    if sign == '=' and status[device][param] == value:
+        return True
+    else:
+        return False
+
+def d2iExecutor(operation, status):
+    op = operation.split(':')
+    device = op[0]
+    param = op[1]
+    sign = op[2]
+    value = 0
+    try:
+        value = int(op[3])
+    except:
+        print('Alert', device, param, value, 'is not an int')
+
+    if sign == '=' and status[device][param] == value:
+        return True
+    elif sign == '<' and status[device][param] < value:
+        return True
+    elif sign == '>' and status[device][param] > value:
+        return True
+    elif sign == '<=' and status[device][param] <= value:
+        return True
+    elif sign == '>=' and status[device][param] >= value:
+        return True
+    else:
+        return False
+
+def timeExecutor(operation):
+    op = operation.split(':')
+    h_op = op[1]
+    m_op = op[2]
+    w_op = op[0]
+    ts = time.localtime(time.time())
+    h = ts.tm_hour
+    m = ts.tm_min
+    pw = ts.tm_wday
+    week = [1,2,3,4,5,6,0]
+    w = week[pw]
+
+    if h == h_op and m == m_op and w == w_op:
+        return True
+    else:
+        return False
+
+
 if __name__ == "__main__":
     while(True):
-        verifyRules()
-        ddnsUpdater()
+        # verifyRules()
+        # ddnsUpdater()
+        verifyTasks()
         hData.updateAlive('tasks')
         time.sleep(5)

@@ -199,6 +199,11 @@ class Data:
         self.redis.set('rules',json.dumps(temp_rules))
         # self.save()
 
+# TASKS
+
+    def getTasks(self):
+        return json.loads(self.redis.get('tasks'))
+
 # STATUS
 
     def getStatus(self):
