@@ -15,8 +15,11 @@ def verifyTasks():
 
     for taskData in tasks:
         task = taskData['trigger']
-        execution_value = operationExecutor(task, status)
-        print(taskData['title'], execution_value, sep=": ")
+        try:
+            execution_value = operationExecutor(task, status)
+            print(taskData['title'], execution_value, sep=": ")
+        except Exception as e:
+            print('Catch an error on execution of', taskData['title'], 'task', str(e))
 
 def verifyRules():
     status = hData.getStatus()
@@ -182,6 +185,27 @@ def d2iExecutor(operation, status):
     elif sign == '<=' and status[device][param] <= value:
         return True
     elif sign == '>=' and status[device][param] >= value:
+        return True
+    else:
+        return False
+
+def d2dExecutor(operation, status):
+    op = operation.split(':')
+    device_a = op[0]
+    param_a = op[1]
+    sign = op[2]
+    device_b = op[3]
+    param_b = op[4]
+
+    if sign == '=' and status[device_a][param_a] == status[device_b][param_b]:
+        return True
+    elif sign == '<' and status[device_a][param_a] < status[device_b][param_b]:
+        return True
+    elif sign == '>' and status[device_a][param_a] > status[device_b][param_b]:
+        return True
+    elif sign == '<=' and status[device_a][param_a] <= status[device_b][param_b]:
+        return True
+    elif sign == '>=' and status[device_a][param_a] >= status[device_b][param_b]:
         return True
     else:
         return False
