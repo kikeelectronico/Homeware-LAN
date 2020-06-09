@@ -343,6 +343,54 @@ def front(operation = "", segment = "", value = ''):
                     'code': 401,
                     'note': 'See the documentation'
                 }
+        elif segment == 'tasks':
+            if accessLevel >= 10:
+                if operation == 'update':
+                    incommingData = request.get_json()
+                    hData.updateTask(incommingData)
+                    responseData = {
+                        'status': 'Success',
+                        'code': 200
+                    }
+                elif operation == 'create':
+                    incommingData = request.get_json()
+                    hData.createTask(incommingData)
+                    responseData = {
+                        'status': 'Success',
+                        'code': 200
+                    }
+                elif operation == 'delete':
+                    hData.deleteTask(value)
+                    responseData = {
+                        'status': 'Success',
+                        'code': 200
+                    }
+                elif operation == 'get':
+                    tasks = hData.getTasks()
+                    try:
+                        if not value == '':
+                            if 0 <= int(value) < len(rules):
+                                responseData = tasks[int(value)]
+                            else:
+                                responseData = {
+                                    'error': 'Task not found',
+                                    'code': 404,
+                                    'note': 'See the documentation'
+                                }
+                        else:
+                            responseData = tasks
+                    except:
+                        responseData = {
+                            'error': 'Invalid task ID, it must be a integer',
+                            'code': 409,
+                            'note': 'See the documentation'
+                        }
+            else:
+                responseData = {
+                    'error': 'Bad authentication',
+                    'code': 401,
+                    'note': 'See the documentation'
+                }
         elif segment == 'settings':
             if accessLevel >= 100:
                 if operation == 'update':
