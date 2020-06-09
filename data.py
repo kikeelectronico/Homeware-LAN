@@ -177,32 +177,45 @@ class Data:
 # RULES
 
     def getRules(self):
-        # with open(self.homewareFile, 'w') as f:
-        #     json.dump(self.homewareData, f)
         return json.loads(self.redis.get('rules'))
 
     def updateRule(self, incommingData):
         rules = json.loads(self.redis.get('rules'))
         rules[int(incommingData['id'])] = incommingData['rule']
         self.redis.set('rules',json.dumps(rules))
-        # self.save()
 
     def createRule(self, incommingData):
         rules = json.loads(self.redis.get('rules'))
         rules.append(incommingData['rule'])
         self.redis.set('rules',json.dumps(rules))
-        # self.save()
 
     def deleteRule(self, value):
-        temp_rules = json.loads(self.redis.get('rules'))
-        del temp_rules[int(value)]
-        self.redis.set('rules',json.dumps(temp_rules))
-        # self.save()
+        rules = json.loads(self.redis.get('rules'))
+        del rules[int(value)]
+        self.redis.set('rules',json.dumps(rules))
 
 # TASKS
 
     def getTasks(self):
         return json.loads(self.redis.get('tasks'))
+
+    def getTask(self, i):
+        return json.loads(self.redis.get('tasks'))[i]
+
+    def updateTask(self, incommingData):
+        tasks = json.loads(self.redis.get('tasks'))
+        tasks[int(incommingData['id'])] = incommingData['task']
+        self.redis.set('tasks',json.dumps(tasks))
+
+    def createTask(self, task):
+        tasks = json.loads(self.redis.get('tasks'))
+        tasks.append(tasks)
+        self.redis.set('tasks',json.dumps(tasks))
+
+    def deleteTask(self, i):
+        tasks = json.loads(self.redis.get('tasks'))
+        del tasks[int(i)]
+        self.redis.set('tasks', json.dumps(tasks))
 
 # STATUS
 
