@@ -132,6 +132,8 @@ def ddnsUpdater():
 def operationExecutor(operation, status):
     if operation['type'] == "d2b":
         return d2bExecutor(operation['operation'], status)
+    elif operation['type'] == "d2d":
+        return d2dExecutor(operation['operation'], status)
     elif operation['type'] == "d2i":
         return d2iExecutor(operation['operation'], status)
     elif operation['type'] == "time":
@@ -158,7 +160,7 @@ def d2bExecutor(operation, status):
     device = op[0]
     param = op[1]
     sign = op[2]
-    value = True if op[3] == "True" else False
+    value = True if op[3] == "true" else False
 
     if sign == '=' and status[device][param] == value:
         return True

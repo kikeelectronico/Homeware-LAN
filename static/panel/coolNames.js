@@ -89,7 +89,7 @@ var paramCoolName = {
   'thermostatTemperatureSetpoint': 'Set point',
   'thermostatHumidityAmbient': 'Humidity',
   'thermostatMode': 'Mode',
-  'on': 'Switched on',
+  'on': 'Power',
   'brightness': 'Brightness',
   'online': 'Online'
 }

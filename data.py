@@ -80,6 +80,7 @@ class Data:
         data = {
             'devices': json.loads(self.redis.get('devices')),
             'status': json.loads(self.redis.get('status')),
+            'tasks': json.loads(self.redis.get('tasks')),
             'rules': json.loads(self.redis.get('rules'))
         }
         return data
@@ -209,7 +210,7 @@ class Data:
 
     def createTask(self, task):
         tasks = json.loads(self.redis.get('tasks'))
-        tasks.append(tasks)
+        tasks.append(task)
         self.redis.set('tasks',json.dumps(tasks))
 
     def deleteTask(self, i):

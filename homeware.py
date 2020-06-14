@@ -88,6 +88,21 @@ def rules(process = "", id = -1):
     else:
         return render_template('panel/rules.html', basic = renderHelper.basic)
 
+@app.route('/tasks')
+@app.route('/tasks/')
+@app.route('/tasks/<process>/')
+@app.route('/tasks/<process>/')
+@app.route('/tasks/<process>/<id>')
+@app.route('/tasks/<process>/<id>/')
+def tasks(process = "", id = -1):
+
+    if process == 'edit':
+            return render_template('panel/task_edit.html', taskID=id, basic = renderHelper.basic)
+    elif process == 'json':
+            return render_template('panel/task_json.html', taskID=id, basic = renderHelper.basic)
+    else:
+        return render_template('panel/tasks.html', basic = renderHelper.basic)
+
 @app.route('/settings')
 @app.route('/settings/')
 @app.route('/settings/<msg>/')
@@ -354,7 +369,7 @@ def front(operation = "", segment = "", value = ''):
                     }
                 elif operation == 'create':
                     incommingData = request.get_json()
-                    hData.createTask(incommingData)
+                    hData.createTask(incommingData['task'])
                     responseData = {
                         'status': 'Success',
                         'code': 200
@@ -369,7 +384,7 @@ def front(operation = "", segment = "", value = ''):
                     tasks = hData.getTasks()
                     try:
                         if not value == '':
-                            if 0 <= int(value) < len(rules):
+                            if 0 <= int(value) < len(tasks):
                                 responseData = tasks[int(value)]
                             else:
                                 responseData = {
