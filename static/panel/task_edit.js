@@ -32,7 +32,6 @@ function laodTasksRequest(taskID){
     // Devices on selector
     var html = "<option>Select a device</option>";
     devices.forEach((device, i) => {
-      console.log(device)
       html += '<option value="' + device.id +'">' + device.name.nicknames[0] +'</option>';
     });
     document.getElementById('device_target').innerHTML = html;
@@ -331,7 +330,6 @@ function createTrigger(type){
     operation = device_a + ':' + param_a + ':' + operator + ':' + device_b + ':' + param_b;
   }
 
-  console.log(operation)
 
   var new_operation = {
     "type": type,
@@ -371,7 +369,6 @@ function createTimeTrigger(type){
 
   operation = h.toString() + ':' + m.toString() + ':' + w.toString();
 
-  console.log(operation)
 
   var new_operation = {
     "type": 'time',
