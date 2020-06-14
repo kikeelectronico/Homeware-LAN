@@ -21,6 +21,16 @@ def verifyTasks():
             if execution_value:
                 for target in taskData['target']:
                     hData.updateParamStatus(target['device'], target['param'], target['value'])
+                    # Try to get username and password
+                    try:
+                        mqttData = hData.getMQTT()
+                        if not mqttData['user'] == "":
+                            client.username_pw_set(mqttData['user'], mqttData['password'])
+                            publish.single("device/"+target['device'], json.dumps(hData.getStatus()[target['device']]), hostname="localhost", auth={'username':mqttData['user'], 'password': mqttData['password']})
+                        else:
+                            publish.single("device/"+target['device'], json.dumps(hData.getStatus()[target['device']]), hostname="localhost")
+                    except:
+                        publish.single("device/"+target['device'], json.dumps(hData.getStatus()[target['device']]), hostname="localhost")
 
         except Exception as e:
             print('Catch an error on execution of', taskData['title'], 'task', str(e))
