@@ -50,6 +50,12 @@ class Data:
         else:
             print('DDBB up and running')
 
+        # Create the tasks
+        try:
+            self.redis.get('tasks')
+        except:
+            self.redis.set('tasks',"[]")
+
         self.userName = json.loads(self.redis.get('secure'))['user']
         self.userToken = json.loads(self.redis.get('secure'))['token']['front']
         self.apikey = json.loads(self.redis.get('secure'))['token']['apikey']

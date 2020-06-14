@@ -18,6 +18,10 @@ def verifyTasks():
         try:
             execution_value = operationExecutor(task, status)
             print(taskData['title'], execution_value, sep=": ")
+            if execution_value:
+                for target in taskData['target']:
+                    hData.updateParamStatus(target['device'], target['param'], target['value'])
+
         except Exception as e:
             print('Catch an error on execution of', taskData['title'], 'task', str(e))
 
