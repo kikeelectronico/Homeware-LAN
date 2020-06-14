@@ -228,15 +228,17 @@ def d2dExecutor(operation, status):
 
 def timeExecutor(operation):
     op = operation.split(':')
-    h_op = op[1]
-    m_op = op[2]
-    w_op = op[0]
+    h_op = int(op[0])
+    m_op = int(op[1])
+    w_op = int(op[2])
     ts = time.localtime(time.time())
     h = ts.tm_hour
     m = ts.tm_min
     pw = ts.tm_wday
     week = [1,2,3,4,5,6,0]
     w = week[pw]
+    print(h,m,w)
+    print(h_op,m_op,w_op)
 
     if h == h_op and m == m_op and w == w_op:
         return True
