@@ -248,8 +248,8 @@ def timeExecutor(operation):
 
 if __name__ == "__main__":
     while(True):
-        # verifyRules()
-        # ddnsUpdater()
+        verifyRules()
+        ddnsUpdater()
         verifyTasks()
         hData.updateAlive('tasks')
         time.sleep(5)
