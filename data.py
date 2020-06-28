@@ -21,6 +21,7 @@ class Data:
 
     def __init__(self):
         self.redis = redis.Redis("localhost")
+        self.verbose = False
 
         if not self.redis.get('transfer'):
             print('Must create the database')
@@ -118,6 +119,12 @@ class Data:
         log_register = severity + ' - ' + date_time  + ' - ' + message + '\n';
         log_file.write(log_register)
         log_file.close()
+
+        if (verbose):
+            print(log_register)
+
+    def setVerbose(self, verbose):
+        self.verbose = verbose
 
 # ASSISTANT
 
@@ -393,7 +400,7 @@ class Data:
                 'user': user,
                 'token': token
             }
-            self.log('log',user + ' has login')
+            self.log('Log',user + ' has login')
 
             self.userName = user
             self.userToken = token

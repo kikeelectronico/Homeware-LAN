@@ -33,7 +33,7 @@ def verifyTasks():
                         publish.single("device/"+target['device'], json.dumps(hData.getStatus()[target['device']]), hostname="localhost")
 
         except Exception as e:
-            print('Catch an error on execution of', taskData['title'], 'task', str(e))
+            hData.log('Alert', 'Catch an error on execution of' + taskData['title'] + 'task' + str(e))
 
 def verifyRules():
     status = hData.getStatus()
@@ -124,7 +124,7 @@ def ddnsUpdater():
             noipRequest = requests.get(url= noipServer, params=params, headers=headers)
             #Analyze the response
             code = noipRequest.text.split(' ')[0]
-            print(noipRequest.text)
+            hData.log('Log', 'IP update request sended to no-ip. Response: ' + noipRequest.text)
             status = {
                 'good': 'Running',
                 'nochg': 'Running, but the last request shouldn\'t have been done.',
@@ -190,7 +190,7 @@ def d2iExecutor(operation, status):
     try:
         value = int(op[3])
     except:
-        print('Alert', device, param, value, 'is not an int')
+        hData.log('Alert', device + param + value + 'is not an int')
 
     if sign == '=' and status[device][param] == value:
         return True
@@ -237,8 +237,6 @@ def timeExecutor(operation):
     pw = ts.tm_wday
     week = [1,2,3,4,5,6,0]
     w = week[pw]
-    print(h,m,w)
-    print(h_op,m_op,w_op)
 
     if h == h_op and m == m_op and w == w_op:
         return True
@@ -247,6 +245,7 @@ def timeExecutor(operation):
 
 
 if __name__ == "__main__":
+    hData.log('Log', 'Starting HomewareTask core')
     while(True):
         verifyRules()
         ddnsUpdater()

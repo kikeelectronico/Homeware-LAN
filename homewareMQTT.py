@@ -28,7 +28,7 @@ def on_message(client, userdata, msg):
         elif msg.topic == "homeware/alive":
             hData.updateAlive('mqtt')
     else:
-        print('Alert')
+        hData.log('Warning', 'Received a message from a extrange MQTT topic')
 
 # MQTT reader
 def mqttReader():
@@ -65,6 +65,5 @@ def control(payload):
 
 
 if __name__ == "__main__":
-    print("Starting HomewareMQTT core")
-    print('Version:',hData.getVersion()['version'])
+    hData.log('Log', 'Starting HomewareMQTT core')
     mqttReader()
