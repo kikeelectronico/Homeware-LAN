@@ -17,6 +17,10 @@ var valuesForParam = {
     "type": "d2b",
     "select": ["true","false"]
   },
+  'deactivate': {
+    "type": "d2b",
+    "select": ["true","false"]
+  },
   'brightness': {
     "type": "d2i"
   },
