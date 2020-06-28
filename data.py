@@ -393,6 +393,7 @@ class Data:
                 'user': user,
                 'token': token
             }
+            self.log('log',user + ' has login')
 
             self.userName = user
             self.userToken = token
@@ -401,7 +402,7 @@ class Data:
             responseData = {
                 'status': 'fail'
             }
-
+            self.log('Alert','Login failed, user: ' + user)
         # self.save()
         return responseData
 
