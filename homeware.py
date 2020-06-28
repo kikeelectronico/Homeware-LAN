@@ -421,6 +421,7 @@ def front(operation = "", segment = "", value = ''):
                     responseData = hData.getSecure()
                 elif operation == 'apikey':
                     if authorization == savedToken:
+                        hData.log('Warning', 'An API Key has been regenerated')
                         responseData = {
                             'apikey': hData.generateAPIKey()
                         }
