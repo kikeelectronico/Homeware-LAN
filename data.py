@@ -3,6 +3,7 @@ import random
 from cryptography.fernet import Fernet
 import redis
 import time
+from datetime import datetime
 import subprocess
 
 
@@ -107,6 +108,17 @@ class Data:
             self.redis.set('devices',json.dumps(data['devices']))
             self.redis.set('status',json.dumps(data['status']))
             self.redis.set('rules',json.dumps(data['rules']))
+
+# LOG
+
+    def log(self, severity, message):
+        log_file = open("homeware.log", "a")
+        now = datetime.now()
+        date_time = now.strftime("%d/%m/%Y, %H:%M:%S")
+        log_register = severity + ' - ' + date_time  + ' - ' + message + '\n';
+        log_file.write(log_register)
+        log_file.close()
+
 # ASSISTANT
 
     def getAssistantDone(self):
