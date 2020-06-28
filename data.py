@@ -120,7 +120,7 @@ class Data:
         log_file.write(log_register)
         log_file.close()
 
-        if (verbose):
+        if (self.verbose):
             print(log_register)
 
     def setVerbose(self, verbose):
