@@ -126,6 +126,22 @@ class Data:
     def setVerbose(self, verbose):
         self.verbose = verbose
 
+    def getLog(self):
+        log = []
+
+        log_file = open("homeware.log","r")
+        for register in log_file.read().split('\n'):
+            content = register.split(' - ')
+            log.append({
+                "severity": content[0],
+                "time": content[1],
+                "message": content[2]
+            })
+        log_file.close()
+
+        return log
+
+
 # ASSISTANT
 
     def getAssistantDone(self):

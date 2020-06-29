@@ -520,6 +520,23 @@ def front(operation = "", segment = "", value = ''):
                     'code': 401,
                     'note': 'See the documentation'
                 }
+        elif segment == 'log':
+            if accessLevel >= 100:
+                if operation == 'get':
+                    responseData = hData.getLog()
+                else:
+                    responseData = {
+                        'error': 'Operation not supported',
+                        'code': 400,
+                        'note': 'See the documentation'
+                    }
+            else:
+                hData.log('Alert', 'Request to API > log endpoint with bad authentication')
+                responseData = {
+                    'error': 'Bad authentication',
+                    'code': 401,
+                    'note': 'See the documentation'
+                }
 
 
     response = app.response_class(
