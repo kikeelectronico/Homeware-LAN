@@ -190,7 +190,7 @@ showEventsLog.addEventListener('click', function(){
       var uniqueEvent = events[i];
       date = new Date(uniqueEvent.timestamp);
       html += '<div class="card"> <div class="card-body">';
-      html += '<b>' + uniqueEvent.severiry + '</b> <br> ' + uniqueEvent.message + ' <br> <b>Timestamp</b>: ';
+      html += '<b>' + uniqueEvent.severity + '</b> <br> ' + uniqueEvent.message + ' <br> <b>Timestamp</b>: ';
       html += uniqueEvent.time;
       html += '</div> </div>';
     }
