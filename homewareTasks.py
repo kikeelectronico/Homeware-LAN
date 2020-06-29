@@ -150,6 +150,8 @@ def operationExecutor(operation, status):
         return d2dExecutor(operation['operation'], status)
     elif operation['type'] == "d2i":
         return d2iExecutor(operation['operation'], status)
+    elif operation['type'] == "d2l":
+        return d2lExecutor(operation['operation'], status)
     elif operation['type'] == "time":
         return timeExecutor(operation['operation'])
     elif operation['type'] == "or":
@@ -191,6 +193,31 @@ def d2iExecutor(operation, status):
         value = int(op[3])
     except:
         hData.log('Alert', device + param + value + 'is not an int')
+
+    if sign == '=' and status[device][param] == value:
+        return True
+    elif sign == '<' and status[device][param] < value:
+        return True
+    elif sign == '>' and status[device][param] > value:
+        return True
+    elif sign == '<=' and status[device][param] <= value:
+        return True
+    elif sign == '>=' and status[device][param] >= value:
+        return True
+    else:
+        return False
+
+def d2lExecutor(operation, status):
+    op = operation.split(':')
+    device = op[0]
+    param = op[1]
+    sign = op[2]
+    value = ""
+
+    try:
+        value = str(op[3])
+    except:
+        hData.log('Alert', device + param + value + 'is not an string')
 
     if sign == '=' and status[device][param] == value:
         return True
