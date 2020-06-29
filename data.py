@@ -130,10 +130,8 @@ class Data:
         log = []
 
         log_file = open("homeware.log","r")
-        registers = log_file.read().split('\n')
-        print(registers)
+        registers = log_file.readlines()
         for register in registers:
-            print(register)
             content = register.split(' - ')
             log.append({
                 "severity": content[0],
