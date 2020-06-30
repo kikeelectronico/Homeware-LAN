@@ -44,7 +44,7 @@ function requestDataForRender(){
 
   var ajaxStep = new XMLHttpRequest();
   ajaxStep.addEventListener("load", render);
-  ajaxStep.open("GET", "/static/panel/assistant_device/4.html");
+  ajaxStep.open("GET", "/static/panel/device_assistant/4.html");
   ajaxStep.send();
 
 }
