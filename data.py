@@ -97,7 +97,9 @@ class Data:
         data = {
             'devices': json.loads(self.redis.get('devices')),
             'status': json.loads(self.redis.get('status')),
-            'rules': json.loads(self.redis.get('rules'))
+            'tasks': json.loads(self.redis.get('tasks')),
+            'rules': json.loads(self.redis.get('rules')),
+            'secure': json.loads(self.redis.get('secure'))
         }
         file = open(self.homewareFile, 'w')
         file.write(json.dumps(data))
@@ -108,7 +110,9 @@ class Data:
             data = json.load(f)
             self.redis.set('devices',json.dumps(data['devices']))
             self.redis.set('status',json.dumps(data['status']))
+            self.redis.set('tasks',json.dumps(data['tasks']))
             self.redis.set('rules',json.dumps(data['rules']))
+            self.redis.set('secure',json.dumps(data['secure']))
 
 # LOG
 
