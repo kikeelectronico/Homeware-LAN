@@ -723,14 +723,14 @@ def smarthome():
                 obj = {}
                 obj['requestId'] = requestId
                 obj['payload'] = {}
-                obj['payload']['agentUserId'] = '123'
+                obj['payload']['agentUserId'] = hData.getDDNS()['hostname']
                 obj['payload']['devices'] = hData.getDevices()
                 response = app.response_class(
                     response=json.dumps(obj),
                     status=200,
                     mimetype='application/json'
                 )
-                hData.log('Log', 'Sync request by ' + agent)
+                hData.log('Log', 'Sync request by ' + agent + ' with ' + obj['payload']['agentUserId'] + 'as agent user id')
                 return response
             elif input['intent'] == 'action.devices.QUERY':
                 obj = {}
