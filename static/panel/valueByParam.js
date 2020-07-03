@@ -11,7 +11,7 @@ var valuesForParam = {
   },
   'thermostatMode': {
     "type": "d2l",
-    "select": ["cool","heat","off"]
+    "select": ["cool","heat","off","on","heatcool","auto","fan-only","purifier","eco","dry"]
   },
   'on': {
     "type": "d2b",
