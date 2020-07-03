@@ -730,7 +730,7 @@ def smarthome():
                     status=200,
                     mimetype='application/json'
                 )
-                hData.log('Log', 'Sync request by ' + agent + ' with ' + obj['payload']['agentUserId'] + 'as agent user id')
+                hData.log('Log', 'Sync request by ' + agent + ' with ' + obj['payload']['agentUserId'] + ' as agent user id')
                 return response
             elif input['intent'] == 'action.devices.QUERY':
                 obj = {}
