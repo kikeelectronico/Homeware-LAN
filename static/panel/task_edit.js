@@ -1,7 +1,7 @@
 task = {
   "title": "",
   "description": "",
-  "trigger": "",
+  "triggers": "",
   "target": []
 }
 devices = {}
@@ -47,8 +47,8 @@ function loadTask(){
 
   document.getElementById('title').value = task.title;
   document.getElementById('description').value = task.description;
-  document.getElementById('triggersCard').innerHTML = operationRenderer(task.trigger);
-  document.getElementById('cards_targets_container').innerHTML = targetRenderer();
+  document.getElementById('triggersCard').innerHTML = operationRenderer(task.triggers.trigger, "trigger");
+  // document.getElementById('cards_targets_container').innerHTML = targetRenderer();
 
   loadApiTime();
 }
@@ -56,17 +56,17 @@ function loadTask(){
 /*  RENDER THE TRIGGERS, LOGIC AND TARGETS  */
 
 // Decides what kind of render is needed
-function operationRenderer(operation){
+function operationRenderer(operation, id){
   if (operation.type == 'd2b' || operation.type == 'd2i' || operation.type == 'd2l' || operation.type == 'd2s')
-    return d2Renderer(operation.operation, operation.id);
+    return d2Renderer(operation.operation, id);
   else if (operation.type == 'd2d')
-    return d2dRenderer(operation.operation, operation.id);
+    return d2dRenderer(operation.operation, id);
   else if (operation.type == 'time')
-    return timeRenderer(operation.operation, operation.id);
+    return timeRenderer(operation.operation, id);
   else if (operation.type == 'or')
-    return orRenderer(operation.operation, operation.id);
+    return orRenderer(operation.operation, id);
   else if (operation.type == 'and')
-    return andRenderer(operation.operation, operation.id);
+    return andRenderer(operation.operation, id);
 }
 
 // Device to device render
@@ -74,7 +74,7 @@ function d2dRenderer(operation, id){
   op = operation.split(':')
   var html = '<div class="card" style="margin-top:10px;">\
                 <div class="card-body">\
-                  <b>' + getDeviceName(op[0]) + '</b>(' + getParamCoolName(op[1]) + ') ' + op[2] + ' ' +'<b>' + getDeviceName(op[3]) + '</b>(' + getParamCoolName(op[4]) + ')<a onclick="deleteById(' + id + ')"><span class="badge badge-danger" style="float:right;">Delete</span></a><br>\
+                  <b>' + getDeviceName(op[0]) + '</b>(' + getParamCoolName(op[1]) + ') ' + op[2] + ' ' +'<b>' + getDeviceName(op[3]) + '</b>(' + getParamCoolName(op[4]) + ')<a onclick="deleteById(\'' + id + '\')"><span class="badge badge-danger" style="float:right;">Delete</span></a><br>\
                 </div>\
               </div>';
   return html
@@ -85,7 +85,7 @@ function d2Renderer(operation, id){
   op = operation.split(':')
   var html = '<div class="card" style="margin-top:10px;">\
                 <div class="card-body">\
-                  <b>' + getDeviceName(op[0]) + '</b>(' + getParamCoolName(op[1]) + ') ' + op[2] + ' ' + op[3] + '<a onclick="deleteById(' + id + ')"><span class="badge badge-danger" style="float:right;">Delete</span></a><br>\
+                  <b>' + getDeviceName(op[0]) + '</b>(' + getParamCoolName(op[1]) + ') ' + op[2] + ' ' + op[3] + '<a onclick="deleteById(\'' + id + '\')"><span class="badge badge-danger" style="float:right;">Delete</span></a><br>\
                 </div>\
               </div>';
   return html
@@ -97,7 +97,7 @@ function timeRenderer(operation, id){
   var week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   var html = '<div class="card" style="margin-top:10px;">\
                 <div class="card-body">\
-                  ' + putZero(op[0]) + ':' + putZero(op[1]) + ' -  ' + week[op[2]] +'<a onclick="deleteById(' + id + ')"><span class="badge badge-danger" style="float:right;">Delete</span></a>\
+                  ' + putZero(op[0]) + ':' + putZero(op[1]) + ' -  ' + week[op[2]] +'<a onclick="deleteById(\'' + id + '\')"><span class="badge badge-danger" style="float:right;">Delete</span></a>\
                 </div>\
               </div>';
   return html
@@ -109,12 +109,12 @@ function orRenderer(operation, id){
                 <div class="card-body" id="">\
                   <h4>Or</h4>';
   for (var i = 0; i < operation.length; i++){
-    html += operationRenderer(operation[i]);
+    html += operationRenderer(task.triggers[operation[i]], operation[i]);
   }
-  html += '<br><button type="button" class="btn btn-primary" onclick="launchD2Assitant(' + id + ')">+</button>\
-            <button type="button" class="btn btn-primary" onclick="add(\'and\',' + id + ')">AND</button>\
-            <button type="button" class="btn btn-primary" onclick="add(\'or\',' + id + ')">OR</button>\
-            <a onclick="deleteById(' + id + ')"><span class="badge badge-danger" style="float:right;">Delete</span></a>\
+  html += '<br><button type="button" class="btn btn-primary" onclick="launchD2Assitant(\'' + id + '\')">+</button>\
+            <button type="button" class="btn btn-primary" onclick="add(\'and\',\'' + id + '\')">AND</button>\
+            <button type="button" class="btn btn-primary" onclick="add(\'or\',\'' + id + '\')">OR</button>\
+            <a onclick="deleteById(\'' + id + '\')"><span class="badge badge-danger" style="float:right;">Delete</span></a>\
             </div></div>';
   return html;
 }
@@ -125,12 +125,12 @@ function andRenderer(operation, id){
                 <div class="card-body" id="">\
                   <h4>And</h4>';
   for (var i = 0; i < operation.length; i++){
-    html += operationRenderer(operation[i]);
+    html += operationRenderer(task.triggers[operation[i]], operation[i]);
   }
-  html += '<br><button type="button" class="btn btn-primary" onclick="launchD2Assitant(' + id + ')">+</button>\
-            <button type="button" class="btn btn-primary" onclick="add(\'and\',' + id + ')">AND</button>\
-            <button type="button" class="btn btn-primary" onclick="add(\'or\',' + id + ')">OR</button>\
-            <a onclick="deleteById(' + id + ')"><span class="badge badge-danger" style="float:right;">Delete</span></a>\
+  html += '<br><button type="button" class="btn btn-primary" onclick="launchD2Assitant(\'' + id + '\')">+</button>\
+            <button type="button" class="btn btn-primary" onclick="add(\'and\',\'' + id + '\')">AND</button>\
+            <button type="button" class="btn btn-primary" onclick="add(\'or\',\'' + id + '\')">OR</button>\
+            <a onclick="deleteById(\'' + id + '\')"><span class="badge badge-danger" style="float:right;">Delete</span></a>\
             </div></div>';
   return html;
 }
@@ -194,18 +194,20 @@ function add(type, id){
 
 /*  DELETE TRIGGER OR LOGIC  */
 
-
 function deleteById(id){
-    console.log('previo')
-    console.log(task.trigger)
-    console.log(id)
-    console.log('output')
-    var new_triggers = deleteOrAdd(task.trigger, id)
-    task.trigger = new_triggers;
+  var parent = task.triggers[id].parent;
 
-    console.log(task.trigger)
-
-    loadTask(task)
+  if (parent == "triggers") {
+    task.triggers = "";
+    document.getElementById('triggersCard').innerHTML = '<br><button type="button" class="btn btn-primary" onclick="launchD2Assitant(\'triggers\')">+</button>\
+              <button type="button" class="btn btn-primary" onclick="add(\'and\',\'triggers\')">AND</button>\
+              <button type="button" class="btn btn-primary" onclick="add(\'or\',\'triggers\')">OR</button>';
+  } else {
+    var index = task.triggers[parent].operation.indexOf(id);
+    task.triggers[parent].operation.splice(index,1);
+    delete task.triggers[id];
+    loadTask(task);
+  }
 }
 
 function deleteOrAdd(data, id){
