@@ -489,6 +489,11 @@ function param_selected(order) {
 
         html += '   </select>\
                   </div>';
+      } else if (values.type == 'd2c'){
+        html = '<div class="form-group" style="width:100%;">\
+                  <label for="value">Target value</label>\
+                  #<input type="text" class="form-control" id="value_target" placeholder="ff0000">\
+                </div>';
       }
 
 
@@ -529,6 +534,10 @@ add_targets_button.addEventListener('click', e => {
     } else if (target_type == 'd2l'){
       var selector = document.getElementById("value_target");
       var value = selector.options[selector.selectedIndex].value;
+    } else if (target_type == 'd2c'){
+      value = parseInt(document.getElementById('value_target').value);
+      value = parseInt(value,16);
+      value = '{\"name\":\"desconocido\", \"spectrumRGB\": ' + value + '}'
     }
 
     new_target = {

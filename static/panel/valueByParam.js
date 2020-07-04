@@ -27,7 +27,10 @@ var valuesForParam = {
   'online': {
     "type": "d2b",
     "select": ["true","false"]
-  }
+  },
+  'color': {
+    "type": "d2c"
+  },
 }
 
 function getValuesByParam(param){

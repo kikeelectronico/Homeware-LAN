@@ -91,7 +91,8 @@ var paramCoolName = {
   'thermostatMode': 'Mode',
   'on': 'Power',
   'brightness': 'Brightness',
-  'online': 'Online'
+  'online': 'Online',
+  'color': 'Color'
 }
 
 function getDeviceCoolName(device){
