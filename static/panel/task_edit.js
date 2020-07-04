@@ -365,7 +365,7 @@ function createTrigger(type){
       "parent": active_parent_id,
       "operation": operation
     }
-    task.triggers[active_parent_id].operation.push(new_id)
+    task.triggers[active_parent_id].operation.push(new_id.toString())
   } else {
     task['triggers']['trigger'] = {
       "type": type,
@@ -394,7 +394,7 @@ function createTimeTrigger(type){
       "parent": active_parent_id,
       "operation": operation
     }
-    task.triggers[active_parent_id].operation.push(new_id)
+    task.triggers[active_parent_id].operation.push(new_id.toString())
   } else {
     task['triggers']['trigger'] = {
       "type": 'time',
