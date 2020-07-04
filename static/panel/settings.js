@@ -275,7 +275,11 @@ function downloadAndUpgrade(){
     upgradeStep = 2;
   } else if (upgradeStep == 2){
     document.getElementById('upgradeModalTitle').innerHTML = "Wait";
-    document.getElementById('upgradeModalParagraphContainer').innerHTML = "The system will be down some time. The page will be reloaded automatically into home page when the system will be ready.";
+    document.getElementById('upgradeModalParagraphContainer').innerHTML = "The system will be down some time. The page will be reloaded automatically into home page when the system will be ready.<div class=\"d-flex justify-content-center\">\
+                                                                            <div class=\"spinner-border\" role=\"status\">\
+                                                                              <span class=\"sr-only\">Loading...</span>\
+                                                                            </div>\
+                                                                          </div>";
     var http = new XMLHttpRequest();
     http.addEventListener("load", function(){
       code = JSON.parse(http.responseText)['code']
