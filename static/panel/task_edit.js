@@ -447,6 +447,8 @@ function param_selected(order) {
     // is the param supported?
     if(values == param){
       document.getElementById('d2AssistantFooter').innerHTML = "This param is not supported. You must use the json editor for your task and do it manually."
+    } else if (param == color) {
+      document.getElementById('d2AssistantFooter').innerHTML = "This param is not supported."
     } else {
 
       if (values.type == 'd2i'){
@@ -466,14 +468,11 @@ function param_selected(order) {
                   </div>';
       }
 
-      if (values.type == 'd2c'){
-        document.getElementById('d2AssistantFooter').innerHTML = "This param is not supported."
-      } else {
-        html += 'or\
-                  <button type="button" class="btn btn-primary" onclick="d2dAssistant()">A device</button>\
-                  <br>\
-                  <button type="button" class="btn btn-primary" style="float:right" onclick="createTrigger(\'' + values.type + '\')">Create</button>';
-      }
+      html += 'or\
+                <button type="button" class="btn btn-primary" onclick="d2dAssistant()">A device</button>\
+                <br>\
+                <button type="button" class="btn btn-primary" style="float:right" onclick="createTrigger(\'' + values.type + '\')">Create</button>';
+
 
 
       document.getElementById('d2AssistantFooter').innerHTML = html
