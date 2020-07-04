@@ -447,7 +447,7 @@ function param_selected(order) {
     // is the param supported?
     if(values == param){
       document.getElementById('d2AssistantFooter').innerHTML = "This param is not supported. You must use the json editor for your task and do it manually."
-    } else if (param == color) {
+    } else if (param == 'color') {
       document.getElementById('d2AssistantFooter').innerHTML = "This param is not supported."
     } else {
 
