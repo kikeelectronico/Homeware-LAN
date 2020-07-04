@@ -535,8 +535,7 @@ add_targets_button.addEventListener('click', e => {
       var selector = document.getElementById("value_target");
       var value = selector.options[selector.selectedIndex].value;
     } else if (target_type == 'd2c'){
-      value = parseInt(document.getElementById('value_target').value);
-      value = parseInt(value,16);
+      value = parseInt(document.getElementById('value_target').value,16);
       value = '{\"name\":\"desconocido\", \"spectrumRGB\": ' + value + '}'
     }
 
