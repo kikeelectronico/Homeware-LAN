@@ -16,7 +16,7 @@ function laodTasksRequest(taskID){
   http.send();
 }
 
-function loadTask(data, ruleID){
+function loadTask(data, TaskID){
   const container = document.getElementById('jsoneditor')
 
   const options = {
@@ -62,14 +62,14 @@ save.addEventListener('click', e => {
 
 });
 
-deleteRule.addEventListener('click', e => {
+deleteTask.addEventListener('click', e => {
 
   if (confirm("Do you want to delete the task?")){
     var html = "";
 
     var http = new XMLHttpRequest();
     http.addEventListener("load", function(){
-      window.location.href = "/rules/";
+      window.location.href = "/Tasks/";
     });
     http.open("GET", "/api/tasks/delete/" + id + "/");
     http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))

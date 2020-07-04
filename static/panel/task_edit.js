@@ -1,14 +1,13 @@
 task = {
   "title": "",
   "description": "",
-  "triggers": "",
+  "triggers": {},
   "target": []
 }
 devices = {}
 params = {}
-active_trigger_id = 0
+active_parent_id = "0"
 id = -1 // Task id
-create_task = true;
 target_type = ""
 
 /*  lOAD DATA FROM DATABASE  */
@@ -48,7 +47,7 @@ function loadTask(){
   document.getElementById('title').value = task.title;
   document.getElementById('description').value = task.description;
   document.getElementById('triggersCard').innerHTML = operationRenderer(task.triggers.trigger, "trigger");
-  // document.getElementById('cards_targets_container').innerHTML = targetRenderer();
+  document.getElementById('cards_targets_container').innerHTML = targetRenderer();
 
   loadApiTime();
 }
@@ -74,7 +73,7 @@ function d2dRenderer(operation, id){
   op = operation.split(':')
   var html = '<div class="card" style="margin-top:10px;">\
                 <div class="card-body">\
-                  <b>' + getDeviceName(op[0]) + '</b>(' + getParamCoolName(op[1]) + ') ' + op[2] + ' ' +'<b>' + getDeviceName(op[3]) + '</b>(' + getParamCoolName(op[4]) + ')<a onclick="deleteById(\'' + id + '\')"><span class="badge badge-danger" style="float:right;">Delete</span></a><br>\
+                  <b>' + getDeviceName(op[0]) + '</b>(' + getParamCoolName(op[1]) + ') ' + op[2] + ' ' +'<b>' + getDeviceName(op[3]) + '</b>(' + getParamCoolName(op[4]) + ')<a onclick="deleteTriggerById(\'' + id + '\')"><span class="badge badge-danger" style="float:right;">Delete</span></a><br>\
                 </div>\
               </div>';
   return html
@@ -85,7 +84,7 @@ function d2Renderer(operation, id){
   op = operation.split(':')
   var html = '<div class="card" style="margin-top:10px;">\
                 <div class="card-body">\
-                  <b>' + getDeviceName(op[0]) + '</b>(' + getParamCoolName(op[1]) + ') ' + op[2] + ' ' + op[3] + '<a onclick="deleteById(\'' + id + '\')"><span class="badge badge-danger" style="float:right;">Delete</span></a><br>\
+                  <b>' + getDeviceName(op[0]) + '</b>(' + getParamCoolName(op[1]) + ') ' + op[2] + ' ' + op[3] + '<a onclick="deleteTriggerById(\'' + id + '\')"><span class="badge badge-danger" style="float:right;">Delete</span></a><br>\
                 </div>\
               </div>';
   return html
@@ -97,7 +96,7 @@ function timeRenderer(operation, id){
   var week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   var html = '<div class="card" style="margin-top:10px;">\
                 <div class="card-body">\
-                  ' + putZero(op[0]) + ':' + putZero(op[1]) + ' -  ' + week[op[2]] +'<a onclick="deleteById(\'' + id + '\')"><span class="badge badge-danger" style="float:right;">Delete</span></a>\
+                  ' + putZero(op[0]) + ':' + putZero(op[1]) + ' -  ' + week[op[2]] +'<a onclick="deleteTriggerById(\'' + id + '\')"><span class="badge badge-danger" style="float:right;">Delete</span></a>\
                 </div>\
               </div>';
   return html
@@ -105,7 +104,7 @@ function timeRenderer(operation, id){
 
 // Logic or render
 function orRenderer(operation, id){
-  var html = '<div class="card" style="background-color:rgba(5,5,5,0.05)">\
+  var html = '<div class="card" style="background-color:rgba(5,5,5,0.05); margin-top:10px;">\
                 <div class="card-body" id="">\
                   <h4>Or</h4>';
   for (var i = 0; i < operation.length; i++){
@@ -114,14 +113,14 @@ function orRenderer(operation, id){
   html += '<br><button type="button" class="btn btn-primary" onclick="launchD2Assitant(\'' + id + '\')">+</button>\
             <button type="button" class="btn btn-primary" onclick="add(\'and\',\'' + id + '\')">AND</button>\
             <button type="button" class="btn btn-primary" onclick="add(\'or\',\'' + id + '\')">OR</button>\
-            <a onclick="deleteById(\'' + id + '\')"><span class="badge badge-danger" style="float:right;">Delete</span></a>\
+            <a onclick="deleteTriggerById(\'' + id + '\')"><span class="badge badge-danger" style="float:right;">Delete</span></a>\
             </div></div>';
   return html;
 }
 
 // Logic and render
 function andRenderer(operation, id){
-  var html = '<div class="card" style="background-color:rgba(5,5,5,0.05)">\
+  var html = '<div class="card" style="background-color:rgba(5,5,5,0.05); margin-top:10px;">\
                 <div class="card-body" id="">\
                   <h4>And</h4>';
   for (var i = 0; i < operation.length; i++){
@@ -130,7 +129,7 @@ function andRenderer(operation, id){
   html += '<br><button type="button" class="btn btn-primary" onclick="launchD2Assitant(\'' + id + '\')">+</button>\
             <button type="button" class="btn btn-primary" onclick="add(\'and\',\'' + id + '\')">AND</button>\
             <button type="button" class="btn btn-primary" onclick="add(\'or\',\'' + id + '\')">OR</button>\
-            <a onclick="deleteById(\'' + id + '\')"><span class="badge badge-danger" style="float:right;">Delete</span></a>\
+            <a onclick="deleteTriggerById(\'' + id + '\')"><span class="badge badge-danger" style="float:right;">Delete</span></a>\
             </div></div>';
   return html;
 }
@@ -139,9 +138,10 @@ function andRenderer(operation, id){
 function targetRenderer(){
   var html = "";
   task.target.forEach((target, i) => {
-    html += '<div class="card" style="margin-left:20px;margin-top:10px;">\
+    html += '<div class="card" style="width:42%; margin-left:5%;margin-top:10px;">\
               <div class="card-body">\
                 <b>'+ getDeviceName(target.device) + '</b>(' + target.param + ') = ' + target.value +'\
+                <a onclick="deleteTargetById(\'' + target.device + target.param + target.value + '\')"><span class="badge badge-danger" style="float:right;">Delete</span></a>\
               </div>\
             </div>';
   });
@@ -160,45 +160,39 @@ function getDeviceName(id){
   return id
 }
 
-/*  ADD NEW TRIGGER OR LOGIC  */
+/*  ADD NEW LOGIC  */
 
-function add(type, id){
-  var new_operation = {
-    "type": type,
-    "id": Date.now(),
-    "operation": []
-  }
-
-  if (!create_task){
-    s_task = JSON.stringify(task);
-
-    var query = '"id":' + id.toString();
-    var query_position = s_task.indexOf(query) + query.length;
-    var insert_position = s_task.indexOf('[', query_position) + 1;
-    var insert_end_position = s_task.indexOf(']', query_position);
-
-    separator = ''
-    if (insert_position != insert_end_position)
-      separator = ','
-
-    new_task = s_task.slice(0, insert_position) + JSON.stringify(new_operation) + separator + s_task.slice(insert_position, s_task.length);
-    task = JSON.parse(new_task);
+function add(type, parent){
+  // If it is the first trigger its id is 'trigger' and the its parent is 'triggers'
+  if (parent == "triggers"){
+    var new_id = "trigger";
+    task.triggers[new_id] = {
+      "type": type,
+      "parent": "triggers",
+      "operation": []
+    }
   } else {
-    task['trigger'] = new_operation;
-    create_task = false;
+    var new_id = Date.now();
+    task.triggers[new_id] = {
+      "type": type,
+      "parent": parent,
+      "operation": []
+    };
+    //Add the new operation into its parents operation list
+    task.triggers[parent].operation.push(new_id);
   }
 
-  loadTask(task)
+  loadTask()
 
 }
 
 /*  DELETE TRIGGER OR LOGIC  */
 
-function deleteById(id){
+function deleteTriggerById(id){
   var parent = task.triggers[id].parent;
 
   if (parent == "triggers") {
-    task.triggers = "";
+    task.triggers = {};
     document.getElementById('triggersCard').innerHTML = '<br><button type="button" class="btn btn-primary" onclick="launchD2Assitant(\'triggers\')">+</button>\
               <button type="button" class="btn btn-primary" onclick="add(\'and\',\'triggers\')">AND</button>\
               <button type="button" class="btn btn-primary" onclick="add(\'or\',\'triggers\')">OR</button>';
@@ -206,49 +200,38 @@ function deleteById(id){
     var index = task.triggers[parent].operation.indexOf(id);
     task.triggers[parent].operation.splice(index,1);
     delete task.triggers[id];
-    loadTask(task);
+    loadTask();
   }
 }
 
-function deleteOrAdd(data, id){
-  var new_operation = []
-  if(data.id == id){
-    return null
-  } else {
-    if (typeof data.operation === 'string'){
-      return data
-    } else {
-      len = data.operation.length;
-      for( var i = 0; i < len; i++){
-        new_operation.push(deleteOrAdd(data.operation[i], id))
-      }
+/*  DELETE TARGET  */
+
+function deleteTargetById(id){
+  var new_targets = []
+  task.target.forEach(target => {
+    var target_id = target.device + target.param + target.value
+    if (id != target_id){
+      new_targets.push(target)
     }
-
-    var filtered =  new_operation.filter(function (operation) {
-      return operation != null;
-    });
-
-    data.operation = filtered;
-
-    return data
-  }
+  });
+  task.target = new_targets;
+  loadTask();
 }
-
 
 /* ASSISTANT FOR ADDING NEW DEVICES AND TIME TRIGGERS  */
 
 // Launch the assistant
 function launchD2Assitant(id){
-  document.getElementById('d2AssistantBody').innerHTML = '<button type="button" class="trigger_assistant_button" onclick="timeAssistant(' + id + ')"><img src="/static/images/clock.png"/ title="Time trigger"></button>\
-                                                          <button type="button" class="trigger_assistant_button" onclick="d2Assistant(' + id + ')"><img src="/static/images/bulb.png"/ title="Device trigger"></button>';
+  document.getElementById('d2AssistantBody').innerHTML = '<button type="button" class="trigger_assistant_button" onclick="timeAssistant(\'' + id + '\')"><img src="/static/images/clock.png"/ title="Time trigger"></button>\
+                                                          <button type="button" class="trigger_assistant_button" onclick="d2Assistant(\'' + id + '\')"><img src="/static/images/bulb.png"/ title="Device trigger"></button>';
 
   document.getElementById('d2AssistantFooter').innerHTML = '';
   $('#d2Assitant').modal('show')
 }
 
 // If the user select a time trigger
-function timeAssistant(id){
-  active_trigger_id = id;
+function timeAssistant(parent){
+  active_parent_id = parent;
 
   // Hour
   html = ' <div class="form-group">\
@@ -284,7 +267,7 @@ function timeAssistant(id){
 
 // If the user select a device assistant
 function d2Assistant(id){
-  active_trigger_id = id;
+  active_parent_id = id;
 
   // Device A
   html = ' <div class="form-group">\
@@ -350,7 +333,7 @@ function d2dAssistant(){
   document.getElementById('d2AssistantFooter').innerHTML = html
 }
 
-// Create the trigger and seva into the data var
+// Create the trigger and save into the data var
 function createTrigger(type){
   var selector = document.getElementById("device_a");
   device_a = selector.options[selector.selectedIndex].value;
@@ -359,7 +342,7 @@ function createTrigger(type){
   var selector = document.getElementById("operator");
   operator = selector.options[selector.selectedIndex].value;
 
-  operation = ""
+  var operation = ""
   if (type == 'd2i'){
     value = document.getElementById('value').value;
     operation = device_a + ':' + param_a + ':' + operator + ':' + value;
@@ -375,30 +358,20 @@ function createTrigger(type){
     operation = device_a + ':' + param_a + ':' + operator + ':' + device_b + ':' + param_b;
   }
 
-
-  var new_operation = {
-    "type": type,
-    "id": Date.now(),
-    "operation": operation
-  }
-
-  if(!create_task){
-    s_task = JSON.stringify(task);
-
-    var query = '"id":' + active_trigger_id.toString();
-    var query_position = s_task.indexOf(query) + query.length;
-    var insert_position = s_task.indexOf('[', query_position) + 1;
-    var insert_end_position = s_task.indexOf(']', query_position);
-
-    separator = ''
-    if (insert_position != insert_end_position)
-      separator = ','
-
-    new_task = s_task.slice(0, insert_position) + JSON.stringify(new_operation) + separator + s_task.slice(insert_position, s_task.length);
-    task = JSON.parse(new_task);
+  if(active_parent_id != "triggers"){
+    var new_id = Date.now();
+    task.triggers[new_id] = {
+      "type": type,
+      "parent": active_parent_id,
+      "operation": operation
+    }
+    task.triggers[active_parent_id].operation.push(new_id)
   } else {
-    task['trigger'] = new_operation;
-    create_task = false;
+    task['triggers']['trigger'] = {
+      "type": type,
+      "parent": "triggers",
+      "operation": operation
+    };
   }
 
   loadTask()
@@ -414,30 +387,20 @@ function createTimeTrigger(type){
 
   operation = h.toString() + ':' + m.toString() + ':' + w.toString();
 
-
-  var new_operation = {
-    "type": 'time',
-    "id": Date.now(),
-    "operation": operation
-  }
-
-  if(!create_task){
-    s_task = JSON.stringify(task);
-
-    var query = '"id":' + active_trigger_id.toString();
-    var query_position = s_task.indexOf(query) + query.length;
-    var insert_position = s_task.indexOf('[', query_position) + 1;
-    var insert_end_position = s_task.indexOf(']', query_position);
-
-    separator = ''
-    if (insert_position != insert_end_position)
-      separator = ','
-
-    new_task = s_task.slice(0, insert_position) + JSON.stringify(new_operation) + separator + s_task.slice(insert_position, s_task.length);
-    task = JSON.parse(new_task);
+  if(active_parent_id != "triggers"){
+    var new_id = Date.now();
+    task.triggers[new_id] = {
+      "type": 'time',
+      "parent": active_parent_id,
+      "operation": operation
+    }
+    task.triggers[active_parent_id].operation.push(new_id)
   } else {
-    task['trigger'] = new_operation;
-    create_task = false;
+    task['triggers']['trigger'] = {
+      "type": 'time',
+      "parent": "triggers",
+      "operation": operation
+    };
   }
 
   loadTask()
@@ -468,56 +431,72 @@ function param_selected(order) {
   var param = selector.options[selector.selectedIndex].value;
 
   //Values
-  values = getValuesByParam(param)
+  values = getValuesByParam(param);
+
 
   if (order == 'a' || order == 'b'){
-    if (values.type == 'd2i'){
-      html = '<div class="form-group" style="width:100%;">\
-                <label for="value">A value</label>\
-                <input type="number" class="form-control" id="value">\
-              </div>';
-    } else if (values.type == 'd2b' || values.type == 'd2l'){
-      html = ' <div class="form-group" style="width:100%;">\
-                  <label for="value">Value</label>\
-                  <select class="form-control" id="value">';
-      values.select.forEach((value, i) => {
-        html += '<option>' + value +'</option>';
-      });
+    // is the param supported?
+    if(values == param){
+      document.getElementById('d2AssistantFooter').innerHTML = "This param is not supported. You must use the json editor for your task and do it manually."
+    } else {
 
-      html += '   </select>\
+      if (values.type == 'd2i'){
+        html = '<div class="form-group" style="width:100%;">\
+                  <label for="value">A value</label>\
+                  <input type="number" class="form-control" id="value">\
                 </div>';
+      } else if (values.type == 'd2b' || values.type == 'd2l'){
+        html = ' <div class="form-group" style="width:100%;">\
+                    <label for="value">Value</label>\
+                    <select class="form-control" id="value">';
+        values.select.forEach((value, i) => {
+          html += '<option>' + value +'</option>';
+        });
+
+        html += '   </select>\
+                  </div>';
+      }
+
+      html += 'or\
+                <button type="button" class="btn btn-primary" onclick="d2dAssistant()">A device</button>\
+                <br>\
+                <button type="button" class="btn btn-primary" style="float:right" onclick="createTrigger(\'' + values.type + '\')">Create</button>';
+
+
+      document.getElementById('d2AssistantFooter').innerHTML = html
     }
-
-    html += 'or\
-              <button type="button" class="btn btn-primary" onclick="d2dAssistant()">A device</button>\
-              <br>\
-              <button type="button" class="btn btn-primary" style="float:right" onclick="createTrigger(\'' + values.type + '\')">Create</button>';
-
-
-    document.getElementById('d2AssistantFooter').innerHTML = html
   } else if (order == 'target'){
-    target_type = values.type
-    if (values.type == 'd2i'){
-      html = '<div class="form-group" style="width:100%;">\
-                <label for="value">Target value</label>\
-                <input type="number" class="form-control" id="value_target">\
-              </div>';
-    } else if (values.type == 'd2b' || values.type == 'd2l'){
-      html = ' <div class="form-group" style="width:100%;">\
+    // is the param supported?
+    if(values == param){
+      document.getElementById('d2AssistantBody').innerHTML = "This param is not supported. You must use the json editor for your task and do it manually.";
+      document.getElementById('d2AssistantFooter').innerHTML = "";
+      $('#d2Assitant').modal('show')
+    } else {
+
+      target_type = values.type
+      if (values.type == 'd2i'){
+        html = '<div class="form-group" style="width:100%;">\
                   <label for="value">Target value</label>\
-                  <select class="form-control" id="value_target">';
-      values.select.forEach((value, i) => {
-        html += '<option>' + value +'</option>';
-      });
-
-      html += '   </select>\
+                  <input type="number" class="form-control" id="value_target">\
                 </div>';
+      } else if (values.type == 'd2b' || values.type == 'd2l'){
+        html = ' <div class="form-group" style="width:100%;">\
+                    <label for="value">Target value</label>\
+                    <select class="form-control" id="value_target">';
+        values.select.forEach((value, i) => {
+          html += '<option>' + value +'</option>';
+        });
+
+        html += '   </select>\
+                  </div>';
+      }
+
+
+      document.getElementById('add_targets_button').disabled = false;
+      document.getElementById('value_target_container').innerHTML = html;
     }
-
-
-    document.getElementById('add_targets_button').disabled = false;
-    document.getElementById('value_target_container').innerHTML = html;
   }
+
 }
 
 // Save the title
@@ -530,31 +509,36 @@ function updateDescription(){
   task.description = document.getElementById('description').value;
 }
 
-// Add a target
+// Add a target to the list
 add_targets_button.addEventListener('click', e => {
-  var value = "";
-  if (target_type == 'd2i'){
-    value = parseInt(document.getElementById('value_target').value);
-  } else if (target_type == 'd2b'){
-    var selector = document.getElementById("value_target");
-    if (selector.options[selector.selectedIndex].value == 'true')
-      value = true;
-    else
-      value = false;
-  } else if (target_type == 'd2l'){
-    var selector = document.getElementById("value_target");
-    var value = selector.options[selector.selectedIndex].value;
-  }
+
   device = document.getElementById('device_target').value;
   param = document.getElementById('param_target').value;
+  values = getValuesByParam(param)
 
-  new_target = {
-    "device": device,
-    "param": param,
-    "value": value
+  if(values != param){
+    var value = "";
+    if (target_type == 'd2i'){
+      value = parseInt(document.getElementById('value_target').value);
+    } else if (target_type == 'd2b'){
+      var selector = document.getElementById("value_target");
+      if (selector.options[selector.selectedIndex].value == 'true')
+        value = true;
+      else
+        value = false;
+    } else if (target_type == 'd2l'){
+      var selector = document.getElementById("value_target");
+      var value = selector.options[selector.selectedIndex].value;
+    }
+
+    new_target = {
+      "device": device,
+      "param": param,
+      "value": value
+    }
+    task['target'].push(new_target);
+    loadTask();
   }
-  task['target'].push(new_target);
-  loadTask();
 });
 
 /*  GLOBAL OPERATION OVER THE DB  */
@@ -566,6 +550,7 @@ save.addEventListener('click', e => {
     "id": id,
     "task": task
   }
+  console.log(outgoingData)
   var http = new XMLHttpRequest();
   http.addEventListener("load", function(){
     response = JSON.parse(http.responseText);
@@ -574,7 +559,8 @@ save.addEventListener('click', e => {
     } else {
       $('#alertContainer').html('<div class="alert alert-danger fade show" role="alert" id="savedAlert"> <b>Fail!</b> Something goes wrong.</div>');
     }
-
+    if (id == -1)
+      window.location.href = "/tasks/"
     //Make alert show up
     $('#savedAlert').alert()
     setTimeout(function() {
@@ -592,7 +578,7 @@ save.addEventListener('click', e => {
 
 });
 
-deleteRule.addEventListener('click', e => {
+deleteTask.addEventListener('click', e => {
 
   if (confirm("Do you want to delete the task?")){
     var html = "";
@@ -616,6 +602,9 @@ deleteRule.addEventListener('click', e => {
 
 
 });
+
+
+/*  ADITIONAL INFORMATION  */
 
 function loadApiTime(){
     apiClockURL = '/clock';
