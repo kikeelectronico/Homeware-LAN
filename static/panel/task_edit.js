@@ -217,7 +217,7 @@ function deleteTargetById(id){
   task.target.forEach(target => {
     var target_id = target.device + target.param + target.value
     if ( target.param == 'color'){
-      value = value.spectrumRGB.toString(16)
+      target_id = target.device + target.param +  target.value.spectrumRGB.toString(16)
     }
     if (id != target_id){
       new_targets.push(target)
