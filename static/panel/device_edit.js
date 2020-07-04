@@ -222,10 +222,12 @@ save.addEventListener('click', e => {
       else if (attributes[attributeKey]['type'] == "object" ){
         var content = attributes[attributeKey]['content'];
         Object.keys(content).forEach(function(subAttributeKey){
-          if (content[subAttributeKey]['type'] == "bool")
+          device.attributes[attributeKey] = {}
+          if (content[subAttributeKey]['type'] == "bool"){
             device.attributes[attributeKey][subAttributeKey] = document.getElementById("customSwitch_" + subAttributeKey).checked;
-          else if (content[subAttributeKey]['type'] == "string" || content[subAttributeKey]['type'] == "int" )
+          } else if (content[subAttributeKey]['type'] == "string" || content[subAttributeKey]['type'] == "int" ) {
             device.attributes[attributeKey][subAttributeKey] = document.getElementById(subAttributeKey).value;
+          }
         });
       } else if (attributes[attributeKey]['type'] == "strigifyedObject" ){
         console.log('in')
