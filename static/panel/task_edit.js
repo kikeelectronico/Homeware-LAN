@@ -138,10 +138,16 @@ function andRenderer(operation, id){
 function targetRenderer(){
   var html = "";
   task.target.forEach((target, i) => {
+    var device = target.device;
+    var param = target.param;
+    var value = target.value;
+    if ( target.param == 'color'){
+      value = value.spectrumRGB.toString(16)
+    }
     html += '<div class="card" style="width:42%; margin-left:5%;margin-top:10px;">\
               <div class="card-body">\
-                <b>'+ getDeviceName(target.device) + '</b>(' + target.param + ') = ' + target.value +'\
-                <a onclick="deleteTargetById(\'' + target.device + target.param + target.value + '\')"><span class="badge badge-danger" style="float:right;">Delete</span></a>\
+                <b>'+ getDeviceName(device) + '</b>(' + param + ') = ' + value +'\
+                <a onclick="deleteTargetById(\'' + device + param + value + '\')"><span class="badge badge-danger" style="float:right;">Delete</span></a>\
               </div>\
             </div>';
   });
