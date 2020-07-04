@@ -24,9 +24,9 @@
             <div class="container p-3 mb-2 bg-light text-dark" style="text-align: right">
               <span class="apiClock" id="apiClock"></span>
               <a class="btn btn-primary" href="/tasks/edit/{{ taskID }}" role="button">Visual editor</a>
-              <button type="button" class="btn btn-danger" id="deleteRule">Delete Rule</button>
+              <button type="button" class="btn btn-danger" id="deleteTask">Delete Task</button>
               <button type="button" class="btn btn-primary" id="save" >Save</button>
-              <input type="hidden" id="n" value="{{ ruleID }}">
+              <input type="hidden" id="n" value="{{ TaskID }}">
               <input type="hidden" id="operation" value="-1">
               <input type="hidden" id="triggerType" value="-1">
             </div>
@@ -34,7 +34,7 @@
 
             <div class="container p-3 mb-2 bg-light text-dark" id="editor">
               <h3>JSON editor</h3>
-              <p>Edit your JSON under your own risk. Learn how to edit and compose the JSON for the rules on this <a href="https://github.com/kikeelectronico/Homeware-LAN/wiki/Compose-a-JSON-for-a-task" target="blanck">wiki</a>.<p>
+              <p>Edit your JSON under your own risk. Learn how to edit and compose the JSON for the Tasks on this <a href="https://github.com/kikeelectronico/Homeware-LAN/wiki/Compose-a-JSON-for-a-task" target="blanck">wiki</a>.<p>
               <div id="jsoneditor"></div>
               <br>
               <p>The JSON editor is a project by <a href="https://github.com/josdejong/jsoneditor" target="blanck">josedejong</a></p>

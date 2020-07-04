@@ -9,15 +9,17 @@ from data import Data
 #Init the data managment object
 hData = Data()
 
+hData.setVerbose(True)
+
 def verifyTasks():
     tasks = hData.getTasks()
     status = hData.getStatus()
 
     for taskData in tasks:
-        task = taskData['trigger']
+        triggers = taskData['triggers']
         try:
-            execution_value = operationExecutor(task, status)
-            print(taskData['title'], execution_value, sep=": ")
+            execution_value = operationExecutor('trigger', triggers, status)
+            # print(taskData['title'], execution_value, sep=": ")
             if execution_value:
                 for target in taskData['target']:
                     hData.updateParamStatus(target['device'], target['param'], target['value'])
@@ -143,7 +145,8 @@ def ddnsUpdater():
             else:
                 hData.updateDDNS(newIP, status[code], code, True, last)
 
-def operationExecutor(operation, status):
+def operationExecutor(id, triggers, status):
+    operation = triggers[str(id)]
     if operation['type'] == "d2b":
         return d2bExecutor(operation['operation'], status)
     elif operation['type'] == "d2d":
@@ -155,20 +158,20 @@ def operationExecutor(operation, status):
     elif operation['type'] == "time":
         return timeExecutor(operation['operation'])
     elif operation['type'] == "or":
-        return orExecutor(operation['operation'], status)
+        return orExecutor(operation['operation'], triggers, status)
     elif operation['type'] == "and":
-        return andExecutor(operation['operation'], status)
+        return andExecutor(operation['operation'], triggers, status)
 
-def orExecutor(operations, status):
+def orExecutor(ids, triggers, status):
     execution_values = []
-    for operation in operations:
-        execution_values.append(operationExecutor(operation, status))
+    for id in ids:
+        execution_values.append(operationExecutor(id, triggers, status))
     return any(execution_values)
 
-def andExecutor(operations, status):
+def andExecutor(ids, triggers, status):
     execution_values = []
-    for operation in operations:
-        execution_values.append(operationExecutor(operation, status))
+    for id in ids:
+        execution_values.append(operationExecutor(id, triggers, status))
     return all(execution_values)
 
 def d2bExecutor(operation, status):

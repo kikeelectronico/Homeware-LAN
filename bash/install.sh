@@ -45,6 +45,7 @@ sudo make install
 #Get current sudo crontab
 sudo crontab -l > copy
 #Set the new cron job up
+echo "@reboot sudo systemctl start homeware" >> copy
 echo "@reboot sudo systemctl start homewareMQTT" >> copy
 echo "@reboot sudo systemctl start homewareTasks" >> copy
 echo "@reboot sudo systemctl start homewareRedis" >> copy
