@@ -217,7 +217,7 @@ function deleteTargetById(id){
   task.target.forEach(target => {
     var target_id = target.device + target.param + target.value
     if ( target.param == 'color'){
-       target_id = target.device + target.param + value.spectrumRGB.toString(16)
+      value = value.spectrumRGB.toString(16)
     }
     if (id != target_id){
       new_targets.push(target)
@@ -365,9 +365,6 @@ function createTrigger(type){
     var selector = document.getElementById("param_b");
     param_b = selector.options[selector.selectedIndex].value;
     operation = device_a + ':' + param_a + ':' + operator + ':' + device_b + ':' + param_b;
-  } else if (type == 'd2c'){
-    value = parseInt(document.getElementById('value').value,16);
-    operation = device_a + ':' + param_a + ':' + operator + ':' + value;
   }
 
   if(active_parent_id != "triggers"){
@@ -467,17 +464,16 @@ function param_selected(order) {
 
         html += '   </select>\
                   </div>';
-      } else if (values.type == 'd2c'){
-        html = '<div class="form-group" style="width:100%;">\
-                  <label for="value">Target value</label>\
-                  #<input type="text" class="form-control" id="value" placeholder="ff0000">\
-                </div>';
       }
 
-      html += 'or\
-                <button type="button" class="btn btn-primary" onclick="d2dAssistant()">A device</button>\
-                <br>\
-                <button type="button" class="btn btn-primary" style="float:right" onclick="createTrigger(\'' + values.type + '\')">Create</button>';
+      if (values.type == 'd2c'){
+        document.getElementById('d2AssistantFooter').innerHTML = "This param is not supported."
+      } else {
+        html += 'or\
+                  <button type="button" class="btn btn-primary" onclick="d2dAssistant()">A device</button>\
+                  <br>\
+                  <button type="button" class="btn btn-primary" style="float:right" onclick="createTrigger(\'' + values.type + '\')">Create</button>';
+      }
 
 
       document.getElementById('d2AssistantFooter').innerHTML = html
