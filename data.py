@@ -19,7 +19,7 @@ class Data:
 
 
     def __init__(self):
-        self.redis = redis.Redis("localhost")
+        self.redis = redis.StrictRedis(host="localhost", port=6379, charset="utf-8", decode_responses=True)
 
         if not self.redis.get('transfer'):
             print('Must create the database')
