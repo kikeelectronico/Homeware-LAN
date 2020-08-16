@@ -1,12 +1,10 @@
 #!/bin/bash
 
-echo "installing Homeware-LAN.\r\n"
+echo "Installing Homeware-LAN and its dependencies.\r\n"
 
 sudo apt-get update
 sudo apt-get install python3-pip
-pip3 install flask
-pip3 install gunicorn
-pip3 install paho-mqtt
+pip3 install install -r requirements.txt
 sudo apt-get install nginx
 sudo apt-get install software-properties-common
 sudo apt-get install certbot python-certbot-nginx

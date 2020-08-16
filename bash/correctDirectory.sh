@@ -22,14 +22,16 @@ sudo systemctl enable homeware
 sudo systemctl daemon-reload
 
 #Start the services
-sudo systemctl start homewareMQTT
-sudo systemctl start homewareTasks
-sudo systemctl start homewareRedis
-sudo systemctl start homeware
+sudo systemctl restart homewareMQTT
+sudo systemctl restart homewareTasks
+sudo systemctl restart homewareRedis
+sudo systemctl restart homeware
 
 #Last manual step
 echo "Please run: - sudo crontab -e - and delete the following lines:\r\n"
-echo "@reboot sudo systemctl start homeware\r\n"
-echo "@reboot sudo systemctl start homewareMQTT\r\n"
-echo "@reboot sudo systemctl start homewareTasks\r\n"
-echo "@reboot sudo systemctl start homewareRedis\r\n"
+echo "@reboot sudo systemctl start homeware"
+echo "@reboot sudo systemctl start homewareMQTT"
+echo "@reboot sudo systemctl start homewareTasks"
+echo "@reboot sudo systemctl start homewareRedis"
+
+echo "The installation will be corrected after deleting those lines."
