@@ -60,7 +60,7 @@ def control(payload):
     elif intent == 'rules':
         hData.updateParamStatus(id,param,value)
     elif intent == 'request':
-        publish.single("device/"+id, hData.getStatus()[id], hostname="localhost")
+        publish.single("device/"+id, json.dumps(hData.getStatus()[id]), hostname="localhost")
 
 
 

@@ -10,6 +10,7 @@ import subprocess
 class Data:
 
     version = 'v0.7'
+
     homewareData = {}
     homewareFile = 'homeware.json'
     secureData = {}
