@@ -2,6 +2,10 @@
 
 echo "Correcting the installation\r\n"
 
+#Move the installation
+sudo mv -r Homeware-LAN /usr/share/Homeware-LAN
+cd /usr/share/Homeware-LAN
+
 #Intall the new services
 sudo cp configuration_templates/homeware.service /lib/systemd/system/
 sudo cp configuration_templates/homewareMQTT.service /lib/systemd/system/
