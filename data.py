@@ -3,12 +3,14 @@ import random
 from cryptography.fernet import Fernet
 import redis
 import time
+from datetime import datetime
 import subprocess
 
 
 class Data:
 
-    version = 'v0.6.1'
+    version = 'v0.7'
+
     homewareData = {}
     homewareFile = 'homeware.json'
     secureData = {}
@@ -20,6 +22,7 @@ class Data:
 
     def __init__(self):
         self.redis = redis.Redis("localhost")
+        self.verbose = False
 
         if not self.redis.get('transfer'):
             print('Must create the database')
@@ -49,6 +52,12 @@ class Data:
 
         else:
             print('DDBB up and running')
+
+        # Create the tasks
+        try:
+            self.redis.get('tasks')
+        except:
+            self.redis.set('tasks',"[]")
 
         self.userName = json.loads(self.redis.get('secure'))['user']
         self.userToken = json.loads(self.redis.get('secure'))['token']['front']
@@ -80,6 +89,7 @@ class Data:
         data = {
             'devices': json.loads(self.redis.get('devices')),
             'status': json.loads(self.redis.get('status')),
+            'tasks': json.loads(self.redis.get('tasks')),
             'rules': json.loads(self.redis.get('rules'))
         }
         return data
@@ -88,7 +98,9 @@ class Data:
         data = {
             'devices': json.loads(self.redis.get('devices')),
             'status': json.loads(self.redis.get('status')),
-            'rules': json.loads(self.redis.get('rules'))
+            'tasks': json.loads(self.redis.get('tasks')),
+            'rules': json.loads(self.redis.get('rules')),
+            'secure': json.loads(self.redis.get('secure'))
         }
         file = open(self.homewareFile, 'w')
         file.write(json.dumps(data))
@@ -99,7 +111,43 @@ class Data:
             data = json.load(f)
             self.redis.set('devices',json.dumps(data['devices']))
             self.redis.set('status',json.dumps(data['status']))
+            self.redis.set('tasks',json.dumps(data['tasks']))
             self.redis.set('rules',json.dumps(data['rules']))
+            self.redis.set('secure',json.dumps(data['secure']))
+
+# LOG
+
+    def log(self, severity, message):
+        log_file = open("homeware.log", "a")
+        now = datetime.now()
+        date_time = now.strftime("%d/%m/%Y, %H:%M:%S")
+        log_register = severity + ' - ' + date_time  + ' - ' + message + '\n';
+        log_file.write(log_register)
+        log_file.close()
+
+        if (self.verbose):
+            print(log_register)
+
+    def setVerbose(self, verbose):
+        self.verbose = verbose
+
+    def getLog(self):
+        log = []
+
+        log_file = open("homeware.log","r")
+        registers = log_file.readlines()
+        for register in registers:
+            content = register.split(' - ')
+            log.append({
+                "severity": content[0],
+                "time": content[1],
+                "message": content[2]
+            })
+        log_file.close()
+
+        return log
+
+
 # ASSISTANT
 
     def getAssistantDone(self):
@@ -177,27 +225,45 @@ class Data:
 # RULES
 
     def getRules(self):
-        # with open(self.homewareFile, 'w') as f:
-        #     json.dump(self.homewareData, f)
         return json.loads(self.redis.get('rules'))
 
     def updateRule(self, incommingData):
         rules = json.loads(self.redis.get('rules'))
         rules[int(incommingData['id'])] = incommingData['rule']
         self.redis.set('rules',json.dumps(rules))
-        # self.save()
 
     def createRule(self, incommingData):
         rules = json.loads(self.redis.get('rules'))
         rules.append(incommingData['rule'])
         self.redis.set('rules',json.dumps(rules))
-        # self.save()
 
     def deleteRule(self, value):
-        temp_rules = json.loads(self.redis.get('rules'))
-        del temp_rules[int(value)]
-        self.redis.set('rules',json.dumps(temp_rules))
-        # self.save()
+        rules = json.loads(self.redis.get('rules'))
+        del rules[int(value)]
+        self.redis.set('rules',json.dumps(rules))
+
+# TASKS
+
+    def getTasks(self):
+        return json.loads(self.redis.get('tasks'))
+
+    def getTask(self, i):
+        return json.loads(self.redis.get('tasks'))[i]
+
+    def updateTask(self, incommingData):
+        tasks = json.loads(self.redis.get('tasks'))
+        tasks[int(incommingData['id'])] = incommingData['task']
+        self.redis.set('tasks',json.dumps(tasks))
+
+    def createTask(self, task):
+        tasks = json.loads(self.redis.get('tasks'))
+        tasks.append(task)
+        self.redis.set('tasks',json.dumps(tasks))
+
+    def deleteTask(self, i):
+        tasks = json.loads(self.redis.get('tasks'))
+        del tasks[int(i)]
+        self.redis.set('tasks', json.dumps(tasks))
 
 # STATUS
 
@@ -356,6 +422,7 @@ class Data:
                 'user': user,
                 'token': token
             }
+            self.log('Log',user + ' has login')
 
             self.userName = user
             self.userToken = token
@@ -364,7 +431,7 @@ class Data:
             responseData = {
                 'status': 'fail'
             }
-
+            self.log('Alert','Login failed, user: ' + user)
         # self.save()
         return responseData
 

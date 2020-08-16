@@ -88,6 +88,21 @@ def rules(process = "", id = -1):
     else:
         return render_template('panel/rules.html', basic = renderHelper.basic)
 
+@app.route('/tasks')
+@app.route('/tasks/')
+@app.route('/tasks/<process>/')
+@app.route('/tasks/<process>/')
+@app.route('/tasks/<process>/<id>')
+@app.route('/tasks/<process>/<id>/')
+def tasks(process = "", id = -1):
+
+    if process == 'edit':
+            return render_template('panel/task_edit.html', taskID=id, basic = renderHelper.basic)
+    elif process == 'json':
+            return render_template('panel/task_json.html', taskID=id, basic = renderHelper.basic)
+    else:
+        return render_template('panel/tasks.html', basic = renderHelper.basic)
+
 @app.route('/settings')
 @app.route('/settings/')
 @app.route('/settings/<msg>/')
@@ -121,6 +136,7 @@ def assistant(step = 'welcome'):
     }
     if step == 'initialize':
         hData.setAssistantDone()
+        hData.log('Log', 'Assistant initialized')
 
     if not hData.getAssistantDone():
         return render_template('assistant/step_' + step + '.html', step=step, next=steps[step])
@@ -132,8 +148,6 @@ def assistant(step = 'welcome'):
 @app.route('/test')
 @app.route('/test/')
 def test():
-    #publish.single("test", "payload", hostname="localhost")
-    hData.setData()
     return 'Load'
 
 #API
@@ -187,6 +201,7 @@ def front(operation = "", segment = "", value = ''):
                         'note': 'See the documentation'
                     }
             else:
+                hData.log('Alert', 'Request to API > user endpoint with bad authentication')
                 responseData = {
                     'error': 'Bad authentication',
                     'code': 401,
@@ -206,6 +221,7 @@ def front(operation = "", segment = "", value = ''):
                         'note': 'See the documentation'
                     }
             else:
+                hData.log('Alert', 'Request to API > global endpoint with bad authentication')
                 responseData = {
                     'error': 'Bad authentication',
                     'code': 401,
@@ -256,6 +272,7 @@ def front(operation = "", segment = "", value = ''):
                         'note': 'See the documentation'
                     }
             else:
+                hData.log('Alert', 'Request to API > devices endpoint with bad authentication')
                 responseData = {
                     'error': 'Bad authentication',
                     'code': 401,
@@ -290,6 +307,7 @@ def front(operation = "", segment = "", value = ''):
                         'note': 'See the documentation'
                     }
             else:
+                hData.log('Alert', 'Request to API > status endpoint with bad authentication')
                 responseData = {
                     'error': 'Bad authentication',
                     'code': 401,
@@ -338,6 +356,56 @@ def front(operation = "", segment = "", value = ''):
                             'note': 'See the documentation'
                         }
             else:
+                hData.log('Alert', 'Request to API > rules endpoint with bad authentication')
+                responseData = {
+                    'error': 'Bad authentication',
+                    'code': 401,
+                    'note': 'See the documentation'
+                }
+        elif segment == 'tasks':
+            if accessLevel >= 10:
+                if operation == 'update':
+                    incommingData = request.get_json()
+                    hData.updateTask(incommingData)
+                    responseData = {
+                        'status': 'Success',
+                        'code': 200
+                    }
+                elif operation == 'create':
+                    incommingData = request.get_json()
+                    hData.createTask(incommingData['task'])
+                    responseData = {
+                        'status': 'Success',
+                        'code': 200
+                    }
+                elif operation == 'delete':
+                    hData.deleteTask(value)
+                    responseData = {
+                        'status': 'Success',
+                        'code': 200
+                    }
+                elif operation == 'get':
+                    tasks = hData.getTasks()
+                    try:
+                        if not value == '':
+                            if 0 <= int(value) < len(tasks):
+                                responseData = tasks[int(value)]
+                            else:
+                                responseData = {
+                                    'error': 'Task not found',
+                                    'code': 404,
+                                    'note': 'See the documentation'
+                                }
+                        else:
+                            responseData = tasks
+                    except:
+                        responseData = {
+                            'error': 'Invalid task ID, it must be a integer',
+                            'code': 409,
+                            'note': 'See the documentation'
+                        }
+            else:
+                hData.log('Alert', 'Request to API > task endpoint with bad authentication')
                 responseData = {
                     'error': 'Bad authentication',
                     'code': 401,
@@ -353,6 +421,7 @@ def front(operation = "", segment = "", value = ''):
                     responseData = hData.getSecure()
                 elif operation == 'apikey':
                     if authorization == savedToken:
+                        hData.log('Warning', 'An API Key has been regenerated')
                         responseData = {
                             'apikey': hData.generateAPIKey()
                         }
@@ -363,6 +432,7 @@ def front(operation = "", segment = "", value = ''):
                             'note': 'See the documentation'
                         }
                 else:
+                    hData.log('Alert', 'Request to API > settings endpoint with bad authentication')
                     responseData = {
                         'error': 'Operation not supported',
                         'code': 400,
@@ -383,6 +453,7 @@ def front(operation = "", segment = "", value = ''):
                             'code': 200
                         }
             else:
+                hData.log('Alert', 'Request to API > domain endpoint. The domain was configured in the past')
                 responseData = {
                     'error': 'Bad authentication',
                     'code': 401,
@@ -443,6 +514,24 @@ def front(operation = "", segment = "", value = ''):
                         'note': 'See the documentation'
                     }
             else:
+                hData.log('Alert', 'Request to API > system endpoint with bad authentication')
+                responseData = {
+                    'error': 'Bad authentication',
+                    'code': 401,
+                    'note': 'See the documentation'
+                }
+        elif segment == 'log':
+            if accessLevel >= 100:
+                if operation == 'get':
+                    responseData = hData.getLog()
+                else:
+                    responseData = {
+                        'error': 'Operation not supported',
+                        'code': 400,
+                        'note': 'See the documentation'
+                    }
+            else:
+                hData.log('Alert', 'Request to API > log endpoint with bad authentication')
                 responseData = {
                     'error': 'Bad authentication',
                     'code': 401,
@@ -478,6 +567,7 @@ def files(operation = '', file = '', token = ''):
                attachment_filename = file + '_' + str(date_time) + '.json',
                as_attachment = True,
                conditional = False)
+            hData.log('Warning', 'A backup file has been downloaded')
             return result
         elif operation == 'restore':
             if request.method == 'POST':
@@ -491,10 +581,12 @@ def files(operation = '', file = '', token = ''):
                     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                     subprocess.run(["mv", file.filename, "homeware.json"],  stdout=subprocess.PIPE)
                     hData.load()
+                    hData.log('Warning', 'A backup file has been restored')
                     return redirect('/settings/ok/')
         else:
             return 'Operation unknown'
     else:
+        hData.log('Alert', 'Unauthorized access try to the backup and restore endpoint')
         return 'Bad token'
 
 def tokenGenerator(agent, type):
@@ -521,6 +613,7 @@ def tokenGenerator(agent, type):
         hData.updateToken(agent,type,token,ts)
         return token
     else:
+        hData.log('Warning', 'Try to create an incorrect type of token')
         return 'Something goes wrong'
 
 #Auth endpoint
@@ -531,19 +624,16 @@ def auth():
     clientId = request.args.get('client_id')    #ClientId from the client
     responseURI = request.args.get('redirect_uri')
     state = request.args.get('state')
-    print('auth')
     if clientId == token['client_id']:
-        print('id_correcto')
+        hData.log('Warning', 'A new Google account has been linked from auth endpoint')
         #Create a new authorization_code
         code = tokenGenerator('google', 'authorization_code')
         #Compose the response URL
         global responseURL
         responseURL = responseURI + '?code=' + str(code) + '&state=' +  state
-        print(responseURL)
-        #Return the page
-        #return '<center><h1 style=\"font-size: 6em;\">Homeware LAN</h1><br><a style=\"font-size: 4em;\" class=\"btn btn-primary\" href=\"' + responseURL + '\">Pulsa aquí para enlazar</a></center>'
         return render_template('panel/googleSync.html')
     else:
+        hData.log('Alert', 'Unauthorized try to link a Google Account. Verify the client id and client secret')
         return 'Algo ha ido mal en la autorización'
 
 #Token's endpoint
@@ -589,15 +679,13 @@ def token():
             obj['access_token'] = access_token
             obj['refresh_token'] = code
 
-        ## TODO:
-        #Create an alert on the status register
-
         #Response back
         response = app.response_class(
             response=json.dumps(obj),
             status=200,
             mimetype='application/json'
         )
+        hData.log('Warning', 'New token has been created for ' + agent)
         return response
     else:
         #Response back
@@ -607,6 +695,7 @@ def token():
             status=200,
             mimetype='application/json'
         )
+        hData.log('Alert', 'Unauthorized token request. The new token hasn\'t been sent.')
         return response
 
 #Google's endpoint
@@ -615,7 +704,6 @@ def token():
 def smarthome():
     #Get all data
     body = request.json
-    print(body)
     #Get the agent
     agent = request.headers['User-Agent']
     #Verify special agents
@@ -632,20 +720,19 @@ def smarthome():
         requestId = body['requestId']
         for input in inputs:
             if input['intent'] == 'action.devices.SYNC':
-                print('Intent SYNC')
                 obj = {}
                 obj['requestId'] = requestId
                 obj['payload'] = {}
-                obj['payload']['agentUserId'] = '123'
+                obj['payload']['agentUserId'] = hData.getDDNS()['hostname']
                 obj['payload']['devices'] = hData.getDevices()
                 response = app.response_class(
                     response=json.dumps(obj),
                     status=200,
                     mimetype='application/json'
                 )
+                hData.log('Log', 'Sync request by ' + agent + ' with ' + obj['payload']['agentUserId'] + ' as agent user id')
                 return response
             elif input['intent'] == 'action.devices.QUERY':
-                #updatestates()
                 obj = {}
                 obj['requestId'] = requestId
                 obj['payload'] = {}
@@ -655,6 +742,7 @@ def smarthome():
                     status=200,
                     mimetype='application/json'
                 )
+                hData.log('Log', 'Query request by ' + agent)
                 return response
             elif input['intent'] == 'action.devices.EXECUTE':
                 #Response
@@ -725,16 +813,16 @@ def smarthome():
                     status=200,
                     mimetype='application/json'
                 )
+                # hData.log('Log', 'Execute request by ' + agent)
                 return response
             elif input['intent'] == 'action.devices.DISCONNECT':
-
+                hData.log('Log', 'Disconnect request by ' + agent)
                 return 'Ok'
 
             else:
-                print('Intent desconocido')
+                hData.log('Log', 'Unknown request by ' + agent)
     else:
-        print('Token incorrecto',tokenClient)
-
+        hData.log('Alert', 'Unauthorized request from ' + agent + '. Maybe the token has expired.')
         return "A"
 
 #Clock endpoint

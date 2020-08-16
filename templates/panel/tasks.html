@@ -12,15 +12,12 @@
     <div id="grid" class="container">
       <div class="row rowP">
         <div class="col">
-          <button type="button" class="btn btn-primary" onclick="window.location.href='/rules/edit/'">New rule</button>
+          <button type="button" class="btn btn-primary" onclick="window.location.href='/tasks/edit/'">New task</button>
         </div>
       </div>
       <hr class="hrWhite">
-      <h2>Rules</h2>
-      <div class="alert alert-danger" role="alert">
-        The Rules will be deprecated in the versión v0.8 and will be deleted. You can use Tasks instead.
-      </div>
-      <div class="row rowP" id="rulesList">
+      <h2>Tasks</h2>
+      <div class="row rowP" id="tasksList">
 
       </div>
     </div>
@@ -34,7 +31,7 @@
 
     <script src="/static/panel/load.js"></script>
     <script src="/static/panel/coolNames.js"></script>
-    <script src="/static/panel/rules.js"></script>
+    <script src="/static/panel/tasks.js"></script>
 
     <script type="text/javascript">
       window.addEventListener('load', function(event){

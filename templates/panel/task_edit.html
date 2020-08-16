@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{ basic['head']|safe }}
+  </head>
+  <body>
+
+    <div id="navbarBlock">
+      {{ basic['navbar']|safe }}
+    </div>
+
+    <div id="grid" class="container containerP">
+
+      <div class="row">
+        <div class="col">
+          <div id="alertContainer"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <form id=formulario"">
+
+
+            <div class="container p-3 mb-2 bg-light text-dark" style="text-align: right">
+              <span class="apiClock" id="apiClock"></span>
+              <a class="btn btn-primary" href="/tasks/json/{{ taskID }}" role="button">JSON Editor</a>
+              <button type="button" class="btn btn-danger" id="deleteTask">Delete Task</button>
+              <button type="button" class="btn btn-primary" id="save" >Save</button>
+              <input type="hidden" id="n" value="-1">
+              <input type="hidden" id="operation" value="-1">
+              <input type="hidden" id="triggerType" value="-1">
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark">
+              <h3>Name and description</h3>
+              <div class="form-group">
+                <label for="title">Title</label>
+                <input type="test" class="form-control" id="title" oninput="updateTitle()">
+              </div>
+              <div class="form-group">
+                <label for="description">Description</label>
+                <input type="test" class="form-control" id="description" oninput="updateDescription()">
+              </div>
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark" id="deviceTriggered">
+              <h3>Triggers</h3>
+              <div id="triggersCard">
+                <button type="button" class="btn btn-primary" onclick="launchD2Assitant('triggers')">+</button>
+                <button type="button" class="btn btn-primary" onclick="add('and','triggers')">AND</button>
+                <button type="button" class="btn btn-primary" onclick="add('or','triggers')">OR</button>
+              </div>
+            </div>
+
+
+
+            <div class="modal fade" id="d2Assitant" tabindex="-1" role="dialog" aria-labelledby="d2Assitant" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Trigger assitant</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body" id="d2AssistantBody">
+                    <button type="button" class="trigger_assistant_button" onclick="timeAssistant(1)"><img src="/static/images/clock.png"/ title="Time trigger"></button>
+                    <button type="button" class="trigger_assistant_button" onclick="d2Assistant(1)"><img src="/static/images/bulb.png"/ title="Device trigger"></button>
+                  </div>
+                  <div class="modal-body" id="d2AssistantFooter">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark" id="target">
+              <h3>Targets</h3>
+              <div class="row" id="cards_targets_container">
+                <!--Targets cards-->
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="device_target">Target</label>
+                  <select class="custom-select mr-sm-2" onChange="device_selected('target')" id="device_target">
+                    <option selected>Choose...</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="param_target">Target param</label>
+                  <select class="custom-select mr-sm-2" onChange="param_selected('target')"  id="param_target">
+
+                  </select>
+                </div>
+                <div class="form-group col-md-3" id="value_target_container">
+                  <label for="target_target">Target value</label>
+                  <select class="custom-select mr-sm-2" id="target_target">
+
+                  </select>
+                </div>
+                <div class="form-group col-md-1">
+                  <label for="add_arm_levels_button">.</label>
+                  <input type="button" class="form-control" id="add_targets_button" value="Add" disabled>
+                </div>
+              </div>
+            </div>
+
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="toastBoard" aria-live="polite" aria-atomic="true" style="position:absolute; bottom:0; min-height: 10px;  width: 100%;">
+      <!-- Position it -->
+      <div id="toastBoardPosition" style="position: absolute; bottom: 0; right: 0; margin-right: 20px; margin-bottom: 20px;">
+        <!--Toats go here-->
+      </div>
+    </div>
+
+    <script>
+      //Load things
+      window.addEventListener('load', function(event){
+        var operation = 'create';
+        laodTasksRequest({{ taskID }});
+        if({{ taskID }} != -1){
+          operation = 'update';
+        }
+
+        document.getElementById('operation').value = operation;
+
+      })
+
+    </script>
+
+    <script src="/static/panel/load.js"></script>
+    <script src="/static/panel/coolNames.js"></script>
+    <script src="/static/panel/valueByParam.js"></script>
+    <script src="/static/panel/task_edit.js"></script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+  </body>
+</html>
