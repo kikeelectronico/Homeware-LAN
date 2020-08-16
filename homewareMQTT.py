@@ -56,7 +56,7 @@ def control(payload):
     # Analyze the message
     if intent == 'execute':
         hData.updateParamStatus(id,param,value)
-        publish.single("device/"+id, hData.getStatus()[id], hostname="localhost")
+        # publish.single("device/"+id, hData.getStatus()[id], hostname="localhost")
     elif intent == 'rules':
         hData.updateParamStatus(id,param,value)
     elif intent == 'request':
