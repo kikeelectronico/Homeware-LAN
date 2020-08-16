@@ -137,12 +137,19 @@ class Data:
         log_file = open("homeware.log","r")
         registers = log_file.readlines()
         for register in registers:
-            content = register.split(' - ')
-            log.append({
-                "severity": content[0],
-                "time": content[1],
-                "message": content[2]
-            })
+            try:
+                content = register.split(' - ')
+                log.append({
+                    "severity": content[0],
+                    "time": content[1],
+                    "message": content[2]
+                })
+            except:
+                log.append({
+                    "severity": 'Log',
+                    "time": '',
+                    "message": content
+                })
         log_file.close()
 
         return log
