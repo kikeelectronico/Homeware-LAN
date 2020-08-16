@@ -3,7 +3,7 @@
 echo "Correcting the installation\r\n"
 
 #Move the installation
-sudo mv -r /home/pi/Homeware-LAN /usr/share/Homeware-LAN
+sudo mv /home/pi/Homeware-LAN /usr/share/Homeware-LAN
 cd /usr/share/Homeware-LAN
 
 #Intall the new services
