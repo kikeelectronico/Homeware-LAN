@@ -32,6 +32,7 @@ class Data:
                     self.redis.set('devices',json.dumps(data['devices']))
                     self.redis.set('status',json.dumps(data['status']))
                     self.redis.set('rules',json.dumps(data['rules']))
+                    self.redis.set('tasks',json.dumps(data['tasks']))
                 with open(self.secureFile, 'r') as f:
                     data = json.load(f)
                     self.redis.set('secure',json.dumps(data))
@@ -44,6 +45,7 @@ class Data:
                     self.redis.set('devices',json.dumps(data['devices']))
                     self.redis.set('status',json.dumps(data['status']))
                     self.redis.set('rules',json.dumps(data['rules']))
+                    self.redis.set('tasks',json.dumps(data['tasks']))
                 with open(self.secureFile, 'r') as f:
                     data = json.load(f)
                     self.redis.set('secure',json.dumps(data))
@@ -53,10 +55,8 @@ class Data:
         else:
             print('DDBB up and running')
 
-        # Create the tasks
-        try:
-            self.redis.get('tasks')
-        except:
+        # Create the tasks key if needed
+        if not self.redis.get('tasks'):
             self.redis.set('tasks',"[]")
 
         self.userName = json.loads(self.redis.get('secure'))['user']
