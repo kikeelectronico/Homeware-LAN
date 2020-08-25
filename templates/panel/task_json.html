@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{ basic['head']|safe }}
+  </head>
+  <body>
+
+    <div id="navbarBlock">
+      {{ basic['navbar']|safe }}
+    </div>
+
+    <div id="grid" class="container containerP">
+
+      <div class="row">
+        <div class="col">
+          <div id="alertContainer"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <form id=formulario"">
+
+
+            <div class="container p-3 mb-2 bg-light text-dark" style="text-align: right">
+              <span class="apiClock" id="apiClock"></span>
+              <a class="btn btn-primary" href="/tasks/edit/{{ taskID }}" role="button">Visual editor</a>
+              <button type="button" class="btn btn-danger" id="deleteTask">Delete Task</button>
+              <button type="button" class="btn btn-primary" id="save" >Save</button>
+              <input type="hidden" id="n" value="{{ TaskID }}">
+              <input type="hidden" id="operation" value="-1">
+              <input type="hidden" id="triggerType" value="-1">
+            </div>
+
+
+            <div class="container p-3 mb-2 bg-light text-dark" id="editor">
+              <h3>JSON editor</h3>
+              <p>Edit your JSON under your own risk. Learn how to edit and compose the JSON for the Tasks on this <a href="https://github.com/kikeelectronico/Homeware-LAN/wiki/Compose-a-JSON-for-a-task" target="blanck">wiki</a>.<p>
+              <div id="jsoneditor"></div>
+              <br>
+              <p>The JSON editor is a project by <a href="https://github.com/josdejong/jsoneditor" target="blanck">josedejong</a></p>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="toastBoard" aria-live="polite" aria-atomic="true" style="position:absolute; bottom:0; min-height: 10px;  width: 100%;">
+      <!-- Position it -->
+      <div id="toastBoardPosition" style="position: absolute; bottom: 0; right: 0; margin-right: 20px; margin-bottom: 20px;">
+        <!--Toats go here-->
+      </div>
+    </div>
+
+    <script>
+      //Load things
+      window.addEventListener('load', function(event){
+        var operation = 'create';
+        if({{ taskID }} != -1)
+          operation = 'update';
+        document.getElementById('operation').value = operation;
+        laodTasksRequest({{ taskID }});
+      })
+
+    </script>
+
+    <script src="/static/panel/load.js"></script>
+    <script src="/static/panel/coolNames.js"></script>
+    <script src="/static/panel/task_json.js"></script>
+    <link href="/static/JSONeditor/jsoneditor.css" rel="stylesheet" type="text/css">
+    <script src="/static/JSONeditor/jsoneditor.js"></script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+  </body>
+</html>

@@ -101,3 +101,21 @@ h2 {
   color: white;
   visibility: visible;
 }
+
+.task_card{
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.trigger_assistant_button{
+  height: 150px;
+  width: 35%;
+  margin-left: 10%;
+  border: 0px;
+  background-color: white;
+}
+
+.trigger_assistant_button img{
+  height: 150px;
+  width: 150px;
+}

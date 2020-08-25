@@ -178,27 +178,30 @@ function updateMessageWithTime(){
   document.getElementById('textMessageAlertDDNS').innerHTML = 'Saved at ' + h + ":" + m + ":" + s;
 }
 
-// TODO
-// - Show events list
+
 //Load the events
-/*showEventsLog.addEventListener('click', function(){
-  database.ref('/events/read/').on('value', function(eventsSnapshot){
-    var events = eventsSnapshot.val();
-    var eventsKeys = Object.keys(events);
+showEventsLog.addEventListener('click', function(){
+  var http = new XMLHttpRequest();
+  http.addEventListener("load", function(){
+    events = JSON.parse(http.responseText);
     //Compose the HTML
     var html = '';
-    for(i = eventsKeys.length-1; i > eventsKeys.length-11; i--){
-      var uniqueEvent = events[eventsKeys[i]];
+    for(i = events.length-1; i > events.length-11; i--){
+      var uniqueEvent = events[i];
       date = new Date(uniqueEvent.timestamp);
       html += '<div class="card"> <div class="card-body">';
-      html += '<b>' + uniqueEvent.title + '</b> <br> ' + uniqueEvent.text + ' <br> <b>Timestamp</b>: ';
-      html += addZero(date.getDate()) + '/' + addZero(date.getMonth()) + '/' + date.getFullYear() + ' ' + addZero(date.getHours()) + ':' + addZero(date.getMinutes()) + ':' + addZero(date.getSeconds());
+      html += '<b>' + uniqueEvent.severity + '</b> <br> ' + uniqueEvent.message + ' <br> <b>Timestamp</b>: ';
+      html += uniqueEvent.time;
       html += '</div> </div>';
     }
 
     document.getElementById('eventsLogBox').innerHTML = html;
-  })
-})*/
+
+  });
+  http.open("GET", "/api/log/get");
+  http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+  http.send();
+})
 
 function buckup(){
   window.location = "/files/buckup/homeware/" + getCookieValue('token')
@@ -272,7 +275,11 @@ function downloadAndUpgrade(){
     upgradeStep = 2;
   } else if (upgradeStep == 2){
     document.getElementById('upgradeModalTitle').innerHTML = "Wait";
-    document.getElementById('upgradeModalParagraphContainer').innerHTML = "The system will be down some time. The page will be reloaded automatically into home page when the system will be ready.";
+    document.getElementById('upgradeModalParagraphContainer').innerHTML = "The system will be down some time. The page will be reloaded automatically into home page when the system will be ready.<div class=\"d-flex justify-content-center\">\
+                                                                            <div class=\"spinner-border\" role=\"status\">\
+                                                                              <span class=\"sr-only\">Loading...</span>\
+                                                                            </div>\
+                                                                          </div>";
     var http = new XMLHttpRequest();
     http.addEventListener("load", function(){
       code = JSON.parse(http.responseText)['code']
