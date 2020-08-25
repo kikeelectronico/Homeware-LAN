@@ -9,7 +9,7 @@ import subprocess
 
 class Data:
 
-    version = 'v0.7'
+    version = 'v0.7.1'
 
     homewareData = {}
     homewareFile = 'homeware.json'
@@ -55,15 +55,8 @@ class Data:
         else:
             print('DDBB up and running')
 
-<<<<<<< HEAD
         # Create the tasks key if needed
         if not self.redis.get('tasks'):
-=======
-        # Create the tasks
-        try:
-            self.redis.get('tasks')
-        except:
->>>>>>> f8bf196a0d17566013884234105bec3ef1e55dca
             self.redis.set('tasks',"[]")
 
         self.userName = json.loads(self.redis.get('secure'))['user']
