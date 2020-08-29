@@ -9,7 +9,7 @@ import subprocess
 
 class Data:
 
-    version = 'v0.7'
+    version = 'v0.8'
 
     homewareData = {}
     homewareFile = 'homeware.json'
