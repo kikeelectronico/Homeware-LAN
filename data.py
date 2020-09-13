@@ -9,7 +9,7 @@ import subprocess
 
 class Data:
 
-    version = 'v0.8'
+    version = 'v1.0'
 
     homewareData = {}
     homewareFile = 'homeware.json'
@@ -73,12 +73,14 @@ class Data:
             response = self.redis.client_list()
             status =  {
                 'enable': True,
-                'status': 'Running'
+                'status': 'Running',
+                'title': 'Redis database'
             }
         except redis.ConnectionError:
             status = {
                 'enable': True,
-                'status': 'Stoped'
+                'status': 'Stopped',
+                'title': 'Redis database'
             }
         return status
 
@@ -193,11 +195,11 @@ class Data:
         return json.loads(self.redis.get('devices'))
 
     def updateDevice(self, incommingData):
-        deviceID = incommingData['devices']['id']
+        deviceID = incommingData['device']['id']
         temp_devices = [];
         for device in json.loads(self.redis.get('devices')):
             if device['id'] == deviceID:
-                temp_devices.append(incommingData['devices'])
+                temp_devices.append(incommingData['device'])
             else:
                 temp_devices.append(device)
         # self.ddbb.homewareData['devices'] = temp_devices
@@ -205,10 +207,10 @@ class Data:
         # self.save()
 
     def createDevice(self, incommingData):
-        deviceID = incommingData['devices']['id']
+        deviceID = incommingData['device']['id']
 
         devices = json.loads(self.redis.get('devices'))
-        devices.append(incommingData['devices'])
+        devices.append(incommingData['device'])
         self.redis.set('devices',json.dumps(devices))
 
         status = json.loads(self.redis.get('status'))
@@ -400,6 +402,17 @@ class Data:
         self.redis.set('secure',json.dumps(secure))
         self.apikey = token
         return token
+
+# ACCESS
+
+    def getAccess(self):
+
+        secure = json.loads(self.redis.get('secure'))
+        data = {
+            "apikey": secure['token']['apikey']
+        }
+
+        return data
 
 # LOGIN
 

@@ -1,5 +1,6 @@
 import os
 from flask import Flask, request, render_template, redirect, send_file, url_for, Response
+from flask_cors import CORS
 import requests
 from base64 import b64encode
 import json
@@ -17,6 +18,7 @@ ALLOWED_EXTENSIONS = {'json'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 #Global variables
 deviceAliveTimeout = 20000
@@ -483,15 +485,18 @@ def front(operation = "", segment = "", value = ''):
                     responseData = {
                         'api': {
                             'enable': True,
-                            'status': 'Running'
+                            'status': 'Running',
+                            'title': 'Homeware API'
                         },
                         'mqtt': {
                             'enable': True,
-                            'status': 'Stoped'
+                            'status': 'Stopped',
+                            'title': 'Homeware MQTT'
                         },
                         'tasks': {
                             'enable': True,
-                            'status': 'Stoped'
+                            'status': 'Stopped',
+                            'title': 'Homeware Task'
                         },
                         'redis': hData.redisStatus()
                     }
@@ -515,6 +520,22 @@ def front(operation = "", segment = "", value = ''):
                     }
             else:
                 hData.log('Alert', 'Request to API > system endpoint with bad authentication')
+                responseData = {
+                    'error': 'Bad authentication',
+                    'code': 401,
+                    'note': 'See the documentation'
+                }
+        elif segment == 'access':
+            if accessLevel >= 100:
+                if operation == 'update':
+                    print('update')
+                    # incommingData = request.get_json()
+                    # hData.updateSecure(incommingData)
+                    # responseData = hData.getSecure()
+                elif operation == 'get':
+                    responseData = hData.getAccess()
+            else:
+                hData.log('Alert', 'Request to API > access endpoint.')
                 responseData = {
                     'error': 'Bad authentication',
                     'code': 401,
@@ -572,17 +593,17 @@ def files(operation = '', file = '', token = ''):
         elif operation == 'restore':
             if request.method == 'POST':
                 if 'file' not in request.files:
-                    return redirect('/settings/fail:No file selected/')
+                    return redirect('/backup/fail:No file selected/')
                 file = request.files['file']
                 if file.filename == '':
-                    return redirect('/settings/fail:Incorrect file name/')
+                    return redirect('/backup/fail:Incorrect file name/')
                 if file and allowed_file(file.filename):
                     filename = file.filename
                     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                     subprocess.run(["mv", file.filename, "homeware.json"],  stdout=subprocess.PIPE)
                     hData.load()
                     hData.log('Warning', 'A backup file has been restored')
-                    return redirect('/settings/ok/')
+                    return redirect('/backup/ok/')
         else:
             return 'Operation unknown'
     else:

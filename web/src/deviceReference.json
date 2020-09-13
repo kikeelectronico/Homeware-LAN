@@ -1,0 +1,812 @@
+{
+  "devices": {
+    "action.devices.types.AC_UNIT": [
+      "action.devices.traits.FanSpeed",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.TemperatureSetting",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.AIRFRESHENER": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.AIRPURIFIER": [
+      "action.devices.traits.FanSpeed",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.AWNING": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.BATHTUB": [
+      "action.devices.traits.Fill",
+      "action.devices.traits.OnOff"
+    ],
+    "action.devices.types.BED": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.Scene",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.BLENDER": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.BLINDS": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.BOILER": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.TemperatureControl",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.CLOSET": [
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.COFFE_MAKER": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.TemperatureControl",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.COOKTOP": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.CLOSET": [
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.CURTAIN": [
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.DEHUMIDIFIER": [
+      "action.devices.traits.FanSpeed",
+      "action.devices.traits.HumiditySetting",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.RunCycle",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.DEHYDRATOR": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.DISHWASHER": [
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Modes",
+      "action.devices.traits.Toggles",
+      "action.devices.traits.RunCycle"
+    ],
+    "action.devices.types.DOOR": [
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.DRAWER": [
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.DRYER": [
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Modes",
+      "action.devices.traits.Toggles",
+      "action.devices.traits.RunCycle"
+    ],
+    "action.devices.types.FAN": [
+      "action.devices.traits.FanSpeed",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.FIREPLACE": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.FRYER": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.GARAGE": [
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.GATE": [
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.GRILL": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.HEATER": [
+      "action.devices.traits.FanSpeed",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.TemperatureSetting",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.HOOD": [
+      "action.devices.traits.FanSpeed",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.HUMIDIFIER": [
+      "action.devices.traits.FanSpeed",
+      "action.devices.traits.HumiditySetting",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.KETTLE": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.TemperatureControl",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.LIGHT": [
+      "action.devices.traits.OnOff",
+      "action.devices.traits.Brightness",
+      "action.devices.traits.ColorSetting"
+    ],
+    "action.devices.types.LOCK": [
+      "action.devices.traits.LockUnlock"
+    ],
+    "action.devices.types.MOP": [
+      "action.devices.traits.Dock",
+      "action.devices.traits.Locator",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.RunCycle",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.MOWER": [
+      "action.devices.traits.Dock",
+      "action.devices.traits.Locator",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.RunCycle",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.MICROWAVE": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.MULTICOOKER": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.OUTLET": [
+      "action.devices.traits.OnOff"
+    ],
+    "action.devices.types.OVEN": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.TemperatureControl",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.PERGOLA": [
+      "action.devices.traits.OpenClose",
+      "action.devices.traits.Rotation"
+    ],
+    "action.devices.types.PRESSURECOOKER": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.RADIATOR": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.REFRIGERATOR": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.TemperatureControl",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.SCENE": [
+      "action.devices.traits.Scene"
+    ],
+    "action.devices.types.SECURITYSYSTEM": [
+      "action.devices.traits.ArmDisarm",
+      "action.devices.traits.StatusReport"
+    ],
+    "action.devices.types.SHUTTER": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OpenClose",
+      "action.devices.traits.Rotation"
+    ],
+    "action.devices.types.SHOWER": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.TemperatureControl"
+    ],
+    "action.devices.types.SOUSVIDE": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.SPRINKLER": [
+      "action.devices.traits.StartStop"
+    ],
+    "action.devices.types.STANDMIXER": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.SWITCH": [
+      "action.devices.traits.OnOff"
+    ],
+    "action.devices.types.THERMOSTAT": [
+      "action.devices.traits.TemperatureSetting"
+    ],
+    "action.devices.types.VACUUM": [
+      "action.devices.traits.Dock",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.VALVE": [
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.WASHER": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.RunCycle",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.WATERHEATER": [
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.TemperatureControl",
+      "action.devices.traits.Toggles"
+    ],
+    "action.devices.types.WINDOW": [
+      "action.devices.traits.LockUnlock",
+      "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.YOGURTMAKER": [
+      "action.devices.traits.Cook",
+      "action.devices.traits.Modes",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.StartStop",
+      "action.devices.traits.Timer",
+      "action.devices.traits.Toggles"
+    ]
+  },
+  "traits": {
+    "action.devices.traits.OnOff": {
+      "attributes": {
+        "commandOnlyOnOff": {
+          "type": "bool"
+        }
+      },
+      "param":{
+        "on": {
+          "type": "bool",
+          "value": true,
+          "manual": false
+        }
+      }
+    },
+    "action.devices.traits.Brightness": {
+      "attributes": {
+        "commandOnlyBrightness": {
+          "type": "bool"
+        }
+      },
+      "param":{
+        "brightness": {
+          "type": "int",
+          "value": 100,
+          "manual": false
+        }
+      }
+    },
+    "action.devices.traits.ColorSetting": {
+      "attributes": {
+        "colorModel": {
+          "type": "string",
+          "value": "rgb",
+          "manual": false
+        },
+        "commandOnlyColorSetting": {
+            "type": "bool",
+            "value": true,
+            "manual": false
+        },
+        "colorTemperatureRange": {
+          "type": "object",
+          "manual": false,
+          "content": {
+            "temperatureMinK": {
+              "type": "int",
+              "value": 4000
+            },
+            "temperatureMaxK": {
+              "type": "int",
+              "value": 4200
+            }
+          }
+        }
+      },
+      "param":{
+        "color": {
+          "type": "object",
+          "manual": false,
+          "content": {
+            "temperatureK": {
+              "type": "int",
+              "value": 4000
+            },
+            "spectrumRGB": {
+              "type": "int",
+              "value": 255
+            },
+            "spectrumHSV":{
+              "type": "object",
+              "content": {
+                "hue": {
+                  "type": "float"
+                },
+                "saturation": {
+                  "type": "float"
+                },
+                "value": {
+                  "type": "float"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "action.devices.traits.TemperatureSetting": {
+      "attributes": {
+        "availableThermostatModes": {
+          "type": "select"
+        },
+        "thermostatTemperatureUnit": {
+          "type": "string"
+        },
+        "bufferRangeCelsius": {
+          "type": "int"
+        },
+        "commandOnlyTemperatureSetting": {
+          "type": "bool"
+        },
+        "queryOnlyTemperatureSetting": {
+          "type": "bool"
+        }
+      },
+      "param":{
+        "thermostatMode": {
+          "type": "string",
+          "value": "off",
+          "manual": false
+        },
+        "thermostatTemperatureSetpoint": {
+          "type": "int",
+          "value": 20,
+          "manual": false
+        },
+        "thermostatTemperatureAmbient": {
+          "type": "int",
+          "value": 22,
+          "manual": false
+        },
+        "thermostatTemperatureSetpointHigh": {
+          "type": "int",
+          "value": 28,
+          "manual": false
+        },
+        "thermostatTemperatureSetpointLow": {
+          "type": "int",
+          "value": 18,
+          "manual": false
+        },
+        "thermostatHumidityAmbient": {
+          "type": "int",
+          "value": 80,
+          "manual": false
+        }
+      }
+    },
+    "action.devices.traits.OpenClose": {
+      "attributes": {
+        "discreteOnlyOpenClose": {
+          "type": "bool"
+        },
+        "openDirection": {
+          "type": "array"
+        },
+        "queryOnlyOpenClose": {
+          "type": "bool"
+        }
+      },
+      "param":{
+        "openState": {
+          "type": "object",
+          "manual": false,
+          "content": {
+            "openPercent":{
+              "type": "int",
+              "value": 0
+            },
+            "openDirection":{
+              "type": "int",
+              "value": "down"
+            }
+          }
+        }
+      }
+    },
+    "action.devices.traits.Rotation": {
+      "attributes": {
+        "commandOnlyRotation": {
+          "type": "bool"
+        },
+        "supportsContinuousRotation": {
+          "type": "bool"
+        },
+        "supportsDegrees": {
+          "type": "bool"
+        },
+        "supportsPercent": {
+          "type": "bool"
+        },
+        "rotationDegreesRange": {
+          "type": "object",
+          "content": {
+            "rotationDegreesMin": {
+              "type": "int"
+            },
+            "rotationDegreesMax": {
+              "type": "int"
+            }
+          }
+        }
+      },
+      "param":{
+        "rotationPercent": {
+          "type": "int",
+          "manual": false,
+          "value": 0
+        },
+        "rotationDegrees": {
+          "type": "int",
+          "manual": false,
+          "value": 0
+        }
+      }
+    },
+    "action.devices.traits.LockUnlock": {
+      "attributes": {},
+      "param":{
+        "isLocked": {
+          "type": "bool",
+          "value": false,
+          "manual": false
+        },
+        "isJammed": {
+          "type": "bool",
+          "value": false,
+          "manual": false
+        }
+      }
+    },
+    "action.devices.traits.Scene": {
+      "attributes": {
+        "sceneReversible": {
+          "type": "bool"
+        }
+      },
+      "param":{
+        "deactivate": {
+          "type": "bool",
+          "value": true,
+          "manual": false
+        }
+      }
+    },
+    "action.devices.traits.Dock": {
+      "attributes": {},
+      "param":{
+        "isDocked": {
+          "type": "bool",
+          "value": false,
+          "manual": false
+        }
+      }
+    },
+    "action.devices.traits.Toggles": {
+      "attributes": {
+        "availableToggles": {
+          "type": "strigifyedObject"
+        },
+        "commandOnlyToggles": {
+          "type": "bool"
+        }
+      },
+      "param": {
+      }
+    },
+    "action.devices.traits.StartStop": {
+      "attributes": {
+        "availableZones": {
+          "type": "array"
+        },
+        "pausable": {
+          "type": "bool"
+        }
+      },
+      "param": {
+        "isRunning": {
+          "type": "bool",
+          "manual": false,
+          "value": false
+        },
+        "isPaused": {
+          "type": "bool",
+          "manual": false,
+          "value": false
+        }
+      }
+    },
+    "action.devices.traits.Timer": {
+      "attributes": {
+        "maxTimerLimitSec": {
+          "type": "int"
+        },
+        "commandOnlyTimer": {
+          "type": "bool"
+        }
+      },
+      "param": {
+        "timerRemainingSec": {
+          "type": "int",
+          "manual": false,
+          "value": -1
+        },
+        "timerPaused": {
+          "type": "bool",
+          "manual": false,
+          "value": false
+        }
+      }
+    },
+    "action.devices.traits.TemperatureControl": {
+      "attributes": {
+        "temperatureStepCelsius": {
+          "type": "int"
+        },
+        "temperatureUnitForUX": {
+          "type": "string"
+        },
+        "queryOnlyTemperatureControl": {
+          "type": "bool"
+        },
+        "commandOnlyTemperatureControl": {
+          "type": "bool"
+        },
+        "temperatureRange": {
+          "type": "object",
+          "content": {
+            "minThresholdCelsius": {
+              "type": "int"
+            },
+            "maxThresholdCelsius": {
+              "type": "int"
+            }
+          }
+        }
+      },
+      "param": {
+        "temperatureSetpointCelsius": {
+          "type": "int",
+          "manual": false,
+          "value": 20
+        },
+        "temperatureAmbientCelsius": {
+          "type": "int",
+          "manual": false,
+          "value": 20
+        }
+      }
+    },
+    "action.devices.traits.FanSpeed": {
+      "attributes": {
+        "availableFanSpeeds": {
+          "type": "strigifyedObject"
+        },
+        "reversible": {
+          "type": "bool"
+        },
+        "commandOnlyFanSpeed": {
+          "type": "bool"
+        }
+      },
+      "param": {
+        "currentFanSpeedSetting": {
+          "type": "string",
+          "manual": false,
+          "value": ""
+        }
+      }
+    },
+    "action.devices.traits.ArmDisarm": {
+      "attributes": {
+        "availableArmLevels": {
+          "type": "strigifyedObject"
+        }
+      },
+      "param": {
+        "isArmed": {
+          "type": "bool",
+          "manual": false,
+          "value": false
+        },
+        "currentArmLevel": {
+          "type": "string",
+          "manual": false,
+          "value": ""
+        },
+        "exitAllowance": {
+          "type": "int",
+          "manual": false,
+          "value": 20
+        }
+      }
+    },
+    "action.devices.traits.Fill": {
+      "attributes": {
+        "availableFillLevels": {
+          "type": "strigifyedObject"
+        }
+      },
+      "param": {
+        "isFilled": {
+          "type": "bool",
+          "manual": false,
+          "value": false
+        },
+        "currentFillLevel": {
+          "type": "string",
+          "manual": false,
+          "value": ""
+        }
+      }
+    },
+    "action.devices.traits.RunCycle": {
+      "attributes": {},
+      "param": {}
+    },
+    "action.devices.traits.StatusReport": {
+      "attributes": {},
+      "param": {}
+    },
+    "action.devices.traits.Modes": {
+      "attributes": {
+        "availableModes": {
+          "type": "jsoneditor"
+        }
+      },
+      "param": {}
+    },
+    "action.devices.traits.HumiditySetting": {
+      "attributes": {
+        "humiditySetpointRange": {
+          "type": "object",
+          "content": {
+            "minPercent": {
+              "type": "int"
+            },
+            "maxPercent": {
+              "type": "int"
+            }
+          }
+        },
+        "commandOnlyHumiditySetting": {
+          "type": "bool"
+        },
+        "queryOnlyHumiditySetting": {
+          "type": "bool"
+        }
+      },
+      "param": {
+        "humiditySetpointPercent": {
+          "type": "int",
+          "manual": false,
+          "value": 30
+        },
+        "humidityAmbientPercent": {
+          "type": "int",
+          "manual": false,
+          "value": 20
+        }
+      }
+    },
+    "action.devices.traits.Cook": {
+      "attributes": {
+        "foodPresets": {
+          "type": "strigifyedObject"
+        },
+        "supportedCookingModes": {
+          "type": "selectToArray"
+        }
+      },
+      "param": {
+        "currentCookingMode": {
+          "type": "string",
+          "manual": false,
+          "value": ""
+        },
+        "currentFoodPreset": {
+          "type": "string",
+          "manual": false,
+          "value": ""
+        },
+        "currentFoodQuantity": {
+          "type": "int",
+          "manual": false,
+          "value": 0
+        },
+        "currentFoodUnit": {
+          "type": "string",
+          "manual": false,
+          "value": ""
+        }
+      }
+    }
+  }
+}
