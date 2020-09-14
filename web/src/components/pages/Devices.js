@@ -1,6 +1,7 @@
 import React from 'react';
 import Light from '../devices/Light'
 import Outlet from '../devices/Outlet'
+import AcUnit from '../devices/AcUnit'
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
@@ -12,6 +13,7 @@ class Devices extends React.Component {
       devices: []
     }
     this.loadData = this.loadData.bind(this);
+    this.newDevice = this.newDevice.bind(this);
   }
 
   componentDidMount() {
@@ -37,6 +39,10 @@ class Devices extends React.Component {
     http.open("GET", root + "api/global/get/");
     http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
     http.send();
+  }
+
+  newDevice(){
+    window.location.href = '/devices/editor/'
   }
 
   render() {
@@ -65,17 +71,23 @@ class Devices extends React.Component {
     }
 
     const devices = this.state.devices.map((device) => {
-      if(device.type === 'action.devices.types.LIGHT'){
+      if(device.type === 'action.devices.types.LIGHT')
         return <Light key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
-      } else if(device.type === 'action.devices.types.OUTLET'){
+      else if(device.type === 'action.devices.types.OUTLET')
         return <Outlet key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
-      }
+      else if(device.type === 'action.devices.types.AC_UNIT')
+        return <AcUnit key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+
     });
 
     return (
       <div>
         <div style={ title }>
           <h2>Devices</h2>
+        </div>
+
+        <div style={ container }>
+          <button type="button" onClick={ this.newDevice }>New</button>
         </div>
 
         <div style={ container }>
