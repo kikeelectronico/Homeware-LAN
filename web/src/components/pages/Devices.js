@@ -4,6 +4,12 @@ import Outlet from '../devices/Outlet'
 import AcUnit from '../devices/AcUnit'
 import AirFreshener from '../devices/AirFreshener'
 import AirPurifier from '../devices/AirPurifier'
+import Bed from '../devices/Bed'
+import Fan from '../devices/Fan'
+import Fireplace from '../devices/Fireplace'
+import Radiator from '../devices/Radiator'
+import Switch from '../devices/Switch'
+import Thermostat from '../devices/Thermostat'
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
@@ -83,6 +89,18 @@ class Devices extends React.Component {
         return <AirFreshener key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
       else if(device.type === 'action.devices.types.AIRPURIFIER')
         return <AirPurifier key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.BED')
+        return <Bed key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.FAN')
+        return <Fan key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.FIREPLACE')
+        return <Fireplace key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.RADIATOR')
+        return <Radiator key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.SWITCH')
+        return <Switch key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.THERMOSTAT')
+        return <Thermostat key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
 
     });
 
