@@ -50,7 +50,7 @@ class TemperatureSetting extends React.Component {
             </label>
           </div>
           <div className="attribute_table_cel">
-            <span className="attribute_advise">Enable it if Google shoudn't ask for the device status.</span>
+            <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the temperature.</span>
           </div>
         </div>
 
@@ -64,7 +64,7 @@ class TemperatureSetting extends React.Component {
             </label>
           </div>
           <div className="attribute_table_cel">
-            <span className="attribute_advise">Enable it if the device can't be controlled by Google.</span>
+            <span className="attribute_advise">Enable it if Google shouldn't change the device temperature settings.</span>
           </div>
         </div>
 

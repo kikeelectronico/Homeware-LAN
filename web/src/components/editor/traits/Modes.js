@@ -134,7 +134,7 @@ class Modes extends React.Component {
             </label>
           </div>
           <div className="attribute_table_cel">
-            <span className="attribute_advise">Enable it if Google can't ask Homeware-LAN for the device state.</span>
+            <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the modes.</span>
           </div>
         </div>
 
