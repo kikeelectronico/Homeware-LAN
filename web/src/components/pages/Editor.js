@@ -6,6 +6,7 @@ import Brightness from '../editor/traits/Brightness'
 import FanSpeed from '../editor/traits/FanSpeed'
 import ColorSetting from '../editor/traits/ColorSetting'
 import TemperatureSetting from '../editor/traits/TemperatureSetting'
+import Toggles from '../editor/traits/Toggles'
 import getCookieValue from '../../functions'
 import { root, deviceReference } from '../../constants'
 
@@ -262,6 +263,8 @@ class Editor extends React.Component {
         return <FanSpeed key={attribute} attributes={this.state.device.attributes} update={this.update}/>
       else if (attribute === 'action.devices.traits.TemperatureSetting')
         return <TemperatureSetting key={attribute} attributes={this.state.device.attributes} update={this.update}/>
+      else if (attribute === 'action.devices.traits.Toggles')
+        return <Toggles key={attribute} attributes={this.state.device.attributes} update={this.update}/>
     });
 
     return (

@@ -13,9 +13,9 @@ const deviceReference = {
       "action.devices.traits.Toggles"
     ],
     "action.devices.types.AIRPURIFIER": [
+      "action.devices.traits.OnOff",
       "action.devices.traits.FanSpeed",
       "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
       "action.devices.traits.Toggles"
     ],
     "action.devices.types.AWNING": [
@@ -595,10 +595,12 @@ const deviceReference = {
     "action.devices.traits.Toggles": {
       attributes: {
         availableToggles: {
-          type: "strigifyedObject"
+          type: "strigifyedObject",
+          default: []
         },
         commandOnlyToggles: {
-          type: "bool"
+          type: "bool",
+          default: false
         }
       },
       param: {
