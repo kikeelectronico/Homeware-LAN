@@ -2,6 +2,8 @@ import React from 'react';
 import Light from '../devices/Light'
 import Outlet from '../devices/Outlet'
 import AcUnit from '../devices/AcUnit'
+import AirFreshener from '../devices/AirFreshener'
+import AirPurifier from '../devices/AirPurifier'
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
@@ -77,6 +79,10 @@ class Devices extends React.Component {
         return <Outlet key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
       else if(device.type === 'action.devices.types.AC_UNIT')
         return <AcUnit key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.AIRFRESHENER')
+        return <AirFreshener key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.AIRPURIFIER')
+        return <AirPurifier key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
 
     });
 

@@ -141,3 +141,7 @@
   vertical-align: middle;
   text-align: left;
 }
+
+.add_attribute_button{
+  width: 100px
+}

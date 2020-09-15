@@ -7,6 +7,7 @@ import FanSpeed from '../editor/traits/FanSpeed'
 import ColorSetting from '../editor/traits/ColorSetting'
 import TemperatureSetting from '../editor/traits/TemperatureSetting'
 import Toggles from '../editor/traits/Toggles'
+import Modes from '../editor/traits/Modes'
 import getCookieValue from '../../functions'
 import { root, deviceReference } from '../../constants'
 
@@ -265,13 +266,66 @@ class Editor extends React.Component {
         return <TemperatureSetting key={attribute} attributes={this.state.device.attributes} update={this.update}/>
       else if (attribute === 'action.devices.traits.Toggles')
         return <Toggles key={attribute} attributes={this.state.device.attributes} update={this.update}/>
+      else if (attribute === 'action.devices.traits.Modes')
+        return <Modes key={attribute} attributes={this.state.device.attributes} update={this.update}/>
     });
+
+    const modes = {
+      "availableModes": [{
+        "name": "mode",
+        "name_values": [
+          {
+            "name_synonym": ["mode","mode test"],
+            "lang": "en"
+          }
+        ],
+        "settings": [
+          {
+            "setting_name": "full",
+              "setting_values": [{
+                "setting_synonym": ["max"],
+                "lang": "en"
+               }]
+          },
+          {
+            "setting_name": "empty",
+              "setting_values": [{
+                "setting_synonym": ["min"],
+                "lang": "en"
+               }]
+          }
+        ]
+      },{
+        "name": "mode",
+        "name_values": [
+          {
+            "name_synonym": ["mode","mode test"],
+            "lang": "en"
+          }
+        ],
+        "settings": [
+          {
+            "setting_name": "full",
+              "setting_values": [{
+                "setting_synonym": ["max"],
+                "lang": "en"
+               }]
+          },
+          {
+            "setting_name": "empty",
+              "setting_values": [{
+                "setting_synonym": ["min"],
+                "lang": "en"
+               }]
+          }
+        ]
+      }]
+    }
 
     return (
       <div>
 
         <div style={ container }>
-
           <h2>Global settings</h2>
           <div className="advise">
             <span>General settings of the device.</span>

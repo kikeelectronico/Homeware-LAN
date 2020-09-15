@@ -838,11 +838,25 @@ const deviceReference = {
           default: ""
         }
       }
+    },
+    "action.devices.traits.Modes": {
+      attributes: {
+        availableModes: {
+          type: "strigifyedObject",
+          default: []
+        },
+        commandOnlyModes: {
+          type: "bool",
+          default: false
+        }
+      },
+      param: {
+      }
     }
   },
   devicesCoolNames: {
     "action.devices.types.AC_UNIT": "AC unit",
-    "action.devices.types.AIRFRESHENER": "Air freshener (WIP - Do not use)",
+    "action.devices.types.AIRFRESHENER": "Air freshener",
     "action.devices.types.AIRPURIFIER": "Air purifier (WIP - Do not use)",
     "action.devices.types.AWNING": "Awing (WIP - Do not use)",
     "action.devices.types.BATHTUB": "Bathtub (WIP - Do not use)",
