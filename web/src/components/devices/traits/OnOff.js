@@ -32,12 +32,19 @@ class OnOff extends React.Component {
 
   render() {
 
+    const container = {
+      float: 'left',
+      marginLeft: '5px'
+    }
+
     const image = {
       width: '30px'
     }
 
     return (
-      <img src={ this.props.on ? '/devices/onoff_on_true.png' : '/devices/onoff_on_false.png'} onClick={ this.toggle } alt={ this.props.image } style={ image }/>
+      <div style={container}>
+        <img src={ this.props.on ? '/devices/onoff_on_true.png' : '/devices/onoff_on_false.png'} onClick={ this.toggle } alt={ this.props.image } style={ image }/>
+      </div>
     );
   }
 }

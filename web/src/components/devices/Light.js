@@ -15,6 +15,10 @@ class Light extends React.Component {
       backgroundColor: 'white'
     }
 
+    const traits_container = {
+      paddingLeft: '50px'
+    }
+
     var color = 'yellow';
     if (this.props.device.traits.includes("action.devices.traits.ColorSetting")){
       color = "#" + this.props.status.color.spectrumRgb.toString(16);
@@ -43,9 +47,11 @@ class Light extends React.Component {
           <div style={ color_strip }></div>
           <h2 style={ title }>{ this.props.device.name.name }</h2>
           <hr style={ devider }/>
-          <OnOff id={ this.props.device.id } on={ this.props.status.on } reload={ this.props.reload }/>
-          <Information id={ this.props.device.id }/>
-          <Edit id={ this.props.device.id }/>
+          <div style={traits_container}>
+            <OnOff id={ this.props.device.id } on={ this.props.status.on } reload={ this.props.reload }/>
+            <Information id={ this.props.device.id }/>
+            <Edit id={ this.props.device.id }/>
+          </div>
         </div>
       </div>
     );

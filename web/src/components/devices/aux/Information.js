@@ -12,13 +12,19 @@ class Information extends React.Component {
 
   render() {
 
+    const container = {
+      float: 'left',
+      marginLeft: '5px'
+    }
+
     const image = {
-      width: '30px',
-      marginLeft: '10px'
+      width: '30px'
     }
 
     return (
-      <img src="/devices/information.png" onClick={ this.go } alt={ this.props.image } style={ image }/>
+      <div style={container}>
+        <img src="/devices/information.png" onClick={ this.go } alt={ this.props.image } style={ image }/>
+      </div>
     );
   }
 }

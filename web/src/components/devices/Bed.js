@@ -14,6 +14,10 @@ class Bed extends React.Component {
       backgroundColor: 'white'
     }
 
+    const traits_container = {
+      paddingLeft: '50px'
+    }
+
     const color_strip = {
       width: '100%',
       height: '20px',
@@ -36,8 +40,10 @@ class Bed extends React.Component {
           <div style={ color_strip }></div>
           <h2 style={ title }>{ this.props.device.name.name }</h2>
           <hr style={ devider }/>
-          <Information id={ this.props.device.id }/>
-          <Edit id={ this.props.device.id }/>
+          <div style={traits_container}>
+            <Information id={ this.props.device.id }/>
+            <Edit id={ this.props.device.id }/>
+          </div>
         </div>
       </div>
     );
