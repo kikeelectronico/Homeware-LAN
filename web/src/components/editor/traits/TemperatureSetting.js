@@ -23,7 +23,7 @@ class TemperatureSetting extends React.Component {
 
         <div className="table_row">
           <div className="table_cel">
-            Temperature Settings
+            
           </div>
           <div className="table_cel">
             Modes <input type="text" id="availableThermostatModes" defaultValue={this.props.attributes.availableThermostatModes} onChange={this.update} className="text_input"/>

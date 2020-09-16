@@ -20,10 +20,10 @@ class ColorSetting extends React.Component {
       <div>
         <div className="attribute_table_row">
           <div className="attribute_table_cel">
-            Color Settings
+            
           </div>
           <div className="attribute_table_cel">
-            <select name="type" id="colorModel" className="table_input" value={this.props.colorModel} onChange={this.update}>
+            <select name="type" id="colorModel" className="table_input" value={this.props.attributes.colorModel} onChange={this.update}>
               <option value="">Select</option>
               <option value="rgb">RGB light</option>
               <option value="hsv">HSV light</option>
@@ -39,7 +39,7 @@ class ColorSetting extends React.Component {
 
           </div>
           <div className="attribute_table_cel">
-            Minimum temperature <input type="number" id="colorTemperatureRange/temperatureMinK" defaultValue={ this.props.colorTemperatureRange ? this.props.colorTemperatureRange.temperatureMinK : 0} min="0" max="10000" onChange={this.update} className="int_input"/>
+            Minimum temperature <input type="number" id="colorTemperatureRange/temperatureMinK" defaultValue={ this.props.attributes.colorTemperatureRange ? this.props.attributes.colorTemperatureRange.temperatureMinK : 0} min="0" max="10000" onChange={this.update} className="int_input"/>
           </div>
           <div className="attribute_table_cel">
             <span className="attribute_advise">Minimum color temperature (in Kelvin) supported by the device.</span>
@@ -50,7 +50,7 @@ class ColorSetting extends React.Component {
 
           </div>
           <div className="attribute_table_cel">
-            Maximum temperature <input type="number" id="colorTemperatureRange/temperatureMaxK" defaultValue={this.props.colorTemperatureRange ? this.props.colorTemperatureRange.temperatureMaxK : 0} min="0" max="10000" onChange={this.update} className="int_input"/>
+            Maximum temperature <input type="number" id="colorTemperatureRange/temperatureMaxK" defaultValue={this.props.attributes.colorTemperatureRange ? this.props.attributes.colorTemperatureRange.temperatureMaxK : 0} min="0" max="10000" onChange={this.update} className="int_input"/>
           </div>
           <div className="attribute_table_cel">
             <span className="attribute_advise">Maximum color temperature (in Kelvin) supported by the device.</span>
@@ -62,7 +62,7 @@ class ColorSetting extends React.Component {
           </div>
           <div className="attribute_table_cel">
             <label>
-              <input type="checkbox" id="commandOnlyColorSetting" defaultChecked={this.props.commandOnlyColorSetting} onChange={this.updateCheckbox}/>
+              <input type="checkbox" id="commandOnlyColorSetting" defaultChecked={this.props.attributes.commandOnlyColorSetting} onChange={this.updateCheckbox}/>
               <span className=""><i>commandOnlyColorSetting</i></span>
             </label>
           </div>

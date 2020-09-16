@@ -16,11 +16,11 @@ class OnOff extends React.Component {
       <div>
         <div className="attribute_table_row">
           <div className="attribute_table_cel">
-            Switch control
+            
           </div>
           <div className="attribute_table_cel">
             <label>
-              <input type="checkbox" id="commandOnlyOnOff" defaultChecked={this.props.commandOnlyOnOff} onChange={this.updateCheckbox}/>
+              <input type="checkbox" id="commandOnlyOnOff" defaultChecked={this.props.attributes.commandOnlyOnOff} onChange={this.updateCheckbox}/>
               <span className=""><i>commandOnlyOnOff</i></span>
             </label>
           </div>
@@ -33,7 +33,7 @@ class OnOff extends React.Component {
           </div>
           <div className="attribute_table_cel">
             <label>
-              <input type="checkbox" id="queryOnlyOnOff" defaultChecked={this.props.queryOnlyOnOff} onChange={this.updateCheckbox}/>
+              <input type="checkbox" id="queryOnlyOnOff" defaultChecked={this.props.attributes.queryOnlyOnOff} onChange={this.updateCheckbox}/>
               <span className=""><i>queryOnlyOnOff</i></span>
             </label>
           </div>

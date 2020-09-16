@@ -45,6 +45,7 @@ class Editor extends React.Component {
     this.updateTraits = this.updateTraits.bind(this);
     this.save = this.save.bind(this);
     this.delete = this.delete.bind(this);
+    this.renderAttrinutes = this.renderAttrinutes.bind(this);
   }
 
   componentDidMount() {
@@ -204,6 +205,27 @@ class Editor extends React.Component {
     }
   }
 
+  renderAttrinutes(trait){
+    if (this.state.device.traits.includes(trait)){
+      if (trait === 'action.devices.traits.Scene')
+        return <Scene sceneReversible={this.state.device.attributes.sceneReversible} update={this.update}/>
+      else if (trait === 'action.devices.traits.OnOff')
+        return <OnOff attributes={this.state.device.attributes} update={this.update}/>
+      else if (trait === 'action.devices.traits.Brightness')
+        return <Brightness commandOnlyBrightness={this.state.device.attributes.commandOnlyBrightness} update={this.update}/>
+      else if (trait === 'action.devices.traits.ColorSetting')
+        return <ColorSetting attributes={this.state.device.attributes} update={this.update}/>
+      else if (trait === 'action.devices.traits.FanSpeed')
+        return <FanSpeed attributes={this.state.device.attributes} update={this.update}/>
+      else if (trait === 'action.devices.traits.TemperatureSetting')
+        return <TemperatureSetting attributes={this.state.device.attributes} update={this.update}/>
+      else if (trait === 'action.devices.traits.Toggles')
+        return <Toggles attributes={this.state.device.attributes} update={this.update}/>
+      else if (trait === 'action.devices.traits.Modes')
+        return <Modes attributes={this.state.device.attributes} update={this.update}/>
+    }
+  }
+
   render() {
 
     const container = {
@@ -226,6 +248,15 @@ class Editor extends React.Component {
       backgroundColor: 'red'
     }
 
+    const deleteButtonDisabled = {
+      backgroundColor: 'red',
+      opacity: '0.2'
+    }
+
+    const separator = {
+      width: '70%'
+    }
+
     const types = Object.keys(deviceReference.devicesCoolNames).map((type) => {
       return <option key={type} value={type}>{deviceReference.devicesCoolNames[type]}</option>
     })
@@ -235,40 +266,25 @@ class Editor extends React.Component {
     });
 
     const traits = this.state.posible_traits.map((trait) =>
-      <div key={trait} className="attribute_table_row">
-        <div className="attribute_table_cel">
-          {deviceReference.traitsCoolNames[trait]}
-        </div>
-        <div className="attribute_table_cel">
-          <label>
-            <input type="checkbox" id={trait} defaultChecked={this.state.device.traits.includes(trait)} onChange={this.updateTraits}/>
+      <div key={trait}>
+        <hr style={separator}/>
+        <div className="attribute_table_row">
+          <div className="attribute_table_cel">
+            {deviceReference.traitsCoolNames[trait]}
+          </div>
+          <div className="attribute_table_cel">
+            <label>
+              <input type="checkbox" id={trait} defaultChecked={this.state.device.traits.includes(trait)} onChange={this.updateTraits}/>
 
-          </label>
+            </label>
+          </div>
+          <div className="attribute_table_cel">
+
+          </div>
         </div>
-        <div className="attribute_table_cel">
-          <span className="attribute_advise"></span>
-        </div>
+        {this.renderAttrinutes(trait)}
       </div>
     );
-
-    const attributes = this.state.device.traits.map((attribute) => {
-      if (attribute === 'action.devices.traits.Scene')
-        return <Scene key={attribute} sceneReversible={this.state.device.attributes.sceneReversible} update={this.update}/>
-      else if (attribute === 'action.devices.traits.OnOff')
-        return <OnOff key={attribute} commandOnlyOnOff={this.state.device.attributes.commandOnlyOnOff} queryOnlyOnOff={this.state.device.attributes.queryOnlyOnOff} update={this.update}/>
-      else if (attribute === 'action.devices.traits.Brightness')
-        return <Brightness key={attribute} commandOnlyBrightness={this.state.device.attributes.commandOnlyBrightness} update={this.update}/>
-      else if (attribute === 'action.devices.traits.ColorSetting')
-        return <ColorSetting key={attribute} commandOnlyColorSetting={this.state.device.attributes.commandOnlyColorSetting} colorModel={this.state.device.attributes.colorModel} colorTemperatureRange={this.state.device.attributes.colorTemperatureRange} update={this.update}/>
-      else if (attribute === 'action.devices.traits.FanSpeed')
-        return <FanSpeed key={attribute} attributes={this.state.device.attributes} update={this.update}/>
-      else if (attribute === 'action.devices.traits.TemperatureSetting')
-        return <TemperatureSetting key={attribute} attributes={this.state.device.attributes} update={this.update}/>
-      else if (attribute === 'action.devices.traits.Toggles')
-        return <Toggles key={attribute} attributes={this.state.device.attributes} update={this.update}/>
-      else if (attribute === 'action.devices.traits.Modes')
-        return <Modes key={attribute} attributes={this.state.device.attributes} update={this.update}/>
-    });
 
     return (
       <div>
@@ -311,19 +327,11 @@ class Editor extends React.Component {
           <h2>Traits</h2>
           <div className="advise">
             <span>The traits define what the device can do.</span>
-            <hr/>
           </div>
           {traits}
           <hr/>
-          <h2>Attributes</h2>
-          <div className="advise">
-            <span>The attributes configure the traits.</span>
-            <hr/>
-          </div>
-          {attributes}
-          <hr/>
           <div className="table_cel">
-            <button type="button" style={deleteButton} onClick={ this.delete }>Delete</button>
+            <button type="button" style={ this.state.create ? deleteButtonDisabled : deleteButton } onClick={ this.delete } disabled={ this.state.create ? true : false}>Delete</button>
             <button type="button" onClick={ this.save }>Save</button>
             <span>{this.state.save_status}</span>
           </div>

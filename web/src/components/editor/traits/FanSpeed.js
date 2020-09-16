@@ -82,7 +82,7 @@ class FanSpeed extends React.Component {
 
         <div className="attribute_table_row">
           <div className="attribute_table_cel">
-            Fan Speed
+            
           </div>
           <div className="attribute_table_cel">
             <label>

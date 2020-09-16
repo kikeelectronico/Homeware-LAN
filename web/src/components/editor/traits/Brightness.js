@@ -18,7 +18,7 @@ class Brightness extends React.Component {
       <div>
         <div className="attribute_table_row">
           <div className="attribute_table_cel">
-            Brightness
+            
           </div>
           <div className="attribute_table_cel">
             <label>

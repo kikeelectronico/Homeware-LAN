@@ -125,7 +125,7 @@ class Modes extends React.Component {
 
         <div className="attribute_table_row">
           <div className="attribute_table_cel">
-            Modes
+            
           </div>
           <div className="attribute_table_cel">
             <label>

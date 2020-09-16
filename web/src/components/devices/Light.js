@@ -15,11 +15,16 @@ class Light extends React.Component {
       backgroundColor: 'white'
     }
 
+    var color = 'yellow';
+    if (this.props.device.traits.includes("action.devices.traits.ColorSetting")){
+      color = "#" + this.props.status.color.spectrumRgb.toString(16);
+    }
+
     const color_strip = {
       width: '100%',
       height: '20px',
       borderRadius: '20px 20px 0px 0px',
-      backgroundColor: 'yellow',
+      backgroundColor: color,
       opacity: this.props.status.on ? '1' : '0.4'
     }
 
