@@ -1,5 +1,4 @@
 import React from 'react';
-import OnOff from './traits/OnOff'
 import Information from './aux/Information'
 import Edit from './aux/Edit'
 

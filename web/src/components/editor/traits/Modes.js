@@ -18,12 +18,12 @@ class Modes extends React.Component {
     const mode_id = id[1]
     var temp_availableModes = this.props.attributes.availableModes
 
-    if(id[0] == 'lang'){
+    if(id[0] === 'lang'){
       temp_availableModes[mode_id].name_values[0].lang = event.target.value;
-    } else if (id[0] == 'names'){
+    } else if (id[0] === 'names'){
       temp_availableModes[mode_id].name_values[0].name_synonym = event.target.value.split(',');
       temp_availableModes[mode_id].name = event.target.value.split(',')[0]
-    } else if (id[0] == 'settings'){
+    } else if (id[0] === 'settings'){
       var values = event.target.value.split(',')
       var settings = []
       for ( var i = 0; i < values.length; i ++){

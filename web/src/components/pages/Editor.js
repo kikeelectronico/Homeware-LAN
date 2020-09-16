@@ -129,7 +129,7 @@ class Editor extends React.Component {
       }
     } else {
       if (this.state.device.traits.includes(event.target.id) === true){
-        temp_device.traits = temp_device.traits.filter(function(value, index, arr){ return value != event.target.id;});
+        temp_device.traits = temp_device.traits.filter(function(value, index, arr){ return value !== event.target.id;});
       }
     }
     this.setState({
@@ -143,7 +143,7 @@ class Editor extends React.Component {
     http.onload = function (e) {
       if (http.readyState === 4) {
         if (http.status === 200) {
-          var data = JSON.parse(http.responseText);
+          JSON.parse(http.responseText);
           this.setState({
              save_status: "Saved correctly."
            });
@@ -269,58 +269,6 @@ class Editor extends React.Component {
       else if (attribute === 'action.devices.traits.Modes')
         return <Modes key={attribute} attributes={this.state.device.attributes} update={this.update}/>
     });
-
-    const modes = {
-      "availableModes": [{
-        "name": "mode",
-        "name_values": [
-          {
-            "name_synonym": ["mode","mode test"],
-            "lang": "en"
-          }
-        ],
-        "settings": [
-          {
-            "setting_name": "full",
-              "setting_values": [{
-                "setting_synonym": ["max"],
-                "lang": "en"
-               }]
-          },
-          {
-            "setting_name": "empty",
-              "setting_values": [{
-                "setting_synonym": ["min"],
-                "lang": "en"
-               }]
-          }
-        ]
-      },{
-        "name": "mode",
-        "name_values": [
-          {
-            "name_synonym": ["mode","mode test"],
-            "lang": "en"
-          }
-        ],
-        "settings": [
-          {
-            "setting_name": "full",
-              "setting_values": [{
-                "setting_synonym": ["max"],
-                "lang": "en"
-               }]
-          },
-          {
-            "setting_name": "empty",
-              "setting_values": [{
-                "setting_synonym": ["min"],
-                "lang": "en"
-               }]
-          }
-        ]
-      }]
-    }
 
     return (
       <div>

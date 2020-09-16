@@ -72,6 +72,10 @@ class Access extends React.Component {
       marginLeft: '10%'
     }
 
+    const input = {
+      width: '100%'
+    }
+
     return (
       <div>
         <div style={ container }>
@@ -79,7 +83,7 @@ class Access extends React.Component {
           <hr/>
           <div style={form_container}>
             <div style={form_colum}>
-              <input type="text" id="apikey" value={ this.state.data.apikey } disabled/>
+              <input type="text" id="apikey" style={input} value={ this.state.data.apikey } disabled/>
             </div>
             <div style={form_colum}>
               <button type="button" onClick={ this.generateAPIKey }>Generate</button>

@@ -766,14 +766,6 @@ const deviceReference = {
       attributes: {},
       param: {}
     },
-    "action.devices.traits.Modes": {
-      attributes: {
-        availableModes: {
-          type: "jsoneditor"
-        }
-      },
-      param: {}
-    },
     "action.devices.traits.HumiditySetting": {
       attributes: {
         humiditySetpointRange: {
