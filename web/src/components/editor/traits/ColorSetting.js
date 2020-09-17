@@ -20,7 +20,7 @@ class ColorSetting extends React.Component {
       <div>
         <div className="attribute_table_row">
           <div className="attribute_table_cel">
-            
+
           </div>
           <div className="attribute_table_cel">
             <select name="type" id="colorModel" className="table_input" value={this.props.attributes.colorModel} onChange={this.update}>

@@ -8,6 +8,10 @@ import ColorSetting from '../editor/traits/ColorSetting'
 import TemperatureSetting from '../editor/traits/TemperatureSetting'
 import Toggles from '../editor/traits/Toggles'
 import Modes from '../editor/traits/Modes'
+import HumiditySetting from '../editor/traits/HumiditySetting'
+import OpenClose from '../editor/traits/OpenClose'
+import Rotation from '../editor/traits/Rotation'
+import Fill from '../editor/traits/Fill'
 import getCookieValue from '../../functions'
 import { root, deviceReference } from '../../constants'
 
@@ -223,6 +227,14 @@ class Editor extends React.Component {
         return <Toggles attributes={this.state.device.attributes} update={this.update}/>
       else if (trait === 'action.devices.traits.Modes')
         return <Modes attributes={this.state.device.attributes} update={this.update}/>
+      else if (trait === 'action.devices.traits.HumiditySetting')
+        return <HumiditySetting attributes={this.state.device.attributes} update={this.update}/>
+      else if (trait === 'action.devices.traits.OpenClose')
+        return <OpenClose attributes={this.state.device.attributes} update={this.update}/>
+      else if (trait === 'action.devices.traits.Rotation')
+        return <Rotation attributes={this.state.device.attributes} update={this.update}/>
+      else if (trait === 'action.devices.traits.Fill')
+        return <Fill attributes={this.state.device.attributes} update={this.update}/>
     }
   }
 

@@ -10,6 +10,22 @@ import Fireplace from '../devices/Fireplace'
 import Radiator from '../devices/Radiator'
 import Switch from '../devices/Switch'
 import Thermostat from '../devices/Thermostat'
+import AirCooler from '../devices/AirCooler'
+import Bathtub from '../devices/Bathtub'
+import Awing from '../devices/Awing'
+import Blinds from '../devices/Blinds'
+import Closet from '../devices/Closet'
+import Curtain from '../devices/Curtain'
+import Door from '../devices/Door'
+import Drawer from '../devices/Drawer'
+import Garage from '../devices/Garage'
+import Pergola from '../devices/Pergola'
+import Shutter from '../devices/Shutter'
+import Valve from '../devices/Valve'
+import Window from '../devices/Window'
+import Lock from '../devices/Lock'
+import Gate from '../devices/Gate'
+
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
@@ -101,6 +117,36 @@ class Devices extends React.Component {
         return <Switch key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
       else if(device.type === 'action.devices.types.THERMOSTAT')
         return <Thermostat key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.AIRCOOLER')
+        return <AirCooler key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.BATHTUB')
+        return <Bathtub key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.AIRCOOLER')
+        return <AirCooler key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.BLINDS')
+        return <Blinds key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.CLOSET')
+        return <Closet key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.CURTAIN')
+        return <Curtain key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.DOOR')
+        return <Door key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.DRAWER')
+        return <Drawer key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.GARAGE')
+        return <Garage key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.GATE')
+        return <Gate key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.PERGOLA')
+        return <Pergola key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.SHUTTER')
+        return <Shutter key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.VALVE')
+        return <Valve key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.WINDOW')
+        return <Window key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.LOCK')
+        return <Lock key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
 
     });
 

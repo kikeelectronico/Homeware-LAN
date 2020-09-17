@@ -7,6 +7,12 @@ const deviceReference = {
       "action.devices.traits.OnOff",
       "action.devices.traits.TemperatureSetting"
     ],
+    "action.devices.types.AIRCOOLER": [
+      "action.devices.traits.FanSpeed",
+      "action.devices.traits.HumiditySetting",
+      "action.devices.traits.OnOff",
+      "action.devices.traits.TemperatureSetting"
+    ],
     "action.devices.types.AIRFRESHENER": [
       "action.devices.traits.Modes",
       "action.devices.traits.OnOff",
@@ -487,19 +493,34 @@ const deviceReference = {
     "action.devices.traits.OpenClose": {
       attributes: {
         discreteOnlyOpenClose: {
-          type: "bool"
+          type: "bool",
+          default: false
         },
         openDirection: {
-          type: "array"
+          type: "array",
+          default: ["UP","DOWN","LEFT","RIGHT","IN","OUT"]
+        },
+        commandOnlyOpenClose: {
+          type: "bool",
+          default: false
         },
         queryOnlyOpenClose: {
-          type: "bool"
+          type: "bool",
+          default: false
         }
       },
       param:{
+        openPercent: {
+          type: "int",
+          default: 0
+        },
         openState: {
           type: "object",
           manual: false,
+          default: {
+            openPercent: 0,
+            openDirection: "UP"
+          },
           content: {
             openPercent:{
               type: "int",
@@ -516,19 +537,27 @@ const deviceReference = {
     "action.devices.traits.Rotation": {
       attributes: {
         commandOnlyRotation: {
-          type: "bool"
+          type: "bool",
+          default: false
         },
         supportsContinuousRotation: {
-          type: "bool"
+          type: "bool",
+          default: false
         },
         supportsDegrees: {
-          type: "bool"
+          type: "bool",
+          default: false
         },
         supportsPercent: {
-          type: "bool"
+          type: "bool",
+          default: false
         },
         rotationDegreesRange: {
           type: "object",
+          default: {
+            rotationDegreesMin: 0,
+            rotationDegreesMax: 0
+          },
           content: {
             rotationDegreesMin: {
               type: "int"
@@ -742,7 +771,11 @@ const deviceReference = {
     "action.devices.traits.Fill": {
       attributes: {
         availableFillLevels: {
-          type: "strigifyedObject"
+          type: "strigifyedObject",
+          default: {
+            levels: [],
+            ordered: true
+          }
         }
       },
       param: {
@@ -770,6 +803,10 @@ const deviceReference = {
       attributes: {
         humiditySetpointRange: {
           type: "object",
+          default: {
+            minPercent: 0,
+            maxPercent: 100
+          },
           content: {
             minPercent: {
               type: "int"
@@ -780,10 +817,12 @@ const deviceReference = {
           }
         },
         commandOnlyHumiditySetting: {
-          type: "bool"
+          type: "bool",
+          default: false
         },
         queryOnlyHumiditySetting: {
-          type: "bool"
+          type: "bool",
+          default: false
         }
       },
       param: {
@@ -848,60 +887,61 @@ const deviceReference = {
   },
   devicesCoolNames: {
     "action.devices.types.AC_UNIT": "AC unit",
+    "action.devices.types.AIRCOOLER": "Air cooler",
     "action.devices.types.AIRFRESHENER": "Air freshener",
     "action.devices.types.AIRPURIFIER": "Air purifier",
-    "action.devices.types.AWNING": "Awing (WIP - Do not use)",
-    "action.devices.types.BATHTUB": "Bathtub (WIP - Do not use)",
+    "action.devices.types.AWNING": "Awing",
+    "action.devices.types.BATHTUB": "Bathtub",
     "action.devices.types.BED": "Bed",
     "action.devices.types.BLENDER": "Blender (WIP - Do not use)",
-    "action.devices.types.BLINDS": "Blinds (WIP - Do not use)",
+    "action.devices.types.BLINDS": "Blinds",
     "action.devices.types.BOILER": "Boiler (WIP - Do not use)",
     "action.devices.types.CAMERA": "Camera (WIP - Do not use)",
-    "action.devices.types.CLOSET": "Closet (WIP - Do not use)",
+    "action.devices.types.CLOSET": "Closet",
     "action.devices.types.COFFE_MAKER": "Coffe maker (WIP - Do not use)",
     "action.devices.types.COOKTOP": "Cooktop (WIP - Do not use)",
-    "action.devices.types.CURTAIN": "Curtain (WIP - Do not use)",
+    "action.devices.types.CURTAIN": "Curtain",
     "action.devices.types.DEHUMIDIFIER": "Dehumidifier (WIP - Do not use)",
     "action.devices.types.DEHYDRATOR": "Dehydrator (WIP - Do not use)",
     "action.devices.types.DISHWASHER": "Dishwasher (WIP - Do not use)",
-    "action.devices.types.DOOR": "Door (WIP - Do not use)",
+    "action.devices.types.DOOR": "Door",
     "action.devices.types.DRYER": "Dryer (WIP - Do not use)",
-    "action.devices.types.DRAWER": "Drawer (WIP - Do not use)",
+    "action.devices.types.DRAWER": "Drawer",
     "action.devices.types.FAN": "Fan",
     "action.devices.types.FIREPLACE": "Fireplace",
     "action.devices.types.FRYER": "Fryer (WIP - Do not use)",
-    "action.devices.types.GARAGE": "Garage (WIP - Do not use)",
-    "action.devices.types.GATE": "Gate (WIP - Do not use)",
+    "action.devices.types.GARAGE": "Garage",
+    "action.devices.types.GATE": "Gate",
     "action.devices.types.GRILL": "Grill (WIP) (WIP - Do not use)",
     "action.devices.types.HEATER": "Heater (WIP - Do not use)",
     "action.devices.types.HOOD": "Hood (WIP - Do not use)",
     "action.devices.types.HUMIDIFIER": "Humidifier (WIP - Do not use)",
     "action.devices.types.KETTLE": "Kettle (WIP - Do not use)",
     "action.devices.types.LIGHT": "Light",
-    "action.devices.types.LOCK": "Lock (WIP - Do not use)",
+    "action.devices.types.LOCK": "Lock",
     "action.devices.types.MICROWAVE": "Microwave (WIP - Do not use)",
     "action.devices.types.MULTICOOKER": "Multicooker (WIP - Do not use)",
     "action.devices.types.MOP": "Mop (WIP - Do not use)",
     "action.devices.types.MOWER": "Mower (WIP - Do not use)",
     "action.devices.types.OUTLET": "Outlet",
     "action.devices.types.OVEN": "Oven (WIP - Do not use)",
-    "action.devices.types.PERGOLA": "Pergola (WIP - Do not use)",
+    "action.devices.types.PERGOLA": "Pergola",
     "action.devices.types.PRESSURECOOKER": "Pressure cooker (WIP - Do not use)",
     "action.devices.types.RADIATOR": "Radiator",
     "action.devices.types.REFRIGERATOR": "Refrigerator (WIP - Do not use)",
     "action.devices.types.SECURITYSYSTEM": "Security system (WIP - Do not use)",
     "action.devices.types.SHOWER": "Shower (WIP - Do not use)",
     "action.devices.types.SOUSVIDE": "Sous vide (WIP - Do not use)",
-    "action.devices.types.SHUTTER": "Shutter (WIP - Do not use)",
+    "action.devices.types.SHUTTER": "Shutter",
     "action.devices.types.SPRINKLER": "Sprinkler (WIP - Do not use)",
     "action.devices.types.STANDMIXER": "Stand mixer (WIP - Do not use)",
     "action.devices.types.SWITCH": "Switch",
     "action.devices.types.THERMOSTAT": "Thermostat",
     "action.devices.types.VACUUM": "Vacum (WIP - Do not use)",
-    "action.devices.types.VALVE": "Valve (WIP - Do not use)",
+    "action.devices.types.VALVE": "Valve",
     "action.devices.types.WASHER": "Washer (WIP - Do not use)",
     "action.devices.types.WATERHEATER": "Water heater (WIP - Do not use)",
-    "action.devices.types.WINDOW": "Window (WIP - Do not use)",
+    "action.devices.types.WINDOW": "Window",
     "action.devices.types.SCENE": "Scene",
     "action.devices.types.YOGURTMAKER": "Yogurt maker (WIP - Do not use)"
   },
@@ -926,7 +966,9 @@ const deviceReference = {
     "action.devices.traits.RunCycle": "Run cycle",
     "action.devices.traits.StatusReport": "Status report",
     "action.devices.traits.Brightness": "Brightness",
-    "action.devices.traits.LockUnlock": "Lock or Unlock"
+    "action.devices.traits.LockUnlock": "Lock or Unlock",
+    "action.devices.traits.HumiditySetting": "Humidity setting",
+    "action.devices.traits.Fill": "Fill level"
   }
 }
 

@@ -14,7 +14,7 @@
    width="30"
    height="30"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   inkscape:export-filename="/home/enrique/Alive/Homeware-LAN/web/public/devices/information.png"
+   inkscape:export-filename="/home/enrique/Alive/Homeware-LAN/web/public/devices/arrow_up.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96">
   <metadata
@@ -54,14 +54,14 @@
      showguides="true"
      inkscape:guide-bbox="true">
     <sodipodi:guide
-       position="14.943623,30.561395"
+       position="-16.85371,39.774757"
        orientation="1,0"
        id="guide814"
        inkscape:locked="false" />
   </sodipodi:namedview>
   <path
-     style="fill:#777777;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
-     d="M 0.67414842,1.1239761 H 29.325456 L 14.943623,28.426987 Z"
+     style="fill:#777777;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="M 29.328938,28.422931 0.6776318,28.429247 15.053446,1.123066 Z"
      id="path816"
      inkscape:connector-curvature="0" />
 </svg>
