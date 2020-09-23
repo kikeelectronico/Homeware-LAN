@@ -145,3 +145,7 @@
 .add_attribute_button{
   width: 100px
 }
+
+.table_cel label{
+  margin-left: 20px;
+}

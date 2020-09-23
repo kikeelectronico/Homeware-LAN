@@ -55,7 +55,7 @@ class TemperatureControl extends React.Component {
 
           </div>
           <div className="attribute_table_cel">
-            Minimum temperature <input type="number" id="temperatureRange/minThresholdCelsius" defaultValue={ this.props.attributes.temperatureRange ? this.props.attributes.temperatureRange.minThresholdCelsius : 0} min="0" max="400" onChange={this.update} className="int_input"/>
+            Minimum temperature: <input type="number" id="temperatureRange/minThresholdCelsius" defaultValue={ this.props.attributes.temperatureRange ? this.props.attributes.temperatureRange.minThresholdCelsius : 0} min="0" max="400" onChange={this.update} className="int_input"/>
           </div>
           <div className="attribute_table_cel">
             <span className="attribute_advise">Minimum temperature (in Celsius) supported by the device.</span>
@@ -67,7 +67,7 @@ class TemperatureControl extends React.Component {
 
           </div>
           <div className="attribute_table_cel">
-            Maximum temperature <input type="number" id="temperatureRange/maxThresholdCelsius" defaultValue={this.props.attributes.temperatureRange ? this.props.attributes.temperatureRange.maxThresholdCelsius : 0} min="0" max="400" onChange={this.update} className="int_input"/>
+            Maximum temperature: <input type="number" id="temperatureRange/maxThresholdCelsius" defaultValue={this.props.attributes.temperatureRange ? this.props.attributes.temperatureRange.maxThresholdCelsius : 0} min="0" max="400" onChange={this.update} className="int_input"/>
           </div>
           <div className="attribute_table_cel">
             <span className="attribute_advise">Maximum temperature (in Celsius) supported by the device.</span>
@@ -79,7 +79,7 @@ class TemperatureControl extends React.Component {
 
           </div>
           <div className="attribute_table_cel">
-            Step <input type="number" id="temperatureStepCelsius" defaultValue={this.props.attributes.temperatureStepCelsius} min="0" max="400" onChange={this.update} className="int_input"/>
+            Step: <input type="number" id="temperatureStepCelsius" defaultValue={this.props.attributes.temperatureStepCelsius} min="0" max="400" onChange={this.update} className="int_input"/>
           </div>
           <div className="attribute_table_cel">
             <span className="attribute_advise">Specifies the relative temperature step.</span>

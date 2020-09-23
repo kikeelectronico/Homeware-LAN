@@ -39,7 +39,7 @@ class StartStop extends React.Component {
 
           </div>
           <div className="table_cel">
-            Zones <input type="text" id="availableThermostatModes" defaultValue={this.props.attributes.availableZones} onChange={this.updateArray} className="text_input"/>
+            Zones: <input type="text" id="availableThermostatModes" defaultValue={this.props.attributes.availableZones} onChange={this.updateArray} className="text_input"/>
           </div>
         </div>
 

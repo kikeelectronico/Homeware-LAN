@@ -51,26 +51,27 @@ class FanSpeed extends React.Component {
     }
 
     const names_box = {
-      marginLeft: '20px',
       width: '150px'
     }
 
     const speeds = this.props.attributes.availableFanSpeeds.speeds.map((speed, i) => {
       return (
               <div key={i}>
-                <hr style={separator}/>
-                <div className="attribute_table_row" key={i}>
-                  <div className="attribute_table_cel">
+                <div className="table_row" key={i}>
+                  <div className="table_cel">
                   </div>
-                  <div className="attribute_table_cel">
-                    <select name="type" id={"lang_" + i} style={select} value={speed.speed_values[0].lang} onChange={this.updateFanSpeeds}>
-                      <option value="es">es</option>
-                      <option value="en">en</option>
-                    </select>
-                    <input type="text" id={"names_" + i} style={names_box} defaultValue={speed.speed_values[0].speed_synonym} onChange={this.updateFanSpeeds}/>
-                  </div>
-                  <div className="attribute_table_cel">
-                    <span className="attribute_advise">Any fan speed has a language and a name.</span>
+                  <div className="table_cel">
+                    <label>
+                      <span>Languaje: </span>
+                      <select name="type" id={"lang_" + i} style={select} value={speed.speed_values[0].lang} onChange={this.updateFanSpeeds}>
+                        <option value="es">es</option>
+                        <option value="en">en</option>
+                      </select>
+                    </label>
+                    <label>
+                      <span>Speed name: </span>
+                      <input type="text" id={"names_" + i} style={names_box} defaultValue={speed.speed_values[0].speed_synonym} placeholder="Speed name" onChange={this.updateFanSpeeds}/>
+                    </label>
                   </div>
                 </div>
               </div>
@@ -82,7 +83,7 @@ class FanSpeed extends React.Component {
 
         <div className="attribute_table_row">
           <div className="attribute_table_cel">
-            
+
           </div>
           <div className="attribute_table_cel">
             <label>

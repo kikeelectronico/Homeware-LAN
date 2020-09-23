@@ -24,7 +24,7 @@ class Rotation extends React.Component {
 
           </div>
           <div className="attribute_table_cel">
-            Minimum rotation <input type="number" id="rotationDegreesRange/rotationDegreesMin" defaultValue={ this.props.attributes.rotationDegreesRange ? this.props.attributes.rotationDegreesRange.rotationDegreesMin : 0} min="0" max="100" onChange={this.update} className="int_input"/>
+            Minimum rotation: <input type="number" id="rotationDegreesRange/rotationDegreesMin" defaultValue={ this.props.attributes.rotationDegreesRange ? this.props.attributes.rotationDegreesRange.rotationDegreesMin : 0} min="0" max="100" onChange={this.update} className="int_input"/>
           </div>
           <div className="attribute_table_cel">
             <span className="attribute_advise">Minimum rotation degrees that a device can rotate.</span>
@@ -36,7 +36,7 @@ class Rotation extends React.Component {
 
           </div>
           <div className="attribute_table_cel">
-            Maximum rotation <input type="number" id="rotationDegreesRange/rotationDegreesMax" defaultValue={this.props.attributes.rotationDegreesRange ? this.props.attributes.rotationDegreesRange.rotationDegreesMax : 0} min="0" max="100" onChange={this.update} className="int_input"/>
+            Maximum rotation: <input type="number" id="rotationDegreesRange/rotationDegreesMax" defaultValue={this.props.attributes.rotationDegreesRange ? this.props.attributes.rotationDegreesRange.rotationDegreesMax : 0} min="0" max="100" onChange={this.update} className="int_input"/>
           </div>
           <div className="attribute_table_cel">
             <span className="attribute_advise">Maximum rotation degrees that a device can rotate.</span>

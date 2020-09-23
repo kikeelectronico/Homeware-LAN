@@ -45,26 +45,27 @@ class Fill extends React.Component {
     }
 
     const names_box = {
-      marginLeft: '20px',
       width: '150px'
     }
 
     const levels = this.props.attributes.availableFillLevels.levels.map((level, i) => {
       return (
               <div key={i}>
-                <hr style={separator}/>
-                <div className="attribute_table_row" key={i}>
-                  <div className="attribute_table_cel">
+                <div className="table_row" key={i}>
+                  <div className="table_cel">
                   </div>
-                  <div className="attribute_table_cel">
-                    <select name="type" id={"lang_" + i} style={select} value={level.level_values[0].lang} onChange={this.updateLevels}>
-                      <option value="es">es</option>
-                      <option value="en">en</option>
-                    </select>
-                    <input type="text" id={"names_" + i} style={names_box} defaultValue={level.level_values[0].level_synonym} onChange={this.updateLevels}/>
-                  </div>
-                  <div className="attribute_table_cel">
-                    <span className="attribute_advise">Any fill level has a language and a name.</span>
+                  <div className="table_cel">
+                    <label>
+                      <span>Languaje: </span>
+                      <select name="type" id={"lang_" + i} style={select} value={level.level_values[0].lang} onChange={this.updateLevels}>
+                        <option value="es">es</option>
+                        <option value="en">en</option>
+                      </select>
+                    </label>
+                    <label>
+                      <span>Fill level name: </span>
+                      <input type="text" id={"names_" + i} style={names_box} defaultValue={level.level_values[0].level_synonym} placeholder="Fill level name" onChange={this.updateLevels}/>
+                    </label>
                   </div>
                 </div>
               </div>

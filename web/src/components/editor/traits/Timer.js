@@ -39,7 +39,7 @@ class Timer extends React.Component {
 
           </div>
           <div className="table_cel">
-            Max time <input type="text" id="availableThermostatModes" defaultValue={this.props.attributes.maxTimerLimitSec} onChange={this.update} className="text_input"/>
+            Max time: <input type="text" id="availableThermostatModes" defaultValue={this.props.attributes.maxTimerLimitSec} onChange={this.update} className="text_input"/>
           </div>
         </div>
 

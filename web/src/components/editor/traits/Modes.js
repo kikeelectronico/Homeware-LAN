@@ -74,12 +74,10 @@ class Modes extends React.Component {
     }
 
     const names_box = {
-      marginLeft: '20px',
       width: '150px'
     }
 
     const settings_box = {
-      marginLeft: '0px',
       width: '230px'
     }
 
@@ -89,32 +87,29 @@ class Modes extends React.Component {
 
       return (
               <div key={i}>
-                <hr style={separator}/>
-                <div className="attribute_table_row">
-                  <div className="attribute_table_cel">
+                <div className="table_row">
+                  <div className="table_cel">
                   </div>
-                  <div className="attribute_table_cel">
-                    <select name="type" id={"lang_" + i} style={select} value={mode.name_values[0].lang} onChange={this.updateMode}>
-                      <option value="es">es</option>
-                      <option value="en">en</option>
-                    </select>
-                    <input type="text" id={"names_" + i} style={names_box} defaultValue={mode.name_values[0].name_synonym} onChange={this.updateMode}/>
-                  </div>
-                  <div className="attribute_table_cel">
-                    <span className="attribute_advise">Any modes has a language and a name.</span>
+                  <div className="table_cel">
+                    <label>
+                      <span>Languaje: </span>
+                      <select name="type" id={"lang_" + i} style={select} value={mode.name_values[0].lang} onChange={this.updateMode}>
+                        <option value="es">es</option>
+                        <option value="en">en</option>
+                      </select>
+                    </label>
+                    <label>
+                      <span>Mode name: </span>
+                      <input type="text" id={"names_" + i} style={names_box} defaultValue={mode.name_values[0].name_synonym} placeholder="Mode name" onChange={this.updateMode}/>
+                    </label>
+                    <label>
+                      <span>Mode settings: </span>
+                      <input type="text" id={"settings_" + i} style={settings_box} defaultValue={settings} placeholder="Separated by commas" onChange={this.updateMode}/>
+                    </label>
                   </div>
                 </div>
 
-                <div className="attribute_table_row">
-                  <div className="attribute_table_cel">
-                  </div>
-                  <div className="attribute_table_cel">
-                    <input type="text" id={"settings_" + i} style={settings_box} defaultValue={settings} onChange={this.updateMode}/>
-                  </div>
-                  <div className="attribute_table_cel">
-                    <span className="attribute_advise">Every mode has different settings. Type a list separeted by commas.</span>
-                  </div>
-                </div>
+
               </div>
 
               )
@@ -125,7 +120,7 @@ class Modes extends React.Component {
 
         <div className="attribute_table_row">
           <div className="attribute_table_cel">
-            
+
           </div>
           <div className="attribute_table_cel">
             <label>

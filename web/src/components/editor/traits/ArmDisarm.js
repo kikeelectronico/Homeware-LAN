@@ -52,19 +52,21 @@ class ArmDisarm extends React.Component {
     const levels = this.props.attributes.availableArmLevels.levels.map((level, i) => {
       return (
               <div key={i}>
-                <hr style={separator}/>
-                <div className="attribute_table_row" key={i}>
-                  <div className="attribute_table_cel">
+                <div className="table_row" key={i}>
+                  <div className="table_cel">
                   </div>
-                  <div className="attribute_table_cel">
-                    <select name="type" id={"lang_" + i} style={select} value={level.level_values[0].lang} onChange={this.updateSecurityLevel}>
-                      <option value="es">es</option>
-                      <option value="en">en</option>
-                    </select>
-                    <input type="text" id={"names_" + i} style={names_box} defaultValue={level.level_values[0].speed_synonym} onChange={this.updateSecurityLevel}/>
-                  </div>
-                  <div className="attribute_table_cel">
-                    <span className="attribute_advise">Any security level has a language and a name.</span>
+                  <div className="table_cel">
+                    <label>
+                      <span>Languaje: </span>
+                      <select name="type" id={"lang_" + i} style={select} value={level.level_values[0].lang} onChange={this.updateSecurityLevel}>
+                        <option value="es">es</option>
+                        <option value="en">en</option>
+                      </select>
+                    </label>
+                    <label>
+                      <span>Level name: </span>
+                      <input type="text" id={"names_" + i} style={names_box} defaultValue={level.level_values[0].speed_synonym} placeholder="Security level name" onChange={this.updateSecurityLevel}/>
+                    </label>
                   </div>
                 </div>
               </div>

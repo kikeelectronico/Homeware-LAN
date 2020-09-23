@@ -23,10 +23,10 @@ class TemperatureSetting extends React.Component {
 
         <div className="table_row">
           <div className="table_cel">
-            
+
           </div>
           <div className="table_cel">
-            Modes <input type="text" id="availableThermostatModes" defaultValue={this.props.attributes.availableThermostatModes} onChange={this.update} className="text_input"/>
+            Modes: <input type="text" id="availableThermostatModes" defaultValue={this.props.attributes.availableThermostatModes} onChange={this.update} className="text_input"/>
           </div>
         </div>
 
@@ -73,7 +73,7 @@ class TemperatureSetting extends React.Component {
 
           </div>
           <div className="attribute_table_cel">
-            Minimum temperature <input type="number" id="thermostatTemperatureRange/minThresholdCelsius" defaultValue={ this.props.attributes.thermostatTemperatureRange ? this.props.attributes.thermostatTemperatureRange.minThresholdCelsius : 0} min="0" max="50" onChange={this.update} className="int_input"/>
+            Minimum temperature: <input type="number" id="thermostatTemperatureRange/minThresholdCelsius" defaultValue={ this.props.attributes.thermostatTemperatureRange ? this.props.attributes.thermostatTemperatureRange.minThresholdCelsius : 0} min="0" max="50" onChange={this.update} className="int_input"/>
           </div>
           <div className="attribute_table_cel">
             <span className="attribute_advise">Minimum temperature (in Celsius) supported by the device.</span>
@@ -85,7 +85,7 @@ class TemperatureSetting extends React.Component {
 
           </div>
           <div className="attribute_table_cel">
-            Maximum temperature <input type="number" id="thermostatTemperatureRange/maxThresholdCelsius" defaultValue={this.props.attributes.thermostatTemperatureRange ? this.props.attributes.thermostatTemperatureRange.maxThresholdCelsius : 0} min="0" max="50" onChange={this.update} className="int_input"/>
+            Maximum temperature: <input type="number" id="thermostatTemperatureRange/maxThresholdCelsius" defaultValue={this.props.attributes.thermostatTemperatureRange ? this.props.attributes.thermostatTemperatureRange.maxThresholdCelsius : 0} min="0" max="50" onChange={this.update} className="int_input"/>
           </div>
           <div className="attribute_table_cel">
             <span className="attribute_advise">Maximum temperature (in Celsius) supported by the device.</span>
@@ -97,7 +97,7 @@ class TemperatureSetting extends React.Component {
 
           </div>
           <div className="attribute_table_cel">
-            Range <input type="number" id="bufferRangeCelsius" defaultValue={this.props.attributes.bufferRangeCelsius} min="0" max="50" onChange={this.update} className="int_input"/>
+            Range: <input type="number" id="bufferRangeCelsius" defaultValue={this.props.attributes.bufferRangeCelsius} min="0" max="50" onChange={this.update} className="int_input"/>
           </div>
           <div className="attribute_table_cel">
             <span className="attribute_advise">Specifies the minimum offset between heat-cool setpoints in Celsius.</span>
