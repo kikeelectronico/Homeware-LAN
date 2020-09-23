@@ -12,6 +12,11 @@ import HumiditySetting from '../editor/traits/HumiditySetting'
 import OpenClose from '../editor/traits/OpenClose'
 import Rotation from '../editor/traits/Rotation'
 import Fill from '../editor/traits/Fill'
+import ArmDisarm from '../editor/traits/ArmDisarm'
+import StartStop from '../editor/traits/StartStop'
+import Timer from '../editor/traits/Timer'
+import TemperatureControl from '../editor/traits/TemperatureControl'
+import Cook from '../editor/traits/Cook'
 import getCookieValue from '../../functions'
 import { root, deviceReference } from '../../constants'
 
@@ -123,8 +128,10 @@ class Editor extends React.Component {
         temp_device.traits.push(event.target.id)
         //Set the default values
         var attributes = deviceReference.traits[event.target.id].attributes;
+        console.log(deviceReference.traits[event.target.id].attributes)
         Object.keys(attributes).forEach((attribute, i) => {
           temp_device.attributes[attribute] = attributes[attribute].default
+          console.log(attributes[attribute].default)
         });
         //Set the default status params
         var params = deviceReference.traits[event.target.id].param;
@@ -235,6 +242,16 @@ class Editor extends React.Component {
         return <Rotation attributes={this.state.device.attributes} update={this.update}/>
       else if (trait === 'action.devices.traits.Fill')
         return <Fill attributes={this.state.device.attributes} update={this.update}/>
+      else if (trait === 'action.devices.traits.ArmDisarm')
+        return <ArmDisarm attributes={this.state.device.attributes} update={this.update}/>
+      else if (trait === 'action.devices.traits.StartStop')
+        return <StartStop attributes={this.state.device.attributes} update={this.update}/>
+      else if (trait === 'action.devices.traits.Timer')
+        return <Timer attributes={this.state.device.attributes} update={this.update}/>
+      else if (trait === 'action.devices.traits.TemperatureControl')
+        return <TemperatureControl attributes={this.state.device.attributes} update={this.update}/>
+      else if (trait === 'action.devices.traits.Cook')
+        return <Cook attributes={this.state.device.attributes} update={this.update}/>
     }
   }
 
@@ -291,7 +308,7 @@ class Editor extends React.Component {
             </label>
           </div>
           <div className="attribute_table_cel">
-
+            Read Google's <a href={"https://developers.google.com/assistant/smarthome/traits/" + trait.split('.')[3].toLowerCase()} target="blanck">documentation</a>
           </div>
         </div>
         {this.renderAttrinutes(trait)}

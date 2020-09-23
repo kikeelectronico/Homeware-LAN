@@ -638,10 +638,12 @@ const deviceReference = {
     "action.devices.traits.StartStop": {
       attributes: {
         availableZones: {
-          type: "array"
+          type: "array",
+          default: []
         },
         pausable: {
-          type: "bool"
+          type: "bool",
+          default: false
         }
       },
       param: {
@@ -654,16 +656,22 @@ const deviceReference = {
           type: "bool",
           manual: false,
           default: false
+        },
+        activeZones: ~{
+          type: "array",
+          default: []
         }
       }
     },
     "action.devices.traits.Timer": {
       attributes: {
         maxTimerLimitSec: {
-          type: "int"
+          type: "int",
+          default: 1000
         },
         commandOnlyTimer: {
-          type: "bool"
+          type: "bool",
+          default: false
         }
       },
       param: {
@@ -682,19 +690,27 @@ const deviceReference = {
     "action.devices.traits.TemperatureControl": {
       attributes: {
         temperatureStepCelsius: {
-          type: "int"
+          type: "int",
+          default: 5
         },
         temperatureUnitForUX: {
-          type: "string"
+          type: "string",
+          default: "C"
         },
         queryOnlyTemperatureControl: {
-          type: "bool"
+          type: "bool",
+          default: false
         },
         commandOnlyTemperatureControl: {
-          type: "bool"
+          type: "bool",
+          default: false
         },
         temperatureRange: {
           type: "object",
+          default: {
+            minThresholdCelsius: 0,
+            maxThresholdCelsius: 150
+          },
           content: {
             minThresholdCelsius: {
               type: "int"
@@ -747,7 +763,11 @@ const deviceReference = {
     "action.devices.traits.ArmDisarm": {
       attributes: {
         availableArmLevels: {
-          type: "strigifyedObject"
+          type: "strigifyedObject",
+          default: {
+            levels: [],
+            ordered: true
+          }
         }
       },
       param: {
@@ -793,11 +813,18 @@ const deviceReference = {
     },
     "action.devices.traits.RunCycle": {
       attributes: {},
-      param: {}
+      param: {
+        lang: 'en'
+      }
     },
     "action.devices.traits.StatusReport": {
       attributes: {},
-      param: {}
+      param: {
+        currentStatusReport: {
+          type: 'object',
+          default: {}
+        }
+      }
     },
     "action.devices.traits.HumiditySetting": {
       attributes: {
@@ -841,10 +868,12 @@ const deviceReference = {
     "action.devices.traits.Cook": {
       attributes: {
         foodPresets: {
-          type: "strigifyedObject"
+          type: "strigifyedObject",
+          default: []
         },
         supportedCookingModes: {
-          type: "selectToArray"
+          type: "selectToArray",
+          default: []
         }
       },
       param: {
@@ -880,6 +909,12 @@ const deviceReference = {
           type: "bool",
           default: false
         }
+      },
+      param: {
+      }
+    },
+    "action.devices.traits.Locator": {
+      attributes: {
       },
       param: {
       }
@@ -929,7 +964,7 @@ const deviceReference = {
     "action.devices.types.PRESSURECOOKER": "Pressure cooker (WIP - Do not use)",
     "action.devices.types.RADIATOR": "Radiator",
     "action.devices.types.REFRIGERATOR": "Refrigerator (WIP - Do not use)",
-    "action.devices.types.SECURITYSYSTEM": "Security system (WIP - Do not use)",
+    "action.devices.types.SECURITYSYSTEM": "Security system",
     "action.devices.types.SHOWER": "Shower (WIP - Do not use)",
     "action.devices.types.SOUSVIDE": "Sous vide (WIP - Do not use)",
     "action.devices.types.SHUTTER": "Shutter",
@@ -968,6 +1003,7 @@ const deviceReference = {
     "action.devices.traits.Brightness": "Brightness",
     "action.devices.traits.LockUnlock": "Lock or Unlock",
     "action.devices.traits.HumiditySetting": "Humidity setting",
+    "action.devices.traits.Cook": "Cooking presets",
     "action.devices.traits.Fill": "Fill level"
   }
 }
