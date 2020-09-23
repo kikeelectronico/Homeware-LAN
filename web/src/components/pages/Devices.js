@@ -27,7 +27,8 @@ import Lock from '../devices/Lock'
 import Gate from '../devices/Gate'
 import Heater from '../devices/Heater'
 import Hood from '../devices/Hood'
-
+import SecuritySystem from '../devices/SecuritySystem'
+import Blender from '../devices/Blender'
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
@@ -153,6 +154,10 @@ class Devices extends React.Component {
         return <Heater key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
       else if(device.type === 'action.devices.types.HOOD')
         return <Hood key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.SECURITYSYSTEM')
+        return <SecuritySystem key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.BLENDER')
+        return <Blender key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
 
     });
 
