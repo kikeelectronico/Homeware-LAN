@@ -1003,7 +1003,7 @@ const deviceReference = {
     "action.devices.traits.Brightness": "Brightness",
     "action.devices.traits.LockUnlock": "Lock or Unlock",
     "action.devices.traits.HumiditySetting": "Humidity setting",
-    "action.devices.traits.Cook": "Cooking presets",
+    "action.devices.traits.Cook": "Cooking",
     "action.devices.traits.Fill": "Fill level"
   }
 }
