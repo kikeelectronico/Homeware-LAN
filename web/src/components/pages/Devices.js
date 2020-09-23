@@ -32,6 +32,8 @@ import Blender from '../devices/Blender'
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
+import './Devices.css';
+
 class Devices extends React.Component {
   constructor(props) {
     super(props);
@@ -86,14 +88,8 @@ class Devices extends React.Component {
 
     const container = {
       width: '80%',
-      marginLeft: '8%',
+      marginLeft: '9%',
       marginTop: '10px',
-      paddingTop: '10px',
-      paddingLeft: '20px',
-      paddingBottom: '10px',
-      paddingRight: '20px',
-      display: 'grid',
-      gridTemplateColumns: '33% 33% 33%'
     }
 
     const devices = this.state.devices.map((device) => {
@@ -174,7 +170,7 @@ class Devices extends React.Component {
           <button type="button" onClick={ this.newDevice }>New</button>
         </div>
 
-        <div style={ container }>
+        <div className="devices_device_container">
           { devices }
         </div>
       </div>

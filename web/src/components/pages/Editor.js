@@ -20,6 +20,8 @@ import Cook from '../editor/traits/Cook'
 import getCookieValue from '../../functions'
 import { root, deviceReference } from '../../constants'
 
+import './Editor.css';
+
 class Editor extends React.Component {
   constructor(props) {
     super(props);

@@ -6,15 +6,7 @@ import Edit from './aux/Edit'
 class AirCooler extends React.Component {
 
   render() {
-
-    const device_container = {
-      width: '400px',
-      height: '120px',
-      margin: '20px',
-      borderRadius: '20px',
-      backgroundColor: 'white'
-    }
-
+    
     const traits_container = {
       paddingLeft: '50px'
     }
@@ -43,7 +35,7 @@ class AirCooler extends React.Component {
 
     return (
       <div>
-        <div style={ device_container }>
+        <div className="device_container">
           <div style={ color_strip }></div>
           <h2 style={ title }>{ this.props.device.name.name }</h2>
           <hr style={ devider }/>

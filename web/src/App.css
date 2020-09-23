@@ -3,48 +3,25 @@
   width: 100%;
 }
 
-.App {
-  text-align: center;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+@media only screen and (min-width: 800px) {
+  .App {
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    overflow-y: hidden;
+    position: relative;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+@media only screen and (max-width: 800px) {
+  .App {
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    position: relative;
   }
 }
+
 
 /* Homeware-LAN */
 
@@ -61,16 +38,44 @@
   box-shadow: -1px 3px 22px -10px rgba(0,0,0,0.75);
 }
 
-.main-app {
-  height: 100%;
-  display: grid;
-  grid-template-columns: 250px auto;
+@media only screen and (min-width: 800px) {
+  .main-app {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 250px auto;
+  }
+
+  .menu {
+    padding: 20px;
+    text-align: left;
+    background-color: white;
+  }
+
+  .page {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    overflow: scroll;
+  }
 }
 
-.menu {
-  padding: 20px;
-  text-align: left;
-  background-color: white;
+@media only screen and (max-width: 800px) {
+  .main-app {
+    height: 100%;
+  }
+
+  .menu {
+    padding: 20px;
+    text-align: left;
+    background-color: white;
+    display: none;
+  }
+
+  .page {
+    width: 100%;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    overflow: scroll;
+  }
 }
 
 .menu-data {
@@ -80,72 +85,4 @@
 
 .menu-data p {
   color: #aaa;
-}
-
-.page {
-  padding-top: 40px;
-  padding-bottom: 40px;
-  overflow: scroll;
-}
-
-.advise {
-  width: 70%;
-  margin-left: 15%;
-  margin-top: 10px;
-  color: #aaa;
-}
-
-.table_row {
-  width: 80%;
-  height: 50px;
-  margin-left: 10%;
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: 200px auto
-}
-
-.table_cel {
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  vertical-align: middle;
-  text-align: left;
-}
-
-.table_input {
-  width: 100%
-}
-
-.int_input {
-  width: 50px;
-}
-
-.attribute_advise {
-  width: 70%;
-  color: #aaa;
-}
-
-.attribute_table_row {
-  width: 80%;
-  height: 50px;
-  margin-left: 10%;
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: 200px 300px auto
-}
-
-.attribute_table_cel {
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  vertical-align: middle;
-  text-align: left;
-}
-
-.add_attribute_button{
-  width: 100px
-}
-
-.table_cel label{
-  margin-left: 20px;
 }
