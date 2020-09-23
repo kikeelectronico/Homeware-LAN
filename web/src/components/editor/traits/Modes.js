@@ -65,14 +65,6 @@ class Modes extends React.Component {
 
   render() {
 
-    const separator = {
-      width: '20%'
-    }
-
-    const select = {
-
-    }
-
     const names_box = {
       width: '150px'
     }
@@ -93,7 +85,7 @@ class Modes extends React.Component {
                   <div className="table_cel">
                     <label>
                       <span>Languaje: </span>
-                      <select name="type" id={"lang_" + i} style={select} value={mode.name_values[0].lang} onChange={this.updateMode}>
+                      <select name="type" id={"lang_" + i} value={mode.name_values[0].lang} onChange={this.updateMode}>
                         <option value="es">es</option>
                         <option value="en">en</option>
                       </select>

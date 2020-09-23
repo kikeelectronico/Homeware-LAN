@@ -18,7 +18,7 @@ class TemperatureSetting extends React.Component {
     const mode_id = id[1]
     var temp_availableThermostatModes = this.props.attributes.availableThermostatModes.split(',')
 
-    if (event.target.value == 'delete'){
+    if (event.target.value === 'delete'){
       temp_availableThermostatModes.splice(mode_id, 1)
     } else if (event.target.value !== 'select') {
       temp_availableThermostatModes[mode_id] = event.target.value;

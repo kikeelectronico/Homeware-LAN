@@ -14,7 +14,7 @@ class Cook extends React.Component {
     const mode_id = id[1]
     var temp_supportedCookingModes = this.props.attributes.supportedCookingModes
 
-    if (event.target.value == 'delete'){
+    if (event.target.value === 'delete'){
       temp_supportedCookingModes.splice(mode_id, 1)
     } else if (event.target.value !== 'select') {
       temp_supportedCookingModes[mode_id] = event.target.value;
@@ -40,7 +40,6 @@ class Cook extends React.Component {
       temp_foodPresets[preset_id].food_synonyms[0].synonym = event.target.value.split(',');
       temp_foodPresets[preset_id].food_preset_name = event.target.value.split(',')[0]
     } else if (id[0] === 'units'){
-      var values = event.target.value
       temp_foodPresets[preset_id].supported_units[0] = event.target.value;
     }
     this.props.update('attributes/foodPresets', temp_foodPresets);
@@ -61,21 +60,8 @@ class Cook extends React.Component {
 
   render() {
 
-    const separator = {
-      width: '20%'
-    }
-
-    const select = {
-
-    }
-
     const names_box = {
       width: '150px'
-    }
-
-    const settings_box = {
-      marginLeft: '0px',
-      width: '230px'
     }
 
     const modes = this.props.attributes.supportedCookingModes.map((mode, i) => {
@@ -88,7 +74,7 @@ class Cook extends React.Component {
                   <div className="table_cel">
                     <label>
                       <span>Mode: </span>
-                      <select name="type" id={"mode_" + i} style={select} value={mode} onChange={this.updateMode}>
+                      <select name="type" id={"mode_" + i} value={mode} onChange={this.updateMode}>
                         <option value="select">Select a mode</option>
                         <option value="delete">Delete this mode</option>
                         <option value="UNKNOWN_COOKING_MODE">UNKNOWN_COOKING_MODE</option>

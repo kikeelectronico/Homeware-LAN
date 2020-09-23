@@ -64,7 +64,6 @@ class Editor extends React.Component {
         if (http.readyState === 4) {
           if (http.status === 200) {
             var data = JSON.parse(http.responseText);
-            console.log(data);
             this.setState({
                device: data,
                posible_traits: deviceReference.devices[data.type]
@@ -105,7 +104,6 @@ class Editor extends React.Component {
     this.setState({
       device: temp_device
     })
-    console.log(this.state.device)
   }
 
   updateId(event){
@@ -128,10 +126,8 @@ class Editor extends React.Component {
         temp_device.traits.push(event.target.id)
         //Set the default values
         var attributes = deviceReference.traits[event.target.id].attributes;
-        console.log(deviceReference.traits[event.target.id].attributes)
         Object.keys(attributes).forEach((attribute, i) => {
           temp_device.attributes[attribute] = attributes[attribute].default
-          console.log(attributes[attribute].default)
         });
         //Set the default status params
         var params = deviceReference.traits[event.target.id].param;
@@ -147,7 +143,6 @@ class Editor extends React.Component {
     this.setState({
       device: temp_device
     })
-    console.log(this.state.device)
   }
 
   save(){

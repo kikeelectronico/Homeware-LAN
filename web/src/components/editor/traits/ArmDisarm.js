@@ -36,14 +36,6 @@ class ArmDisarm extends React.Component {
 
   render() {
 
-    const separator = {
-      width: '20%'
-    }
-
-    const select = {
-
-    }
-
     const names_box = {
       marginLeft: '20px',
       width: '150px'
@@ -58,7 +50,7 @@ class ArmDisarm extends React.Component {
                   <div className="table_cel">
                     <label>
                       <span>Languaje: </span>
-                      <select name="type" id={"lang_" + i} style={select} value={level.level_values[0].lang} onChange={this.updateSecurityLevel}>
+                      <select name="type" id={"lang_" + i} value={level.level_values[0].lang} onChange={this.updateSecurityLevel}>
                         <option value="es">es</option>
                         <option value="en">en</option>
                       </select>

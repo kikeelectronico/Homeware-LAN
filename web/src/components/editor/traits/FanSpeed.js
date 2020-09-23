@@ -42,14 +42,6 @@ class FanSpeed extends React.Component {
 
   render() {
 
-    const separator = {
-      width: '20%'
-    }
-
-    const select = {
-
-    }
-
     const names_box = {
       width: '150px'
     }
@@ -63,7 +55,7 @@ class FanSpeed extends React.Component {
                   <div className="table_cel">
                     <label>
                       <span>Languaje: </span>
-                      <select name="type" id={"lang_" + i} style={select} value={speed.speed_values[0].lang} onChange={this.updateFanSpeeds}>
+                      <select name="type" id={"lang_" + i} value={speed.speed_values[0].lang} onChange={this.updateFanSpeeds}>
                         <option value="es">es</option>
                         <option value="en">en</option>
                       </select>

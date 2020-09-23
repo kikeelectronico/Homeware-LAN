@@ -53,7 +53,6 @@ class Devices extends React.Component {
       if (http.readyState === 4) {
         if (http.status === 200) {
           var data = JSON.parse(http.responseText);
-          console.log(data)
           this.setState({
              data: data,
              devices: data.devices
@@ -124,6 +123,8 @@ class Devices extends React.Component {
         return <AirCooler key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
       else if(device.type === 'action.devices.types.BATHTUB')
         return <Bathtub key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.AWING')
+        return <Awing key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
       else if(device.type === 'action.devices.types.AIRCOOLER')
         return <AirCooler key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
       else if(device.type === 'action.devices.types.BLINDS')
@@ -158,6 +159,8 @@ class Devices extends React.Component {
         return <SecuritySystem key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
       else if(device.type === 'action.devices.types.BLENDER')
         return <Blender key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+
+      return false
 
     });
 
