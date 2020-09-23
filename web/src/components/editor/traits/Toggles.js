@@ -4,7 +4,7 @@ class Toggles extends React.Component {
   constructor(props) {
     super(props);
     this.updateCheckbox = this.updateCheckbox.bind(this);
-    this.updateToogle = this.updateToogle.bind(this);
+    this.updatetoggle = this.updatetoggle.bind(this);
     this.addToggle = this.addToggle.bind(this);
   }
 
@@ -13,7 +13,7 @@ class Toggles extends React.Component {
     this.props.update('attributes/' + event.target.id,event.target.checked);
   }
 
-  updateToogle(event){
+  updatetoggle(event){
     const id = event.target.id.split('_')
     const toggle_id = id[1]
     //Process the attribute and value depending of the attribute
@@ -64,14 +64,14 @@ class Toggles extends React.Component {
                   <div className="table_cel">
                     <label>
                       <span>Languaje: </span>
-                      <select name="type" id={"lang_" + i} style={select} value={toggle.name_values[0].lang} placeholder="Name for the toogle" onChange={this.updateToogle}>
+                      <select name="type" id={"lang_" + i} style={select} value={toggle.name_values[0].lang} placeholder="Name for the toggle" onChange={this.updatetoggle}>
                         <option value="es">es</option>
                         <option value="en">en</option>
                       </select>
                     </label>
                     <label>
                       <span>Name: </span>
-                      <input type="text" id={"names_" + i} style={names_box} defaultValue={toggle.name_values[0].name_synonym} placeholder="Name" onChange={this.updateToogle}/>
+                      <input type="text" id={"names_" + i} style={names_box} defaultValue={toggle.name_values[0].name_synonym} placeholder="Name" onChange={this.updatetoggle}/>
                     </label>
 
 
