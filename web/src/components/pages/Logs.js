@@ -1,5 +1,4 @@
 import React from 'react';
-import downloadjs from 'downloadjs';
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 

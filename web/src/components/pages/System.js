@@ -146,7 +146,7 @@ class System extends React.Component {
     }
 
     const upgrade_button = {
-      width: '20%'
+      width: '200px'
     }
 
     const git_description = {
@@ -165,7 +165,8 @@ class System extends React.Component {
       marginTop: '10px',
       marginLeft: '10%',
       display: 'grid',
-      gridTemplateColumns: '20% 2% 20% 2% 20% auto'
+      gridTemplateColumns: 'repeat(auto-fill, 200px)',
+      gridGap: '20px'
     }
 
     const components = this.state.components.map((component) =>
@@ -221,9 +222,7 @@ class System extends React.Component {
           <hr/>
           <div style={ power_button_container }>
             <button type="button" onClick={ this.restart }>Restart Homeware-LAN</button>
-            <div></div>
             <button type="button" onClick={ this.reboot }>Reboot System</button>
-            <div></div>
             <button type="button" onClick={ this.shutdown }>Shutdown System</button>
           </div>
           <div className="advise">

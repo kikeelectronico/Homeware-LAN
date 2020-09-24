@@ -6,7 +6,7 @@ function Component(props) {
     marginTop: '5px',
     width: '100%',
     display: 'grid',
-    gridTemplateColumns: '80% 10% 10%'
+    gridTemplateColumns: '60% 20% 20%'
   }
 
   const textContainer = {
