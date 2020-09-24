@@ -31,7 +31,7 @@ function Menu(props) {
         <img src={ props.image } alt={ props.image } style={ image }/>
       </div>
       <div style={ textContainer }>
-        <span style={ text } onClick={go}>{ props.title }</span>
+        <span style={ text } onClick={ props.exec ? props.exec : go}>{ props.title }</span>
       </div>
     </div>
   );

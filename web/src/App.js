@@ -18,8 +18,10 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      session: false
+      session: false,
+      version: ''
     }
+    this.logout = this.logout.bind(this);
   }
 
   componentDidMount() {
@@ -43,8 +45,31 @@ class App extends React.Component {
     http.setRequestHeader('token', getCookieValue('token'))
     http.setRequestHeader('user', getCookieValue('user'))
     http.send();
+
+    var vers = new XMLHttpRequest();
+    vers.onload = function (e) {
+      if (vers.readyState === 4) {
+        if (vers.status === 200) {
+          var version = JSON.parse(vers.responseText);
+          this.setState({ version: version.version });
+        } else {
+          console.error(vers.statusText);
+        }
+      }
+    }.bind(this);
+    vers.open("GET", root + "api/global/version/");
+    vers.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    vers.send();
   }
 
+  logout() {
+    document.cookie = "user=; path=/";
+    document.cookie = "token=; path=/";
+    this.setState({
+      session: false
+    });
+    window.location.href = '/'
+  }
 
   render() {
 
@@ -76,9 +101,11 @@ class App extends React.Component {
                   <hr/>
                   <Menu image="/repo_icon.png" title="Repo" href="/"/>
                   <Menu image="/help_icon.png" title="How to" href="/"/>
+                  <hr/>
+                  <Menu image="/logout_icon.png" title="Logout" exec={ this.logout }/>
                 </div>
                 <div className="menu-data">
-                  <p>Version: v1.0</p>
+                  <p>Version: { this.state.version }</p>
                 </div>
               </div>
               <div className="page">
