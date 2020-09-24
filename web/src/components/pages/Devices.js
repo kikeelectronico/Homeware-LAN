@@ -166,12 +166,12 @@ class Devices extends React.Component {
           <h2>Devices</h2>
         </div>
 
-        <div style={ container }>
-          <button type="button" onClick={ this.newDevice }>New</button>
-        </div>
-
         <div className="devices_device_container">
           { devices }
+        </div>
+
+        <div style={ container }>
+          <button type="button" onClick={ this.newDevice }>New</button>
         </div>
       </div>
     );

@@ -82,7 +82,7 @@ class App extends React.Component {
                 </div>
               </div>
               <div className="page">
-                <Route exact={ true } path="/" render={() => (<h1>Home</h1>)}/>
+                <Route exact={ true } path="/" component={ Devices }/>
                 <Route path="/devices/editor" component={ Editor }/>
                 <Route exact={ true } path="/devices" component={ Devices }/>
                 <Route path="/settings" component={ Settings }/>

@@ -29,7 +29,7 @@ class Login extends React.Component {
   grantAccess() {
     var http = new XMLHttpRequest();
     http.addEventListener("load", function(){
-      if (http.responseText != 'fail')
+      if (http.responseText !== 'fail')
         window.location = http.responseText;
       else {
         alert('Incorrect User or Password');
