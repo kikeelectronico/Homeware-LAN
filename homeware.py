@@ -590,6 +590,17 @@ def files(operation = '', file = '', token = ''):
                conditional = False)
             hData.log('Warning', 'A backup file has been downloaded')
             return result
+        elif operation == 'log':
+            # Download file
+            now = datetime.now()
+            date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
+            result = send_file('homeware.log',
+               mimetype = "text/plain", # use appropriate type based on file
+               attachment_filename = 'homeware_' + str(date_time) + '.log',
+               as_attachment = True,
+               conditional = False)
+            hData.log('Warning', 'The log file has been downloaded')
+            return result
         elif operation == 'restore':
             if request.method == 'POST':
                 if 'file' not in request.files:

@@ -1,4 +1,5 @@
 import React from 'react';
+import downloadjs from 'downloadjs';
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
@@ -12,6 +13,7 @@ class Logs extends React.Component {
 
     this.previousPage = this.previousPage.bind(this);
     this.nextPage = this.nextPage.bind(this);
+    this.downloadLog = this.downloadLog.bind(this);
   }
 
   componentDidMount() {
@@ -41,8 +43,8 @@ class Logs extends React.Component {
       this.setState({ page: this.state.page + 1 });
   }
 
-  download() {
-    alert('WIP');
+  downloadLog() {
+    window.location = root + "files/log/homeware/" + getCookieValue('token')
   }
 
   render() {
@@ -81,7 +83,8 @@ class Logs extends React.Component {
       width: '100%',
       marginTop: '10px',
       display: 'grid',
-      gridTemplateColumns: '28% 20% 2% 20% 2% 20%'
+      gridTemplateColumns: 'repeat(auto-fill, 200px)',
+      gridGap: '20px'
     }
 
     const sus = this.state.page === 0 ? 0 : 1
@@ -105,12 +108,9 @@ class Logs extends React.Component {
             { homeware_lan_log }
           </div>
           <div style={ button_container }>
-            <div></div>
             <button type="button" onClick={ this.previousPage }>Previous page</button>
-            <div></div>
             <button type="button" onClick={ this.nextPage }>Next page</button>
-            <div></div>
-            <button type="button" onClick={ this.download }>Download</button>
+            <button type="button" onClick={ this.downloadLog }>Download</button>
           </div>
         </div>
       </div>
