@@ -5,8 +5,8 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.login = this.login.bind(this);
+    this.grantAccess = this.grantAccess.bind(this);
   }
-
 
   login() {
     var http = new XMLHttpRequest();
@@ -26,6 +26,21 @@ class Login extends React.Component {
     http.send();
   }
 
+  grantAccess() {
+    var http = new XMLHttpRequest();
+    http.addEventListener("load", function(){
+      if (http.responseText != 'fail')
+        window.location = http.responseText;
+      else {
+        alert('Incorrect User or Password');
+      }
+    });
+    http.open("GET", "/api/user/googleSync/");
+    http.setRequestHeader('user', document.getElementById('user').value)
+    http.setRequestHeader('pass', document.getElementById('pass').value)
+    http.send();
+  }
+
   render() {
 
     const form_container = {
@@ -38,11 +53,12 @@ class Login extends React.Component {
 
     return (
       <div style={ form_container }>
+        { window.location.href.includes('google') ? <p>Google request access to Homeware-Lan</p> : '' }
         <span style={ element }>Username</span>
         <input type="text" name="user" id="user"/>
         <span style={ element }>Password</span>
         <input type="password" name="password" id="password"/>
-        <button type="button" style={ element } onClick={ this.login }>Login</button>
+        <button type="button" style={ element } onClick={ !window.location.href.includes('google') ? this.login : this.grantAccess }>{ !window.location.href.includes('google') ? <span>Login</span> : <span>Grant access</span> }</button>
       </div>
     );
   }
