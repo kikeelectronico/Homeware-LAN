@@ -7,7 +7,7 @@
   text-align: center;
   height: 100%;
   width: 100%;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
   position: absolute;
 }
 
@@ -20,7 +20,6 @@
     position: relative;
   }
 }
-
 @media only screen and (max-width: 800px) {
   .App {
     text-align: center;
@@ -61,7 +60,7 @@
 
   .page {
     padding-top: 40px;
-    padding-bottom: 40px;
+    padding-bottom: 100px;
     overflow: scroll;
   }
 }
