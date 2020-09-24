@@ -36,8 +36,6 @@ class Backup extends React.Component {
     }
 
     const form = {
-      display: 'grid',
-      gridTemplateColumns: '60% auto'
     }
 
     const button = {

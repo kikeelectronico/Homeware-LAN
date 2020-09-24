@@ -63,13 +63,12 @@ class Access extends React.Component {
       width: '80%',
       marginLeft: '10%',
       marginTop: '20px',
-      display: 'grid',
-      gridTemplateColumns: '80% auto'
     }
 
     const form_colum = {
       width: '80%',
-      marginLeft: '10%'
+      marginLeft: '10%',
+      marginTop: '20px'
     }
 
     const input = {
