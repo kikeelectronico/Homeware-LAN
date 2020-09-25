@@ -572,7 +572,8 @@ def auth():
         global responseURL
         responseURL = responseURI + '?code=' + str(code) + '&state=' +  state
         # return render_template('panel/googleSync.html')
-        return redirect("/login/google/", code=302)
+        # return redirect("/login/google/", code=302)
+        return '<a href="' + responseURL + '">enlace</a>'
     else:
         hData.log('Alert', 'Unauthorized try to link a Google Account. Verify the client id and client secret')
         return 'Algo ha ido mal en la autorización'
