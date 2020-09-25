@@ -43,7 +43,11 @@ class Login extends React.Component {
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       if (http.responseText !== 'fail')
-        window.location = http.responseText;
+        // window.location = http.responseText;
+        this.setState({
+          enable_message: true,
+          message: '<a href="' + http.responseText + '">' + http.responseText + '</a>'
+        })
       else {
         this.setState({
           enable_message: true,
