@@ -9,7 +9,7 @@ import subprocess
 
 class Data:
 
-    version = 'v1.0'
+    version = 'v0.7.1'
 
     homewareData = {}
     homewareFile = 'homeware.json'
@@ -73,14 +73,12 @@ class Data:
             response = self.redis.client_list()
             status =  {
                 'enable': True,
-                'status': 'Running',
-                'title': 'Redis database'
+                'status': 'Running'
             }
         except redis.ConnectionError:
             status = {
                 'enable': True,
-                'status': 'Stopped',
-                'title': 'Redis database'
+                'status': 'Stoped'
             }
         return status
 
@@ -195,11 +193,11 @@ class Data:
         return json.loads(self.redis.get('devices'))
 
     def updateDevice(self, incommingData):
-        deviceID = incommingData['device']['id']
+        deviceID = incommingData['devices']['id']
         temp_devices = [];
         for device in json.loads(self.redis.get('devices')):
             if device['id'] == deviceID:
-                temp_devices.append(incommingData['device'])
+                temp_devices.append(incommingData['devices'])
             else:
                 temp_devices.append(device)
         # self.ddbb.homewareData['devices'] = temp_devices
@@ -207,10 +205,10 @@ class Data:
         # self.save()
 
     def createDevice(self, incommingData):
-        deviceID = incommingData['device']['id']
+        deviceID = incommingData['devices']['id']
 
         devices = json.loads(self.redis.get('devices'))
-        devices.append(incommingData['device'])
+        devices.append(incommingData['devices'])
         self.redis.set('devices',json.dumps(devices))
 
         status = json.loads(self.redis.get('status'))
@@ -361,7 +359,7 @@ class Data:
             self.redis.set('secure',json.dumps(secure))
             return 'Saved correctly!'
         else:
-            return 'Your user has been set in the past'
+            return 'Your user has beed set in the past'
 
     def setDomain(self, value):
         secure = json.loads(self.redis.get('secure'))
@@ -402,17 +400,6 @@ class Data:
         self.redis.set('secure',json.dumps(secure))
         self.apikey = token
         return token
-
-# ACCESS
-
-    def getAccess(self):
-
-        secure = json.loads(self.redis.get('secure'))
-        data = {
-            "apikey": secure['token']['apikey']
-        }
-
-        return data
 
 # LOGIN
 
