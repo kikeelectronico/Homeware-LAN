@@ -43,53 +43,6 @@ def robots():
     return Response(response, mimetype='text/txt')
 
 
-
-@app.route('/login')
-@app.route('/login/')
-def login():
-    return render_template('panel/login.html')
-
-@app.route('/')
-def index():
-    if not hData.getAssistantDone():
-        return redirect("/assistant/", code=302)
-    else:
-        return render_template('panel/index.html', basic = renderHelper.basic)
-
-
-@app.route('/devices')
-@app.route('/devices/')
-@app.route('/devices/<process>/')
-@app.route('/devices/<process>/')
-@app.route('/devices/<process>/<id>')
-@app.route('/devices/<process>/<id>/')
-def devices(process = "", id = ""):
-
-    if process == 'edit':
-        if id != '':
-            return render_template('panel/device_edit.html', deviceID=id, basic = renderHelper.basic)
-        else:
-            return render_template('panel/devices.html', basic = renderHelper.basic)
-    elif process == 'assistant':
-        return render_template('panel/device_assistant.html', basic = renderHelper.basic)
-    else:
-        return render_template('panel/devices.html', basic = renderHelper.basic)
-
-@app.route('/rules')
-@app.route('/rules/')
-@app.route('/rules/<process>/')
-@app.route('/rules/<process>/')
-@app.route('/rules/<process>/<id>')
-@app.route('/rules/<process>/<id>/')
-def rules(process = "", id = -1):
-
-    if process == 'edit':
-            return render_template('panel/rule_edit.html', ruleID=id, basic = renderHelper.basic)
-    elif process == 'json':
-            return render_template('panel/rule_json.html', ruleID=id, basic = renderHelper.basic)
-    else:
-        return render_template('panel/rules.html', basic = renderHelper.basic)
-
 @app.route('/tasks')
 @app.route('/tasks/')
 @app.route('/tasks/<process>/')
@@ -104,20 +57,6 @@ def tasks(process = "", id = -1):
             return render_template('panel/task_json.html', taskID=id, basic = renderHelper.basic)
     else:
         return render_template('panel/tasks.html', basic = renderHelper.basic)
-
-@app.route('/settings')
-@app.route('/settings/')
-@app.route('/settings/<msg>/')
-def settings(msg = ''):
-
-    if msg == 'ok':
-        msg = 'Saved correctly'
-    elif 'fail' in msg:
-        msg = msg.split(':')[1]
-    else:
-        msg = 'none'
-
-    return render_template('panel/settings.html', msg=msg, basic = renderHelper.basic)
 
 @app.route('/assistant')
 @app.route('/assistant/')
@@ -454,6 +393,12 @@ def front(operation = "", segment = "", value = ''):
                             'status': 'Success',
                             'code': 200
                         }
+                elif operation == 'setAssistantDone':
+                    hData.setAssistantDone()
+                    responseData = {
+                        'status': 'Success',
+                        'code': 200
+                    }
             else:
                 hData.log('Alert', 'Request to API > domain endpoint. The domain was configured in the past')
                 responseData = {

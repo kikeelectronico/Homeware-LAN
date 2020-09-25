@@ -361,7 +361,7 @@ class Data:
             self.redis.set('secure',json.dumps(secure))
             return 'Saved correctly!'
         else:
-            return 'Your user has beed set in the past'
+            return 'Your user has been set in the past'
 
     def setDomain(self, value):
         secure = json.loads(self.redis.get('secure'))
