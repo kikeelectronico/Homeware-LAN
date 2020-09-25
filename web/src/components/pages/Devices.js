@@ -158,10 +158,6 @@ class Devices extends React.Component {
         return <Blender key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
       else
         return <Global key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
-
-
-      return false
-
     });
 
     return (
