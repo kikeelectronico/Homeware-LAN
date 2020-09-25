@@ -1,9 +1,8 @@
 import React from 'react';
-import OnOff from './traits/OnOff'
 import Information from './aux/Information'
 import Edit from './aux/Edit'
 
-class Light extends React.Component {
+class Global extends React.Component {
 
   render() {
 
@@ -11,20 +10,13 @@ class Light extends React.Component {
       paddingLeft: '50px'
     }
 
-    var color = 'yellow';
-    if (this.props.device.traits.includes("action.devices.traits.ColorSetting")){
-      if (Object.keys(this.props.status.color).includes("spectrumRgb"))
-        color = "#" + this.props.status.color.spectrumRgb.toString(16);
-      else
-        color = "#" + this.props.status.color.spectrumRGB.toString(16);
-    }
+    var color = 'white';
 
     const color_strip = {
       width: '100%',
       height: '20px',
       borderRadius: '20px 20px 0px 0px',
-      backgroundColor: color,
-      opacity: this.props.status.on ? '1' : '0.4'
+      backgroundColor: color
     }
 
     const title = {
@@ -43,7 +35,6 @@ class Light extends React.Component {
           <h2 style={ title }>{ this.props.device.name.name }</h2>
           <hr style={ devider }/>
           <div style={traits_container}>
-            <OnOff id={ this.props.device.id } on={ this.props.status.on } reload={ this.props.reload }/>
             <Information id={ this.props.device.id }/>
             <Edit id={ this.props.device.id }/>
           </div>
@@ -53,4 +44,4 @@ class Light extends React.Component {
   }
 }
 
-export default Light
+export default Global

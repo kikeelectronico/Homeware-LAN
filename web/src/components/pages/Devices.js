@@ -29,6 +29,7 @@ import Heater from '../devices/Heater'
 import Hood from '../devices/Hood'
 import SecuritySystem from '../devices/SecuritySystem'
 import Blender from '../devices/Blender'
+import Global from '../devices/Global'
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
@@ -155,6 +156,9 @@ class Devices extends React.Component {
         return <SecuritySystem key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
       else if(device.type === 'action.devices.types.BLENDER')
         return <Blender key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else
+        return <Global key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+
 
       return false
 

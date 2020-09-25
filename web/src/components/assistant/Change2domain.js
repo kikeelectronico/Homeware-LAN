@@ -12,15 +12,30 @@ class Change2domain extends React.Component {
   }
 
   set() {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
-      console.log(xmlHttp.responseText)
-    }
+    var http = new XMLHttpRequest();
+    http.onreadystatechange = function() {
+      console.log(http.status)
+      if (http.status === 200) {
+        var data = JSON.parse(http.responseText);
+        console.log(data);
+        if (data.code == 200 )
+          window.location.href = 'http://' + document.getElementById('domain').value + '/assistant/changed2domain/';
+        else
+          this.setState({
+            enable_message: true,
+            message: data.error
+          });
+      } else {
+        console.error(http.statusText);
+        this.setState({
+          enable_message: true,
+          message: 'Some error has occurred'
+        });
+      }
+    }.bind(this);
     var url = 'http://' + window.location.hostname + ':5001/api/settings/domain/' + document.getElementById('domain').value;
-    xmlHttp.open( "GET", url, true );
-    xmlHttp.send( null );
-
-    window.location.href = 'http://' + document.getElementById('domain').value + '/assistant/changed2domain/';
+    http.open( "GET", url, true );
+    http.send( null );
   }
 
   render() {

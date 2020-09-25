@@ -36,54 +36,12 @@ def runapp():
 
 ########################### APP ###########################
 
+
 @app.route('/robots.txt')
 @app.route('/Robots.txt')
 def robots():
     response = "User-agent: *\nDisallow: /";
     return Response(response, mimetype='text/txt')
-
-
-@app.route('/tasks')
-@app.route('/tasks/')
-@app.route('/tasks/<process>/')
-@app.route('/tasks/<process>/')
-@app.route('/tasks/<process>/<id>')
-@app.route('/tasks/<process>/<id>/')
-def tasks(process = "", id = -1):
-
-    if process == 'edit':
-            return render_template('panel/task_edit.html', taskID=id, basic = renderHelper.basic)
-    elif process == 'json':
-            return render_template('panel/task_json.html', taskID=id, basic = renderHelper.basic)
-    else:
-        return render_template('panel/tasks.html', basic = renderHelper.basic)
-
-@app.route('/assistant')
-@app.route('/assistant/')
-@app.route('/assistant/<step>')
-@app.route('/assistant/<step>/')
-def assistant(step = 'welcome'):
-
-    steps = {
-        'welcome': 'user',
-        'user': 'domain',
-        'domain': 'confignginx',
-        'confignginx': 'change2domain',
-        'change2domain': 'changed2domain',
-        'changed2domain': 'ssl',
-        'ssl': 'google',
-        'google': 'initialize',
-        'initialize': ''
-    }
-    if step == 'initialize':
-        hData.setAssistantDone()
-        hData.log('Log', 'Assistant initialized')
-
-    if not hData.getAssistantDone():
-        return render_template('assistant/step_' + step + '.html', step=step, next=steps[step])
-    else:
-        return redirect("/", code=302)
-
 
 ########################### API ###########################
 @app.route('/test')
@@ -379,28 +337,36 @@ def front(operation = "", segment = "", value = ''):
                         'code': 400,
                         'note': 'See the documentation'
                     }
-            elif accessLevel >= 0 and not hData.getAssistantDone():
-                if operation == 'domain':
-                    if value == '':
-                        responseData = {
-                            'error': 'A domain must be given',
-                            'code': 400,
-                            'note': 'See the documentation'
-                        }
-                    else:
-                        hData.setDomain(value)
+            elif accessLevel >= 0:
+                if not hData.getAssistantDone():
+                    if operation == 'domain':
+                        if value == '':
+                            responseData = {
+                                'error': 'A domain must be given',
+                                'code': 400,
+                                'note': 'See the documentation'
+                            }
+                        else:
+                            hData.setDomain(value)
+                            responseData = {
+                                'status': 'Success',
+                                'code': 200
+                            }
+                    elif operation == 'setAssistantDone':
+                        hData.setAssistantDone()
                         responseData = {
                             'status': 'Success',
                             'code': 200
                         }
-                elif operation == 'setAssistantDone':
-                    hData.setAssistantDone()
+                else:
+                    hData.log('Alert', 'Request to API > assistant endpoint. The assistant was configured in the past')
                     responseData = {
-                        'status': 'Success',
-                        'code': 200
+                        'error': 'The assistant was configured in the past',
+                        'code': 401,
+                        'note': 'See the documentation'
                     }
             else:
-                hData.log('Alert', 'Request to API > domain endpoint. The domain was configured in the past')
+                hData.log('Alert', 'Request to API > assistant endpoint. The assistant was configured in the past')
                 responseData = {
                     'error': 'Bad authentication',
                     'code': 401,
