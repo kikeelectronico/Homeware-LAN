@@ -604,6 +604,9 @@ def token():
     token = hData.getToken(agent)
     obj = {}
     #Verify the code
+    print(code)
+    print(grantType)
+    print(token[grantType]['value'])
     if code == token[grantType]['value']:
         #Tokens lifetime
         secondsInDay = 86400;
