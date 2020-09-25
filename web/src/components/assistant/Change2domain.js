@@ -18,7 +18,7 @@ class Change2domain extends React.Component {
       if (http.status === 200) {
         var data = JSON.parse(http.responseText);
         console.log(data);
-        if (data.code == 200 )
+        if (data.code === 200 )
           window.location.href = 'http://' + document.getElementById('domain').value + '/assistant/changed2domain/';
         else
           this.setState({
