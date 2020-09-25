@@ -571,9 +571,8 @@ def auth():
         #Compose the response URL
         global responseURL
         responseURL = responseURI + '?code=' + str(code) + '&state=' +  state
-        # return render_template('panel/googleSync.html')
-        # return redirect("/login/google/", code=302)
-        return '<a href="' + responseURL + '">enlace</a>'
+        return redirect("/login/google/", code=302)
+        # return '<a href="' + responseURL + '">enlace</a>'
     else:
         hData.log('Alert', 'Unauthorized try to link a Google Account. Verify the client id and client secret')
         return 'Algo ha ido mal en la autorización'
@@ -604,9 +603,6 @@ def token():
     token = hData.getToken(agent)
     obj = {}
     #Verify the code
-    print(code)
-    print(grantType)
-    print(token[grantType]['value'])
     if code == token[grantType]['value']:
         #Tokens lifetime
         secondsInDay = 86400;
@@ -630,7 +626,6 @@ def token():
             status=200,
             mimetype='application/json'
         )
-        print(obj)
         hData.log('Warning', 'New token has been created for ' + agent)
         return response
     else:
