@@ -145,58 +145,58 @@ class Settings extends React.Component {
           <h2>Actions on Google</h2>
           <hr/>
           <div style={sub_container}>
-            <div className="table_row">
-              <div className="table_cel">
+            <div className="settings_table_row">
+              <div className="settings_table_cel">
                 Client ID
               </div>
-              <div className="table_cel">
-                <input type="text" id="google/client_id" defaultValue={this.state.settings.google.client_id} onChange={this.update}/>
+              <div className="settings_table_cel">
+                <input type="text" className="settings_input" id="google/client_id" defaultValue={this.state.settings.google.client_id} onChange={this.update}/>
               </div>
-              <div className="table_cel">
+              <div className="settings_table_cel">
                 <span className="advise"></span>
               </div>
             </div>
-            <div className="table_row">
-              <div className="table_cel">
+            <div className="settings_table_row">
+              <div className="settings_table_cel">
                 Client Secret
               </div>
-              <div className="table_cel">
-                <input type="text" id="google/client_secret" defaultValue={this.state.settings.google.client_secret} onChange={this.update}/>
+              <div className="settings_table_cel">
+                <input type="text" className="settings_input" id="google/client_secret" defaultValue={this.state.settings.google.client_secret} onChange={this.update}/>
               </div>
-              <div className="table_cel">
+              <div className="settings_table_cel">
                 <span className="advise"></span>
               </div>
             </div>
-            <div className="table_row">
-              <div className="table_cel">
+            <div className="settings_table_row">
+              <div className="settings_table_cel">
                 Authorization URL
               </div>
-              <div className="table_cel">
-                <input type="text" defaultValue={this.state.url.auth} disabled/>
+              <div className="settings_table_cel">
+                <input type="text" className="settings_input" defaultValue={this.state.url.auth} disabled/>
               </div>
-              <div className="table_cel">
+              <div className="settings_table_cel">
                 <span className="advise"></span>
               </div>
             </div>
-            <div className="table_row">
-              <div className="table_cel">
+            <div className="settings_table_row">
+              <div className="settings_table_cel">
                 Token URL
               </div>
-              <div className="table_cel">
-                <input type="text" defaultValue={this.state.url.token} disabled/>
+              <div className="settings_table_cel">
+                <input type="text" className="settings_input" defaultValue={this.state.url.token} disabled/>
               </div>
-              <div className="table_cel">
+              <div className="settings_table_cel">
                 <span className="advise"></span>
               </div>
             </div>
-            <div className="table_row">
-              <div className="table_cel">
+            <div className="settings_table_row">
+              <div className="settings_table_cel">
                 Fulfillment URL
               </div>
-              <div className="table_cel">
-                <input type="text" defaultValue={this.state.url.fulfillment} disabled/>
+              <div className="settings_table_cel">
+                <input type="text" className="settings_input" defaultValue={this.state.url.fulfillment} disabled/>
               </div>
-              <div className="table_cel">
+              <div className="settings_table_cel">
                 <span className="advise"></span>
               </div>
             </div>
@@ -215,26 +215,20 @@ class Settings extends React.Component {
           <h2>MQTT</h2>
           <hr/>
           <div style={sub_container}>
-              <div className="table_row">
-                <div className="table_cel">
+              <div className="settings_table_row">
+                <div className="settings_table_cel">
                   User
                 </div>
-                <div className="table_cel">
-                  <input type="text" id="mqtt/user" defaultValue={this.state.settings.mqtt.user} onChange={this.update}/>
-                </div>
-                <div className="table_cel">
-                  <span className="advise"></span>
+                <div className="settings_table_cel">
+                  <input type="text" className="settings_input" id="mqtt/user" defaultValue={this.state.settings.mqtt.user} onChange={this.update}/>
                 </div>
               </div>
-              <div className="table_row">
-                <div className="table_cel">
+              <div className="settings_table_row">
+                <div className="settings_table_cel">
                   Password
                 </div>
-                <div className="table_cel">
-                  <input type="text" id="mqtt/password" defaultValue={this.state.settings.mqtt.password} onChange={this.update}/>
-                </div>
-                <div className="table_cel">
-                  <span className="advise"></span>
+                <div className="settings_table_cel">
+                  <input type="text" className="settings_input" id="mqtt/password" defaultValue={this.state.settings.mqtt.password} onChange={this.update}/>
                 </div>
               </div>
           </div>
@@ -251,61 +245,46 @@ class Settings extends React.Component {
           <h2>DDNS provider</h2>
           <hr/>
           <div style={sub_container}>
-              <div className="table_row">
-                <div className="table_cel">
+              <div className="settings_table_row">
+                <div className="settings_table_cel">
                   Enable
                 </div>
-                <div className="table_cel">
+                <div className="settings_table_cel">
                   <input type="checkbox" id="ddns/enabled" defaultChecked={this.state.settings.ddns.enabled} onChange={this.updateCheckbox}/>
                 </div>
-                <div className="table_cel">
-                  <span className="advise"></span>
-                </div>
               </div>
-              <div className="table_row">
-                <div className="table_cel">
+              <div className="settings_table_row">
+                <div className="settings_table_cel">
                   Provider
                 </div>
-                <div className="table_cel">
-                  <select name="type" id="ddns/provider" className="table_input" value={this.state.settings.ddns.provider} onChange={this.update}>
+                <div className="settings_table_cel">
+                  <select name="type" className="settings_select" id="ddns/provider" value={this.state.settings.ddns.provider} onChange={this.update}>
                     <option value="noip">Noip</option>
                   </select>
                 </div>
-                <div className="table_cel">
-                  <span className="advise"></span>
-                </div>
               </div>
-              <div className="table_row">
-                <div className="table_cel">
+              <div className="settings_table_row">
+                <div className="settings_table_cel">
                   Username
                 </div>
-                <div className="table_cel">
-                  <input type="text" id="ddns/username" defaultValue={this.state.settings.ddns.username} onChange={this.update}/>
-                </div>
-                <div className="table_cel">
-                  <span className="advise"></span>
+                <div className="settings_table_cel">
+                  <input type="text" className="settings_input" id="ddns/username" defaultValue={this.state.settings.ddns.username} onChange={this.update}/>
                 </div>
               </div>
-              <div className="table_row">
-                <div className="table_cel">
+              <div className="settings_table_row">
+                <div className="settings_table_cel">
                   Password
                 </div>
-                <div className="table_cel">
-                  <input type="text" id="ddns/password" defaultValue={this.state.settings.ddns.password} onChange={this.update}/>
-                </div>
-                <div className="table_cel">
-                  <span className="advise"></span>
+                <div className="settings_table_cel">
+                  <input type="text" className="settings_input" id="ddns/password" defaultValue={this.state.settings.ddns.password} onChange={this.update}/>
                 </div>
               </div>
-              <div className="table_row">
-                <div className="table_cel">
+              <div className="settings_table_row">
+                <div className="settings_table_cel">
                   Hostname
                 </div>
-                <div className="table_cel">
-                  <input type="text" id="ddns/hostname" defaultValue={this.state.settings.ddns.hostname} onChange={this.update}/>
-                </div>
-                <div className="table_cel">
-                  <span className="advise"></span>
+                <div className="settings_table_cel">
+                  <input type="text" className="settings_input" id="ddns/hostname" defaultValue={this.state.settings.ddns.hostname} onChange={this.update}/>
                 </div>
               </div>
           </div>

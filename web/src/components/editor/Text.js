@@ -1,5 +1,7 @@
 import React from 'react';
 
+import '../pages/Editor.css';
+
 class Text extends React.Component {
   constructor(props) {
     super(props);

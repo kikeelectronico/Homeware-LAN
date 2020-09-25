@@ -20,6 +20,7 @@
     position: relative;
   }
 }
+
 @media only screen and (max-width: 800px) {
   .App {
     text-align: center;
