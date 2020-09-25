@@ -1,5 +1,6 @@
 import os
 from flask import Flask, request, render_template, redirect, send_file, url_for, Response
+from flask_cors import CORS
 import requests
 from base64 import b64encode
 import json
@@ -17,6 +18,7 @@ ALLOWED_EXTENSIONS = {'json'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 #Global variables
 deviceAliveTimeout = 20000
@@ -34,115 +36,12 @@ def runapp():
 
 ########################### APP ###########################
 
+
 @app.route('/robots.txt')
 @app.route('/Robots.txt')
 def robots():
     response = "User-agent: *\nDisallow: /";
     return Response(response, mimetype='text/txt')
-
-
-
-@app.route('/login')
-@app.route('/login/')
-def login():
-    return render_template('panel/login.html')
-
-@app.route('/')
-def index():
-    if not hData.getAssistantDone():
-        return redirect("/assistant/", code=302)
-    else:
-        return render_template('panel/index.html', basic = renderHelper.basic)
-
-
-@app.route('/devices')
-@app.route('/devices/')
-@app.route('/devices/<process>/')
-@app.route('/devices/<process>/')
-@app.route('/devices/<process>/<id>')
-@app.route('/devices/<process>/<id>/')
-def devices(process = "", id = ""):
-
-    if process == 'edit':
-        if id != '':
-            return render_template('panel/device_edit.html', deviceID=id, basic = renderHelper.basic)
-        else:
-            return render_template('panel/devices.html', basic = renderHelper.basic)
-    elif process == 'assistant':
-        return render_template('panel/device_assistant.html', basic = renderHelper.basic)
-    else:
-        return render_template('panel/devices.html', basic = renderHelper.basic)
-
-@app.route('/rules')
-@app.route('/rules/')
-@app.route('/rules/<process>/')
-@app.route('/rules/<process>/')
-@app.route('/rules/<process>/<id>')
-@app.route('/rules/<process>/<id>/')
-def rules(process = "", id = -1):
-
-    if process == 'edit':
-            return render_template('panel/rule_edit.html', ruleID=id, basic = renderHelper.basic)
-    elif process == 'json':
-            return render_template('panel/rule_json.html', ruleID=id, basic = renderHelper.basic)
-    else:
-        return render_template('panel/rules.html', basic = renderHelper.basic)
-
-@app.route('/tasks')
-@app.route('/tasks/')
-@app.route('/tasks/<process>/')
-@app.route('/tasks/<process>/')
-@app.route('/tasks/<process>/<id>')
-@app.route('/tasks/<process>/<id>/')
-def tasks(process = "", id = -1):
-
-    if process == 'edit':
-            return render_template('panel/task_edit.html', taskID=id, basic = renderHelper.basic)
-    elif process == 'json':
-            return render_template('panel/task_json.html', taskID=id, basic = renderHelper.basic)
-    else:
-        return render_template('panel/tasks.html', basic = renderHelper.basic)
-
-@app.route('/settings')
-@app.route('/settings/')
-@app.route('/settings/<msg>/')
-def settings(msg = ''):
-
-    if msg == 'ok':
-        msg = 'Saved correctly'
-    elif 'fail' in msg:
-        msg = msg.split(':')[1]
-    else:
-        msg = 'none'
-
-    return render_template('panel/settings.html', msg=msg, basic = renderHelper.basic)
-
-@app.route('/assistant')
-@app.route('/assistant/')
-@app.route('/assistant/<step>')
-@app.route('/assistant/<step>/')
-def assistant(step = 'welcome'):
-
-    steps = {
-        'welcome': 'user',
-        'user': 'domain',
-        'domain': 'confignginx',
-        'confignginx': 'change2domain',
-        'change2domain': 'changed2domain',
-        'changed2domain': 'ssl',
-        'ssl': 'google',
-        'google': 'initialize',
-        'initialize': ''
-    }
-    if step == 'initialize':
-        hData.setAssistantDone()
-        hData.log('Log', 'Assistant initialized')
-
-    if not hData.getAssistantDone():
-        return render_template('assistant/step_' + step + '.html', step=step, next=steps[step])
-    else:
-        return redirect("/", code=302)
-
 
 ########################### API ###########################
 @app.route('/test')
@@ -438,22 +337,36 @@ def front(operation = "", segment = "", value = ''):
                         'code': 400,
                         'note': 'See the documentation'
                     }
-            elif accessLevel >= 0 and not hData.getAssistantDone():
-                if operation == 'domain':
-                    if value == '':
-                        responseData = {
-                            'error': 'A domain must be given',
-                            'code': 400,
-                            'note': 'See the documentation'
-                        }
-                    else:
-                        hData.setDomain(value)
+            elif accessLevel >= 0:
+                if not hData.getAssistantDone():
+                    if operation == 'domain':
+                        if value == '':
+                            responseData = {
+                                'error': 'A domain must be given',
+                                'code': 400,
+                                'note': 'See the documentation'
+                            }
+                        else:
+                            hData.setDomain(value)
+                            responseData = {
+                                'status': 'Success',
+                                'code': 200
+                            }
+                    elif operation == 'setAssistantDone':
+                        hData.setAssistantDone()
                         responseData = {
                             'status': 'Success',
                             'code': 200
                         }
+                else:
+                    hData.log('Alert', 'Request to API > assistant endpoint. The assistant was configured in the past')
+                    responseData = {
+                        'error': 'The assistant was configured in the past',
+                        'code': 401,
+                        'note': 'See the documentation'
+                    }
             else:
-                hData.log('Alert', 'Request to API > domain endpoint. The domain was configured in the past')
+                hData.log('Alert', 'Request to API > assistant endpoint. The assistant was configured in the past')
                 responseData = {
                     'error': 'Bad authentication',
                     'code': 401,
@@ -483,15 +396,18 @@ def front(operation = "", segment = "", value = ''):
                     responseData = {
                         'api': {
                             'enable': True,
-                            'status': 'Running'
+                            'status': 'Running',
+                            'title': 'Homeware API'
                         },
                         'mqtt': {
                             'enable': True,
-                            'status': 'Stoped'
+                            'status': 'Stopped',
+                            'title': 'Homeware MQTT'
                         },
                         'tasks': {
                             'enable': True,
-                            'status': 'Stoped'
+                            'status': 'Stopped',
+                            'title': 'Homeware Task'
                         },
                         'redis': hData.redisStatus()
                     }
@@ -515,6 +431,22 @@ def front(operation = "", segment = "", value = ''):
                     }
             else:
                 hData.log('Alert', 'Request to API > system endpoint with bad authentication')
+                responseData = {
+                    'error': 'Bad authentication',
+                    'code': 401,
+                    'note': 'See the documentation'
+                }
+        elif segment == 'access':
+            if accessLevel >= 100:
+                if operation == 'update':
+                    print('update')
+                    # incommingData = request.get_json()
+                    # hData.updateSecure(incommingData)
+                    # responseData = hData.getSecure()
+                elif operation == 'get':
+                    responseData = hData.getAccess()
+            else:
+                hData.log('Alert', 'Request to API > access endpoint.')
                 responseData = {
                     'error': 'Bad authentication',
                     'code': 401,
@@ -569,20 +501,31 @@ def files(operation = '', file = '', token = ''):
                conditional = False)
             hData.log('Warning', 'A backup file has been downloaded')
             return result
+        elif operation == 'log':
+            # Download file
+            now = datetime.now()
+            date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
+            result = send_file('homeware.log',
+               mimetype = "text/plain", # use appropriate type based on file
+               attachment_filename = 'homeware_' + str(date_time) + '.log',
+               as_attachment = True,
+               conditional = False)
+            hData.log('Warning', 'The log file has been downloaded')
+            return result
         elif operation == 'restore':
             if request.method == 'POST':
                 if 'file' not in request.files:
-                    return redirect('/settings/fail:No file selected/')
+                    return redirect('/backup/fail:No file selected/')
                 file = request.files['file']
                 if file.filename == '':
-                    return redirect('/settings/fail:Incorrect file name/')
+                    return redirect('/backup/fail:Incorrect file name/')
                 if file and allowed_file(file.filename):
                     filename = file.filename
                     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                     subprocess.run(["mv", file.filename, "homeware.json"],  stdout=subprocess.PIPE)
                     hData.load()
                     hData.log('Warning', 'A backup file has been restored')
-                    return redirect('/settings/ok/')
+                    return redirect('/backup/ok/')
         else:
             return 'Operation unknown'
     else:
@@ -631,7 +574,8 @@ def auth():
         #Compose the response URL
         global responseURL
         responseURL = responseURI + '?code=' + str(code) + '&state=' +  state
-        return render_template('panel/googleSync.html')
+        # return render_template('panel/googleSync.html')
+        return redirect("/login/google/", code=302)
     else:
         hData.log('Alert', 'Unauthorized try to link a Google Account. Verify the client id and client secret')
         return 'Algo ha ido mal en la autorización'
