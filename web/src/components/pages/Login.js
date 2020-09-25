@@ -4,13 +4,17 @@ import { root } from '../../constants'
 class Login extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      enable_message: false,
+      message: ''
+    }
     this.login = this.login.bind(this);
     this.grantAccess = this.grantAccess.bind(this);
   }
 
   login() {
     var http = new XMLHttpRequest();
-    http.addEventListener("load", function(){
+    http.onload = function (e) {
       var response = JSON.parse(http.responseText);
       console.log(response)
       if(response['status'] === 'in'){
@@ -18,9 +22,17 @@ class Login extends React.Component {
         document.cookie = "token=" + response['token'] + "; path=/";
         window.location = '/';
       } else if (response['status'] === 'fail'){
-        alert('Login has failed');
+        this.setState({
+          enable_message: true,
+          message: 'Incorrect User or Password'
+        })
+        setTimeout(function(){
+          this.setState({
+             enable_message: false
+           });
+        }.bind(this), 5000)
       }
-    });
+    }.bind(this);
     http.open("GET", root + "api/user/login/");
     http.setRequestHeader('user', document.getElementById('user').value)
     http.setRequestHeader('pass', document.getElementById('password').value)
@@ -29,14 +41,22 @@ class Login extends React.Component {
 
   grantAccess() {
     var http = new XMLHttpRequest();
-    http.addEventListener("load", function(){
+    http.onload = function (e) {
       if (http.responseText !== 'fail')
         window.location = http.responseText;
       else {
-        alert('Incorrect User or Password');
+        this.setState({
+          enable_message: true,
+          message: 'Incorrect User or Password'
+        })
+        setTimeout(function(){
+          this.setState({
+             enable_message: false
+           });
+        }.bind(this), 5000)
       }
-    });
-    http.open("GET", "/api/user/googleSync/");
+    }.bind(this);
+    http.open("GET", root + "api/user/googleSync/");
     http.setRequestHeader('user', document.getElementById('user').value)
     http.setRequestHeader('pass', document.getElementById('pass').value)
     http.send();
@@ -52,14 +72,22 @@ class Login extends React.Component {
       margin: '10px'
     }
 
+    var message = '';
+    if (this.state.enable_message){
+      message = <div className="alert_message"> { this.state.message } </div>
+    }
+
     return (
       <div style={ form_container }>
         { window.location.href.includes('google') ? <p>Google request access to Homeware-Lan</p> : '' }
+        <br/>
         <span style={ element }>Username</span>
         <input type="text" name="user" id="user"/>
         <span style={ element }>Password</span>
         <input type="password" name="password" id="password"/>
         <button type="button" style={ element } onClick={ !window.location.href.includes('google') ? this.login : this.grantAccess }>{ !window.location.href.includes('google') ? <span>Login</span> : <span>Grant access</span> }</button>
+        <br/>
+        { message }
       </div>
     );
   }

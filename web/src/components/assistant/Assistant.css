@@ -8,16 +8,6 @@
   text-align: left;
 }
 
-.alert_message {
-  width: 40%;
-  margin-left: 30%;
-  margin-bottom: 20px;
-  padding: 20px;
-  background-color: rgba(255,255,0,0.5);
-  color: black;
-  border-radius: 20px;
-}
-
 .code{
   margin: 20px;
   margin-top: 40px;

@@ -11,7 +11,6 @@ import paho.mqtt.publish as publish
 import subprocess
 
 from data import Data
-from renderHelper import RenderHelper
 
 UPLOAD_FOLDER = ''
 ALLOWED_EXTENSIONS = {'json'}
@@ -27,8 +26,6 @@ responseURL = ''
 #Init the data managment object
 hData = Data()
 
-#Init the RenderHelper
-renderHelper = RenderHelper()
 
 #app
 def runapp():
