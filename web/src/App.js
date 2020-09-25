@@ -120,18 +120,18 @@ class App extends React.Component {
             <div className="main-app">
               <div className="menu">
                 <div>
-                  <Menu image="/devices_icon.png" title="Devices" href="/devices"/>
-                  <Menu image="/tasks_icon.png" title="Tasks" href="/tasks"/>
-                  <Menu image="/settings_icon.png" title="Settings" href="/settings"/>
-                  <Menu image="/status_icon.png" title="System" href="/system"/>
-                  <Menu image="/backup_icon.png" title="Backup" href="/backup"/>
-                  <Menu image="/access_icon.png" title="Access" href="/access"/>
-                  <Menu image="/logs_icon.png" title="Logs" href="/logs"/>
+                  <Menu image="/menu/devices_icon.png" title="Devices" href="/devices"/>
+                  <Menu image="/menu/tasks_icon.png" title="Tasks" href="/tasks"/>
+                  <Menu image="/menu/settings_icon.png" title="Settings" href="/settings"/>
+                  <Menu image="/menu/status_icon.png" title="System" href="/system"/>
+                  <Menu image="/menu/backup_icon.png" title="Backup" href="/backup"/>
+                  <Menu image="/menu/access_icon.png" title="Access" href="/access"/>
+                  <Menu image="/menu/logs_icon.png" title="Logs" href="/logs"/>
                   <hr/>
-                  <Menu image="/repo_icon.png" title="Repo" href="/"/>
-                  <Menu image="/help_icon.png" title="How to" href="/"/>
+                  <Menu image="/menu/repo_icon.png" title="Repo" href="/"/>
+                  <Menu image="/menu/help_icon.png" title="How to" href="/"/>
                   <hr/>
-                  <Menu image="/logout_icon.png" title="Logout" exec={ this.logout }/>
+                  <Menu image="/menu/logout_icon.png" title="Logout" exec={ this.logout }/>
                 </div>
                 <div className="menu-data">
                   <p>Version: { this.state.version }</p>
