@@ -7,7 +7,7 @@ class Logs extends React.Component {
     super(props);
     this.state = {
       data: [],
-      page: 0
+      page: 1
     }
 
     this.previousPage = this.previousPage.bind(this);
@@ -33,7 +33,7 @@ class Logs extends React.Component {
   }
 
   previousPage() {
-    if (this.state.page > 0)
+    if (this.state.page > 1)
       this.setState({ page: this.state.page - 1 });
   }
 
@@ -86,10 +86,9 @@ class Logs extends React.Component {
       gridGap: '20px'
     }
 
-    const sus = this.state.page === 0 ? 0 : 1
-    const homeware_lan_log_data = this.state.data.reverse().slice(this.state.page * 10, this.state.page * 10 + 10 - sus);
-    const homeware_lan_log = homeware_lan_log_data.map((register) =>
-      <div style={ line } key={ register.time }>
+    const homeware_lan_log_data = this.state.data.reverse().slice(0, this.state.page * 10);
+    const homeware_lan_log = homeware_lan_log_data.map((register, i) =>
+      <div style={ line } key={ i }>
         { register.severity === 'Log' ? <b>{ register.severity }</b> : '' }
         { register.severity === 'Warning' ? <b style={ yellow }>{ register.severity }</b> : '' }
         { register.severity === 'Alert' ? <b style={ red }>{ register.severity }</b> : '' }
@@ -107,8 +106,7 @@ class Logs extends React.Component {
             { homeware_lan_log }
           </div>
           <div style={ button_container }>
-            <button type="button" onClick={ this.previousPage }>Previous page</button>
-            <button type="button" onClick={ this.nextPage }>Next page</button>
+            <button type="button" onClick={ this.nextPage }>Load more</button>
             <button type="button" onClick={ this.downloadLog }>Download</button>
           </div>
         </div>
