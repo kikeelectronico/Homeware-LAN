@@ -30,6 +30,7 @@ import Hood from '../devices/Hood'
 import SecuritySystem from '../devices/SecuritySystem'
 import Blender from '../devices/Blender'
 import Global from '../devices/Global'
+import Scene from '../devices/Scene'
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
@@ -156,6 +157,8 @@ class Devices extends React.Component {
         return <SecuritySystem key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
       else if(device.type === 'action.devices.types.BLENDER')
         return <Blender key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
+      else if(device.type === 'action.devices.types.SCENE')
+        return <Scene key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
       else
         return <Global key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
     });
@@ -163,7 +166,7 @@ class Devices extends React.Component {
     return (
       <div>
         <div style={ title }>
-          <h2>Devices</h2>
+          <h2>Devices and scences</h2>
         </div>
 
         <div className="devices_device_container">

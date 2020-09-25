@@ -34,7 +34,6 @@ const deviceReference = {
     ],
     "action.devices.types.BED": [
       "action.devices.traits.Modes",
-      "action.devices.traits.Scene",
       "action.devices.traits.Toggles"
     ],
     "action.devices.types.BLENDER": [
