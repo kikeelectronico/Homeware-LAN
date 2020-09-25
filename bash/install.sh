@@ -1,10 +1,10 @@
 #!/bin/bash
 
+echo "Installing Homeware-LAN and its dependencies.\r\n"
+
 sudo apt-get update
 sudo apt-get install python3-pip
-pip3 install flask
-pip3 install gunicorn
-pip3 install paho-mqtt
+pip3 install install -r requirements.txt
 sudo apt-get install nginx
 sudo apt-get install software-properties-common
 sudo apt-get install certbot python-certbot-nginx
@@ -27,17 +27,13 @@ cd redis-stable
 sudo make
 sudo make install
 
-#Get current sudo crontab
-sudo crontab -l > copy
-#Set the new cron job up
-echo "@reboot sudo systemctl start homeware" >> copy
-echo "@reboot sudo systemctl start homewareMQTT" >> copy
-echo "@reboot sudo systemctl start homewareTasks" >> copy
-echo "@reboot sudo systemctl start homewareRedis" >> copy
-#Save the cron file
-sudo crontab copy
-rm copy
+#Eneable the services
+sudo systemctl enable homewareMQTT
+sudo systemctl enable homewareTasks
+sudo systemctl enable homewareRedis
+sudo systemctl enable homeware
 
+#Start the services
 sudo systemctl start homewareMQTT
 sudo systemctl start homewareTasks
 sudo systemctl start homewareRedis

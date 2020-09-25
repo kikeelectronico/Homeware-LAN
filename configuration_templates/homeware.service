@@ -3,12 +3,9 @@ Description=Homeware LAN
 After=network-online.target
 
 [Service]
-ExecStart=sh /home/pi/Homeware-LAN/homeware.sh
-WorkingDirectory=/home/pi/Homeware-LAN/
-StandardOutput=inherit
-StandardError=inherit
+ExecStart=sh /usr/share/Homeware-LAN/homeware.sh
+WorkingDirectory=/usr/share/Homeware-LAN/
 Restart=always
-User=pi
 
 [Install]
 WantedBy=multi-user.target
