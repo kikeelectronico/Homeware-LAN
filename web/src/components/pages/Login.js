@@ -46,7 +46,7 @@ class Login extends React.Component {
         // window.location = http.responseText;
         this.setState({
           enable_message: true,
-          message: '<a href="' + http.responseText + '">' + http.responseText + '</a>'
+          message:http.responseText
         })
       else {
         this.setState({
