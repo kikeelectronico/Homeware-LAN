@@ -17,7 +17,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
 develop-eggs/
 dist/
 downloads/
@@ -145,8 +144,6 @@ dmypy.json
 # testing
 /coverage
 
-# production
-/build
 
 # misc
 .DS_Store
