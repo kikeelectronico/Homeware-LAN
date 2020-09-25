@@ -20,25 +20,14 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 #Global variables
-deviceAliveTimeout = 20000
 responseURL = ''
 
 #Init the data managment object
 hData = Data()
 
-
 #app
 def runapp():
     app.run(host='0.0.0.0', port=5001, debug=True)
-
-########################### APP ###########################
-
-
-@app.route('/robots.txt')
-@app.route('/Robots.txt')
-def robots():
-    response = "User-agent: *\nDisallow: /";
-    return Response(response, mimetype='text/txt')
 
 ########################### API ###########################
 @app.route('/test')
