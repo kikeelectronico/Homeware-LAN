@@ -341,10 +341,10 @@ class Editor extends React.Component {
             </div>
           </div>
           <Text name="Nick names*" data="nicknames" value={nicknames} update={this.updateNames}/>
-          <Text name="Hardware version" data="deviceInfo/hwVersion" value={this.state.device.deviceInfo.hwVersion} update={this.update}/>
-          <Text name="Software version" data="deviceInfo/swVersion" value={this.state.device.deviceInfo.swVersion} update={this.update}/>
-          <Text name="Manufacturer" data="deviceInfo/manufacturer" value={this.state.device.deviceInfo.manufacturer} update={this.update}/>
-          <Text name="Model" data="deviceInfo/model" value={this.state.device.deviceInfo.model} update={this.update}/>
+          <Text name="Hardware version" data="deviceInfo/hwVersion" value={this.state.device.deviceInfo ? this.state.device.deviceInfo.hwVersion : ''} update={this.update}/>
+          <Text name="Software version" data="deviceInfo/swVersion" value={this.state.device.deviceInfo ? this.state.device.deviceInfo.swVersion : ''} update={this.update}/>
+          <Text name="Manufacturer" data="deviceInfo/manufacturer" value={this.state.device.deviceInfo ? this.state.device.deviceInfo.manufacturer : ''} update={this.update}/>
+          <Text name="Model" data="deviceInfo/model" value={this.state.device.deviceInfo ? this.state.device.deviceInfo.model : ''} update={this.update}/>
           <div className="advise">
             <span>Nick names must be separeted by <i>,</i> commas.</span><br/>
             <span>* data is required.</span>
