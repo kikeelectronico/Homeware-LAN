@@ -1,4 +1,4 @@
-var root = window.location.href.includes('locahost') ? "/" : "http://homeware.local/"
+var root = window.location.href.includes('localhost') ? "http://homeware.local/" : "/"
 
 const deviceReference = {
   devices: {
