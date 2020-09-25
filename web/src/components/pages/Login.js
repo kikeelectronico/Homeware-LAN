@@ -58,7 +58,7 @@ class Login extends React.Component {
     }.bind(this);
     http.open("GET", root + "api/user/googleSync/");
     http.setRequestHeader('user', document.getElementById('user').value)
-    http.setRequestHeader('pass', document.getElementById('pass').value)
+    http.setRequestHeader('pass', document.getElementById('password').value)
     http.send();
   }
 
