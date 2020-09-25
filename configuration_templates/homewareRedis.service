@@ -4,8 +4,11 @@ After=network-online.target
 
 [Service]
 ExecStart=redis-server
-WorkingDirectory=/usr/share/Homeware-LAN/redis/redis-stable/
+WorkingDirectory=/home/pi/Homeware-LAN/redis/redis-stable/
+StandardOutput=inherit
+StandardError=inherit
 Restart=always
+User=pi
 
 [Install]
 WantedBy=multi-user.target

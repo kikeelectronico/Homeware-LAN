@@ -7,9 +7,6 @@ echo "The upgrader has started.\r\n"
 #Pull from the repository
 sudo git pull
 
-#Update Python modules
-pip3 install -r requirements.txt
-
 #Start services
 sudo systemctl restart homewareMQTT
 sudo systemctl restart homewareTasks
