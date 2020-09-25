@@ -33,7 +33,6 @@ class Settings extends React.Component {
         if (http.readyState === 4) {
           if (http.status === 200) {
             var data = JSON.parse(http.responseText);
-            console.log(data)
             this.setState({
                settings: data,
                url: {
@@ -65,7 +64,6 @@ class Settings extends React.Component {
     this.setState({
        settings: settings
      });
-     console.log(this.state.settings)
   }
 
   updateCheckbox(event){
@@ -80,7 +78,6 @@ class Settings extends React.Component {
     this.setState({
        settings: settings
      });
-     console.log(this.state.settings)
   }
 
   save(){
@@ -93,7 +90,6 @@ class Settings extends React.Component {
              save_status: "Saved correctly."
            });
         } else {
-          console.error(http.statusText);
           this.setState({
              save_status: "Error, the changes haven't been saved."
            });
@@ -215,22 +211,22 @@ class Settings extends React.Component {
           <h2>MQTT</h2>
           <hr/>
           <div style={sub_container}>
-              <div className="settings_table_row">
-                <div className="settings_table_cel">
-                  User
-                </div>
-                <div className="settings_table_cel">
-                  <input type="text" className="settings_input" id="mqtt/user" defaultValue={this.state.settings.mqtt.user} onChange={this.update}/>
-                </div>
+            <div className="settings_table_row">
+              <div className="settings_table_cel">
+                User
               </div>
-              <div className="settings_table_row">
-                <div className="settings_table_cel">
-                  Password
-                </div>
-                <div className="settings_table_cel">
-                  <input type="text" className="settings_input" id="mqtt/password" defaultValue={this.state.settings.mqtt.password} onChange={this.update}/>
-                </div>
+              <div className="settings_table_cel">
+                <input type="text" className="settings_input" id="mqtt/user" defaultValue={this.state.settings.mqtt.user} onChange={this.update}/>
               </div>
+            </div>
+            <div className="settings_table_row">
+              <div className="settings_table_cel">
+                Password
+              </div>
+              <div className="settings_table_cel">
+                <input type="text" className="settings_input" id="mqtt/password" defaultValue={this.state.settings.mqtt.password} onChange={this.update}/>
+              </div>
+            </div>
           </div>
           <div className="save_container">
             <button type="button" style={ button } onClick={ this.save }>Save</button>
@@ -245,48 +241,67 @@ class Settings extends React.Component {
           <h2>DDNS provider</h2>
           <hr/>
           <div style={sub_container}>
-              <div className="settings_table_row">
-                <div className="settings_table_cel">
-                  Enable
-                </div>
-                <div className="settings_table_cel">
-                  <input type="checkbox" id="ddns/enabled" defaultChecked={this.state.settings.ddns.enabled} onChange={this.updateCheckbox}/>
-                </div>
+            <div className="settings_table_row">
+              <div className="settings_table_cel">
+                Status:
               </div>
-              <div className="settings_table_row">
-                <div className="settings_table_cel">
-                  Provider
-                </div>
-                <div className="settings_table_cel">
-                  <select name="type" className="settings_select" id="ddns/provider" value={this.state.settings.ddns.provider} onChange={this.update}>
-                    <option value="noip">Noip</option>
-                  </select>
-                </div>
+              <div className="settings_table_cel">
+                { this.state.settings.ddns.status }
               </div>
-              <div className="settings_table_row">
-                <div className="settings_table_cel">
-                  Username
-                </div>
-                <div className="settings_table_cel">
-                  <input type="text" className="settings_input" id="ddns/username" defaultValue={this.state.settings.ddns.username} onChange={this.update}/>
-                </div>
+            </div>
+            <div className="settings_table_row">
+              <div className="settings_table_cel">
+                IP and time:
               </div>
-              <div className="settings_table_row">
-                <div className="settings_table_cel">
-                  Password
-                </div>
-                <div className="settings_table_cel">
-                  <input type="text" className="settings_input" id="ddns/password" defaultValue={this.state.settings.ddns.password} onChange={this.update}/>
-                </div>
+              <div className="settings_table_cel">
+                { this.state.settings.ddns.ip + " updated at " + this.state.settings.ddns.last}
               </div>
-              <div className="settings_table_row">
-                <div className="settings_table_cel">
-                  Hostname
-                </div>
-                <div className="settings_table_cel">
-                  <input type="text" className="settings_input" id="ddns/hostname" defaultValue={this.state.settings.ddns.hostname} onChange={this.update}/>
-                </div>
+            </div>
+          </div>
+          <hr/>
+          <div style={sub_container}>
+            <div className="settings_table_row">
+              <div className="settings_table_cel">
+                Enable
               </div>
+              <div className="settings_table_cel">
+                <input type="checkbox" id="ddns/enabled" defaultChecked={this.state.settings.ddns.enabled} onChange={this.updateCheckbox}/>
+              </div>
+            </div>
+            <div className="settings_table_row">
+              <div className="settings_table_cel">
+                Provider
+              </div>
+              <div className="settings_table_cel">
+                <select name="type" className="settings_select" id="ddns/provider" value={this.state.settings.ddns.provider} onChange={this.update}>
+                  <option value="noip">Noip</option>
+                </select>
+              </div>
+            </div>
+            <div className="settings_table_row">
+              <div className="settings_table_cel">
+                Username
+              </div>
+              <div className="settings_table_cel">
+                <input type="text" className="settings_input" id="ddns/username" defaultValue={this.state.settings.ddns.username} onChange={this.update}/>
+              </div>
+            </div>
+            <div className="settings_table_row">
+              <div className="settings_table_cel">
+                Password
+              </div>
+              <div className="settings_table_cel">
+                <input type="text" className="settings_input" id="ddns/password" defaultValue={this.state.settings.ddns.password} onChange={this.update}/>
+              </div>
+            </div>
+            <div className="settings_table_row">
+              <div className="settings_table_cel">
+                Hostname
+              </div>
+              <div className="settings_table_cel">
+                <input type="text" className="settings_input" id="ddns/hostname" defaultValue={this.state.settings.ddns.hostname} onChange={this.update}/>
+              </div>
+            </div>
           </div>
           <div className="save_container">
             <button type="button" style={ button } onClick={ this.save }>Save</button>
