@@ -17,6 +17,7 @@ import Initialize from './components/assistant/Initialize'
 import Menu from './components/web/Menu'
 import Devices from './components/pages/Devices'
 import Editor from './components/pages/Editor'
+import Info from './components/pages/Info'
 import Settings from './components/pages/Settings'
 import System from './components/pages/System'
 import Backup from './components/pages/Backup'
@@ -140,6 +141,7 @@ class App extends React.Component {
               <div className="page">
                 <Route exact={ true } path="/" component={ Devices }/>
                 <Route path="/devices/editor" component={ Editor }/>
+                <Route path="/devices/info" component={ Info }/>
                 <Route exact={ true } path="/devices" component={ Devices }/>
                 <Route path="/settings" component={ Settings }/>
                 <Route path="/system" component={ System }/>
