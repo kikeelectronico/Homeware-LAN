@@ -1,17 +1,14 @@
 import React from 'react';
 import ReactJson from 'react-json-view'
 import getCookieValue from '../../functions'
-import { root, deviceReference } from '../../constants'
+import { root } from '../../constants'
 
 class Editor extends React.Component {
   constructor(props) {
     super(props);
     const id = window.location.pathname.split('/')[3];
-    var create = false;
-    if (id === "") create = true;
     this.state = {
       id: id,
-      create: create,
       device: {
         attributes: {},
         deviceInfo: {},
@@ -26,32 +23,44 @@ class Editor extends React.Component {
       },
       status: {
         online: true
-      },
-      posible_traits: [],
-      save_status: ""
+      }
     }
   }
 
   componentDidMount() {
-    if (!this.state.create){
-      var http = new XMLHttpRequest();
-      http.onload = function (e) {
-        if (http.readyState === 4) {
-          if (http.status === 200) {
-            var data = JSON.parse(http.responseText);
-            this.setState({
-               device: data,
-               posible_traits: deviceReference.devices[data.type]
-             });
-          } else {
-            console.error(http.statusText);
-          }
+    var dev = new XMLHttpRequest();
+    dev.onload = function (e) {
+      if (dev.readyState === 4) {
+        if (dev.status === 200) {
+          var data = JSON.parse(dev.responseText);
+          this.setState({
+             device: data
+           });
+        } else {
+          console.error(dev.statusText);
         }
-      }.bind(this);
-      http.open("GET", root + "api/devices/get/" + this.state.id + "/");
-      http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-      http.send();
-    }
+      }
+    }.bind(this);
+    dev.open("GET", root + "api/devices/get/" + this.state.id + "/");
+    dev.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    dev.send();
+
+    var sta = new XMLHttpRequest();
+    sta.onload = function (e) {
+      if (sta.readyState === 4) {
+        if (sta.status === 200) {
+          var data = JSON.parse(sta.responseText);
+          this.setState({
+             status: data
+           });
+        } else {
+          console.error(sta.statusText);
+        }
+      }
+    }.bind(this);
+    sta.open("GET", root + "api/status/get/" + this.state.id + "/");
+    sta.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    sta.send();
   }
 
 
