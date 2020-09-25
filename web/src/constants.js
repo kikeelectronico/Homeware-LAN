@@ -1,4 +1,4 @@
-var root = "http://localhost:5001/"
+var root = "/"
 
 const deviceReference = {
   devices: {
