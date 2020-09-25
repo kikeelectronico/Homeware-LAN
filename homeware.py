@@ -630,6 +630,7 @@ def token():
             status=200,
             mimetype='application/json'
         )
+        print(obj)
         hData.log('Warning', 'New token has been created for ' + agent)
         return response
     else:
