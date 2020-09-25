@@ -655,8 +655,6 @@ def smarthome():
     #Get the access_token
     tokenClient = request.headers['authorization'].split(' ')[1]
     token = hData.getToken(agent)
-    print(token)
-    print(tokenClient)
     if tokenClient == token['access_token']['value']:
         #Anlalyze the inputs
         inputs = body['inputs']
