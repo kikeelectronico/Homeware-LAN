@@ -1,0 +1,52 @@
+@media only screen and (min-width: 800px) {
+  .tasks_container {
+    width: 80%;
+    margin: auto;
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 32%);
+    grid-gap: 20px;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .tasks_container {
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 100%);
+    grid-gap: 20px;
+  }
+}
+
+.task_page_title_container {
+  width: 80%;
+  margin-left: 8%;
+  background-color: white;
+  padding-top: 10px;
+  padding-left: 20px;
+  padding-bottom: 10px;
+  padding-right: 20px;
+  border-radius: 20px;
+}
+
+.tasks_buttons_containter {
+  width: 80%;
+  margin-left: 9%;
+  margin-top: 10px;
+}
+
+.task_card {
+  width: 100%;
+  height: 120px;
+  border-radius: 20px;
+  background-color: white;
+}
+
+.task_card_title {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-top: 20px;
+  cursor: pointer;
+}
