@@ -20,6 +20,7 @@ class System extends React.Component {
     }
 
     this.upgrade = this.upgrade.bind(this);
+    this.areYouAwake = this.areYouAwake.bind(this);
   }
 
   componentDidMount() {
@@ -97,17 +98,32 @@ class System extends React.Component {
       conn.onload = function (e) {
         if (conn.readyState === 4) {
           if (conn.status === 200) {
-            window.location.href = '/'
+            this.areYouAwake();
           } else {
             console.error(conn.statusText);
           }
         }
       }.bind(this)
-      // conn.open("GET", root + "api/system/upgrade/");
-      conn.open("GET", root + "api/");
+      conn.open("GET", root + "api/system/upgrade/");
       conn.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
       conn.send();
     }
+  }
+
+  areYouAwake(){
+    var conn = new XMLHttpRequest();
+    conn.onload = function (e) {
+      if (conn.readyState === 4) {
+        if (conn.status === 200) {
+          window.location.href = '/'
+        } else {
+          console.error(conn.statusText);
+        }
+      }
+    }.bind(this)
+    conn.open("GET", root + "test/");
+    conn.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    conn.send();
   }
 
   restart(){
