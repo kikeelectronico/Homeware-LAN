@@ -85,7 +85,7 @@ class System extends React.Component {
 
   upgrade(){
     if(window.confirm('Are you sure?')){
-      window.location = root + "files/buckup/homeware/" + getCookieValue('token')
+      window.open(root + "files/buckup/homeware/" + getCookieValue('token'))
 
       var conn = new XMLHttpRequest();
       conn.onload = function (e) {
