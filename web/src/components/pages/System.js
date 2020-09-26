@@ -86,20 +86,20 @@ class System extends React.Component {
   upgrade(){
     if(window.confirm('Are you sure?')){
       window.location = root + "files/buckup/homeware/" + getCookieValue('token')
-      //
-      // var conn = new XMLHttpRequest();
-      // conn.onload = function (e) {
-      //   if (conn.readyState === 4) {
-      //     if (conn.status === 200) {
-      //       window.location.href = "/upgrading"
-      //     } else {
-      //       console.error(conn.statusText);
-      //     }
-      //   }
-      // }
-      // conn.open("GET", root + "api/system/upgrade/");
-      // conn.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-      // conn.send();
+      
+      var conn = new XMLHttpRequest();
+      conn.onload = function (e) {
+        if (conn.readyState === 4) {
+          if (conn.status === 200) {
+            window.location.href = "/upgrading"
+          } else {
+            console.error(conn.statusText);
+          }
+        }
+      }
+      conn.open("GET", root + "api/system/upgrade/");
+      conn.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+      conn.send();
     }
   }
 
