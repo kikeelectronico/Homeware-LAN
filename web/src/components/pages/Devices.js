@@ -169,7 +169,7 @@ class Devices extends React.Component {
           <h2>Devices and scences</h2>
         </div>
 
-        <div className="devices_device_container">
+        <div className="devices_container">
           { devices }
         </div>
 

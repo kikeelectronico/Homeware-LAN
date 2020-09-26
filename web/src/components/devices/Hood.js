@@ -24,21 +24,12 @@ class Hood extends React.Component {
       opacity: this.props.status.on ? '1' : '0.4'
     }
 
-    const title = {
-      marginTop: '5px',
-      marginBottom: '5px'
-    }
-
-    const devider = {
-      width: '80%'
-    }
-
     return (
       <div>
-        <div className="device_container">
+        <div className="device_card">
           <div style={ color_strip }></div>
-          <h2 style={ title }>{ this.props.device.name.name }</h2>
-          <hr style={ devider }/>
+          <h2 className="device_card_title">{ this.props.device.name.name }</h2>
+          <hr className="device_card_divider"/>
           <div style={traits_container}>
             <OnOff id={ this.props.device.id } on={ this.props.status.on } reload={ this.props.reload }/>
             <Information id={ this.props.device.id }/>
