@@ -89,14 +89,15 @@ class System extends React.Component {
   upgrade(){
     if(window.confirm('Are you sure?')){
       window.open(root + "files/buckup/homeware/" + getCookieValue('token'))
+      this.setState({
+        upgrading: true
+      });
 
       var conn = new XMLHttpRequest();
       conn.onload = function (e) {
         if (conn.readyState === 4) {
           if (conn.status === 200) {
-            this.setState({
-              upgrading: true
-            });
+            window.location.href = '/'
           } else {
             console.error(conn.statusText);
           }
