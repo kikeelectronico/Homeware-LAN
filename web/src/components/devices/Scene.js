@@ -19,15 +19,6 @@ class Scene extends React.Component {
       backgroundColor: color
     }
 
-    const title = {
-      marginTop: '5px',
-      marginBottom: '5px'
-    }
-
-    const devider = {
-      width: '80%'
-    }
-
     return (
       <div>
         <div className="device_card">

@@ -17,15 +17,6 @@ class Window extends React.Component {
       backgroundColor: 'white',
     }
 
-    const title = {
-      marginTop: '5px',
-      marginBottom: '5px'
-    }
-
-    const devider = {
-      width: '80%'
-    }
-
     return (
       <div>
         <div className="device_card">

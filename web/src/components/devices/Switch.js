@@ -19,15 +19,6 @@ class Switch extends React.Component {
       opacity: this.props.status.on ? '1' : '0.4'
     }
 
-    const title = {
-      marginTop: '5px',
-      marginBottom: '5px'
-    }
-
-    const devider = {
-      width: '80%'
-    }
-
     return (
       <div>
         <div className="device_card">
