@@ -254,22 +254,6 @@ class Editor extends React.Component {
 
   render() {
 
-    const container = {
-      width: '80%',
-      marginLeft: '8%',
-      marginTop: '20px',
-      backgroundColor: 'white',
-      paddingTop: '10px',
-      paddingLeft: '20px',
-      paddingBottom: '20px',
-      paddingRight: '20px',
-      borderRadius: '20px'
-    }
-
-    const button = {
-      width: '200px'
-    }
-
     const deleteButton = {
       backgroundColor: 'red'
     }
@@ -277,10 +261,6 @@ class Editor extends React.Component {
     const deleteButtonDisabled = {
       backgroundColor: 'red',
       opacity: '0.2'
-    }
-
-    const separator = {
-      width: '70%'
     }
 
     const types = Object.keys(deviceReference.devicesCoolNames).map((type) => {
@@ -293,18 +273,18 @@ class Editor extends React.Component {
 
     const traits = this.state.posible_traits.map((trait) =>
       <div key={trait}>
-        <hr style={separator}/>
-        <div className="attribute_table_row">
-          <div className="attribute_table_cel">
+        <hr className="separator"/>
+        <div className="three_table_row">
+          <div className="three_table_cel">
             {deviceReference.traitsCoolNames[trait]}
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             <label>
               <input type="checkbox" id={trait} defaultChecked={this.state.device.traits.includes(trait)} onChange={this.updateTraits}/>
 
             </label>
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             Read Google's <a href={"https://developers.google.com/assistant/smarthome/traits/" + trait.split('.')[3].toLowerCase()} target="blanck">documentation</a>
           </div>
         </div>
@@ -315,26 +295,26 @@ class Editor extends React.Component {
     return (
       <div>
 
-        <div style={ container }>
+        <div className="page_block_container">
           <h2>Global settings</h2>
           <div className="advise">
             <span>General settings of the device.</span>
             <hr/>
           </div>
-          <div className="table_row">
-            <div className="table_cel">
+          <div className="two_table_row">
+            <div className="two_table_cel">
               Device ID*
             </div>
-            <div className="table_cel">
-              <input type="text" id="id" className="table_input" defaultValue={this.state.device.id} onChange={this.updateId} disabled={ this.state.create ? false : true }/>
+            <div className="two_table_cel">
+              <input type="text" className="two_input" id="id" defaultValue={this.state.device.id} onChange={this.updateId} disabled={ this.state.create ? false : true }/>
             </div>
           </div>
-          <div className="table_row">
-            <div className="table_cel">
+          <div className="two_table_row">
+            <div className="two_table_cel">
               Device Type*
             </div>
-            <div className="table_cel">
-              <select name="type" id="type" className="table_input" value={this.state.device.type} onChange={this.updateType} disabled={ this.state.create ? false : true }>
+            <div className="two_table_cel">
+              <select name="type" className="two_input" id="type" value={this.state.device.type} onChange={this.updateType} disabled={ this.state.create ? false : true }>
                 <option value="default">Select a device</option>
                 {types}
               </select>
@@ -356,7 +336,7 @@ class Editor extends React.Component {
           </div>
           {traits}
           <hr/>
-          <div className="table_cel">
+          <div className="two_table_cel">
             <button type="button" style={ this.state.create ? deleteButtonDisabled : deleteButton } onClick={ this.delete } disabled={ this.state.create ? true : false}>Delete</button>
             <button type="button" onClick={ this.save }>Save</button>
             <span>{this.state.save_status}</span>

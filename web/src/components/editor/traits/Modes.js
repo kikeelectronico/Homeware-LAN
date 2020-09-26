@@ -79,10 +79,10 @@ class Modes extends React.Component {
 
       return (
               <div key={i}>
-                <div className="table_row">
-                  <div className="table_cel">
+                <div className="two_table_row">
+                  <div className="two_table_cel">
                   </div>
-                  <div className="table_cel">
+                  <div className="two_table_cel">
                     <label>
                       <span>Languaje: </span>
                       <select name="type" id={"lang_" + i} value={mode.name_values[0].lang} onChange={this.updateMode}>
@@ -110,25 +110,25 @@ class Modes extends React.Component {
     return (
       <div>
 
-        <div className="attribute_table_row">
-          <div className="attribute_table_cel">
+        <div className="three_table_row">
+          <div className="three_table_cel">
 
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             <label>
               <input type="checkbox" id="commandOnlyModes" defaultChecked={this.props.attributes.reversible} onChange={this.updateCheckbox}/>
               <span className=""><i>commandOnlyModes</i></span>
             </label>
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the modes.</span>
           </div>
         </div>
 
-        <div className="attribute_table_row">
-          <div className="attribute_table_cel">
+        <div className="three_table_row">
+          <div className="three_table_cel">
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             Add a mode <button type="button" className="add_attribute_button" onClick={ this.addMode }>Add</button>
           </div>
 

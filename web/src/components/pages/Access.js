@@ -48,45 +48,24 @@ class Access extends React.Component {
 
   render() {
 
-    const container = {
-      width: '80%',
-      marginLeft: '8%',
-      backgroundColor: 'white',
-      paddingTop: '10px',
-      paddingLeft: '20px',
-      paddingBottom: '20px',
-      paddingRight: '20px',
-      borderRadius: '20px'
-    }
-
-    const form_container = {
-      width: '80%',
-      marginLeft: '10%',
-      marginTop: '20px',
-    }
-
-    const form_colum = {
-      width: '80%',
-      marginLeft: '10%',
-      marginTop: '20px'
-    }
-
-    const input = {
-      width: '100%'
-    }
-
     return (
       <div>
-        <div style={ container }>
+        <div className="page_block_container">
           <h2>API key</h2>
           <hr/>
-          <div style={form_container}>
-            <div style={form_colum}>
-              <input type="text" id="apikey" style={input} value={ this.state.data.apikey } disabled/>
+          <div className="page_block_content_container">
+            <div className="two_table_row">
+              <div className="two_table_cel">
+                API Key
+              </div>
+              <div className="two_table_cel">
+                <input type="text" className="two_input" id="apikey" value={ this.state.data.apikey } disabled/>
+              </div>
             </div>
-            <div style={form_colum}>
-              <button type="button" onClick={ this.generateAPIKey }>Generate</button>
-            </div>
+          </div>
+          <div className="page_block_buttons_container">
+            <button type="button" onClick={ this.generateAPIKey }>Generate</button>
+
           </div>
           <div className="advise">
             <span>The API Key gives you access to the Homeware's API. Please do not generate an API Key if you are not sure of what you are doing.</span>

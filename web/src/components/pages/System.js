@@ -86,7 +86,7 @@ class System extends React.Component {
   upgrade(){
     if(window.confirm('Are you sure?')){
       window.location = root + "files/buckup/homeware/" + getCookieValue('token')
-      
+
       var conn = new XMLHttpRequest();
       conn.onload = function (e) {
         if (conn.readyState === 4) {
@@ -117,34 +117,6 @@ class System extends React.Component {
 
   render() {
 
-    const container = {
-      width: '80%',
-      marginLeft: '8%',
-      marginTop: '20px',
-      backgroundColor: 'white',
-      paddingTop: '10px',
-      paddingLeft: '20px',
-      paddingBottom: '20px',
-      paddingRight: '20px',
-      borderRadius: '20px'
-    }
-
-    const data_container = {
-      width: '80%',
-      marginLeft: '10%',
-      marginTop: '20px',
-      fontSize: '18px',
-      textAlign: 'left'
-    }
-
-    const version_container = {
-      width: '80%',
-      marginTop: '10px',
-      marginLeft: '10%',
-      fontSize: '18px',
-      textAlign: 'left'
-    }
-
     const upgrade_button = {
       width: '200px'
     }
@@ -158,15 +130,6 @@ class System extends React.Component {
       paddingBottom: '20px',
       borderRadius: '20px',
       border: '1px solid #aaa'
-    }
-
-    const power_button_container = {
-      width: '80%',
-      marginTop: '10px',
-      marginLeft: '10%',
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fill, 200px)',
-      gridGap: '20px'
     }
 
     const components = this.state.components.map((component) =>
@@ -183,10 +146,10 @@ class System extends React.Component {
 
     return (
       <div>
-        <div style={ container }>
+        <div className="page_block_container">
           <h2>System status</h2>
           <hr/>
-          <div style={data_container}>
+          <div className="page_block_content_container">
             { components }
           </div>
           <div className="advise">
@@ -194,10 +157,10 @@ class System extends React.Component {
           </div>
         </div>
 
-        <div style={ container }>
+        <div className="page_block_container">
           <h2>Plugins</h2>
           <hr/>
-          <div style={data_container}>
+          <div className="page_block_content_container">
             WIP
           </div>
           <div className="advise">
@@ -205,10 +168,10 @@ class System extends React.Component {
           </div>
         </div>
 
-        <div style={ container }>
+        <div className="page_block_container">
           <h2>Version</h2>
           <hr/>
-          <div style={version_container}>
+          <div className="page_block_content_container">
             <b>System version:</b> { this.state.version }
             { upgrader }
           </div>
@@ -217,11 +180,11 @@ class System extends React.Component {
           </div>
         </div>
 
-        <div style={ container }>
+        <div className="page_block_container">
           <h2>Power</h2>
           <hr/>
-          <div style={ power_button_container }>
-            <button type="button" onClick={ this.restart }>Restart Homeware-LAN</button>
+          <div className="page_block_buttons_container">
+            <button type="button" onClick={ this.restart }>Restart Homeware</button>
             <button type="button" onClick={ this.reboot }>Reboot System</button>
             <button type="button" onClick={ this.shutdown }>Shutdown System</button>
           </div>

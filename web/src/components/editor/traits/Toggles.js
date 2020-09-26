@@ -50,10 +50,10 @@ class Toggles extends React.Component {
     const toggles = this.props.attributes.availableToggles.map((toggle, i) => {
       return (
               <div key={i}>
-                <div className="table_row">
-                  <div className="table_cel">
+                <div className="two_table_row">
+                  <div className="two_table_cel">
                   </div>
-                  <div className="table_cel">
+                  <div className="two_table_cel">
                     <label>
                       <span>Languaje: </span>
                       <select name="type" id={"lang_" + i} value={toggle.name_values[0].lang} placeholder="Name for the toggle" onChange={this.updatetoggle}>

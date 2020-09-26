@@ -68,10 +68,10 @@ class Cook extends React.Component {
 
       return (
               <div key={i}>
-                <div className="table_row">
-                  <div className="table_cel">
+                <div className="two_table_row">
+                  <div className="two_table_cel">
                   </div>
-                  <div className="table_cel">
+                  <div className="two_table_cel">
                     <label>
                       <span>Mode: </span>
                       <select name="type" id={"mode_" + i} value={mode} onChange={this.updateMode}>
@@ -115,10 +115,10 @@ class Cook extends React.Component {
 
       return (
               <div key={i}>
-                <div className="table_row">
-                  <div className="table_cel">
+                <div className="two_table_row">
+                  <div className="two_table_cel">
                   </div>
-                  <div className="table_cel">
+                  <div className="two_table_cel">
                     <label>
                       <span>Language: </span>
                       <select name="type" id={"lang_" + i} value={preset.food_synonyms[0].lang} onChange={this.updatePreset}>
@@ -168,20 +168,20 @@ class Cook extends React.Component {
     return (
       <div>
 
-        <div className="attribute_table_row">
-          <div className="attribute_table_cel">
+        <div className="three_table_row">
+          <div className="three_table_cel">
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             Add a cooking mode <button type="button" className="add_attribute_button" onClick={ this.addMode }>Add</button>
           </div>
         </div>
 
         {modes}
 
-        <div className="attribute_table_row">
-          <div className="attribute_table_cel">
+        <div className="three_table_row">
+          <div className="three_table_cel">
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             Add a preset <button type="button" className="add_attribute_button" onClick={ this.addPreset }>Add</button>
           </div>
         </div>

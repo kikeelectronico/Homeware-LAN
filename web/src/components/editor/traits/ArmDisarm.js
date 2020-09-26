@@ -44,10 +44,10 @@ class ArmDisarm extends React.Component {
     const levels = this.props.attributes.availableArmLevels.levels.map((level, i) => {
       return (
               <div key={i}>
-                <div className="table_row" key={i}>
-                  <div className="table_cel">
+                <div className="two_table_row" key={i}>
+                  <div className="two_table_cel">
                   </div>
-                  <div className="table_cel">
+                  <div className="two_table_cel">
                     <label>
                       <span>Languaje: </span>
                       <select name="type" id={"lang_" + i} value={level.level_values[0].lang} onChange={this.updateSecurityLevel}>
@@ -68,10 +68,10 @@ class ArmDisarm extends React.Component {
     return (
       <div>
 
-        <div className="attribute_table_row">
-          <div className="attribute_table_cel">
+        <div className="three_table_row">
+          <div className="three_table_cel">
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             Add a security level <button type="button" className="add_attribute_button" onClick={ this.addSecurityLevel }>Add</button>
           </div>
         </div>

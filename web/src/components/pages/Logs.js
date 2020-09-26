@@ -48,17 +48,6 @@ class Logs extends React.Component {
 
   render() {
 
-    const container = {
-      width: '80%',
-      marginLeft: '8%',
-      backgroundColor: 'white',
-      paddingTop: '10px',
-      paddingLeft: '20px',
-      paddingBottom: '20px',
-      paddingRight: '20px',
-      borderRadius: '20px'
-    }
-
     const line = {
       width: '80%',
       marginLeft: '8%',
@@ -78,14 +67,6 @@ class Logs extends React.Component {
       color: 'red'
     }
 
-    const button_container = {
-      width: '100%',
-      marginTop: '10px',
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fill, 200px)',
-      gridGap: '20px'
-    }
-
     const homeware_lan_log_data = this.state.data.reverse().slice(0, this.state.page * 10);
     const homeware_lan_log = homeware_lan_log_data.map((register, i) =>
       <div style={ line } key={ i }>
@@ -99,13 +80,13 @@ class Logs extends React.Component {
 
     return (
       <div>
-        <div style={ container }>
+        <div className="page_block_container">
           <h2>Homeware-LAN log</h2>
           <hr/>
           <div>
             { homeware_lan_log }
           </div>
-          <div style={ button_container }>
+          <div className="page_block_buttons_container">
             <button type="button" onClick={ this.nextPage }>Load more</button>
             <button type="button" onClick={ this.downloadLog }>Download</button>
           </div>

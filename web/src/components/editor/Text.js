@@ -15,12 +15,12 @@ class Text extends React.Component {
 
   render() {
     return (
-      <div className="table_row">
-        <div className="table_cel">
+      <div className="two_table_row">
+        <div className="two_table_cel">
           {this.props.name}
         </div>
-        <div className="table_cel">
-          <input type="text" id={this.props.data} defaultValue={this.props.value} onChange={this.update} className="table_input"/>
+        <div className="two_table_cel">
+          <input type="text" className="two_input" id={this.props.data} defaultValue={this.props.value} onChange={this.update}/>
         </div>
       </div>
     );

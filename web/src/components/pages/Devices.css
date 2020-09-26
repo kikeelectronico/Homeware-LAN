@@ -1,23 +1,7 @@
 @media only screen and (min-width: 800px) {
-  .devices_container {
-    width: 80%;
-    margin: auto;
-    margin-top: 10px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 32%);
-    grid-gap: 20px;
-  }
 }
 
 @media only screen and (max-width: 800px) {
-  .devices_container {
-    width: 80%;
-    margin-left: 10%;
-    margin-top: 10px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 100%);
-    grid-gap: 20px;
-  }
 }
 
 .device_card {

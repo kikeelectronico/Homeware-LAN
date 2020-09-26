@@ -2,8 +2,6 @@ import React from 'react';
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
-import './Settings.css';
-
 class Settings extends React.Component {
   constructor(props) {
     super(props);
@@ -109,96 +107,70 @@ class Settings extends React.Component {
 
   render() {
 
-    const container = {
-      width: '80%',
-      marginLeft: '8%',
-      marginTop: '20px',
-      backgroundColor: 'white',
-      paddingTop: '10px',
-      paddingLeft: '20px',
-      paddingBottom: '20px',
-      paddingRight: '20px',
-      borderRadius: '20px'
-    }
-
-    const sub_container = {
-      width: '80%',
-      marginTop: '10px',
-      marginLeft: '10%',
-      fontSize: '18px',
-      textAlign: 'left'
-    }
-
-    const button = {
-      width: '200px'
-    }
-
     return (
       <div>
-
-
-        <div style={ container }>
+        <div className="page_block_container">
           <h2>Actions on Google</h2>
           <hr/>
-          <div style={sub_container}>
-            <div className="settings_table_row">
-              <div className="settings_table_cel">
+          <div className="page_block_content_container">
+            <div className="two_table_row">
+              <div className="two_table_cel">
                 Client ID
               </div>
-              <div className="settings_table_cel">
-                <input type="text" className="settings_input" id="google/client_id" defaultValue={this.state.settings.google.client_id} onChange={this.update}/>
+              <div className="two_table_cel">
+                <input type="text" className="two_input" id="google/client_id" defaultValue={this.state.settings.google.client_id} onChange={this.update}/>
               </div>
-              <div className="settings_table_cel">
+              <div className="two_table_cel">
                 <span className="advise"></span>
               </div>
             </div>
-            <div className="settings_table_row">
-              <div className="settings_table_cel">
+            <div className="two_table_row">
+              <div className="two_table_cel">
                 Client Secret
               </div>
-              <div className="settings_table_cel">
-                <input type="text" className="settings_input" id="google/client_secret" defaultValue={this.state.settings.google.client_secret} onChange={this.update}/>
+              <div className="two_table_cel">
+                <input type="text" className="two_input" id="google/client_secret" defaultValue={this.state.settings.google.client_secret} onChange={this.update}/>
               </div>
-              <div className="settings_table_cel">
+              <div className="two_table_cel">
                 <span className="advise"></span>
               </div>
             </div>
-            <div className="settings_table_row">
-              <div className="settings_table_cel">
+            <div className="two_table_row">
+              <div className="two_table_cel">
                 Authorization URL
               </div>
-              <div className="settings_table_cel">
-                <input type="text" className="settings_input" defaultValue={this.state.url.auth} disabled/>
+              <div className="two_table_cel">
+                <input type="text" className="two_input" defaultValue={this.state.url.auth} disabled/>
               </div>
-              <div className="settings_table_cel">
+              <div className="two_table_cel">
                 <span className="advise"></span>
               </div>
             </div>
-            <div className="settings_table_row">
-              <div className="settings_table_cel">
+            <div className="two_table_row">
+              <div className="two_table_cel">
                 Token URL
               </div>
-              <div className="settings_table_cel">
-                <input type="text" className="settings_input" defaultValue={this.state.url.token} disabled/>
+              <div className="two_table_cel">
+                <input type="text" className="two_input" defaultValue={this.state.url.token} disabled/>
               </div>
-              <div className="settings_table_cel">
+              <div className="two_table_cel">
                 <span className="advise"></span>
               </div>
             </div>
-            <div className="settings_table_row">
-              <div className="settings_table_cel">
+            <div className="two_table_row">
+              <div className="two_table_cel">
                 Fulfillment URL
               </div>
-              <div className="settings_table_cel">
-                <input type="text" className="settings_input" defaultValue={this.state.url.fulfillment} disabled/>
+              <div className="two_table_cel">
+                <input type="text" className="two_input" defaultValue={this.state.url.fulfillment} disabled/>
               </div>
-              <div className="settings_table_cel">
+              <div className="two_table_cel">
                 <span className="advise"></span>
               </div>
             </div>
           </div>
-          <div className="settings_buttons_container">
-            <button type="button" style={ button } onClick={ this.save }>Save</button>
+          <div className="page_block_buttons_container">
+            <button type="button" onClick={ this.save }>Save</button>
             <span>{this.state.save_status}</span>
           </div>
           <div className="advise">
@@ -207,29 +179,29 @@ class Settings extends React.Component {
         </div>
 
 
-        <div style={ container }>
+        <div className="page_block_container">
           <h2>MQTT</h2>
           <hr/>
-          <div style={sub_container}>
-            <div className="settings_table_row">
-              <div className="settings_table_cel">
+          <div className="page_block_content_container">
+            <div className="two_table_row">
+              <div className="two_table_cel">
                 User
               </div>
-              <div className="settings_table_cel">
-                <input type="text" className="settings_input" id="mqtt/user" defaultValue={this.state.settings.mqtt.user} onChange={this.update}/>
+              <div className="two_table_cel">
+                <input type="text" className="two_input" id="mqtt/user" defaultValue={this.state.settings.mqtt.user} onChange={this.update}/>
               </div>
             </div>
-            <div className="settings_table_row">
-              <div className="settings_table_cel">
+            <div className="two_table_row">
+              <div className="two_table_cel">
                 Password
               </div>
-              <div className="settings_table_cel">
-                <input type="text" className="settings_input" id="mqtt/password" defaultValue={this.state.settings.mqtt.password} onChange={this.update}/>
+              <div className="two_table_cel">
+                <input type="text" className="two_input" id="mqtt/password" defaultValue={this.state.settings.mqtt.password} onChange={this.update}/>
               </div>
             </div>
           </div>
-          <div className="settings_buttons_container">
-            <button type="button" style={ button } onClick={ this.save }>Save</button>
+          <div className="page_block_buttons_container">
+            <button type="button" onClick={ this.save }>Save</button>
             <span>{this.state.save_status}</span>
           </div>
           <div className="advise">
@@ -237,74 +209,74 @@ class Settings extends React.Component {
           </div>
         </div>
 
-        <div style={ container }>
+        <div className="page_block_container">
           <h2>DDNS provider</h2>
           <hr/>
-          <div style={sub_container}>
-            <div className="settings_table_row">
-              <div className="settings_table_cel">
+          <div className="page_block_content_container">
+            <div className="two_table_row">
+              <div className="two_table_cel">
                 Status:
               </div>
-              <div className="settings_table_cel">
+              <div className="two_table_cel">
                 { this.state.settings.ddns.status }
               </div>
             </div>
-            <div className="settings_table_row">
-              <div className="settings_table_cel">
+            <div className="two_table_row">
+              <div className="two_table_cel">
                 IP and time:
               </div>
-              <div className="settings_table_cel">
+              <div className="two_table_cel">
                 { this.state.settings.ddns.ip + " updated at " + this.state.settings.ddns.last}
               </div>
             </div>
           </div>
           <hr/>
-          <div style={sub_container}>
-            <div className="settings_table_row">
-              <div className="settings_table_cel">
+          <div className="page_block_content_container">
+            <div className="two_table_row">
+              <div className="two_table_cel">
                 Enable
               </div>
-              <div className="settings_table_cel">
+              <div className="two_table_cel">
                 <input type="checkbox" id="ddns/enabled" defaultChecked={this.state.settings.ddns.enabled} onChange={this.updateCheckbox}/>
               </div>
             </div>
-            <div className="settings_table_row">
-              <div className="settings_table_cel">
+            <div className="two_table_row">
+              <div className="two_table_cel">
                 Provider
               </div>
-              <div className="settings_table_cel">
+              <div className="two_table_cel">
                 <select name="type" className="settings_select" id="ddns/provider" value={this.state.settings.ddns.provider} onChange={this.update}>
                   <option value="noip">Noip</option>
                 </select>
               </div>
             </div>
-            <div className="settings_table_row">
-              <div className="settings_table_cel">
+            <div className="two_table_row">
+              <div className="two_table_cel">
                 Username
               </div>
-              <div className="settings_table_cel">
-                <input type="text" className="settings_input" id="ddns/username" defaultValue={this.state.settings.ddns.username} onChange={this.update}/>
+              <div className="two_table_cel">
+                <input type="text" className="two_input" id="ddns/username" defaultValue={this.state.settings.ddns.username} onChange={this.update}/>
               </div>
             </div>
-            <div className="settings_table_row">
-              <div className="settings_table_cel">
+            <div className="two_table_row">
+              <div className="two_table_cel">
                 Password
               </div>
-              <div className="settings_table_cel">
-                <input type="text" className="settings_input" id="ddns/password" defaultValue={this.state.settings.ddns.password} onChange={this.update}/>
+              <div className="two_table_cel">
+                <input type="text" className="two_input" id="ddns/password" defaultValue={this.state.settings.ddns.password} onChange={this.update}/>
               </div>
             </div>
-            <div className="settings_table_row">
-              <div className="settings_table_cel">
+            <div className="two_table_row">
+              <div className="two_table_cel">
                 Hostname
               </div>
-              <div className="settings_table_cel">
-                <input type="text" className="settings_input" id="ddns/hostname" defaultValue={this.state.settings.ddns.hostname} onChange={this.update}/>
+              <div className="two_table_cel">
+                <input type="text" className="two_input" id="ddns/hostname" defaultValue={this.state.settings.ddns.hostname} onChange={this.update}/>
               </div>
             </div>
           </div>
-          <div className="settings_buttons_container">
-            <button type="button" style={ button } onClick={ this.save }>Save</button>
+          <div className="page_block_buttons_container">
+            <button type="button" onClick={ this.save }>Save</button>
             <span>{this.state.save_status}</span>
           </div>
           <div className="advise">

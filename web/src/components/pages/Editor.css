@@ -1,62 +1,12 @@
-
-
-.advise {
-  width: 70%;
-  margin-left: 15%;
-  margin-top: 10px;
-  color: #aaa;
-}
-
-.table_row {
-  width: 80%;
-  height: 50px;
-  margin-left: 10%;
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: 200px auto;
-}
-
-.table_cel {
-  height: 50px;
-  line-height: 50px;
-  vertical-align: middle;
-  text-align: left;
-}
-
-.table_input {
-  width: 100%
-}
-
-.int_input {
-  width: 50px;
-}
-
 .attribute_advise {
   width: 70%;
   color: #aaa;
-}
-
-.attribute_table_row {
-  width: 80%;
-  height: 50px;
-  margin-left: 10%;
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: 200px 300px auto
-}
-
-.attribute_table_cel {
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  vertical-align: middle;
-  text-align: left;
 }
 
 .add_attribute_button{
   width: 100px
 }
 
-.table_cel label{
-  margin-left: 20px;
+.separator {
+  width: 70%;
 }

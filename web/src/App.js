@@ -19,6 +19,7 @@ import Devices from './components/pages/Devices'
 import Editor from './components/pages/Editor'
 import Info from './components/pages/Info'
 import Tasks from './components/pages/Tasks'
+import Manager from './components/pages/Manager'
 import Settings from './components/pages/Settings'
 import System from './components/pages/System'
 import Backup from './components/pages/Backup'
@@ -145,6 +146,7 @@ class App extends React.Component {
                 <Route path="/devices/editor" component={ Editor }/>
                 <Route path="/devices/info" component={ Info }/>
                 <Route exact={ true } path="/tasks" component={ Tasks }/>
+                <Route path="/tasks/manager" component={ Manager }/>
                 <Route path="/settings" component={ Settings }/>
                 <Route path="/system" component={ System }/>
                 <Route path="/backup" component={ Backup }/>

@@ -1,0 +1,28 @@
+.advise {
+  width: 70%;
+  margin-left: 15%;
+  margin-top: 10px;
+  color: #aaa;
+}
+
+@media only screen and (min-width: 800px) {
+  .task_table_row {
+    width: 80%;
+    height: 50px;
+    margin-left: 10%;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 200px auto;
+  }
+
+  .task_table_cel {
+    height: 50px;
+    line-height: 50px;
+    vertical-align: middle;
+    text-align: left;
+  }
+
+  .task_table_input {
+    width: 100%
+  }
+}

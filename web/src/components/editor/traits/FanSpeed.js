@@ -49,10 +49,10 @@ class FanSpeed extends React.Component {
     const speeds = this.props.attributes.availableFanSpeeds.speeds.map((speed, i) => {
       return (
               <div key={i}>
-                <div className="table_row" key={i}>
-                  <div className="table_cel">
+                <div className="two_table_row" key={i}>
+                  <div className="two_table_cel">
                   </div>
-                  <div className="table_cel">
+                  <div className="two_table_cel">
                     <label>
                       <span>Languaje: </span>
                       <select name="type" id={"lang_" + i} value={speed.speed_values[0].lang} onChange={this.updateFanSpeeds}>
@@ -73,53 +73,53 @@ class FanSpeed extends React.Component {
     return (
       <div>
 
-        <div className="attribute_table_row">
-          <div className="attribute_table_cel">
+        <div className="three_table_row">
+          <div className="three_table_cel">
 
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             <label>
               <input type="checkbox" id="reversible" defaultChecked={this.props.attributes.reversible} onChange={this.updateCheckbox}/>
               <span className=""><i>reversible</i></span>
             </label>
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             <span className="attribute_advise">Enable it if the fan supports blowing in both directions.</span>
           </div>
         </div>
 
-        <div className="attribute_table_row">
-          <div className="attribute_table_cel">
+        <div className="three_table_row">
+          <div className="three_table_cel">
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             <label>
               <input type="checkbox" id="supportsFanSpeedPercent" defaultChecked={this.props.attributes.supportsFanSpeedPercent} onChange={this.updateCheckbox}/>
               <span className=""><i>supportsFanSpeedPercent</i></span>
             </label>
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             <span className="attribute_advise">Enable it if the speed can be controlled with a number from 0 to 100.</span>
           </div>
         </div>
 
-        <div className="attribute_table_row">
-          <div className="attribute_table_cel">
+        <div className="three_table_row">
+          <div className="three_table_cel">
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             <label>
               <input type="checkbox" id="commandOnlyFanSpeed" defaultChecked={this.props.attributes.commandOnlyFanSpeed} onChange={this.updateCheckbox}/>
               <span className=""><i>commandOnlyFanSpeed</i></span>
             </label>
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the fan speed.</span>
           </div>
         </div>
 
-        <div className="attribute_table_row">
-          <div className="attribute_table_cel">
+        <div className="three_table_row">
+          <div className="three_table_cel">
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             Add a speed <button type="button" className="add_attribute_button" onClick={ this.addFanSpeed }>Add</button>
           </div>
         </div>

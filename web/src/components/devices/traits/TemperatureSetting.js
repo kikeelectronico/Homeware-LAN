@@ -25,7 +25,6 @@ class TemperatureSetting extends React.Component {
     http.onload = function (e) {
       if (http.readyState === 4) {
         if (http.status === 200) {
-          console.log(http.responseText)
           this.props.reload();
         } else {
           console.error(http.statusText);

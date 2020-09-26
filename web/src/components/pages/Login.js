@@ -16,7 +16,6 @@ class Login extends React.Component {
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       var response = JSON.parse(http.responseText);
-      console.log(response)
       if(response['status'] === 'in'){
         document.cookie = "user=" + response['user'] + "; path=/";
         document.cookie = "token=" + response['token'] + "; path=/";

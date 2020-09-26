@@ -67,18 +67,6 @@ class Editor extends React.Component {
 
   render() {
 
-    const container = {
-      width: '80%',
-      marginLeft: '8%',
-      marginTop: '20px',
-      backgroundColor: 'white',
-      paddingTop: '10px',
-      paddingLeft: '20px',
-      paddingBottom: '20px',
-      paddingRight: '20px',
-      borderRadius: '20px'
-    }
-
     const json_viewer = {
       textAlign: 'left',
     }
@@ -86,7 +74,7 @@ class Editor extends React.Component {
     return (
       <div>
 
-        <div style={ container }>
+        <div className="page_block_container">
           <h2>Device definition</h2>
           <div className="advise">
             <span>General settings of the device.</span>
@@ -97,7 +85,7 @@ class Editor extends React.Component {
           </div>
         </div>
 
-        <div style={ container }>
+        <div className="page_block_container">
           <h2>Device status</h2>
           <div className="advise">
             <span>Status of the device.</span>

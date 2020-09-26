@@ -16,17 +16,17 @@ class Scene extends React.Component {
 
     return (
       <div>
-        <div className="attribute_table_row">
-          <div className="attribute_table_cel">
-            
+        <div className="three_table_row">
+          <div className="three_table_cel">
+
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             <label>
               <input type="checkbox" id="sceneReversible" defaultChecked={this.props.sceneReversible} onChange={this.updateCheckbox}/>
               <span className=""><i>sceneReversible</i></span>
             </label>
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             <span className="attribute_advise">Enable it if the scene can be desabled.</span>
           </div>
         </div>

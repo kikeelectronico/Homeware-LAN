@@ -15,29 +15,6 @@ class Backup extends React.Component {
 
   render() {
 
-    const container = {
-      width: '80%',
-      marginLeft: '8%',
-      marginTop: '20px',
-      backgroundColor: 'white',
-      paddingTop: '10px',
-      paddingLeft: '20px',
-      paddingBottom: '20px',
-      paddingRight: '20px',
-      borderRadius: '20px'
-    }
-
-    const sub_container = {
-      width: '80%',
-      marginTop: '10px',
-      marginLeft: '10%',
-      fontSize: '18px',
-      textAlign: 'left'
-    }
-
-    const form = {
-    }
-
     const button = {
       width: '200px'
     }
@@ -48,10 +25,10 @@ class Backup extends React.Component {
       <div>
 
 
-        <div style={ container }>
+        <div className="page_block_container">
           <h2>Backup</h2>
           <hr/>
-          <div style={sub_container}>
+          <div className="page_block_content_container">
               <button type="button" style={ button } onClick={ this.backup }>Backup</button>
           </div>
           <div className="advise">
@@ -59,11 +36,11 @@ class Backup extends React.Component {
           </div>
         </div>
 
-        <div style={ container }>
+        <div className="page_block_container">
           <h2>Restore</h2>
           <hr/>
-          <div style={sub_container}>
-            <form style={ form } method="post" encType="multipart/form-data" action={ restore_url }>
+          <div className="page_block_content_container">
+            <form method="post" encType="multipart/form-data" action={ restore_url }>
               <input type="file" name="file"/>
               <button type="submit" style={ button } onClick={ this.restart }>Restore</button>
               </form>

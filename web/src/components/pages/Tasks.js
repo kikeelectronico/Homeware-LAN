@@ -26,7 +26,6 @@ class Tasks extends React.Component {
       if (http.readyState === 4) {
         if (http.status === 200) {
           var data = JSON.parse(http.responseText);
-          console.log(data)
           this.setState({
              devices: data.devices,
              tasks: data.tasks
@@ -51,33 +50,27 @@ class Tasks extends React.Component {
 
   render() {
 
-    const devider = {
-      width: '80%'
-    }
-
     const tasks = this.state.tasks.map((task, i) => {
       return(
-        <div key={i}>
-          <div className="task_card">
-            <h2 className="task_card_title" id={ 'task_' + i } onClick={ this.openManager }>{ task.title }</h2>
-            <hr style={ devider }/>
-            <p>{ task.description }</p>
-          </div>
+        <div key={i} className="task_card">
+          <h2 className="task_card_title" id={ 'task_' + i } onClick={ this.openManager }>{ task.title }</h2>
+          <hr className="task_card_divider"/>
+          <p>{ task.description }</p>
         </div>
       )
     });
 
     return (
       <div>
-        <div className="task_page_title_container">
+        <div className="page_title_container">
           <h2>Tasks</h2>
         </div>
 
-        <div className="tasks_container">
+        <div className="page_cards_container">
           {tasks}
         </div>
 
-        <div className="tasks_buttons_containter">
+        <div className="page_buttons_containter">
           <button type="button" onClick={ this.newTask }>New</button>
         </div>
       </div>

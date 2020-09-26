@@ -77,23 +77,6 @@ class Devices extends React.Component {
 
   render() {
 
-    const title = {
-      width: '80%',
-      marginLeft: '8%',
-      backgroundColor: 'white',
-      paddingTop: '10px',
-      paddingLeft: '20px',
-      paddingBottom: '10px',
-      paddingRight: '20px',
-      borderRadius: '20px'
-    }
-
-    const container = {
-      width: '80%',
-      marginLeft: '9%',
-      marginTop: '10px',
-    }
-
     const devices = this.state.devices.map((device) => {
       if(device.type === 'action.devices.types.LIGHT')
         return <Light key={device.id} device={device} status={ this.state.data.status[device.id] } reload={ this.loadData }/>
@@ -165,15 +148,15 @@ class Devices extends React.Component {
 
     return (
       <div>
-        <div style={ title }>
+        <div className="page_title_container">
           <h2>Devices and scences</h2>
         </div>
 
-        <div className="devices_container">
+        <div className="page_cards_container">
           { devices }
         </div>
 
-        <div style={ container }>
+        <div className="page_buttons_containter">
           <button type="button" onClick={ this.newDevice }>New</button>
         </div>
       </div>
