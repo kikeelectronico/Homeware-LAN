@@ -118,9 +118,7 @@ class System extends React.Component {
           window.location.href = '/'
         } else {
           console.error(conn.statusText);
-          setTimeout(function(){
-            this.areYouAwake();
-          },2000);
+          setTimeout(this.areYouAwake,2000);
         }
       }
     }.bind(this)
