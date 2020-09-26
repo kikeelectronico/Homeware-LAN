@@ -15,8 +15,11 @@ class System extends React.Component {
         description: '',
         code: 0
       },
-      version: ''
+      version: '',
+      upgrading: false
     }
+
+    this.upgrade = this.upgrade.bind(this);
   }
 
   componentDidMount() {
@@ -91,13 +94,16 @@ class System extends React.Component {
       conn.onload = function (e) {
         if (conn.readyState === 4) {
           if (conn.status === 200) {
-            window.location.href = "/upgrading"
+            this.setState({
+              upgrading: true
+            });
           } else {
             console.error(conn.statusText);
           }
         }
-      }
-      conn.open("GET", root + "api/system/upgrade/");
+      }.bind(this)
+      // conn.open("GET", root + "api/system/upgrade/");
+      conn.open("GET", root + "api/");
       conn.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
       conn.send();
     }
@@ -127,6 +133,7 @@ class System extends React.Component {
       width: '80%',
       paddingLeft: '20px',
       paddingRight: '20px',
+      paddingTop: '20px',
       paddingBottom: '20px',
       borderRadius: '20px',
       border: '1px solid #aaa'
@@ -136,11 +143,13 @@ class System extends React.Component {
       <Component title={ component.title } status={ component.status } enable={ component.enable } key={ component.title }/>
     );
 
-    var upgrader = ''
-    if(this.state.version !== this.state.git.version && this.state.git.code === 200){
-      upgrader = <div><b>New version:</b> { this.state.git.version} <div style={ git_description }> <ReactMarkdown source={this.state.git.description} /> <button type="button" style={ upgrade_button } onClick={ this.upgrade }>Upgrade</button></div> </div>
-    } else if(this.state.git.code === 403){
-      upgrader = <div><b>New version:</b> { this.state.git.version}</div>
+    var upgrade = '';
+    if(this.state.version !== this.state.git.version && this.state.git.code === 200 && !this.state.upgrading){
+      upgrade = <div><b>New version:</b> { this.state.git.version} <div style={ git_description }> <ReactMarkdown source={this.state.git.description} /> <button type="button" style={ upgrade_button } onClick={ this.upgrade }>Upgrade</button></div> </div>
+    } else if(this.state.git.code === 403 && !this.state.upgrading){
+      upgrade = <div><b>New version:</b> { this.state.git.version}</div>
+    } else if (this.state.upgrading) {
+      upgrade = <div style={ git_description }><b>Upgrading</b>. It will take a couple of minutes. You will be redirected to the homepage once finished.</div>
     }
 
 
@@ -173,7 +182,7 @@ class System extends React.Component {
           <hr/>
           <div className="page_block_content_container">
             <b>System version:</b> { this.state.version }
-            { upgrader }
+            { upgrade }
           </div>
           <div className="advise">
             <span>Verify if there is any code update and upgrade the software if an update is available.</span>
