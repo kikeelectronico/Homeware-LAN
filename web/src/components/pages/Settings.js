@@ -197,7 +197,7 @@ class Settings extends React.Component {
               </div>
             </div>
           </div>
-          <div className="save_container">
+          <div className="settings_buttons_container">
             <button type="button" style={ button } onClick={ this.save }>Save</button>
             <span>{this.state.save_status}</span>
           </div>
@@ -228,7 +228,7 @@ class Settings extends React.Component {
               </div>
             </div>
           </div>
-          <div className="save_container">
+          <div className="settings_buttons_container">
             <button type="button" style={ button } onClick={ this.save }>Save</button>
             <span>{this.state.save_status}</span>
           </div>
@@ -303,7 +303,7 @@ class Settings extends React.Component {
               </div>
             </div>
           </div>
-          <div className="save_container">
+          <div className="settings_buttons_container">
             <button type="button" style={ button } onClick={ this.save }>Save</button>
             <span>{this.state.save_status}</span>
           </div>

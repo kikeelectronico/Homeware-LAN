@@ -32,7 +32,7 @@
     width: 100%;
   }
 
-  .save_container {
+  .settings_buttons_container {
     width: 80%;
     margin-top: 10px;
     margin-left: 10%;
@@ -63,7 +63,7 @@
     width: 100%;
   }
 
-  .save_container {
+  .settings_buttons_container {
     margin-top: 50px;
   }
 }
