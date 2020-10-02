@@ -1,4 +1,5 @@
 import React from 'react';
+import Triggers from '../manager/Triggers.js'
 import getCookieValue from '../../functions'
 import { root, deviceReference } from '../../constants'
 
@@ -13,45 +14,47 @@ class Manager extends React.Component {
     this.state = {
       id: id,
       create: create,
-      save_status: ""
+      save_status: "",
+      task: {}
     }
     this.update = this.update.bind(this);
+    this.deleteTrigger = this.deleteTrigger.bind(this);
   }
 
   componentDidMount() {
     if (!this.state.create){
-      // var http = new XMLHttpRequest();
-      // http.onload = function (e) {
-      //   if (http.readyState === 4) {
-      //     if (http.status === 200) {
-      //       var data = JSON.parse(http.responseText);
-      //       this.setState({
-      //          device: data,
-      //          posible_traits: deviceReference.devices[data.type]
-      //        });
-      //     } else {
-      //       console.error(http.statusText);
-      //     }
-      //   }
-      // }.bind(this);
-      // http.open("GET", root + "api/devices/get/" + this.state.id + "/");
-      // http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-      // http.send();
+      var http = new XMLHttpRequest();
+      http.onload = function (e) {
+        if (http.readyState === 4) {
+          if (http.status === 200) {
+            var data = JSON.parse(http.responseText);
+            console.log(data);
+            this.setState({
+               task: data
+             });
+          } else {
+            console.error(http.statusText);
+          }
+        }
+      }.bind(this);
+      http.open("GET", root + "api/tasks/get/" + this.state.id + "/");
+      http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+      http.send();
     }
   }
 
   update(key, value){
-    var temp_device = this.state.device
-    var keys = key.split('/');
-    if (keys.length === 1)
-      temp_device[key] = value
-    else if (keys.length === 2)
-      temp_device[keys[0]][keys[1]] = value
-    else if (keys.length === 3)
-      temp_device[keys[0]][keys[1]][keys[2]] = value
-    this.setState({
-      device: temp_device
-    })
+    // var temp_device = this.state.device
+    // var keys = key.split('/');
+    // if (keys.length === 1)
+    //   temp_device[key] = value
+    // else if (keys.length === 2)
+    //   temp_device[keys[0]][keys[1]] = value
+    // else if (keys.length === 3)
+    //   temp_device[keys[0]][keys[1]][keys[2]] = value
+    // this.setState({
+    //   device: temp_device
+    // })
   }
 
   save(){
@@ -120,20 +123,33 @@ class Manager extends React.Component {
     // }
   }
 
+  deleteTrigger(id) {
+    var task = this.state.task;
+    var triggers = task.triggers;
+    // Delete from the parent
+    const parent = triggers[id].parent
+    console.log('id')
+    console.log(id)
+    if (parent !== 'triggers') {
+      console.log(parent);
+      const index = triggers[parent].operation.indexOf(id);
+      triggers[parent].operation.splice(index,1)
+      // Delete the trigger
+      delete triggers[id];
+      task.triggers = triggers;
+    } else {
+      task.triggers = {
+        trigger: {
+          type: 'clear'
+        }
+      };
+    }
+    this.setState({
+      task: task
+    });
+  }
 
   render() {
-
-    const container = {
-      width: '80%',
-      marginLeft: '8%',
-      marginTop: '20px',
-      backgroundColor: 'white',
-      paddingTop: '10px',
-      paddingLeft: '20px',
-      paddingBottom: '20px',
-      paddingRight: '20px',
-      borderRadius: '20px'
-    }
 
     const button = {
       width: '200px'
@@ -152,35 +168,47 @@ class Manager extends React.Component {
       width: '70%'
     }
 
-
     return (
       <div>
 
-        <div style={ container }>
-          <h2>Tasks </h2>
-          <div className="advise">
-            <span>General settings of the device.</span>
-            <hr/>
-          </div>
-          <div className="task_table_row">
-            <div className="task_table_cel">
-              Device ID*
-            </div>
-            <div className="task_table_cel">
-              <input type="text" id="id" className="task_table_input" defaultValue="" onChange={this.updateId} />
-            </div>
-          </div>
-
+      <div className="page_block_container">
+        <h2>Task</h2>
+        <div className="advise">
+          <span>General settings of the task.</span>
           <hr/>
-          <div className="task_table_cel">
-            <button type="button" style={ this.state.create ? deleteButtonDisabled : deleteButton } onClick={ this.delete } disabled={ this.state.create ? true : false}>Delete</button>
-            <button type="button" onClick={ this.save }>Save</button>
-            <span>{this.state.save_status}</span>
+        </div>
+        <div className="two_table_row">
+          <div className="two_table_cel">
+            Name*
+          </div>
+          <div className="two_table_cel">
+            <input type="text" className="two_input" id="title" defaultValue={this.state.task.title} onChange={this.update}/>
           </div>
         </div>
-
+        <div className="two_table_row">
+          <div className="two_table_cel">
+            Description*
+          </div>
+          <div className="two_table_cel">
+            <input type="text" className="two_input" id="description" defaultValue={this.state.task.description} onChange={this.update}/>
+          </div>
+        </div>
+        <hr/>
+        <h2>Triggers</h2>
+        <div className="advise">
+          <span></span>
+        </div>
+        {Object.keys(this.state.task).length > 0 ? <Triggers id="trigger" triggers={this.state.task.triggers} delete={this.deleteTrigger}/> : ''}
+        <hr/>
+        <div className="two_table_cel">
+          <button type="button" style={ this.state.create ? deleteButtonDisabled : deleteButton } onClick={ this.delete } disabled={ this.state.create ? true : false}>Delete</button>
+          <button type="button" onClick={ this.save }>Save</button>
+          <span>{this.state.save_status}</span>
+        </div>
       </div>
-    );
+
+    </div>
+  );
   }
 }
 

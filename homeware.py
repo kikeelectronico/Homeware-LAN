@@ -92,7 +92,6 @@ def front(operation = "", segment = "", value = ''):
                     'code': 401,
                     'note': 'See the documentation'
                 }
-
         elif segment == 'global':
             if accessLevel >= 10:
                 if operation == 'version':
