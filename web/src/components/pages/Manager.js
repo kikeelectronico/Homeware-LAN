@@ -1,7 +1,7 @@
 import React from 'react';
 import Triggers from '../manager/Triggers.js'
 import getCookieValue from '../../functions'
-import { root, deviceReference } from '../../constants'
+import { root } from '../../constants'
 
 import './Manager.css';
 
@@ -15,31 +15,57 @@ class Manager extends React.Component {
       id: id,
       create: create,
       save_status: "",
-      task: {}
+      device_assistant: 0,
+      task: {},
+       devices: []
     }
     this.update = this.update.bind(this);
     this.deleteTrigger = this.deleteTrigger.bind(this);
+    this.addTriggerLogic = this.addTriggerLogic.bind(this);
+    this.showTriggerDeviceAssistant = this.showTriggerDeviceAssistant.bind(this);
+    this.addTriggerDevice = this.addTriggerDevice.bind(this);
   }
 
   componentDidMount() {
     if (!this.state.create){
-      var http = new XMLHttpRequest();
-      http.onload = function (e) {
-        if (http.readyState === 4) {
-          if (http.status === 200) {
-            var data = JSON.parse(http.responseText);
+      var tas = new XMLHttpRequest();
+      tas.onload = function (e) {
+        if (tas.readyState === 4) {
+          if (tas.status === 200) {
+            var data = JSON.parse(tas.responseText);
             console.log(data);
             this.setState({
                task: data
              });
           } else {
-            console.error(http.statusText);
+            console.error(tas.statusText);
           }
         }
       }.bind(this);
-      http.open("GET", root + "api/tasks/get/" + this.state.id + "/");
-      http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-      http.send();
+      tas.open("GET", root + "api/tasks/get/" + this.state.id + "/");
+      tas.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+      tas.send();
+
+      var dev = new XMLHttpRequest();
+      dev.onload = function (e) {
+        if (dev.readyState === 4) {
+          if (dev.status === 200) {
+            var data = JSON.parse(dev.responseText);
+            var devices_names = {}
+            data.forEach((device) => {
+              devices_names[device.id] = device.name.name
+            })
+            this.setState({
+               devices: devices_names
+             });
+          } else {
+            console.error(dev.statusText);
+          }
+        }
+      }.bind(this);
+      dev.open("GET", root + "api/devices/get/");
+      dev.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+      dev.send();
     }
   }
 
@@ -124,14 +150,13 @@ class Manager extends React.Component {
   }
 
   deleteTrigger(id) {
+    // Get the task
     var task = this.state.task;
     var triggers = task.triggers;
-    // Delete from the parent
+    // Get the the parent id
     const parent = triggers[id].parent
-    console.log('id')
-    console.log(id)
     if (parent !== 'triggers') {
-      console.log(parent);
+      // Delete from the parent
       const index = triggers[parent].operation.indexOf(id);
       triggers[parent].operation.splice(index,1)
       // Delete the trigger
@@ -147,6 +172,43 @@ class Manager extends React.Component {
     this.setState({
       task: task
     });
+  }
+
+  addTriggerLogic(type, parent) {
+    // Get the triggers
+    var task = this.state.task;
+    if (parent !== 'triggers') {
+      // Get the timestamp
+      const ts = Date.now();
+      // Compose and create the logic trigger
+      task.triggers[ts] = {
+        operation: [],
+        parent, parent,
+        type: type
+      };
+      // Register the trigger in the parent
+      task.triggers[parent].operation.push(ts);
+    } else {
+      task.triggers['trigger'] = {
+        operation: [],
+        parent: 'triggers',
+        type: type
+      };
+    }
+    // Update the component state
+    this.setState({
+      task: task
+    });
+  }
+
+  showTriggerDeviceAssistant(parent) {
+    this.setState({
+      device_assistant: parent
+    });
+  }
+
+  addTriggerDevice(type, parent) {
+
   }
 
   render() {
@@ -198,7 +260,8 @@ class Manager extends React.Component {
         <div className="advise">
           <span></span>
         </div>
-        {Object.keys(this.state.task).length > 0 ? <Triggers id="trigger" triggers={this.state.task.triggers} delete={this.deleteTrigger}/> : ''}
+        {Object.keys(this.state.task).length > 0 ? <Triggers id="trigger" triggers={this.state.task.triggers} delete={this.deleteTrigger} addTriggerLogic={this.addTriggerLogic} showTriggerDeviceAssistant={this.showTriggerDeviceAssistant} devices={this.state.devices}/> : ''}
+        {this.state.device_assistant !== 0 ? 'Trigger Device Assistant at ' + this.state.device_assistant : ''}
         <hr/>
         <div className="two_table_cel">
           <button type="button" style={ this.state.create ? deleteButtonDisabled : deleteButton } onClick={ this.delete } disabled={ this.state.create ? true : false}>Delete</button>

@@ -1003,6 +1003,17 @@ const deviceReference = {
     "action.devices.traits.HumiditySetting": "Humidity setting",
     "action.devices.traits.Cook": "Cooking",
     "action.devices.traits.Fill": "Fill level"
+  },
+  paramCoolName: {
+  'thermostatTemperatureAmbient': 'Ambient',
+  'thermostatTemperatureSetpoint': 'Set point',
+  'thermostatHumidityAmbient': 'Humidity',
+  'thermostatMode': 'Mode',
+  'on': 'Power',
+  'brightness': 'Brightness',
+  'online': 'Online',
+  'color': 'Color',
+  'deactivate': 'Deactivate'
   }
 }
 
