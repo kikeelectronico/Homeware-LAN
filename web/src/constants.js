@@ -326,7 +326,7 @@ const deviceReference = {
       "action.devices.traits.Toggles"
     ]
   },
-  "traits": {
+  traits: {
     "action.devices.traits.OnOff": {
       attributes: {
         commandOnlyOnOff: {
@@ -978,7 +978,7 @@ const deviceReference = {
     "action.devices.types.SCENE": "Scene",
     "action.devices.types.YOGURTMAKER": "Yogurt maker"
   },
-  "traitsCoolNames": {
+  traitsCoolNames: {
     "action.devices.traits.Toggles": "Toggle",
     "action.devices.traits.ArmDisarm": "Arm or Disarm",
     "action.devices.traits.CameraStream": "Camera stream",
@@ -1004,16 +1004,47 @@ const deviceReference = {
     "action.devices.traits.Cook": "Cooking",
     "action.devices.traits.Fill": "Fill level"
   },
-  paramCoolName: {
-  'thermostatTemperatureAmbient': 'Ambient',
-  'thermostatTemperatureSetpoint': 'Set point',
-  'thermostatHumidityAmbient': 'Humidity',
-  'thermostatMode': 'Mode',
-  'on': 'Power',
-  'brightness': 'Brightness',
-  'online': 'Online',
-  'color': 'Color',
-  'deactivate': 'Deactivate'
+  params: {
+    thermostatTemperatureAmbient: {
+      type: "d2i",
+      name: 'Ambient'
+    },
+    thermostatTemperatureSetpoint: {
+      type: "d2i",
+      name: 'Set point'
+    },
+    thermostatHumidityAmbient: {
+      type: "d2i",
+      name: 'Humidity'
+    },
+    thermostatMode: {
+      type: "d2l",
+      select: ["cool","heat","off","on","heatcool","auto","fan-only","purifier","eco","dry"],
+      name: 'Mode'
+    },
+    on: {
+      type: "d2b",
+      select: ["true","false"],
+      name: 'Power'
+    },
+    deactivate: {
+      type: "d2b",
+      select: ["true","false"],
+      name: 'Deactivate'
+    },
+    brightness: {
+      type: "d2i",
+      name: 'Brightness'
+    },
+    online: {
+      type: "d2b",
+      select: ["true","false"],
+      name: 'Online'
+    },
+    color: {
+      type: "d2c",
+      name: 'Color'
+    },
   }
 }
 
