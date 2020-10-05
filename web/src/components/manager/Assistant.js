@@ -41,9 +41,9 @@ class Assistant extends React.Component {
         </div>
       );
     else if (this.state.type === 'time')
-      return <Time closeTriggerAssistant={this.props.closeTriggerAssistant} updateTriggerOperation={this.props.updateTriggerOperation}/>
+      return <Time closeTriggerAssistant={this.props.closeTriggerAssistant} addTriggerOperation={this.props.addTriggerOperation}/>
     else if (this.state.type === 'device')
-      return <Device devices={this.props.devices} status={this.props.status} closeTriggerAssistant={this.props.closeTriggerAssistant} updateTriggerOperation={this.props.updateTriggerOperation}/>
+      return <Device devices={this.props.devices} status={this.props.status} closeTriggerAssistant={this.props.closeTriggerAssistant} addTriggerOperation={this.props.addTriggerOperation}/>
   }
 }
 

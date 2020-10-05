@@ -31,8 +31,8 @@ class Manager extends React.Component {
     this.delete = this.delete.bind(this);
     this.deleteTrigger = this.deleteTrigger.bind(this);
     this.addTriggerLogic = this.addTriggerLogic.bind(this);
-    this.showTriggerAssistant = this.showTriggerAssistant.bind(this);
-    this.updateTriggerOperation = this.updateTriggerOperation.bind(this);
+    this.openTriggerAssistant = this.openTriggerAssistant.bind(this);
+    this.addTriggerOperation = this.addTriggerOperation.bind(this);
     this.closeTriggerAssistant = this.closeTriggerAssistant.bind(this);
   }
 
@@ -202,13 +202,13 @@ class Manager extends React.Component {
     });
   }
 
-  showTriggerAssistant(parent) {
+  openTriggerAssistant(parent) {
     this.setState({
       trigger_assistant_parent: parent
     });
   }
 
-  updateTriggerOperation(type, operation) {
+  addTriggerOperation(type, operation) {
     // Get the triggers
     var task = this.state.task;
     const parent = this.state.trigger_assistant_parent;
@@ -291,9 +291,9 @@ class Manager extends React.Component {
         {
           this.state.trigger_assistant_parent !== 0
           ?
-          <Assistant devices={this.state.devices} status={this.state.status} closeTriggerAssistant={this.closeTriggerAssistant} updateTriggerOperation={this.updateTriggerOperation}/>
+          <Assistant devices={this.state.devices} status={this.state.status} closeTriggerAssistant={this.closeTriggerAssistant} addTriggerOperation={this.addTriggerOperation}/>
           :
-          <Triggers id="trigger" triggers={this.state.task.triggers} devices={this.state.devices} delete={this.deleteTrigger} addTriggerLogic={this.addTriggerLogic} showTriggerAssistant={this.showTriggerAssistant}/>
+          <Triggers id="trigger" triggers={this.state.task.triggers} devices={this.state.devices} delete={this.deleteTrigger} addTriggerLogic={this.addTriggerLogic} openTriggerAssistant={this.openTriggerAssistant}/>
         }
         <hr/>
         <div className="two_table_cel">
