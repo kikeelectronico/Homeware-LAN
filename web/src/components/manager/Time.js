@@ -5,16 +5,16 @@ import '../pages/Manager.css';
 class Assistant extends React.Component {
   constructor(props) {
     super(props);
-    this.updateTriggerOperation = this.updateTriggerOperation.bind(this);
+    this.addTriggerOperation = this.addTriggerOperation.bind(this);
   }
 
-  updateTriggerOperation(){
+  addTriggerOperation(){
     const hour = document.getElementById('hour').value;
     const minute = document.getElementById('minute').value;
     const week = document.getElementById('week').value;
 
     const value = hour + ':' + minute + ':' + week;
-    this.props.updateTriggerOperation('time',value);
+    this.props.addTriggerOperation('time',value);
     this.props.closeTriggerAssistant();
   }
 
@@ -62,7 +62,7 @@ class Assistant extends React.Component {
           </div>
         </div>
         <div className="trigger_assisstant_buttons_container">
-          <button type="button" className="trigger_assistant_button" onClick={ this.updateTriggerOperation }>Save</button>
+          <button type="button" className="trigger_assistant_button" onClick={ this.addTriggerOperation }>Save</button>
           <button type="button" className="trigger_assistant_button red_button" onClick={ this.props.closeTriggerAssistant }>Cancel</button>
         </div>
       </div>

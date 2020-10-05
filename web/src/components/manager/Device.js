@@ -11,7 +11,7 @@ class Device extends React.Component {
     }
     this.updateDevice = this.updateDevice.bind(this);
     this.updateParam = this.updateParam.bind(this);
-    this.updateTriggerOperation = this.updateTriggerOperation.bind(this);
+    this.addTriggerOperation = this.addTriggerOperation.bind(this);
   }
 
   updateDevice(event) {
@@ -26,14 +26,14 @@ class Device extends React.Component {
     });
   }
 
-  updateTriggerOperation(){
+  addTriggerOperation(){
     const device = document.getElementById('device').value;
     const param = document.getElementById('param').value;
     const comparator = document.getElementById('comparator').value;
     const value = document.getElementById('value').value;
 
     const operation = device + ':' + param + ':' + comparator + ':' + value;
-    this.props.updateTriggerOperation(deviceReference.params[this.state.param].type,operation);
+    this.props.addTriggerOperation(deviceReference.params[this.state.param].type,operation);
     this.props.closeTriggerAssistant();
   }
 
@@ -127,7 +127,7 @@ class Device extends React.Component {
         {value}
 
         <div className="trigger_assisstant_buttons_container">
-          <button type="button" className="trigger_assistant_button" onClick={ this.updateTriggerOperation }>Save</button>
+          <button type="button" className="trigger_assistant_button" onClick={ this.addTriggerOperation }>Save</button>
           <button type="button" className="trigger_assistant_button red_button" onClick={ this.props.closeTriggerAssistant }>Cancel</button>
         </div>
       </div>

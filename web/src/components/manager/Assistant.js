@@ -1,6 +1,7 @@
 import React from 'react';
 import Time from './Time'
 import Device from './Device'
+import DeviceToDevice from './DeviceToDevice'
 
 import '../pages/Manager.css';
 
@@ -12,6 +13,7 @@ class Assistant extends React.Component {
     }
     this.timeTigger = this.timeTigger.bind(this);
     this.deiceTrigger = this.deiceTrigger.bind(this);
+    this.deviceToDeviceTrigger = this.deviceToDeviceTrigger.bind(this);
   }
 
   timeTigger() {
@@ -23,6 +25,12 @@ class Assistant extends React.Component {
   deiceTrigger() {
     this.setState({
       type: 'device'
+    });
+  }
+
+  deviceToDeviceTrigger() {
+    this.setState({
+      type: 'device2device'
     });
   }
 
@@ -44,6 +52,8 @@ class Assistant extends React.Component {
       return <Time closeTriggerAssistant={this.props.closeTriggerAssistant} addTriggerOperation={this.props.addTriggerOperation}/>
     else if (this.state.type === 'device')
       return <Device devices={this.props.devices} status={this.props.status} closeTriggerAssistant={this.props.closeTriggerAssistant} addTriggerOperation={this.props.addTriggerOperation}/>
+    else if (this.state.type === 'device2device')
+      return <DeviceToDevice devices={this.props.devices} status={this.props.status} closeTriggerAssistant={this.props.closeTriggerAssistant} addTriggerOperation={this.props.addTriggerOperation}/>
   }
 }
 

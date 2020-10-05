@@ -23,7 +23,7 @@ class Trigger extends React.Component {
     if (device_triggers.includes(type)) {
       return this.props.devices[operation[0]] + ' (' + (deviceReference.params[operation[1]] ? deviceReference.params[operation[1]].name : operation[1]) + ') ' +  operation[2] + ' ' +  operation[3];
     } else if (type === 'd2d') {
-      return this.props.devices[operation[0]] + ' (' + (deviceReference.params[operation[1]] ? deviceReference.params[operation[1]].name : operation[1]) + ') ' +  operation[2] + ' ' +  this.props.devices[operation[3]] + ' (' + (deviceReference.paramCoolName[operation[4]] ? deviceReference.paramCoolName[operation[4]] : operation[4]) + ') ';
+      return this.props.devices[operation[0]] + ' (' + (deviceReference.params[operation[1]] ? deviceReference.params[operation[1]].name : operation[1]) + ') ' +  operation[2] + ' ' +  this.props.devices[operation[3]] + ' (' + (deviceReference.params[operation[4]].name ? deviceReference.params[operation[4]].name : operation[4]) + ') ';
     } else if (type === 'd2c') {
       return this.props.devices[operation[0]] + ' (' + (deviceReference.params[operation[1]] ? deviceReference.params[operation[1]].name : operation[1]) + ') ' +  operation[2] + ' ' +  operation[3];
     } else if (type === 'time') {
