@@ -1,6 +1,8 @@
 import React from 'react';
 import Triggers from '../manager/Triggers.js'
 import Assistant from '../manager/Assistant.js'
+import Target from '../manager/Target.js'
+import DeviceTarget from '../manager/DeviceTarget.js'
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
@@ -34,6 +36,7 @@ class Manager extends React.Component {
     this.openTriggerAssistant = this.openTriggerAssistant.bind(this);
     this.addTriggerOperation = this.addTriggerOperation.bind(this);
     this.closeTriggerAssistant = this.closeTriggerAssistant.bind(this);
+    this.addTarget = this.addTarget.bind(this);
   }
 
   componentDidMount() {
@@ -242,6 +245,14 @@ class Manager extends React.Component {
     });
   }
 
+  addTarget(target) {
+    var task = this.state.task;
+    task.target.push(target);
+    this.setState({
+      task: task
+    });
+  }
+
   render() {
 
     const button = {
@@ -260,6 +271,10 @@ class Manager extends React.Component {
     const separator = {
       width: '70%'
     }
+
+    const targets = this.state.task.target.map((target, i) => {
+      return <Target key={i} target={target} devices={this.state.devices}/>
+    })
 
     return (
       <div>
@@ -295,6 +310,14 @@ class Manager extends React.Component {
           :
           <Triggers id="trigger" triggers={this.state.task.triggers} devices={this.state.devices} delete={this.deleteTrigger} addTriggerLogic={this.addTriggerLogic} openTriggerAssistant={this.openTriggerAssistant}/>
         }
+        <hr/>
+        <h2>Targets</h2>
+        <div className="advise">
+          <span></span>
+        </div>
+        {targets}
+        <DeviceTarget devices={this.state.devices} status={this.state.status} addTarget={this.addTarget}/>
+
         <hr/>
         <div className="two_table_cel">
           <button type="button" style={ this.state.create ? deleteButtonDisabled : deleteButton } onClick={ this.delete } disabled={ this.state.create ? true : false}>Delete</button>
