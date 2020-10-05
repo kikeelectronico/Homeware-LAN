@@ -168,11 +168,7 @@ class Manager extends React.Component {
       delete triggers[id];
       task.triggers = triggers;
     } else {
-      task.triggers = {
-        trigger: {
-          type: 'clear'
-        }
-      };
+      task.triggers = {};
     }
     this.setState({
       task: task
