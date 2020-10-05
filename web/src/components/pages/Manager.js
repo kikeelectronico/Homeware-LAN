@@ -27,6 +27,8 @@ class Manager extends React.Component {
       status: {}
     }
     this.update = this.update.bind(this);
+    this.save = this.save.bind(this);
+    this.delete = this.delete.bind(this);
     this.deleteTrigger = this.deleteTrigger.bind(this);
     this.addTriggerLogic = this.addTriggerLogic.bind(this);
     this.showTriggerAssistant = this.showTriggerAssistant.bind(this);
@@ -87,69 +89,69 @@ class Manager extends React.Component {
   }
 
   save(){
-    // var http = new XMLHttpRequest();
-    // http.onload = function (e) {
-    //   if (http.readyState === 4) {
-    //     if (http.status === 200) {
-    //       JSON.parse(http.responseText);
-    //       this.setState({
-    //          save_status: "Saved correctly."
-    //        });
-    //     } else {
-    //       console.error(http.statusText);
-    //       this.setState({
-    //          save_status: "Error, the changes haven't been saved."
-    //        });
-    //     }
-    //     setTimeout(function(){
-    //       this.setState({
-    //          save_status: ""
-    //        });
-    //     }.bind(this), 5000)
-    //   }
-    // }.bind(this);
-    // var payload = {
-    //   "device": this.state.device
-    // }
-    // if (this.state.create){
-    //   http.open("POST", root + "api/devices/create/");
-    //   payload.status = this.state.status
-    // } else {
-    //   http.open("POST", root + "api/devices/update/");
-    // }
-    // http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    // http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-    // http.send(JSON.stringify(payload));
+    var http = new XMLHttpRequest();
+    http.onload = function (e) {
+      if (http.readyState === 4) {
+        if (http.status === 200) {
+          JSON.parse(http.responseText);
+          this.setState({
+             save_status: "Saved correctly."
+           });
+        } else {
+          console.error(http.statusText);
+          this.setState({
+             save_status: "Error, the changes haven't been saved."
+           });
+        }
+        setTimeout(function(){
+          this.setState({
+             save_status: ""
+           });
+        }.bind(this), 5000)
+      }
+    }.bind(this);
+    var payload = {
+      "task": this.state.task
+    }
+    if (this.state.create){
+      http.open("POST", root + "api/tasks/create/");
+    } else {
+      http.open("POST", root + "api/tasks/update/");
+      payload['id'] = this.state.id;
+    }
+    http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    http.send(JSON.stringify(payload));
   }
 
   delete(){
-    // if(window.confirm('Do you want to delete the device?')){
-    //   var http = new XMLHttpRequest();
-    //   http.onload = function (e) {
-    //     if (http.readyState === 4) {
-    //       if (http.status === 200) {
-    //         window.location.href = "/devices/"
-    //       } else {
-    //         console.error(http.statusText);
-    //         this.setState({
-    //            save_status: "Error, the device hasn't been deleted."
-    //          });
-    //       }
-    //       setTimeout(function(){
-    //         this.setState({
-    //            save_status: ""
-    //          });
-    //       }.bind(this), 5000)
-    //     }
-    //   }.bind(this);
-    //   http.open("GET", root + "api/devices/delete/" + this.state.device.id + "/");
-    //   http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-    //   http.send();
-    // } else {
-    //   this.setState({
-    //      save_status: "Ok. The device is save."
-    //    });
-    // }
+    if(window.confirm('Do you want to delete the device?')){
+      var http = new XMLHttpRequest();
+      http.onload = function (e) {
+        if (http.readyState === 4) {
+          if (http.status === 200) {
+            window.location.href = "/tasks/"
+          } else {
+            console.error(http.statusText);
+            this.setState({
+               save_status: "Error, the device hasn't been deleted."
+             });
+          }
+          setTimeout(function(){
+            this.setState({
+               save_status: ""
+             });
+          }.bind(this), 5000)
+        }
+      }.bind(this);
+      http.open("GET", root + "api/tasks/delete/" + this.state.id + "/");
+      http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+      http.send();
+    } else {
+      this.setState({
+         save_status: "Ok. The device is save."
+       });
+    }
   }
 
   deleteTrigger(id) {
