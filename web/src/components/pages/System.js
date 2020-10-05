@@ -157,6 +157,10 @@ class System extends React.Component {
       border: '1px solid #aaa'
     }
 
+    const red_text = {
+      color: 'red'
+    }
+
     const components = this.state.components.map((component) =>
       <Component title={ component.title } status={ component.status } enable={ component.enable } key={ component.title }/>
     );
@@ -167,7 +171,7 @@ class System extends React.Component {
     } else if(this.state.git.code === 403 && !this.state.upgrading){
       upgrade = <div><b>New version:</b> { this.state.git.version}</div>
     } else if (this.state.upgrading) {
-      upgrade = <div style={ git_description }><b>Upgrading</b>. It will take a couple of minutes. You will be redirected to the homepage once finished.</div>
+      upgrade = <div style={ git_description }><b style={ red_text }>Upgrading</b>. It will take a couple of minutes. You will be redirected to the homepage once finished.</div>
     }
 
 

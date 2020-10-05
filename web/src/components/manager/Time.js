@@ -11,7 +11,22 @@ class Assistant extends React.Component {
   addTriggerOperation(){
     const hour = document.getElementById('hour').value;
     const minute = document.getElementById('minute').value;
-    const week = document.getElementById('week').value;
+    var week = '';
+
+    if (document.getElementById('monday').checked)
+      week += '1'
+    if (document.getElementById('tuesday').checked)
+      week += '2'
+    if (document.getElementById('wednesday').checked)
+      week += '3'
+    if (document.getElementById('thursday').checked)
+      week += '4'
+    if (document.getElementById('friday').checked)
+      week += '5'
+    if (document.getElementById('saturday').checked)
+      week += '6'
+    if (document.getElementById('sunday').checked)
+      week += '0'
 
     const value = hour + ':' + minute + ':' + week;
     this.props.addTriggerOperation('time',value);
@@ -45,22 +60,89 @@ class Assistant extends React.Component {
             <span className="advise"></span>
           </div>
         </div>
-        <div className="two_table_row">
-          <div className="two_table_cel">
-            Week day*
+
+        <div className="three_table_row">
+          <div className="three_table_cel">
+            Week*
           </div>
-          <div className="two_table_cel">
-            <select name="type" className="" id="week">
-              <option value="0">Sunday</option>
-              <option value="1">Monday</option>
-              <option value="2">Tuesday</option>
-              <option value="3">Wednesday</option>
-              <option value="4">Thursday</option>
-              <option value="5">Friday</option>
-              <option value="6">Saturday</option>
-            </select>
+          <div className="three_table_cel">
+            Sunday
+          </div>
+          <div className="three_table_cel">
+            <input type="checkbox" id="sunday"/>
           </div>
         </div>
+
+        <div className="three_table_row">
+          <div className="three_table_cel">
+          </div>
+          <div className="three_table_cel">
+            Monday
+          </div>
+          <div className="three_table_cel">
+            <input type="checkbox" id="monday"/>
+          </div>
+        </div>
+
+        <div className="three_table_row">
+          <div className="three_table_cel">
+          </div>
+          <div className="three_table_cel">
+            Tuesday
+          </div>
+          <div className="three_table_cel">
+            <input type="checkbox" id="tuesday"/>
+          </div>
+        </div>
+
+        <div className="three_table_row">
+          <div className="three_table_cel">
+          </div>
+          <div className="three_table_cel">
+            Wednesday
+          </div>
+          <div className="three_table_cel">
+            <input type="checkbox" id="wednesday"/>
+          </div>
+        </div>
+
+        <div className="three_table_row">
+          <div className="three_table_cel">
+          </div>
+          <div className="three_table_cel">
+            Thursday
+          </div>
+          <div className="three_table_cel">
+            <input type="checkbox" id="thursday"/>
+          </div>
+        </div>
+
+        <div className="three_table_row">
+          <div className="three_table_cel">
+          </div>
+          <div className="three_table_cel">
+            Friday
+          </div>
+          <div className="three_table_cel">
+            <input type="checkbox" id="friday"/>
+          </div>
+        </div>
+
+        <div className="three_table_row">
+          <div className="three_table_cel">
+          </div>
+          <div className="three_table_cel">
+            Saturday
+          </div>
+          <div className="three_table_cel">
+            <input type="checkbox" id="saturday"/>
+          </div>
+        </div>
+
+
+
+
+
         <div className="trigger_assisstant_buttons_container">
           <button type="button" className="trigger_assistant_button" onClick={ this.addTriggerOperation }>Save</button>
           <button type="button" className="trigger_assistant_button red_button" onClick={ this.props.closeTriggerAssistant }>Cancel</button>

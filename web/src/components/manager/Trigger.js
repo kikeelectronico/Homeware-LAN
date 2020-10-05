@@ -27,10 +27,11 @@ class Trigger extends React.Component {
     } else if (type === 'd2c') {
       return this.props.devices[operation[0]] + ' (' + (deviceReference.params[operation[1]] ? deviceReference.params[operation[1]].name : operation[1]) + ') ' +  operation[2] + ' ' +  operation[3];
     } else if (type === 'time') {
+
       var days = '';
-      for( var i = 2; i < operation.length; i++){
-        days += week[operation[i]];
-        if (i !== operation.length - 1)
+      for( var i = 0; i < operation[2].length; i++){
+        days += week[operation[2][i]];
+        if (i !== operation[2].length - 1)
           days += ', ';
       }
       return operation[0] + ':'  + operation[1] + ' on ' + days
