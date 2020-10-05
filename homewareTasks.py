@@ -260,15 +260,15 @@ def timeExecutor(operation):
     op = operation.split(':')
     h_op = int(op[0])
     m_op = int(op[1])
-    w_op = int(op[2])
+    w_op = op[2]
     ts = time.localtime(time.time())
     h = ts.tm_hour
     m = ts.tm_min
     pw = ts.tm_wday
     week = [1,2,3,4,5,6,0]
-    w = week[pw]
+    w = str(week[pw])
 
-    if h == h_op and m == m_op and w == w_op:
+    if h == h_op and m == m_op and w in w_op:
         return True
     else:
         return False
