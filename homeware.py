@@ -755,8 +755,8 @@ def smarthome():
         return "A"
 
 #Clock endpoint
-@app.route("/clock")
-@app.route("/clock/")
+@app.route("/api/clock")
+@app.route("/api/clock/")
 def clock():
     ts = time.localtime(time.time())
     h = ts.tm_hour
