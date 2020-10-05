@@ -40,6 +40,30 @@ class Manager extends React.Component {
   }
 
   componentDidMount() {
+    // Load devices data
+    var dev = new XMLHttpRequest();
+    dev.onload = function (e) {
+      if (dev.readyState === 4) {
+        if (dev.status === 200) {
+          var data = JSON.parse(dev.responseText);
+          var devices_names = {}
+          data.devices.forEach((device) => {
+            devices_names[device.id] = device.name.name
+          })
+          this.setState({
+             devices: devices_names,
+             status:  data.status
+           });
+        } else {
+          console.error(dev.statusText);
+        }
+      }
+    }.bind(this);
+    dev.open("GET", root + "api/global/get/");
+    dev.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    dev.send();
+
+    // Load task if neeeded
     if (!this.state.create){
       var tas = new XMLHttpRequest();
       tas.onload = function (e) {
@@ -58,28 +82,6 @@ class Manager extends React.Component {
       tas.open("GET", root + "api/tasks/get/" + this.state.id + "/");
       tas.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
       tas.send();
-
-      var dev = new XMLHttpRequest();
-      dev.onload = function (e) {
-        if (dev.readyState === 4) {
-          if (dev.status === 200) {
-            var data = JSON.parse(dev.responseText);
-            var devices_names = {}
-            data.devices.forEach((device) => {
-              devices_names[device.id] = device.name.name
-            })
-            this.setState({
-               devices: devices_names,
-               status:  data.status
-             });
-          } else {
-            console.error(dev.statusText);
-          }
-        }
-      }.bind(this);
-      dev.open("GET", root + "api/global/get/");
-      dev.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-      dev.send();
     }
   }
 
