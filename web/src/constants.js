@@ -1,333 +1,9 @@
 var root = window.location.href.includes('localhost') ? "http://homeware.local/" : "/"
 
 const deviceReference = {
-  devices: {
-    "action.devices.types.AC_UNIT": [
-      "action.devices.traits.FanSpeed",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.TemperatureSetting"
-    ],
-    "action.devices.types.AIRCOOLER": [
-      "action.devices.traits.FanSpeed",
-      "action.devices.traits.HumiditySetting",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.TemperatureSetting"
-    ],
-    "action.devices.types.AIRFRESHENER": [
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.AIRPURIFIER": [
-      "action.devices.traits.OnOff",
-      "action.devices.traits.FanSpeed",
-      "action.devices.traits.Modes",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.AWNING": [
-      "action.devices.traits.Modes",
-      "action.devices.traits.OpenClose"
-    ],
-    "action.devices.types.BATHTUB": [
-      "action.devices.traits.Fill",
-      "action.devices.traits.OnOff"
-    ],
-    "action.devices.types.BED": [
-      "action.devices.traits.Modes",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.BLENDER": [
-      "action.devices.traits.Cook",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Timer",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.BLINDS": [
-      "action.devices.traits.Modes",
-      "action.devices.traits.OpenClose"
-    ],
-    "action.devices.types.BOILER": [
-      "action.devices.traits.Modes",
-      "action.devices.traits.TemperatureControl",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.CLOSET": [
-      "action.devices.traits.OpenClose"
-    ],
-    "action.devices.types.COFFE_MAKER": [
-      "action.devices.traits.Cook",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.TemperatureControl",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.COOKTOP": [
-      "action.devices.traits.Cook",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Timer",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.CURTAIN": [
-      "action.devices.traits.OpenClose"
-    ],
-    "action.devices.types.DEHUMIDIFIER": [
-      "action.devices.traits.FanSpeed",
-      "action.devices.traits.HumiditySetting",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.RunCycle",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.DEHYDRATOR": [
-      "action.devices.traits.Cook",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Timer",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.DISHWASHER": [
-      "action.devices.traits.OnOff",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Modes",
-      "action.devices.traits.Toggles",
-      "action.devices.traits.RunCycle"
-    ],
-    "action.devices.types.DOOR": [
-      "action.devices.traits.OpenClose"
-    ],
-    "action.devices.types.DRAWER": [
-      "action.devices.traits.OpenClose"
-    ],
-    "action.devices.types.DRYER": [
-      "action.devices.traits.OnOff",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Modes",
-      "action.devices.traits.Toggles",
-      "action.devices.traits.RunCycle"
-    ],
-    "action.devices.types.FAN": [
-      "action.devices.traits.FanSpeed",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.FIREPLACE": [
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.FRYER": [
-      "action.devices.traits.Cook",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Timer",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.GARAGE": [
-      "action.devices.traits.OpenClose"
-    ],
-    "action.devices.types.GATE": [
-      "action.devices.traits.OpenClose"
-    ],
-    "action.devices.types.GRILL": [
-      "action.devices.traits.Cook",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Timer",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.HEATER": [
-      "action.devices.traits.FanSpeed",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.TemperatureSetting",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.HOOD": [
-      "action.devices.traits.FanSpeed",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.HUMIDIFIER": [
-      "action.devices.traits.FanSpeed",
-      "action.devices.traits.HumiditySetting",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.KETTLE": [
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.TemperatureControl",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.LIGHT": [
-      "action.devices.traits.OnOff",
-      "action.devices.traits.Brightness",
-      "action.devices.traits.ColorSetting"
-    ],
-    "action.devices.types.LOCK": [
-      "action.devices.traits.LockUnlock"
-    ],
-    "action.devices.types.MOP": [
-      "action.devices.traits.Dock",
-      "action.devices.traits.Locator",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.RunCycle",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.MOWER": [
-      "action.devices.traits.Dock",
-      "action.devices.traits.Locator",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.RunCycle",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.MICROWAVE": [
-      "action.devices.traits.Cook",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Timer",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.MULTICOOKER": [
-      "action.devices.traits.Cook",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Timer",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.OUTLET": [
-      "action.devices.traits.OnOff"
-    ],
-    "action.devices.types.OVEN": [
-      "action.devices.traits.Cook",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.TemperatureControl",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.PERGOLA": [
-      "action.devices.traits.OpenClose",
-      "action.devices.traits.Rotation"
-    ],
-    "action.devices.types.PRESSURECOOKER": [
-      "action.devices.traits.Cook",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Timer",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.RADIATOR": [
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.REFRIGERATOR": [
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.TemperatureControl",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.SCENE": [
-      "action.devices.traits.Scene"
-    ],
-    "action.devices.types.SECURITYSYSTEM": [
-      "action.devices.traits.ArmDisarm",
-      "action.devices.traits.StatusReport"
-    ],
-    "action.devices.types.SHUTTER": [
-      "action.devices.traits.Modes",
-      "action.devices.traits.OpenClose",
-      "action.devices.traits.Rotation"
-    ],
-    "action.devices.types.SHOWER": [
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.TemperatureControl"
-    ],
-    "action.devices.types.SOUSVIDE": [
-      "action.devices.traits.Cook",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Timer",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.SPRINKLER": [
-      "action.devices.traits.StartStop"
-    ],
-    "action.devices.types.STANDMIXER": [
-      "action.devices.traits.Cook",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.SWITCH": [
-      "action.devices.traits.OnOff"
-    ],
-    "action.devices.types.THERMOSTAT": [
-      "action.devices.traits.TemperatureSetting"
-    ],
-    "action.devices.types.VACUUM": [
-      "action.devices.traits.Dock",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.VALVE": [
-      "action.devices.traits.OpenClose"
-    ],
-    "action.devices.types.WASHER": [
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.RunCycle",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.WATERHEATER": [
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.TemperatureControl",
-      "action.devices.traits.Toggles"
-    ],
-    "action.devices.types.WINDOW": [
-      "action.devices.traits.LockUnlock",
-      "action.devices.traits.OpenClose"
-    ],
-    "action.devices.types.YOGURTMAKER": [
-      "action.devices.traits.Cook",
-      "action.devices.traits.Modes",
-      "action.devices.traits.OnOff",
-      "action.devices.traits.StartStop",
-      "action.devices.traits.Timer",
-      "action.devices.traits.Toggles"
-    ]
-  },
   traits: {
     "action.devices.traits.OnOff": {
+      name: 'Power control',
       attributes: {
         commandOnlyOnOff: {
           type: "bool",
@@ -341,12 +17,12 @@ const deviceReference = {
       param:{
         on: {
           type: "bool",
-          default: true,
-          manual: false
+          default: true
         }
       }
     },
     "action.devices.traits.Brightness": {
+      name: 'Brightness',
       attributes: {
         commandOnlyBrightness: {
           type: "bool",
@@ -356,26 +32,23 @@ const deviceReference = {
       param:{
         brightness: {
           type: "int",
-          default: 100,
-          manual: false
+          default: 100
         }
       }
     },
     "action.devices.traits.ColorSetting": {
+      name: 'Color setting',
       attributes: {
         colorModel: {
           type: "string",
-          default: "rgb",
-          manual: false
+          default: "rgb"
         },
         commandOnlyColorSetting: {
             type: "bool",
-            default: false,
-            manual: false
+            default: false
         },
         colorTemperatureRange: {
           type: "object",
-          manual: false,
           default: {
             temperatureMinK: 4000,
             temperatureMaxK: 4200
@@ -395,7 +68,6 @@ const deviceReference = {
       param:{
         color: {
           type: "object",
-          manual: false,
           default: {
             spectrumRgb: 16711935
           },
@@ -427,6 +99,7 @@ const deviceReference = {
       }
     },
     "action.devices.traits.TemperatureSetting": {
+      name: 'Temperature Settings',
       attributes: {
         availableThermostatModes: {
           type: "select",
@@ -459,37 +132,32 @@ const deviceReference = {
       param:{
         thermostatMode: {
           type: "string",
-          default: "off",
-          manual: false
+          default: "off"
         },
         thermostatTemperatureSetpoint: {
           type: "int",
-          default: 20,
-          manual: false
+          default: 20
         },
         thermostatTemperatureAmbient: {
           type: "int",
-          default: 22,
-          manual: false
+          default: 22
         },
         thermostatTemperatureSetpointHigh: {
           type: "int",
-          default: 28,
-          manual: false
+          default: 28
         },
         thermostatTemperatureSetpointLow: {
           type: "int",
-          default: 18,
-          manual: false
+          default: 18
         },
         thermostatHumidityAmbient: {
           type: "int",
-          default: 80,
-          manual: false
+          default: 80
         }
       }
     },
     "action.devices.traits.OpenClose": {
+      name: 'Open or close',
       attributes: {
         discreteOnlyOpenClose: {
           type: "bool",
@@ -515,7 +183,6 @@ const deviceReference = {
         },
         openState: {
           type: "object",
-          manual: false,
           default: {
             openPercent: 0,
             openDirection: "UP"
@@ -534,6 +201,7 @@ const deviceReference = {
       }
     },
     "action.devices.traits.Rotation": {
+      name: 'Rotation',
       attributes: {
         commandOnlyRotation: {
           type: "bool",
@@ -570,32 +238,30 @@ const deviceReference = {
       param:{
         rotationPercent: {
           type: "int",
-          manual: false,
           default: 0
         },
         rotationDegrees: {
           type: "int",
-          manual: false,
           default: 0
         }
       }
     },
     "action.devices.traits.LockUnlock": {
+      name: 'Lock or unlock',
       attributes: {},
       param:{
         isLocked: {
           type: "bool",
-          default: false,
-          manual: false
+          default: false
         },
         isJammed: {
           type: "bool",
-          default: false,
-          manual: false
+          default: false
         }
       }
     },
     "action.devices.traits.Scene": {
+      name: 'Scene',
       attributes: {
         sceneReversible: {
           type: "bool",
@@ -605,22 +271,22 @@ const deviceReference = {
       param:{
         deactivate: {
           type: "bool",
-          default: true,
-          manual: false
+          default: true
         }
       }
     },
     "action.devices.traits.Dock": {
+      name: 'Dock',
       attributes: {},
       param:{
         isDocked: {
           type: "bool",
-          default: false,
-          manual: false
+          default: false
         }
       }
     },
     "action.devices.traits.Toggles": {
+      name: 'Toogles',
       attributes: {
         availableToggles: {
           type: "strigifyedObject",
@@ -635,6 +301,7 @@ const deviceReference = {
       }
     },
     "action.devices.traits.StartStop": {
+      name: 'Start and stop',
       attributes: {
         availableZones: {
           type: "array",
@@ -648,12 +315,10 @@ const deviceReference = {
       param: {
         isRunning: {
           type: "bool",
-          manual: false,
           default: false
         },
         isPaused: {
           type: "bool",
-          manual: false,
           default: false
         },
         activeZones: ~{
@@ -663,6 +328,7 @@ const deviceReference = {
       }
     },
     "action.devices.traits.Timer": {
+      name: 'Timer',
       attributes: {
         maxTimerLimitSec: {
           type: "int",
@@ -676,17 +342,16 @@ const deviceReference = {
       param: {
         timerRemainingSec: {
           type: "int",
-          manual: false,
           default: -1
         },
         timerPaused: {
           type: "bool",
-          manual: false,
           default: false
         }
       }
     },
     "action.devices.traits.TemperatureControl": {
+      name: 'Temperature control',
       attributes: {
         temperatureStepCelsius: {
           type: "int",
@@ -723,17 +388,16 @@ const deviceReference = {
       param: {
         temperatureSetpointCelsius: {
           type: "int",
-          manual: false,
           default: 20
         },
         temperatureAmbientCelsius: {
           type: "int",
-          manual: false,
           default: 20
         }
       }
     },
     "action.devices.traits.FanSpeed": {
+      name: 'Fan Speed',
       attributes: {
         availableFanSpeeds: {
           type: "strigifyedObject",
@@ -754,12 +418,12 @@ const deviceReference = {
       param: {
         currentFanSpeedSetting: {
           type: "string",
-          manual: false,
           default: ""
         }
       }
     },
     "action.devices.traits.ArmDisarm": {
+      name: 'Arm or disarm',
       attributes: {
         availableArmLevels: {
           type: "strigifyedObject",
@@ -772,22 +436,20 @@ const deviceReference = {
       param: {
         isArmed: {
           type: "bool",
-          manual: false,
           default: false
         },
         currentArmLevel: {
           type: "string",
-          manual: false,
           default: ""
         },
         exitAllowance: {
           type: "int",
-          manual: false,
           default: 20
         }
       }
     },
     "action.devices.traits.Fill": {
+      name: 'Fill',
       attributes: {
         availableFillLevels: {
           type: "strigifyedObject",
@@ -800,23 +462,23 @@ const deviceReference = {
       param: {
         isFilled: {
           type: "bool",
-          manual: false,
           default: false
         },
         currentFillLevel: {
           type: "string",
-          manual: false,
           default: ""
         }
       }
     },
     "action.devices.traits.RunCycle": {
+      name: 'RunCycle',
       attributes: {},
       param: {
         lang: 'en'
       }
     },
     "action.devices.traits.StatusReport": {
+      name: 'Status report',
       attributes: {},
       param: {
         currentStatusReport: {
@@ -826,6 +488,7 @@ const deviceReference = {
       }
     },
     "action.devices.traits.HumiditySetting": {
+      name: 'Humidity setting',
       attributes: {
         humiditySetpointRange: {
           type: "object",
@@ -854,17 +517,16 @@ const deviceReference = {
       param: {
         humiditySetpointPercent: {
           type: "int",
-          manual: false,
           default: 30
         },
         humidityAmbientPercent: {
           type: "int",
-          manual: false,
           default: 20
         }
       }
     },
     "action.devices.traits.Cook": {
+      name: 'Cooking',
       attributes: {
         foodPresets: {
           type: "strigifyedObject",
@@ -878,27 +540,24 @@ const deviceReference = {
       param: {
         currentCookingMode: {
           type: "string",
-          manual: false,
           default: ""
         },
         currentFoodPreset: {
           type: "string",
-          manual: false,
           default: ""
         },
         currentFoodQuantity: {
           type: "int",
-          manual: false,
           default: 0
         },
         currentFoodUnit: {
           type: "string",
-          manual: false,
           default: ""
         }
       }
     },
     "action.devices.traits.Modes": {
+      name: 'Modes',
       attributes: {
         availableModes: {
           type: "strigifyedObject",
@@ -913,109 +572,521 @@ const deviceReference = {
       }
     },
     "action.devices.traits.Locator": {
+      name: 'Locator',
       attributes: {
       },
       param: {
       }
     }
   },
-  devicesCoolNames: {
-    "action.devices.types.AC_UNIT": "AC unit",
-    "action.devices.types.AIRCOOLER": "Air cooler",
-    "action.devices.types.AIRFRESHENER": "Air freshener",
-    "action.devices.types.AIRPURIFIER": "Air purifier",
-    "action.devices.types.AWNING": "Awing",
-    "action.devices.types.BATHTUB": "Bathtub",
-    "action.devices.types.BED": "Bed",
-    "action.devices.types.BLENDER": "Blender",
-    "action.devices.types.BLINDS": "Blinds",
-    "action.devices.types.BOILER": "Boiler",
-    "action.devices.types.CLOSET": "Closet",
-    "action.devices.types.COFFE_MAKER": "Coffe maker",
-    "action.devices.types.COOKTOP": "Cooktop",
-    "action.devices.types.CURTAIN": "Curtain",
-    "action.devices.types.DEHUMIDIFIER": "Dehumidifier",
-    "action.devices.types.DEHYDRATOR": "Dehydrator",
-    "action.devices.types.DISHWASHER": "Dishwasher",
-    "action.devices.types.DOOR": "Door",
-    "action.devices.types.DRYER": "Dryer",
-    "action.devices.types.DRAWER": "Drawer",
-    "action.devices.types.FAN": "Fan",
-    "action.devices.types.FIREPLACE": "Fireplace",
-    "action.devices.types.FRYER": "Fryer",
-    "action.devices.types.GARAGE": "Garage",
-    "action.devices.types.GATE": "Gate",
-    "action.devices.types.GRILL": "Grill",
-    "action.devices.types.HEATER": "Heater",
-    "action.devices.types.HOOD": "Hood",
-    "action.devices.types.HUMIDIFIER": "Humidifier",
-    "action.devices.types.KETTLE": "Kettle",
-    "action.devices.types.LIGHT": "Light",
-    "action.devices.types.LOCK": "Lock",
-    "action.devices.types.MICROWAVE": "Microwave",
-    "action.devices.types.MULTICOOKER": "Multicooker",
-    "action.devices.types.MOP": "Mop",
-    "action.devices.types.MOWER": "Mower",
-    "action.devices.types.OUTLET": "Outlet",
-    "action.devices.types.OVEN": "Oven",
-    "action.devices.types.PERGOLA": "Pergola",
-    "action.devices.types.PRESSURECOOKER": "Pressure cooker",
-    "action.devices.types.RADIATOR": "Radiator",
-    "action.devices.types.REFRIGERATOR": "Refrigerator",
-    "action.devices.types.SECURITYSYSTEM": "Security system",
-    "action.devices.types.SHOWER": "Shower",
-    "action.devices.types.SOUSVIDE": "Sous vide",
-    "action.devices.types.SHUTTER": "Shutter",
-    "action.devices.types.SPRINKLER": "Sprinkler",
-    "action.devices.types.STANDMIXER": "Stand mixer",
-    "action.devices.types.SWITCH": "Switch",
-    "action.devices.types.THERMOSTAT": "Thermostat",
-    "action.devices.types.VACUUM": "Vacum",
-    "action.devices.types.VALVE": "Valve",
-    "action.devices.types.WASHER": "Washer",
-    "action.devices.types.WATERHEATER": "Water heater",
-    "action.devices.types.WINDOW": "Window",
-    "action.devices.types.SCENE": "Scene",
-    "action.devices.types.YOGURTMAKER": "Yogurt maker"
-  },
-  traitsCoolNames: {
-    "action.devices.traits.Toggles": "Toggle",
-    "action.devices.traits.ArmDisarm": "Arm or Disarm",
-    "action.devices.traits.CameraStream": "Camera stream",
-    "action.devices.traits.ColorSetting": "Color setting",
-    "action.devices.traits.FanSpeed": "Fan speed",
-    "action.devices.traits.LightEffects": "Light effects",
-    "action.devices.traits.Modes": "Modes",
-    "action.devices.traits.OnOff": "Switch control",
-    "action.devices.traits.OpenClose": "Open or Close",
-    "action.devices.traits.Rotation": "Rotation",
-    "action.devices.traits.Scene": "Scene",
-    "action.devices.traits.StartStop": "Start or Stop",
-    "action.devices.traits.TemperatureControl": "Temperature control",
-    "action.devices.traits.TemperatureSetting": "Temperature setting",
-    "action.devices.traits.Timer": "Timer",
-    "action.devices.traits.Dock": "Dock",
-    "action.devices.traits.Locator": "Locator",
-    "action.devices.traits.RunCycle": "Run cycle",
-    "action.devices.traits.StatusReport": "Status report",
-    "action.devices.traits.Brightness": "Brightness",
-    "action.devices.traits.LockUnlock": "Lock or Unlock",
-    "action.devices.traits.HumiditySetting": "Humidity setting",
-    "action.devices.traits.Cook": "Cooking",
-    "action.devices.traits.Fill": "Fill level"
+  devices: {
+    "action.devices.types.AC_UNIT": {
+      name: "AC unit",
+      traits: [
+        "action.devices.traits.FanSpeed",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.TemperatureSetting"
+      ]
+    },
+    "action.devices.types.AIRCOOLER": {
+      name: "Air cooler",
+      traits: [
+        "action.devices.traits.FanSpeed",
+        "action.devices.traits.HumiditySetting",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.TemperatureSetting"
+      ]
+    },
+    "action.devices.types.AIRFRESHENER": {
+      name: "Air freshener",
+      traits: [
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.AIRPURIFIER": {
+      name: "Air purifier",
+      traits: [
+        "action.devices.traits.OnOff",
+        "action.devices.traits.FanSpeed",
+        "action.devices.traits.Modes",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.AWNING": {
+      name: "Awing",
+      traits: [
+        "action.devices.traits.Modes",
+        "action.devices.traits.OpenClose"
+      ]
+    },
+    "action.devices.types.BATHTUB": {
+      name: "Bathtub",
+      traits: [
+        "action.devices.traits.Fill",
+        "action.devices.traits.OnOff"
+      ]
+    },
+    "action.devices.types.BED": {
+      name: "Bed",
+      traits: [
+        "action.devices.traits.Modes",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.BLENDER": {
+      name: "Blender",
+      traits: [
+        "action.devices.traits.Cook",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Timer",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.BLINDS": {
+      name: "Blinds",
+      traits: [
+        "action.devices.traits.Modes",
+        "action.devices.traits.OpenClose"
+      ]
+    },
+    "action.devices.types.BOILER": {
+      name: "Boiler",
+      traits: [
+        "action.devices.traits.Modes",
+        "action.devices.traits.TemperatureControl",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.CLOSET": {
+      name: "Closet",
+      traits: [
+        "action.devices.traits.OpenClose"
+      ]
+    },
+    "action.devices.types.COFFE_MAKER": {
+      name: "Coffe maker",
+      traits: [
+        "action.devices.traits.Cook",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.TemperatureControl",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.COOKTOP": {
+      name: "Cooktop",
+      traits: [
+        "action.devices.traits.Cook",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Timer",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.CURTAIN": {
+      name: "Curtain",
+      traits: [
+        "action.devices.traits.OpenClose"
+      ]
+    },
+    "action.devices.types.DEHUMIDIFIER": {
+      name: "Dehumidifier",
+      traits: [
+        "action.devices.traits.FanSpeed",
+        "action.devices.traits.HumiditySetting",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.RunCycle",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.DEHYDRATOR": {
+      name: "Dehydrator",
+      traits: [
+        "action.devices.traits.Cook",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Timer",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.DISHWASHER": {
+      name: "Dishwasher",
+      traits: [
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Modes",
+        "action.devices.traits.Toggles",
+        "action.devices.traits.RunCycle"
+      ]
+    },
+    "action.devices.types.DOOR": {
+      name: "Door",
+      traits: [
+        "action.devices.traits.OpenClose"
+      ]
+    },
+    "action.devices.types.DRYER": {
+      name: "Dryer",
+      traits: [
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Modes",
+        "action.devices.traits.Toggles",
+        "action.devices.traits.RunCycle"
+      ]
+    },
+    "action.devices.types.DRAWER": {
+      name: "Drawer",
+      traits: [
+        "action.devices.traits.OpenClose"
+      ]
+    },
+    "action.devices.types.FAN": {
+      name: "Fan",
+      traits: [
+        "action.devices.traits.FanSpeed",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.FIREPLACE": {
+      name: "Fireplace",
+      traits: [
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.FRYER": {
+      name: "Fryer",
+      traits: [
+        "action.devices.traits.Cook",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Timer",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.GARAGE": {
+      name: "Garage",
+      traits: [
+        "action.devices.traits.OpenClose"
+      ]
+    },
+    "action.devices.types.GATE": {
+      name: "Gate",
+      traits: [
+        "action.devices.traits.OpenClose"
+      ]
+    },
+    "action.devices.types.GRILL": {
+      name: "Grill",
+      traits: [
+        "action.devices.traits.Cook",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Timer",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.HEATER": {
+      name: "Heater",
+      traits: [
+        "action.devices.traits.FanSpeed",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.TemperatureSetting",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.HOOD": {
+      name: "Hood",
+      traits: [
+        "action.devices.traits.FanSpeed",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.HUMIDIFIER": {
+      name: "Humidifier",
+      traits: [
+        "action.devices.traits.FanSpeed",
+        "action.devices.traits.HumiditySetting",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.KETTLE": {
+      name: "Kettle",
+      traits: [
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.TemperatureControl",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.LIGHT": {
+      name: "Light",
+      traits: [
+        "action.devices.traits.OnOff",
+        "action.devices.traits.Brightness",
+        "action.devices.traits.ColorSetting"
+      ]
+    },
+    "action.devices.types.LOCK": {
+      name: "Lock",
+      traits: [
+        "action.devices.traits.LockUnlock"
+      ]
+    },
+    "action.devices.types.MICROWAVE": {
+      name: "Microwave",
+      traits: [
+        "action.devices.traits.Cook",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Timer",
+        "action.devices.traits.Toggles"
+      ],
+    },
+    "action.devices.types.MULTICOOKER": {
+      name: "Multicooker",
+      traits: [
+        "action.devices.traits.Cook",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Timer",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.MOP": {
+      name: "Mop",
+      traits: [
+        "action.devices.traits.Dock",
+        "action.devices.traits.Locator",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.RunCycle",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.MOWER": {
+      name: "Mower",
+      traits: [
+        "action.devices.traits.Dock",
+        "action.devices.traits.Locator",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.RunCycle",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.OUTLET": {
+      name: "Outlet",
+      traits: [
+        "action.devices.traits.OnOff"
+      ]
+    },
+    "action.devices.types.OVEN": {
+      name: "Oven",
+      traits: [
+        "action.devices.traits.Cook",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.TemperatureControl",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.PERGOLA": {
+      name: "Pergola",
+      traits: [
+        "action.devices.traits.OpenClose",
+        "action.devices.traits.Rotation"
+      ]
+    },
+    "action.devices.types.PRESSURECOOKER": {
+      name: "Pressure cooker",
+      traits: [
+        "action.devices.traits.Cook",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Timer",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.RADIATOR": {
+      name: "Radiator",
+      traits: [
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.REFRIGERATOR": {
+      name: "Refrigerator",
+      traits: [
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.TemperatureControl",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.SECURITYSYSTEM": {
+      name: "Security system",
+      traits: [
+        "action.devices.traits.ArmDisarm",
+        "action.devices.traits.StatusReport"
+      ]
+    },
+    "action.devices.types.SHOWER": {
+      name: "Shower",
+      traits: [
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.TemperatureControl"
+      ]
+    },
+    "action.devices.types.SOUSVIDE": {
+      name: "Sous vide",
+      traits: [
+        "action.devices.traits.Cook",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Timer",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.SHUTTER": {
+      name: "Shutter",
+      traits: [
+        "action.devices.traits.Modes",
+        "action.devices.traits.OpenClose",
+        "action.devices.traits.Rotation"
+      ]
+    },
+    "action.devices.types.SPRINKLER": {
+      name: "Sprinkler",
+      traits: [
+        "action.devices.traits.StartStop"
+      ]
+    },
+    "action.devices.types.STANDMIXER": {
+      name: "Stand mixer",
+      traits: [
+        "action.devices.traits.Cook",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.SWITCH": {
+      name: "Switch",
+      traits: [
+        "action.devices.traits.OnOff"
+      ]
+    },
+    "action.devices.types.THERMOSTAT": {
+      name: "Thermostat",
+      traits: [
+        "action.devices.traits.TemperatureSetting"
+      ]
+    },
+    "action.devices.types.VACUUM": {
+      name: "Vacum",
+      traits: [
+        "action.devices.traits.Dock",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.VALVE": {
+      name: "Valve",
+      traits: [
+        "action.devices.traits.OpenClose"
+      ]
+    },
+    "action.devices.types.WASHER": {
+      name: "Washer",
+      traits: [
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.RunCycle",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.WATERHEATER": {
+      name: "Water heater",
+      traits: [
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.TemperatureControl",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.WINDOW": {
+      name: "Window",
+      traits:[
+        "action.devices.traits.LockUnlock",
+        "action.devices.traits.OpenClose"
+      ]
+    },
+    "action.devices.types.SCENE": {
+      name: "Scene",
+      traits: [
+        "action.devices.traits.Scene"
+      ]
+    },
+    "action.devices.types.YOGURTMAKER": {
+      name: "Yogurt maker",
+      traits: [
+        "action.devices.traits.Cook",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Timer",
+        "action.devices.traits.Toggles"
+      ]
+    }
   },
   params: {
     thermostatTemperatureAmbient: {
       type: "d2i",
-      name: 'Ambient'
+      name: 'Ambient temperature'
     },
     thermostatTemperatureSetpoint: {
       type: "d2i",
-      name: 'Set point'
+      name: 'Temperature set point'
     },
     thermostatHumidityAmbient: {
       type: "d2i",
-      name: 'Humidity'
+      name: 'Ambient humidity'
     },
     thermostatMode: {
       type: "d2l",
@@ -1045,6 +1116,86 @@ const deviceReference = {
       type: "d2c",
       name: 'Color'
     },
+    thermostatTemperatureSetpointHigh: {
+      type: "d2i",
+      name: 'Hight set point in heatcool mode'
+    },
+    thermostatTemperatureSetpointLow: {
+      type: "d2i",
+      name: 'Low set point in heatcool mode'
+    },
+    openPercent: {
+      type: "d2i",
+      name: 'Open percentage'
+    },
+    rotationPercent: {
+      type: "d2i",
+      name: 'Rotation percentage'
+    },
+    rotationDegrees: {
+      type: "d2i",
+      name: 'Ration degrees'
+    },
+    isLocked: {
+      type: "d2b",
+      name: 'Is locked'
+    },
+    isJammed: {
+      type: "d2b",
+      name: 'Is jammed'
+    },
+    isDocked: {
+      type: "d2b",
+      name: 'Is docked'
+    },
+    isRunnin: {
+      type: "d2b",
+      name: 'Is running'
+    },
+    isPaused: {
+      type: "d2b",
+      name: 'Is paused'
+    },
+    timerRemainingSec: {
+      type: "d2i",
+      name: 'Remaining time [seconds]'
+    },
+    timerPaused: {
+      type: "d2b",
+      name: 'Is paused'
+    },
+    temperatureSetpointCelsius: {
+      type: "d2i",
+      name: 'Set point'
+    },
+    temperatureAmbientCelsius: {
+      type: "d2i",
+      name: 'Ambient'
+    },
+    currentFanSpeedSetting: {
+      type: "d2s",
+      name: ''
+    },
+    isArmed: {
+      type: "d2b",
+      name: 'Is armed'
+    },
+    exitAllowance: {
+      type: "d2i",
+      name: 'Time to leave'
+    },
+    isFilled: {
+      type: "d2b",
+      name: 'Is filled'
+    },
+    humiditySetpointPercent: {
+      type: "d2i",
+      name: 'Humidity set point'
+    },
+    humidityAmbientPercent: {
+      type: "d2i",
+      name: 'Ambient humidity'
+    }
   }
 }
 
