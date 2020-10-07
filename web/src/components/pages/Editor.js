@@ -68,7 +68,7 @@ class Editor extends React.Component {
             var data = JSON.parse(http.responseText);
             this.setState({
                device: data,
-               posible_traits: deviceReference.devices[data.type]
+               posible_traits: deviceReference.devices[data.type].traits
              });
           } else {
             console.error(http.statusText);
@@ -115,7 +115,7 @@ class Editor extends React.Component {
   updateType(event){
     this.update('type',event.target.value)
     this.setState({
-       posible_traits: deviceReference.devices[event.target.value]
+       posible_traits: deviceReference.devices[event.target.value].traits
      });
   }
 
@@ -263,8 +263,8 @@ class Editor extends React.Component {
       opacity: '0.2'
     }
 
-    const types = Object.keys(deviceReference.devicesCoolNames).map((type) => {
-      return <option key={type} value={type}>{deviceReference.devicesCoolNames[type]}</option>
+    const types = Object.keys(deviceReference.devices).map((type) => {
+      return <option key={type} value={type}>{deviceReference.devices[type].name}</option>
     })
 
     const nicknames = this.state.device.name.nicknames.map((name) => {
@@ -276,7 +276,7 @@ class Editor extends React.Component {
         <hr className="separator"/>
         <div className="three_table_row">
           <div className="three_table_cel">
-            {deviceReference.traitsCoolNames[trait]}
+            {deviceReference.traits[trait].name}
           </div>
           <div className="three_table_cel">
             <label>
