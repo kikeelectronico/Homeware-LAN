@@ -1195,7 +1195,31 @@ const deviceReference = {
     humidityAmbientPercent: {
       type: "int",
       name: 'Ambient humidity'
-    }
+    },
+    currentArmLevel: {
+      type: "string",
+      name: 'Current security level'
+    },
+    currentFillLevel: {
+      type: "string",
+      name: 'Current fill levell'
+    },
+    currentCookingMode: {
+      type: "string",
+      name: 'Current cooking mode'
+    },
+    currentFoodPreset: {
+      type: "string",
+      name: 'Current food preset'
+    },
+    currentFoodQuantity: {
+      type: "int",
+      name: 'Current food quantity'
+    },
+    currentFoodUnit: {
+      type: "string",
+      name: 'Current food unit'
+    },
   }
 }
 
