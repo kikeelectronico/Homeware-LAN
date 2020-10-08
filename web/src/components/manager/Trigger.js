@@ -16,7 +16,7 @@ class Trigger extends React.Component {
 
   renderTriggerText() {
     const week = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
-    const device_triggers = ['d2b','d2i','d2l']
+    const device_triggers = ['d2b','d2i','d2l','d2s']
 
     const type = this.props.triggers[this.props.id].type;
     const operation = this.props.triggers[this.props.id].operation.split(':');

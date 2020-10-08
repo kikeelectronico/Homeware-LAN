@@ -12,6 +12,7 @@ class Device extends React.Component {
     this.updateDevice = this.updateDevice.bind(this);
     this.updateParam = this.updateParam.bind(this);
     this.addTriggerOperation = this.addTriggerOperation.bind(this);
+    this.typeConversion = this.typeConversion.bind(this);
   }
 
   updateDevice(event) {
@@ -32,9 +33,21 @@ class Device extends React.Component {
     const comparator = document.getElementById('comparator').value;
     const value = document.getElementById('value').value;
 
+
     const operation = device + ':' + param + ':' + comparator + ':' + value;
-    this.props.addTriggerOperation(deviceReference.params[this.state.param].type,operation);
+    this.props.addTriggerOperation(this.typeConversion(deviceReference.params[this.state.param].type),operation);
     this.props.closeTriggerAssistant();
+  }
+
+  typeConversion(origen) {
+    const type = {
+      int: 'd2i',
+      list: 'd2l',
+      bool: 'd2b',
+      string: 'd2s',
+      color: 'd2c'
+    }
+    return type[origen]
   }
 
   render() {
@@ -49,7 +62,7 @@ class Device extends React.Component {
 
     var value = '';
     if (deviceReference.params[this.state.param]){
-      const type = deviceReference.params[this.state.param].type;
+      const type = this.typeConversion(deviceReference.params[this.state.param].type);
       if(type === 'd2i'){
         value = (
           <div className="two_table_row">
@@ -58,6 +71,17 @@ class Device extends React.Component {
             </div>
             <div className="two_table_cel">
               <input type="number" className="" id="value"/>
+            </div>
+          </div>
+        )
+      } else if(type === 'd2s'){
+        value = (
+          <div className="two_table_row">
+            <div className="two_table_cel">
+              Value*
+            </div>
+            <div className="two_table_cel">
+              <input type="text" className="" id="value"/>
             </div>
           </div>
         )

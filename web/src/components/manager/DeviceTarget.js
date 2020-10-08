@@ -12,6 +12,7 @@ class Device extends React.Component {
     this.updateDevice = this.updateDevice.bind(this);
     this.updateParam = this.updateParam.bind(this);
     this.addTarget = this.addTarget.bind(this);
+    this.typeConversion = this.typeConversion.bind(this);
   }
 
   updateDevice(event) {
@@ -44,6 +45,17 @@ class Device extends React.Component {
     });
   }
 
+  typeConversion(origen) {
+    const type = {
+      int: 'd2i',
+      list: 'd2l',
+      bool: 'd2b',
+      string: 'd2s',
+      color: 'd2c'
+    }
+    return type[origen]
+  }
+
   render() {
 
     const devices = Object.keys(this.props.devices).map((device) => {
@@ -56,7 +68,7 @@ class Device extends React.Component {
 
     var value = '';
     if (deviceReference.params[this.state.param]){
-      const type = deviceReference.params[this.state.param].type;
+      const type = this.typeConversion(deviceReference.params[this.state.param].type);
       if(type === 'd2i'){
         value = (
           <div className="two_table_row">
@@ -65,6 +77,17 @@ class Device extends React.Component {
             </div>
             <div className="two_table_cel">
               <input type="number" className="" id="value"/>
+            </div>
+          </div>
+        )
+      } else if(type === 'd2s'){
+        value = (
+          <div className="two_table_row">
+            <div className="two_table_cel">
+              Value*
+            </div>
+            <div className="two_table_cel">
+              <input type="text" className="" id="value"/>
             </div>
           </div>
         )

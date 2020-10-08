@@ -1077,55 +1077,55 @@ const deviceReference = {
   },
   params: {
     thermostatTemperatureAmbient: {
-      type: "d2i",
+      type: "int",
       name: 'Ambient temperature'
     },
     thermostatTemperatureSetpoint: {
-      type: "d2i",
+      type: "int",
       name: 'Temperature set point'
     },
     thermostatHumidityAmbient: {
-      type: "d2i",
+      type: "int",
       name: 'Ambient humidity'
     },
     thermostatMode: {
-      type: "d2l",
+      type: "list",
       select: ["cool","heat","off","on","heatcool","auto","fan-only","purifier","eco","dry"],
       name: 'Mode'
     },
     on: {
-      type: "d2b",
+      type: "bool",
       select: ["true","false"],
       name: 'Power'
     },
     deactivate: {
-      type: "d2b",
+      type: "bool",
       select: ["true","false"],
       name: 'Deactivate'
     },
     brightness: {
-      type: "d2i",
+      type: "int",
       name: 'Brightness'
     },
     online: {
-      type: "d2b",
+      type: "bool",
       select: ["true","false"],
       name: 'Online'
     },
     color: {
-      type: "d2c",
+      type: "color",
       name: 'Color'
     },
     thermostatTemperatureSetpointHigh: {
-      type: "d2i",
+      type: "int",
       name: 'Hight set point in heatcool mode'
     },
     thermostatTemperatureSetpointLow: {
-      type: "d2i",
+      type: "int",
       name: 'Low set point in heatcool mode'
     },
     openPercent: {
-      type: "d2i",
+      type: "int",
       name: 'Open percentage'
     },
     rotationPercent: {
@@ -1133,67 +1133,67 @@ const deviceReference = {
       name: 'Rotation percentage'
     },
     rotationDegrees: {
-      type: "d2i",
+      type: "int",
       name: 'Ration degrees'
     },
     isLocked: {
-      type: "d2b",
+      type: "bool",
       name: 'Is locked'
     },
     isJammed: {
-      type: "d2b",
+      type: "bool",
       name: 'Is jammed'
     },
     isDocked: {
-      type: "d2b",
+      type: "bool",
       name: 'Is docked'
     },
     isRunnin: {
-      type: "d2b",
+      type: "bool",
       name: 'Is running'
     },
     isPaused: {
-      type: "d2b",
+      type: "bool",
       name: 'Is paused'
     },
     timerRemainingSec: {
-      type: "d2i",
+      type: "int",
       name: 'Remaining time [seconds]'
     },
     timerPaused: {
-      type: "d2b",
+      type: "bool",
       name: 'Is paused'
     },
     temperatureSetpointCelsius: {
-      type: "d2i",
+      type: "int",
       name: 'Set point'
     },
     temperatureAmbientCelsius: {
-      type: "d2i",
+      type: "int",
       name: 'Ambient'
     },
     currentFanSpeedSetting: {
-      type: "d2s",
-      name: ''
+      type: "string",
+      name: 'Fan speed setting'
     },
     isArmed: {
-      type: "d2b",
+      type: "bool",
       name: 'Is armed'
     },
     exitAllowance: {
-      type: "d2i",
+      type: "int",
       name: 'Time to leave'
     },
     isFilled: {
-      type: "d2b",
+      type: "bool",
       name: 'Is filled'
     },
     humiditySetpointPercent: {
-      type: "d2i",
+      type: "int",
       name: 'Humidity set point'
     },
     humidityAmbientPercent: {
-      type: "d2i",
+      type: "int",
       name: 'Ambient humidity'
     }
   }
