@@ -49,6 +49,7 @@ class Devices extends React.Component {
 
   componentDidMount() {
     this.loadData();
+    setInterval(this.loadData,3000);
   }
 
   loadData(){

@@ -19,31 +19,15 @@ class System extends React.Component {
       upgrading: false
     }
 
+    this.loadComponents = this.loadComponents.bind(this);
     this.upgrade = this.upgrade.bind(this);
     this.areYouAwake = this.areYouAwake.bind(this);
   }
 
   componentDidMount() {
-    var comp = new XMLHttpRequest();
-    comp.onload = function (e) {
-      if (comp.readyState === 4) {
-        if (comp.status === 200) {
-          var response = JSON.parse(comp.responseText);
-          var components = []
-          var keys = Object.keys(response);
-          for (var i = 0; i < keys.length; i++) {
-            components.push(response[keys[i]])
-          }
 
-          this.setState({ components: components });
-        } else {
-          console.error(comp.statusText);
-        }
-      }
-    }.bind(this);
-    comp.open("GET", root + "api/system/status/");
-    comp.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-    comp.send();
+    this.loadComponents();
+    setInterval(this.loadComponents,3000)
 
     var vers = new XMLHttpRequest();
     vers.onload = function (e) {
@@ -85,6 +69,29 @@ class System extends React.Component {
     }.bind(this);
     git.open("GET", 'https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest');
     git.send();
+  }
+
+  loadComponents() {
+    var comp = new XMLHttpRequest();
+    comp.onload = function (e) {
+      if (comp.readyState === 4) {
+        if (comp.status === 200) {
+          var response = JSON.parse(comp.responseText);
+          var components = []
+          var keys = Object.keys(response);
+          for (var i = 0; i < keys.length; i++) {
+            components.push(response[keys[i]])
+          }
+
+          this.setState({ components: components });
+        } else {
+          console.error(comp.statusText);
+        }
+      }
+    }.bind(this);
+    comp.open("GET", root + "api/system/status/");
+    comp.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    comp.send();
   }
 
   upgrade(){
