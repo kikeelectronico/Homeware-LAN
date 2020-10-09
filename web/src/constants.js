@@ -635,6 +635,13 @@ const deviceReference = {
         "action.devices.traits.Toggles"
       ]
     },
+    "action.devices.types.BLINDS": {
+      name: "Blinds",
+      traits: [
+        "action.devices.traits.Modes",
+        "action.devices.traits.OpenClose"
+      ]
+    },
     "action.devices.types.BLENDER": {
       name: "Blender",
       traits: [
@@ -644,13 +651,6 @@ const deviceReference = {
         "action.devices.traits.StartStop",
         "action.devices.traits.Timer",
         "action.devices.traits.Toggles"
-      ]
-    },
-    "action.devices.types.BLINDS": {
-      name: "Blinds",
-      traits: [
-        "action.devices.traits.Modes",
-        "action.devices.traits.OpenClose"
       ]
     },
     "action.devices.types.BOILER": {
@@ -734,6 +734,12 @@ const deviceReference = {
         "action.devices.traits.OpenClose"
       ]
     },
+    "action.devices.types.DRAWER": {
+      name: "Drawer",
+      traits: [
+        "action.devices.traits.OpenClose"
+      ]
+    },
     "action.devices.types.DRYER": {
       name: "Dryer",
       traits: [
@@ -742,12 +748,6 @@ const deviceReference = {
         "action.devices.traits.Modes",
         "action.devices.traits.Toggles",
         "action.devices.traits.RunCycle"
-      ]
-    },
-    "action.devices.types.DRAWER": {
-      name: "Drawer",
-      traits: [
-        "action.devices.traits.OpenClose"
       ]
     },
     "action.devices.types.FAN": {
@@ -805,10 +805,8 @@ const deviceReference = {
       name: "Heater",
       traits: [
         "action.devices.traits.FanSpeed",
-        "action.devices.traits.Modes",
         "action.devices.traits.OnOff",
         "action.devices.traits.TemperatureSetting",
-        "action.devices.traits.Toggles"
       ]
     },
     "action.devices.types.HOOD": {
@@ -968,6 +966,14 @@ const deviceReference = {
         "action.devices.traits.TemperatureControl"
       ]
     },
+    "action.devices.types.SHUTTER": {
+      name: "Shutter",
+      traits: [
+        "action.devices.traits.Modes",
+        "action.devices.traits.OpenClose",
+        "action.devices.traits.Rotation"
+      ]
+    },
     "action.devices.types.SOUSVIDE": {
       name: "Sous vide",
       traits: [
@@ -977,14 +983,6 @@ const deviceReference = {
         "action.devices.traits.StartStop",
         "action.devices.traits.Timer",
         "action.devices.traits.Toggles"
-      ]
-    },
-    "action.devices.types.SHUTTER": {
-      name: "Shutter",
-      traits: [
-        "action.devices.traits.Modes",
-        "action.devices.traits.OpenClose",
-        "action.devices.traits.Rotation"
       ]
     },
     "action.devices.types.SPRINKLER": {
@@ -1052,7 +1050,7 @@ const deviceReference = {
     },
     "action.devices.types.WINDOW": {
       name: "Window",
-      traits:[
+      traits: [
         "action.devices.traits.LockUnlock",
         "action.devices.traits.OpenClose"
       ]
