@@ -214,4 +214,4 @@ if __name__ == "__main__":
         ddnsUpdater()
         verifyTasks()
         hData.updateAlive('tasks')
-        time.sleep(5)
+        time.sleep(2)
