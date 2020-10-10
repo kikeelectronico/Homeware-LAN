@@ -53,7 +53,7 @@ class Data:
             self.redis.set('transfer', "true");
 
         else:
-            print('DDBB up and running')
+            print('DDBB connection up and running')
 
         # Create the tasks key if needed
         if not self.redis.get('tasks'):
@@ -186,7 +186,6 @@ class Data:
     def getAlive(self):
         return json.loads(self.redis.get('alive'))
 
-
 # DEVICES
 
     def getDevices(self):
@@ -230,26 +229,6 @@ class Data:
         del status[value]
         self.redis.set('status',json.dumps(status))
         # self.save()
-
-# RULES
-
-    def getRules(self):
-        return json.loads(self.redis.get('rules'))
-
-    def updateRule(self, incommingData):
-        rules = json.loads(self.redis.get('rules'))
-        rules[int(incommingData['id'])] = incommingData['rule']
-        self.redis.set('rules',json.dumps(rules))
-
-    def createRule(self, incommingData):
-        rules = json.loads(self.redis.get('rules'))
-        rules.append(incommingData['rule'])
-        self.redis.set('rules',json.dumps(rules))
-
-    def deleteRule(self, value):
-        rules = json.loads(self.redis.get('rules'))
-        del rules[int(value)]
-        self.redis.set('rules',json.dumps(rules))
 
 # TASKS
 
