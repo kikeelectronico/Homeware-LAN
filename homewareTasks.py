@@ -37,72 +37,6 @@ def verifyTasks():
         except Exception as e:
             hData.log('Alert', 'Catch an error on execution of' + taskData['title'] + 'task' + str(e))
 
-def verifyRules():
-    status = hData.getStatus()
-    rules = hData.getRules()
-
-    ts = time.localtime(time.time())
-    h = ts.tm_hour
-    m = ts.tm_min
-    pw = ts.tm_wday
-    week = [1,2,3,4,5,6,0]
-    w = week[pw]
-
-    for rule in rules:
-        ammountTriggers = 1
-        verified = 0
-        triggers = []
-        ruleKeys = []
-        for key in rule.keys():
-            ruleKeys.append(key)
-
-        if 'triggers' in ruleKeys:
-            ammountTriggers = len(rule['triggers'])
-            triggers = rule['triggers']
-        else:
-            triggers.append(rule['trigger'])
-
-        for trigger in triggers:
-            #Verify device to device
-            value = ""
-            if '>' in str(trigger['value']):
-                id = trigger['value'].split('>')[0]
-                param = trigger['value'].split('>')[1]
-                value = status[id][param]
-            else:
-                value = trigger['value']
-
-            #Verify operators
-            if int(trigger['operator']) == 1 and str(status[trigger['id']][trigger['param']]) == str(value):
-                verified+=1
-            elif int(trigger['operator']) == 2 and status[trigger['id']][trigger['param']] < value:
-                verified+=1
-            elif int(trigger['operator']) == 3 and status[trigger['id']][trigger['param']] > value:
-                verified+=1
-            elif int(trigger['operator']) == 4 and h == int(value.split(':')[0]) and m == int(value.split(':')[1]):
-                if len(value.split(':')) == 3:
-                    if str(w) in value.split(':')[2]:
-                        verified+=1
-                else:
-                    verified+=1
-        #Update targets if needed
-        if verified == ammountTriggers:
-            for target in rule['targets']:
-                if str(target['value']) == 'toggle':
-                    hData.updateParamStatus(target['id'], target['param'], not status[target['id']][target['param']])
-                else:
-                    hData.updateParamStatus(target['id'], target['param'], target['value'])
-                # Try to get username and password
-                try:
-                    mqttData = hData.getMQTT()
-                    if not mqttData['user'] == "":
-                        client.username_pw_set(mqttData['user'], mqttData['password'])
-                        publish.single("device/"+target['id'], json.dumps(hData.getStatus()[target['id']]), hostname="localhost", auth={'username':mqttData['user'], 'password': mqttData['password']})
-                    else:
-                        publish.single("device/"+target['id'], json.dumps(hData.getStatus()[target['id']]), hostname="localhost")
-                except:
-                    publish.single("device/"+target['id'], json.dumps(hData.getStatus()[target['id']]), hostname="localhost")
-
 def ddnsUpdater():
     ddns = hData.getDDNS()
     ipServer = 'http://ip1.dynupdate.no-ip.com/'
@@ -277,7 +211,6 @@ def timeExecutor(operation):
 if __name__ == "__main__":
     hData.log('Log', 'Starting HomewareTask core')
     while(True):
-        verifyRules()
         ddnsUpdater()
         verifyTasks()
         hData.updateAlive('tasks')
