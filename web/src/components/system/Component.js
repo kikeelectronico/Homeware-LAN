@@ -6,11 +6,16 @@ function Component(props) {
     marginTop: '5px',
     width: '100%',
     display: 'grid',
-    gridTemplateColumns: '60% 20% 20%'
+    gridTemplateColumns: '70% 30%'
   }
 
   const textContainer = {
     textAlign: 'left',
+    paddingTop: '4px'
+  }
+
+  const labelContainer = {
+    textAlign: 'right',
     paddingTop: '4px'
   }
 
@@ -40,25 +45,13 @@ function Component(props) {
     borderRadius: '5px'
   }
 
-  const power = {
-    fontSize: '18px',
-    cursor: 'pointer'
-  }
-
-  function go (){
-    window.location.href = props.href;
-  }
-
   return (
     <div style={ component }>
       <div style={ textContainer }>
         <span style={ text }>{ props.title }</span>
       </div>
-      <div style={ textContainer }>
+      <div style={ labelContainer }>
         <span style={ props.status === 'Running' ? running : stopped }>{ props.status }</span>
-      </div>
-      <div style={ textContainer }>
-        <span style={ power } onClick={go}>{ props.enable ? 'Enabled' : 'Disabled' }</span>
       </div>
     </div>
   );
