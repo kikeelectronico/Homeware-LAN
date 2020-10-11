@@ -27,7 +27,7 @@ responseURL = ''
 hData = Data()
 
 #Init command executor
-command = Commands(hData)
+commands = Commands(hData)
 
 #app
 def runapp():
@@ -698,8 +698,8 @@ def smarthome():
                         params = executions[0]['params']
                         command = executions[0]['command'].split('.')[3]
 
-                        command.setParams(deviceId, params)
-                        eval(command)
+                        commands.setParams(deviceId, params)
+                        eval('commands.'+command+'()')
 
                     obj['payload']['commands'][n]['states'] = hData.getStatus()
                     n += 1
