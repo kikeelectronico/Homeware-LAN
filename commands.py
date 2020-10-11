@@ -17,15 +17,21 @@ class Commands:
             publish.single("device/"+self.device+"/"+output, self.params[input], hostname="localhost")
             publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
 
-    def ArmDisarm(self):
-        if 'arm' in self.params.keys():
-            if self.params.arm:
-                publish.single("device/"+self.device+"/command", 'arm', hostname="localhost")
+    def sendCommand(self,param,command):
+        if param in self.params.keys():
+            if self.params[param]:
+                publish.single("device/"+self.device+"/command", command, hostname="localhost")
+
+    def sendDobleCommand(self,param,true_command,false_command):
+        if param in self.params.keys():
+            if self.params[param]:
+                publish.single("device/"+self.device+"/command", true_command, hostname="localhost")
             else:
-                publish.single("device/"+self.device+"/command", 'disarm', hostname="localhost")
-        if 'cancel' in self.params.keys():
-            if self.params.cancel:
-                publish.single("device/"+self.device+"/command", 'disarm', hostname="localhost")
+                publish.single("device/"+self.device+"/command", false_command, hostname="localhost")
+
+    def ArmDisarm(self):
+        self.sendDobleCommand('arm','arm','disarm')
+        self.sendCommand('cancel','disarm')
         self.saveAndSend('armLevel','currentArmLevel')
 
     def BrightnessAbsolute(self):
@@ -60,3 +66,117 @@ class Commands:
 
     def ActivateScene(self):
         self.saveAndSend('deactivate','deactivate')
+
+    def Cook(self):
+        self.saveAndSend('cookingMode','currentCookingMode')
+        self.saveAndSend('foodPreset','currentFoodPreset')
+        self.saveAndSend('quantity','currentFoodQuantity')
+        self.saveAndSend('unit','currentFoodUnit')
+        self.sendDobleCommand('start','start','stop')
+
+    def SetFanSpeed(self):
+        self.saveAndSend('fanSpeed','currentFanSpeedSetting')
+        self.saveAndSend('fanSpeedPercent','currentFanSpeedPercent')
+
+    def SetFanSpeedRelativeSpeed(self):
+        if 'fanSpeedRelativeWeight' in self.params.keys():
+            speed = self.hData.getStatus()[this.device].currentFanSpeedPercent
+            self.hData.updateParamStatus(self.device, 'currentFanSpeedPercent', speed + self.params['fanSpeedRelativeWeight'])
+            publish.single("device/"+self.device+"/currentFanSpeedPercent", speed + self.params['fanSpeedRelativeWeight'], hostname="localhost")
+            publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
+        if 'fanSpeedRelativePercent' in self.params.keys():
+            speed = self.hData.getStatus()[this.device].currentFanSpeedPercent
+            self.hData.updateParamStatus(self.device, 'currentFanSpeedPercent', speed + self.params['fanSpeedRelativePercent'])
+            publish.single("device/"+self.device+"/currentFanSpeedPercent", speed + self.params['fanSpeedRelativePercent'], hostname="localhost")
+            publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
+
+    def Reverse(self):
+        publish.single("device/"+self.device+"/command", 'reverse', hostname="localhost")
+
+    def Fill(self):
+        self.saveAndSend('fillLevel','currentFillLevel')
+        self.sendDobleCommand('fill','fill','drain')
+
+    def SetHumidity(self):
+        self.saveAndSend('humidity','humiditySetpointPercent')
+
+    def HumidityRelative(self):
+        if 'humidityRelativePercent' in self.params.keys():
+            humidity = self.hData.getStatus()[this.device].humiditySetpointPercent
+            self.hData.updateParamStatus(self.device, 'humiditySetpointPercent', humidity + self.params['humidityRelativePercent'])
+            publish.single("device/"+self.device+"/humiditySetpointPercent", humidity + self.params['humidityRelativePercent'], hostname="localhost")
+            publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
+        if 'humidityRelativeWeight' in self.params.keys():
+            humidity = self.hData.getStatus()[this.device].humiditySetpointPercent
+            self.hData.updateParamStatus(self.device, 'humiditySetpointPercent', humidity + self.params['humidityRelativeWeight'])
+            publish.single("device/"+self.device+"/humiditySetpointPercent", humidity + self.params['humidityRelativeWeight'], hostname="localhost")
+            publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
+
+
+    def Locate(self):
+        self.sendCommand('silence','silence')
+
+    def LockUnlock(self):
+        self.sendDobleCommand('lock','lock','unlock')
+
+    def SetModes(self):
+        if 'updateModeSettings' in self.params.keys():
+            modes = self.params.updateModeSettings.keys()
+            state = self.hData.getStatus()[this.device].currentModeSettings
+            for mode in modes:
+                new_mode = {}
+                new_mode[mode] = self.params.updateModeSettings[mode]
+                state.append(new_mode)
+            self.hData.updateParamStatus(self.device, 'currentModeSettings', state)
+
+    def OpenClose(self):
+        self.saveAndSend('openPercent','openPercent')
+
+    def OpenCloseRelative(self):
+        if 'openRelativePercent' in self.params.keys():
+            open = self.hData.getStatus()[this.device].openPercent
+            self.hData.updateParamStatus(self.device, 'openPercent', open + self.params['openRelativePercent'])
+            publish.single("device/"+self.device+"/openPercent", open + self.params['openRelativePercent'], hostname="localhost")
+            publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
+
+    def RotateAbsolute(self):
+        self.saveAndSend('rotationPercent','rotationPercent')
+        self.saveAndSend('rotationDegrees','rotationDegrees')
+
+    def StartStop(self):
+        self.sendDobleCommand('start','start','stop')
+
+    def PauseUnpause(self):
+        self.sendDobleCommand('pause','pause','unpause')
+
+    def SetTemperature(self):
+        self.saveAndSend('temperature','temperatureSetpointCelsius')
+
+    def TimerStart(self):
+        self.saveAndSend('timerTimeSec','timerRemainingSec')
+
+    def TimerPause(self):
+        self.hData.updateParamStatus(self.device, 'timerPaused', True)
+        publish.single("device/"+self.device+"/"+'timerPaused', str(True), hostname="localhost")
+        publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
+
+    def TimerResume(self):
+        self.hData.updateParamStatus(self.device, 'timerPaused', False)
+        publish.single("device/"+self.device+"/"+'timerPaused', False, hostname="localhost")
+        publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
+
+    def TimerCancel(self):
+        self.hData.updateParamStatus(self.device, 'timerRemainingSec', 0)
+        publish.single("device/"+self.device+"/"+'timerRemainingSec', 0, hostname="localhost")
+        publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
+
+
+    def SetToggles(self):
+        if 'updateToggleSettings' in self.params.keys():
+            toggles = self.params.updateToggleSettings.keys()
+            state = self.hData.getStatus()[this.device].currentToggleSettings
+            for toggle in toggles:
+                new_toogle = {}
+                new_toogle[toggle] = self.params.updateToggleSettings[toogle]
+                state.append(new_toogle)
+            self.hData.updateParamStatus(self.device, 'currentToggleSettings', state)
