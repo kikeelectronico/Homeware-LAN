@@ -298,6 +298,10 @@ const deviceReference = {
         }
       },
       param: {
+        currentToggleSettings: {
+            type: "array",
+            default: []
+        }
       }
     },
     "action.devices.traits.StartStop": {
