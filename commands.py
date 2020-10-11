@@ -10,7 +10,6 @@ class Commands:
     def setParams(self, device, params):
         self.device = device
         self.params = params
-        print(self.params)
 
     def saveAndSend(self, input, output):
         if input in self.params.keys():
