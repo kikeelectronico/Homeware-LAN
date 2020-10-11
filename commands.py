@@ -60,7 +60,7 @@ class Commands:
 
     def TemperatureRelative(self):
         if 'thermostatTemperatureRelativeDegree' in self.params.keys():
-            set_point = self.hData.getStatus()[self.device].thermostatTemperatureSetpoint
+            set_point = self.hData.getStatus()[self.device]['thermostatTemperatureSetpoint']
             self.hData.updateParamStatus(self.device, 'thermostatTemperatureSetpoint', set_point + self.params['thermostatTemperatureRelativeDegree'])
             publish.single("device/"+self.device+"/thermostatTemperatureSetpoint", set_point + self.params['thermostatTemperatureRelativeDegree'], hostname="localhost")
             publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
@@ -81,12 +81,12 @@ class Commands:
 
     def SetFanSpeedRelativeSpeed(self):
         if 'fanSpeedRelativeWeight' in self.params.keys():
-            speed = self.hData.getStatus()[self.device].currentFanSpeedPercent
+            speed = self.hData.getStatus()[self.device]['currentFanSpeedPercent']
             self.hData.updateParamStatus(self.device, 'currentFanSpeedPercent', speed + self.params['fanSpeedRelativeWeight'])
             publish.single("device/"+self.device+"/currentFanSpeedPercent", speed + self.params['fanSpeedRelativeWeight'], hostname="localhost")
             publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
         if 'fanSpeedRelativePercent' in self.params.keys():
-            speed = self.hData.getStatus()[self.device].currentFanSpeedPercent
+            speed = self.hData.getStatus()[self.device]['currentFanSpeedPercent']
             self.hData.updateParamStatus(self.device, 'currentFanSpeedPercent', speed + self.params['fanSpeedRelativePercent'])
             publish.single("device/"+self.device+"/currentFanSpeedPercent", speed + self.params['fanSpeedRelativePercent'], hostname="localhost")
             publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
@@ -103,12 +103,12 @@ class Commands:
 
     def HumidityRelative(self):
         if 'humidityRelativePercent' in self.params.keys():
-            humidity = self.hData.getStatus()[self.device].humiditySetpointPercent
+            humidity = self.hData.getStatus()[self.device]['humiditySetpointPercent']
             self.hData.updateParamStatus(self.device, 'humiditySetpointPercent', humidity + self.params['humidityRelativePercent'])
             publish.single("device/"+self.device+"/humiditySetpointPercent", humidity + self.params['humidityRelativePercent'], hostname="localhost")
             publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
         if 'humidityRelativeWeight' in self.params.keys():
-            humidity = self.hData.getStatus()[self.device].humiditySetpointPercent
+            humidity = self.hData.getStatus()[self.device]['humiditySetpointPercent']
             self.hData.updateParamStatus(self.device, 'humiditySetpointPercent', humidity + self.params['humidityRelativeWeight'])
             publish.single("device/"+self.device+"/humiditySetpointPercent", humidity + self.params['humidityRelativeWeight'], hostname="localhost")
             publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
@@ -120,22 +120,12 @@ class Commands:
     def LockUnlock(self):
         self.sendDobleCommand('lock','lock','unlock')
 
-    def SetModes(self):
-        if 'updateModeSettings' in self.params.keys():
-            modes = self.params.updateModeSettings.keys()
-            state = self.hData.getStatus()[self.device].currentModeSettings
-            for mode in modes:
-                new_mode = {}
-                new_mode[mode] = self.params.updateModeSettings[mode]
-                state.append(new_mode)
-            self.hData.updateParamStatus(self.device, 'currentModeSettings', state)
-
     def OpenClose(self):
         self.saveAndSend('openPercent','openPercent')
 
     def OpenCloseRelative(self):
         if 'openRelativePercent' in self.params.keys():
-            open = self.hData.getStatus()[self.device].openPercent
+            open = self.hData.getStatus()[self.device]['openPercent']
             self.hData.updateParamStatus(self.device, 'openPercent', open + self.params['openRelativePercent'])
             publish.single("device/"+self.device+"/openPercent", open + self.params['openRelativePercent'], hostname="localhost")
             publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
@@ -181,3 +171,13 @@ class Commands:
                 new_toogle[toggle] = self.params['updateToggleSettings'][toggle]
                 state.append(new_toogle)
             self.hData.updateParamStatus(self.device, 'currentToggleSettings', state)
+
+    def SetModes(self):
+        if 'updateModeSettings' in self.params.keys():
+            modes = self.params['updateModeSettings'].keys()
+            state = self.hData.getStatus()[self.device]['currentModeSettings']
+            for mode in modes:
+                new_mode = {}
+                new_mode[mode] = self.params['updateModeSettings'][mode]
+                state.append(new_mode)
+            self.hData.updateParamStatus(self.device, 'currentModeSettings', state)
