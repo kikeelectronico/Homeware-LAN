@@ -9,7 +9,8 @@ class Commands:
 
     def setParams(self, device, params):
         self.device = device
-        self.params = params
+        self.params = params        
+        print(self.params)
 
     def saveAndSend(self, input, output):
         if input in self.params.keys():
@@ -174,7 +175,6 @@ class Commands:
     def SetToggles(self):
         if 'updateToggleSettings' in self.params.keys():
             toggles = self.params.updateToggleSettings.keys()
-            print(self.params)
             state = self.hData.getStatus()[this.device].currentToggleSettings
             for toggle in toggles:
                 new_toogle = {}
