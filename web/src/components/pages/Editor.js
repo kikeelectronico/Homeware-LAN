@@ -36,7 +36,7 @@ class Editor extends React.Component {
         deviceInfo: {},
         id: "",
         name: {
-          defaultnames: [],
+          defaultNames: [],
           nicknames: [],
           name: ""
         },
@@ -85,7 +85,7 @@ class Editor extends React.Component {
     var names = value.split(',');
     var temp_device = this.state.device
     temp_device.name = {
-      defaultnames: names,
+      defaultNames: names,
       nicknames: names,
       name: names[0]
     }
