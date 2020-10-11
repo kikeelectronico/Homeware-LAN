@@ -11,6 +11,7 @@ import paho.mqtt.publish as publish
 import subprocess
 
 from data import Data
+from commands import Commands
 
 UPLOAD_FOLDER = ''
 ALLOWED_EXTENSIONS = {'json'}
@@ -24,6 +25,9 @@ responseURL = ''
 
 #Init the data managment object
 hData = Data()
+
+#Init command executor
+command = Commands(hData)
 
 #app
 def runapp():
@@ -692,47 +696,10 @@ def smarthome():
                         deviceId = device['id']
                         obj['payload']['commands'][n]['ids'].append(deviceId)
                         params = executions[0]['params']
-                        command = executions[0]['command']
+                        command = executions[0]['command'].split('.')[3]
 
-                        #Critical commands are commands with special treatment
-                        commandsOperation = {
-                            "action.devices.commands.OpenClose": {
-                                "operation": "object",
-                                "object": "openState"
-                            },
-                            "action.devices.commands.SetTemperature": {
-                                "operation": "rename",
-                                "from": "temperature",
-                                "to": "temperatureSetpointCelsius"
-                            },
-                            "action.devices.commands.SetModes": {
-                                "operation": "rename",
-                                "from": "updateModeSettings",
-                                "to": "currentModeSettings"
-                            },
-                            "action.devices.commands.SetHumidity": {
-                                "operation": "rename",
-                                "from": "humidity",
-                                "to": "humiditySetpointPercent"
-                            }
-                        }
-
-                        if command in commandsOperation.keys():
-                            if commandsOperation[command]['operation'] == 'object':
-                                paramsKeys = params.keys()
-                                for key in paramsKeys:
-                                    hData.updateParamStatus(deviceId, commandsOperation[command]['object'], { key: params[key]})
-                                publish.single("device/"+deviceId, json.dumps(hData.getStatus()[deviceId]), hostname="localhost")
-                            elif commandsOperation[command]['operation'] == 'rename':
-                                paramsKeys = params.keys()
-                                for key in paramsKeys:
-                                    hData.updateParamStatus(deviceId, commandsOperation[command]['to'], params[key])
-                                publish.single("device/"+deviceId, json.dumps(hData.getStatus()[deviceId]), hostname="localhost")
-                        else:
-                            paramsKeys = params.keys()
-                            for key in paramsKeys:
-                                hData.updateParamStatus(deviceId, key, params[key])
-                            publish.single("device/"+deviceId, json.dumps(hData.getStatus()[deviceId]), hostname="localhost")
+                        command.setParams(deviceId, params)
+                        eval(command)
 
                     obj['payload']['commands'][n]['states'] = hData.getStatus()
                     n += 1

@@ -256,17 +256,12 @@ class Data:
 # STATUS
 
     def getStatus(self):
-        # with open(self.homewareFile, 'w') as f:
-        #     json.dump(self.homewareData, f)
         return json.loads(self.redis.get('status'))
 
     def updateParamStatus(self, device, param, value):
-        # self.ddbb.homewareData['status'][device][param] = value
-
         status = json.loads(self.redis.get('status'))
         status[device][param] = value
         self.redis.set('status',json.dumps(status))
-        # self.save()
 
 # SECURE
 
