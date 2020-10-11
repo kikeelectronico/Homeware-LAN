@@ -15,7 +15,7 @@ class Commands:
         if input in self.params.keys():
             self.hData.updateParamStatus(self.device, output, self.params[input])
             publish.single("device/"+self.device+"/"+output, self.params[input], hostname="localhost")
-            publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[device]), hostname="localhost")
+            publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
 
     def ArmDisarm(self):
         if 'arm' in self.params.keys():
@@ -35,7 +35,7 @@ class Commands:
         if 'color' in self.params.keys():
             self.hData.updateParamStatus(self.device, 'color', self.params['color'])
             publish.single("device/"+self.device+"/color", json.dumps(self.params['color']), hostname="localhost")
-            publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[device]), hostname="localhost")
+            publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
 
     def OnOff(self):
         self.saveAndSend('on','on')
@@ -56,4 +56,4 @@ class Commands:
             set_point = self.hData.getStatus()[this.device].thermostatTemperatureSetpoint
             self.hData.updateParamStatus(self.device, 'thermostatTemperatureSetpoint', set_point + self.params['thermostatTemperatureRelativeDegree'])
             publish.single("device/"+self.device+"/thermostatTemperatureSetpoint", set_point + self.params['thermostatTemperatureRelativeDegree'], hostname="localhost")
-            publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[device]), hostname="localhost")
+            publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
