@@ -57,3 +57,6 @@ class Commands:
             self.hData.updateParamStatus(self.device, 'thermostatTemperatureSetpoint', set_point + self.params['thermostatTemperatureRelativeDegree'])
             publish.single("device/"+self.device+"/thermostatTemperatureSetpoint", set_point + self.params['thermostatTemperatureRelativeDegree'], hostname="localhost")
             publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
+
+    def ActivateScene(self):
+        self.saveAndSend('deactivate','deactivate')
