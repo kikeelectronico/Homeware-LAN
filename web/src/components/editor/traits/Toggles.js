@@ -76,25 +76,25 @@ class Toggles extends React.Component {
     return (
       <div>
 
-        <div className="attribute_table_row">
-          <div className="attribute_table_cel">
+        <div className="three_table_row">
+          <div className="three_table_cel">
 
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             <label>
               <input type="checkbox" id="commandOnlyToggles" defaultChecked={this.props.attributes.reversible} onChange={this.updateCheckbox}/>
               <span className=""><i>commandOnlyToggles</i></span>
             </label>
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the states.</span>
           </div>
         </div>
 
-        <div className="attribute_table_row">
-          <div className="attribute_table_cel">
+        <div className="three_table_row">
+          <div className="three_table_cel">
           </div>
-          <div className="attribute_table_cel">
+          <div className="three_table_cel">
             Add a toggle <button type="button" className="add_attribute_button" onClick={ this.addToggle }>Add</button>
           </div>
         </div>
