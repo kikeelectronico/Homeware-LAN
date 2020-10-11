@@ -653,11 +653,13 @@ def smarthome():
         requestId = body['requestId']
         for input in inputs:
             if input['intent'] == 'action.devices.SYNC':
-                obj = {}
-                obj['requestId'] = requestId
-                obj['payload'] = {}
-                obj['payload']['agentUserId'] = hData.getDDNS()['hostname']
-                obj['payload']['devices'] = hData.getDevices()
+                obj = {
+                    'requestId': requestId,
+                    'payload': {
+                        'agentUserId': hData.getDDNS()['hostname'],
+                        'devices': hData.getDevices()
+                    }
+                }
                 response = app.response_class(
                     response=json.dumps(obj),
                     status=200,
@@ -666,10 +668,12 @@ def smarthome():
                 hData.log('Log', 'Sync request by ' + agent + ' with ' + obj['payload']['agentUserId'] + ' as agent user id')
                 return response
             elif input['intent'] == 'action.devices.QUERY':
-                obj = {}
-                obj['requestId'] = requestId
-                obj['payload'] = {}
-                obj['payload']['devices'] = hData.getStatus()
+                obj = {
+                    'requestId': requestId,
+                    'payload': {
+                        'devices': hData.getStatus()
+                    }
+                }
                 response = app.response_class(
                     response=json.dumps(obj),
                     status=200,
@@ -679,14 +683,18 @@ def smarthome():
                 return response
             elif input['intent'] == 'action.devices.EXECUTE':
                 #Response
-                obj = {}
-                obj['requestId'] = requestId
-                obj['payload'] = {}
-                obj['payload']['commands'] = []
-                obj['payload']['commands'].append({})
-                obj['payload']['commands'][0]['ids'] = []
-                obj['payload']['commands'][0]['status'] = 'SUCCESS'
-                obj['payload']['commands'][0]['states'] = {}
+                obj = {
+                    'requestId': requestId,
+                    'payload': {
+                        'commands': [
+                            {
+                                'ids': [],
+                                'status': 'SUCCESS',
+                                'states': {}
+                            }
+                        ]
+                    }
+                }
                 #Only the first input and the first command
                 n = 0
                 for command in input['payload']['commands']:
