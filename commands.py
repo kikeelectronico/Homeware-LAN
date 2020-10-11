@@ -174,6 +174,7 @@ class Commands:
     def SetToggles(self):
         if 'updateToggleSettings' in self.params.keys():
             toggles = self.params.updateToggleSettings.keys()
+            print(self.params)
             state = self.hData.getStatus()[this.device].currentToggleSettings
             for toggle in toggles:
                 new_toogle = {}
