@@ -178,6 +178,6 @@ class Commands:
             state = self.hData.getStatus()[self.device]['currentToggleSettings']
             for toggle in toggles:
                 new_toogle = {}
-                new_toogle[toggle] = self.params['updateToggleSettings'][toogle]
+                new_toogle[toggle] = self.params['updateToggleSettings'][toggle]
                 state.append(new_toogle)
             self.hData.updateParamStatus(self.device, 'currentToggleSettings', state)
