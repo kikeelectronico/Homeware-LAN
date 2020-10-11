@@ -17,6 +17,7 @@ import StartStop from '../editor/traits/StartStop'
 import Timer from '../editor/traits/Timer'
 import TemperatureControl from '../editor/traits/TemperatureControl'
 import Cook from '../editor/traits/Cook'
+import SensorState from '../editor/traits/SensorState'
 import getCookieValue from '../../functions'
 import { root, deviceReference } from '../../constants'
 
@@ -249,6 +250,8 @@ class Editor extends React.Component {
         return <TemperatureControl attributes={this.state.device.attributes} update={this.update}/>
       else if (trait === 'action.devices.traits.Cook')
         return <Cook attributes={this.state.device.attributes} update={this.update}/>
+      else if (trait === 'action.devices.traits.SensorState')
+        return <SensorState attributes={this.state.device.attributes} update={this.update}/>
     }
   }
 

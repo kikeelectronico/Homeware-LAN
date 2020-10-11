@@ -581,6 +581,25 @@ const deviceReference = {
       },
       param: {
       }
+    },
+    "action.devices.traits.SensorState": {
+      name: 'Sesnor',
+      attributes: {
+        sensorStatesSupported: {
+          type: 'object',
+          default: [
+            {
+              name: ""
+            }
+          ]
+        }
+      },
+      param: {
+        currentSensorStateData: {
+          type: 'object',
+          default: []
+        }
+      }
     }
   },
   devices: {
@@ -615,7 +634,8 @@ const deviceReference = {
         "action.devices.traits.OnOff",
         "action.devices.traits.FanSpeed",
         "action.devices.traits.Modes",
-        "action.devices.traits.Toggles"
+        "action.devices.traits.Toggles",
+        "action.devices.traits.SensorState"
       ]
     },
     "action.devices.types.AWNING": {
@@ -664,6 +684,12 @@ const deviceReference = {
         "action.devices.traits.TemperatureControl",
         "action.devices.traits.OnOff",
         "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.CARBON_MONOXIDE_DETECTOR": {
+      name: "Carbon monoxide detector",
+      traits: [
+        "action.devices.traits.SensorState"
       ]
     },
     "action.devices.types.CLOSET": {
@@ -771,6 +797,15 @@ const deviceReference = {
         "action.devices.traits.Toggles"
       ]
     },
+    "action.devices.types.FREEZER": {
+      name: "Fireplace",
+      traits: [
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.TemperatureControl",
+        "action.devices.traits.Toggles"
+      ]
+    },
     "action.devices.types.FRYER": {
       name: "Fryer",
       traits: [
@@ -867,17 +902,6 @@ const deviceReference = {
         "action.devices.traits.Toggles"
       ],
     },
-    "action.devices.types.MULTICOOKER": {
-      name: "Multicooker",
-      traits: [
-        "action.devices.traits.Cook",
-        "action.devices.traits.Modes",
-        "action.devices.traits.OnOff",
-        "action.devices.traits.StartStop",
-        "action.devices.traits.Timer",
-        "action.devices.traits.Toggles"
-      ]
-    },
     "action.devices.types.MOP": {
       name: "Mop",
       traits: [
@@ -899,6 +923,17 @@ const deviceReference = {
         "action.devices.traits.OnOff",
         "action.devices.traits.RunCycle",
         "action.devices.traits.StartStop",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.MULTICOOKER": {
+      name: "Multicooker",
+      traits: [
+        "action.devices.traits.Cook",
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop",
+        "action.devices.traits.Timer",
         "action.devices.traits.Toggles"
       ]
     },
@@ -954,6 +989,13 @@ const deviceReference = {
         "action.devices.traits.Toggles"
       ]
     },
+    "action.devices.types.SENSOR": {
+      name: "Sensor",
+      traits: [
+        "action.devices.traits.OnOff",
+        "action.devices.traits.SensorState"
+      ]
+    },
     "action.devices.types.SECURITYSYSTEM": {
       name: "Security system",
       traits: [
@@ -976,6 +1018,12 @@ const deviceReference = {
         "action.devices.traits.Modes",
         "action.devices.traits.OpenClose",
         "action.devices.traits.Rotation"
+      ]
+    },
+    "action.devices.types.SMOKE_DETECTOR": {
+      name: "Smoke detector",
+      traits: [
+        "action.devices.traits.SensorState"
       ]
     },
     "action.devices.types.SOUSVIDE": {
@@ -1049,6 +1097,24 @@ const deviceReference = {
         "action.devices.traits.Modes",
         "action.devices.traits.OnOff",
         "action.devices.traits.TemperatureControl",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.WATERPURIFIER": {
+      name: "Water purifier",
+      traits: [
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.SensorState",
+        "action.devices.traits.Toggles"
+      ]
+    },
+    "action.devices.types.WATERSOFTENER": {
+      name: "Water softener",
+      traits: [
+        "action.devices.traits.Modes",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.SensorState",
         "action.devices.traits.Toggles"
       ]
     },
