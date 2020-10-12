@@ -47,9 +47,9 @@ class Commands:
             }
             if 'spectrumRGB' in self.params['color'].keys():
                 color['spectrumRGB'] = self.params['color']['spectrumRGB']
-                # color['spectrumRgb'] = self.params['color']['spectrumRGB']
+                color['spectrumRgb'] = self.params['color']['spectrumRGB']
             self.hData.updateParamStatus(self.device, 'color', color)
-            publish.single("device/"+self.device+"/color", json.dumps(color), hostname="localhost")
+            publish.single("device/"+self.device+"/color", 'debug', hostname="localhost")
             publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
 
     def OnOff(self):
