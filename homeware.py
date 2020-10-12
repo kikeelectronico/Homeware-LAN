@@ -686,31 +686,29 @@ def smarthome():
                 obj = {
                     'requestId': requestId,
                     'payload': {
-                        'commands': [
-                            {
-                                'ids': [],
-                                'status': 'SUCCESS',
-                                'states': {}
-                            }
-                        ]
+                        'commands': []
                     }
                 }
                 #Only the first input and the first command
-                n = 0
                 for command in input['payload']['commands']:
                     devices = command['devices']
                     executions = command['execution']
+                    ids =  []
                     for device in devices:
                         deviceId = device['id']
-                        obj['payload']['commands'][n]['ids'].append(deviceId)
+                        ids.append(deviceId)
                         params = executions[0]['params']
                         command = executions[0]['command'].split('.')[3]
-
+                        # evaluate the command
                         commands.setParams(deviceId, params)
                         eval('commands.'+command+'()')
 
-                    obj['payload']['commands'][n]['states'] = hData.getStatus()
-                    n += 1
+                    command_response = {
+                        'ids': ids,
+                        'states': hData.getStatus(),
+                        'status': 'SUCCESS',
+                    }
+                    obj['payload']['commands'].append(command_response)
 
                 response = app.response_class(
                     response=json.dumps(obj),
