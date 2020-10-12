@@ -39,8 +39,15 @@ class Commands:
 
     def ColorAbsolute(self):
         if 'color' in self.params.keys():
-            self.hData.updateParamStatus(self.device, 'color', self.params['color'])
-            publish.single("device/"+self.device+"/color", json.dumps(self.params['color']), hostname="localhost")
+            color = {}
+            change = {
+                'temperature': 'temperatureK',
+                'spectrumRGB': 'spectrumRgb',
+                'spectrumHSV':  'spectrumHsv'
+            }
+            color[change[self.params['color'].keys()[0]]] = self.params['color'][self.params['color'].keys()[0]]
+            self.hData.updateParamStatus(self.device, 'color', color)
+            publish.single("device/"+self.device+"/color", json.dumps(color), hostname="localhost")
             publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
 
     def OnOff(self):
