@@ -263,8 +263,8 @@ class Data:
         status = json.loads(self.redis.get('status'))
         status[device][param] = value
         self.redis.set('status',json.dumps(status))
-        publish.single("device/" + device, json.dumps(status[device]), hostname="localhost")
         publish.single("device/" + device + '/' + param, value, hostname="localhost")
+        publish.single("device/" + device, json.dumps(status[device]), hostname="localhost")
 
 
 # SECURE

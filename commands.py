@@ -49,8 +49,8 @@ class Commands:
                 color['spectrumRGB'] = self.params['color']['spectrumRGB']
                 color['spectrumRgb'] = self.params['color']['spectrumRGB']
             self.hData.updateParamStatus(self.device, 'color', color)
-            publish.single("device/"+self.device+"/color", 'debug', hostname="localhost")
-            publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
+            # publish.single("device/"+self.device+"/color", 'debug', hostname="localhost")
+            # publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
 
     def OnOff(self):
         self.saveAndSend('on','on')
