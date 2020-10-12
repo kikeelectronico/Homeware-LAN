@@ -689,7 +689,7 @@ def smarthome():
                         'commands': []
                     }
                 }
-                #Only the first input and the first command
+                #Analize commands for all devices
                 for command in input['payload']['commands']:
                     devices = command['devices']
                     executions = command['execution']
