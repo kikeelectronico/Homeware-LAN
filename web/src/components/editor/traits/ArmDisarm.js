@@ -57,7 +57,7 @@ class ArmDisarm extends React.Component {
                     </label>
                     <label>
                       <span>Level name: </span>
-                      <input type="text" id={"names_" + i} style={names_box} defaultValue={level.level_values[0].speed_synonym} placeholder="Security level name" onChange={this.updateSecurityLevel}/>
+                      <input type="text" id={"names_" + i} style={names_box} defaultValue={level.level_values[0].level_synonym} placeholder="Security level name" onChange={this.updateSecurityLevel}/>
                     </label>
                   </div>
                 </div>
