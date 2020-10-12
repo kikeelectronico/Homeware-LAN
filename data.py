@@ -5,6 +5,7 @@ import redis
 import time
 from datetime import datetime
 import subprocess
+import paho.mqtt.publish as publish
 
 
 class Data:
@@ -262,6 +263,9 @@ class Data:
         status = json.loads(self.redis.get('status'))
         status[device][param] = value
         self.redis.set('status',json.dumps(status))
+        publish.single("device/" + device, json.dumps(status[device]), hostname="localhost")
+        publish.single("device/" + device + '/' + param, value, hostname="localhost")
+
 
 # SECURE
 
