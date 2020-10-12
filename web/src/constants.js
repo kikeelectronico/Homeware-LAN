@@ -1,607 +1,6 @@
 var root = window.location.href.includes('localhost') ? "http://homeware.local/" : "/"
 
 const deviceReference = {
-  traits: {
-    "action.devices.traits.OnOff": {
-      name: 'Power control',
-      attributes: {
-        commandOnlyOnOff: {
-          type: "bool",
-          default: false
-        },
-        queryOnlyOnOff: {
-          type: "bool",
-          default: false
-        }
-      },
-      param:{
-        on: {
-          type: "bool",
-          default: true
-        }
-      }
-    },
-    "action.devices.traits.Brightness": {
-      name: 'Brightness',
-      attributes: {
-        commandOnlyBrightness: {
-          type: "bool",
-          default: false
-        }
-      },
-      param:{
-        brightness: {
-          type: "int",
-          default: 100
-        }
-      }
-    },
-    "action.devices.traits.ColorSetting": {
-      name: 'Color setting',
-      attributes: {
-        colorModel: {
-          type: "string",
-          default: "rgb"
-        },
-        commandOnlyColorSetting: {
-            type: "bool",
-            default: false
-        },
-        colorTemperatureRange: {
-          type: "object",
-          default: {
-            temperatureMinK: 4000,
-            temperatureMaxK: 4200
-          },
-          content: {
-            temperatureMinK: {
-              type: "int",
-              default: 4000
-            },
-            temperatureMaxK: {
-              type: "int",
-              default: 4200
-            }
-          }
-        }
-      },
-      param:{
-        color: {
-          type: "object",
-          default: {
-            spectrumRgb: 16711935
-          },
-          content: {
-            temperatureK: {
-              type: "int",
-              default: 4000
-            },
-            spectrumRGB: {
-              type: "int",
-              default: 255
-            },
-            spectrumHSV:{
-              type: "object",
-              content: {
-                hue: {
-                  type: "float"
-                },
-                saturation: {
-                  type: "float"
-                },
-                default: {
-                  type: "float"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "action.devices.traits.TemperatureSetting": {
-      name: 'Temperature Settings',
-      attributes: {
-        availableThermostatModes: {
-          type: "select",
-          default: "off,heat,cool"
-        },
-        thermostatTemperatureRange: {
-          type: "object",
-          default: {
-            minThresholdCelsius: 18,
-            maxThresholdCelsius: 34
-          }
-        },
-        thermostatTemperatureUnit: {
-          type: "string",
-          default: "C"
-        },
-        bufferRangeCelsius: {
-          type: "int",
-          default: 2
-        },
-        commandOnlyTemperatureSetting: {
-          type: "bool",
-          default: false
-        },
-        queryOnlyTemperatureSetting: {
-          type: "bool",
-          default: false
-        }
-      },
-      param:{
-        thermostatMode: {
-          type: "string",
-          default: "off"
-        },
-        thermostatTemperatureSetpoint: {
-          type: "int",
-          default: 20
-        },
-        thermostatTemperatureAmbient: {
-          type: "int",
-          default: 22
-        },
-        thermostatTemperatureSetpointHigh: {
-          type: "int",
-          default: 28
-        },
-        thermostatTemperatureSetpointLow: {
-          type: "int",
-          default: 18
-        },
-        thermostatHumidityAmbient: {
-          type: "int",
-          default: 80
-        }
-      }
-    },
-    "action.devices.traits.OpenClose": {
-      name: 'Open or close',
-      attributes: {
-        discreteOnlyOpenClose: {
-          type: "bool",
-          default: false
-        },
-        openDirection: {
-          type: "array",
-          default: ["UP","DOWN","LEFT","RIGHT","IN","OUT"]
-        },
-        commandOnlyOpenClose: {
-          type: "bool",
-          default: false
-        },
-        queryOnlyOpenClose: {
-          type: "bool",
-          default: false
-        }
-      },
-      param:{
-        openPercent: {
-          type: "int",
-          default: 0
-        },
-        openState: {
-          type: "object",
-          default: {
-            openPercent: 0,
-            openDirection: "UP"
-          },
-          content: {
-            openPercent:{
-              type: "int",
-              default: 0
-            },
-            openDirection:{
-              type: "int",
-              default: "down"
-            }
-          }
-        }
-      }
-    },
-    "action.devices.traits.Rotation": {
-      name: 'Rotation',
-      attributes: {
-        commandOnlyRotation: {
-          type: "bool",
-          default: false
-        },
-        supportsContinuousRotation: {
-          type: "bool",
-          default: false
-        },
-        supportsDegrees: {
-          type: "bool",
-          default: false
-        },
-        supportsPercent: {
-          type: "bool",
-          default: false
-        },
-        rotationDegreesRange: {
-          type: "object",
-          default: {
-            rotationDegreesMin: 0,
-            rotationDegreesMax: 0
-          },
-          content: {
-            rotationDegreesMin: {
-              type: "int"
-            },
-            rotationDegreesMax: {
-              type: "int"
-            }
-          }
-        }
-      },
-      param:{
-        rotationPercent: {
-          type: "int",
-          default: 0
-        },
-        rotationDegrees: {
-          type: "int",
-          default: 0
-        }
-      }
-    },
-    "action.devices.traits.LockUnlock": {
-      name: 'Lock or unlock',
-      attributes: {},
-      param:{
-        isLocked: {
-          type: "bool",
-          default: false
-        },
-        isJammed: {
-          type: "bool",
-          default: false
-        }
-      }
-    },
-    "action.devices.traits.Scene": {
-      name: 'Scene',
-      attributes: {
-        sceneReversible: {
-          type: "bool",
-          default: true
-        }
-      },
-      param:{
-        deactivate: {
-          type: "bool",
-          default: true
-        }
-      }
-    },
-    "action.devices.traits.Dock": {
-      name: 'Dock',
-      attributes: {},
-      param:{
-        isDocked: {
-          type: "bool",
-          default: false
-        }
-      }
-    },
-    "action.devices.traits.Toggles": {
-      name: 'Toogles',
-      attributes: {
-        availableToggles: {
-          type: "strigifyedObject",
-          default: []
-        },
-        commandOnlyToggles: {
-          type: "bool",
-          default: false
-        }
-      },
-      param: {
-        currentToggleSettings: {
-            type: "array",
-            default: []
-        }
-      }
-    },
-    "action.devices.traits.StartStop": {
-      name: 'Start and stop',
-      attributes: {
-        availableZones: {
-          type: "array",
-          default: []
-        },
-        pausable: {
-          type: "bool",
-          default: false
-        }
-      },
-      param: {
-        isRunning: {
-          type: "bool",
-          default: false
-        },
-        isPaused: {
-          type: "bool",
-          default: false
-        },
-        activeZones: ~{
-          type: "array",
-          default: []
-        }
-      }
-    },
-    "action.devices.traits.Timer": {
-      name: 'Timer',
-      attributes: {
-        maxTimerLimitSec: {
-          type: "int",
-          default: 1000
-        },
-        commandOnlyTimer: {
-          type: "bool",
-          default: false
-        }
-      },
-      param: {
-        timerRemainingSec: {
-          type: "int",
-          default: -1
-        },
-        timerPaused: {
-          type: "bool",
-          default: false
-        }
-      }
-    },
-    "action.devices.traits.TemperatureControl": {
-      name: 'Temperature control',
-      attributes: {
-        temperatureStepCelsius: {
-          type: "int",
-          default: 5
-        },
-        temperatureUnitForUX: {
-          type: "string",
-          default: "C"
-        },
-        queryOnlyTemperatureControl: {
-          type: "bool",
-          default: false
-        },
-        commandOnlyTemperatureControl: {
-          type: "bool",
-          default: false
-        },
-        temperatureRange: {
-          type: "object",
-          default: {
-            minThresholdCelsius: 0,
-            maxThresholdCelsius: 150
-          },
-          content: {
-            minThresholdCelsius: {
-              type: "int"
-            },
-            maxThresholdCelsius: {
-              type: "int"
-            }
-          }
-        }
-      },
-      param: {
-        temperatureSetpointCelsius: {
-          type: "int",
-          default: 20
-        },
-        temperatureAmbientCelsius: {
-          type: "int",
-          default: 20
-        }
-      }
-    },
-    "action.devices.traits.FanSpeed": {
-      name: 'Fan Speed',
-      attributes: {
-        availableFanSpeeds: {
-          type: "strigifyedObject",
-          default: {
-            speeds: [],
-            ordered: true
-          }
-        },
-        reversible: {
-          type: "bool",
-          default: true
-        },
-        commandOnlyFanSpeed: {
-          type: "bool",
-          default: true
-        }
-      },
-      param: {
-        currentFanSpeedSetting: {
-          type: "string",
-          default: ""
-        }
-      }
-    },
-    "action.devices.traits.ArmDisarm": {
-      name: 'Arm or disarm',
-      attributes: {
-        availableArmLevels: {
-          type: "strigifyedObject",
-          default: {
-            levels: [],
-            ordered: true
-          }
-        }
-      },
-      param: {
-        isArmed: {
-          type: "bool",
-          default: false
-        },
-        currentArmLevel: {
-          type: "string",
-          default: ""
-        },
-        exitAllowance: {
-          type: "int",
-          default: 20
-        }
-      }
-    },
-    "action.devices.traits.Fill": {
-      name: 'Fill',
-      attributes: {
-        availableFillLevels: {
-          type: "strigifyedObject",
-          default: {
-            levels: [],
-            ordered: true
-          }
-        }
-      },
-      param: {
-        isFilled: {
-          type: "bool",
-          default: false
-        },
-        currentFillLevel: {
-          type: "string",
-          default: ""
-        }
-      }
-    },
-    "action.devices.traits.RunCycle": {
-      name: 'RunCycle',
-      attributes: {},
-      param: {
-        lang: 'en'
-      }
-    },
-    "action.devices.traits.StatusReport": {
-      name: 'Status report',
-      attributes: {},
-      param: {
-        currentStatusReport: {
-          type: 'object',
-          default: {}
-        }
-      }
-    },
-    "action.devices.traits.HumiditySetting": {
-      name: 'Humidity setting',
-      attributes: {
-        humiditySetpointRange: {
-          type: "object",
-          default: {
-            minPercent: 0,
-            maxPercent: 100
-          },
-          content: {
-            minPercent: {
-              type: "int"
-            },
-            maxPercent: {
-              type: "int"
-            }
-          }
-        },
-        commandOnlyHumiditySetting: {
-          type: "bool",
-          default: false
-        },
-        queryOnlyHumiditySetting: {
-          type: "bool",
-          default: false
-        }
-      },
-      param: {
-        humiditySetpointPercent: {
-          type: "int",
-          default: 30
-        },
-        humidityAmbientPercent: {
-          type: "int",
-          default: 20
-        }
-      }
-    },
-    "action.devices.traits.Cook": {
-      name: 'Cooking',
-      attributes: {
-        foodPresets: {
-          type: "strigifyedObject",
-          default: []
-        },
-        supportedCookingModes: {
-          type: "selectToArray",
-          default: []
-        }
-      },
-      param: {
-        currentCookingMode: {
-          type: "string",
-          default: ""
-        },
-        currentFoodPreset: {
-          type: "string",
-          default: ""
-        },
-        currentFoodQuantity: {
-          type: "int",
-          default: 0
-        },
-        currentFoodUnit: {
-          type: "string",
-          default: ""
-        }
-      }
-    },
-    "action.devices.traits.Modes": {
-      name: 'Modes',
-      attributes: {
-        availableModes: {
-          type: "strigifyedObject",
-          default: []
-        },
-        commandOnlyModes: {
-          type: "bool",
-          default: false
-        }
-      },
-      param: {
-      }
-    },
-    "action.devices.traits.Locator": {
-      name: 'Locator',
-      attributes: {
-      },
-      param: {
-      }
-    },
-    "action.devices.traits.SensorState": {
-      name: 'Sesnor',
-      attributes: {
-        sensorStatesSupported: {
-          type: 'object',
-          default: [
-            {
-              name: ""
-            }
-          ]
-        }
-      },
-      param: {
-        currentSensorStateData: {
-          type: 'object',
-          default: []
-        }
-      }
-    }
-  },
   devices: {
     "action.devices.types.AC_UNIT": {
       name: "AC unit",
@@ -1143,150 +542,714 @@ const deviceReference = {
       ]
     }
   },
+  traits: {
+    "action.devices.traits.OnOff": {
+      name: 'Power control',
+      attributes: {
+        commandOnlyOnOff: {
+          type: "bool",
+          default: false
+        },
+        queryOnlyOnOff: {
+          type: "bool",
+          default: false
+        }
+      },
+      params: ['on'],
+      commands: []
+    },
+    "action.devices.traits.Brightness": {
+      name: 'Brightness',
+      attributes: {
+        commandOnlyBrightness: {
+          type: "bool",
+          default: false
+        }
+      },
+      params: ['brightness'],
+      commands: []
+    },
+    "action.devices.traits.ColorSetting": {
+      name: 'Color setting',
+      attributes: {
+        colorModel: {
+          type: "string",
+          default: "rgb"
+        },
+        commandOnlyColorSetting: {
+            type: "bool",
+            default: false
+        },
+        colorTemperatureRange: {
+          type: "object",
+          default: {
+            temperatureMinK: 4000,
+            temperatureMaxK: 4200
+          },
+          content: {
+            temperatureMinK: {
+              type: "int",
+              default: 4000
+            },
+            temperatureMaxK: {
+              type: "int",
+              default: 4200
+            }
+          }
+        }
+      },
+      params: ['color'],
+      commands: []
+    },
+    "action.devices.traits.TemperatureSetting": {
+      name: 'Temperature Settings',
+      attributes: {
+        availableThermostatModes: {
+          type: "select",
+          default: "off,heat,cool"
+        },
+        thermostatTemperatureRange: {
+          type: "object",
+          default: {
+            minThresholdCelsius: 18,
+            maxThresholdCelsius: 34
+          }
+        },
+        thermostatTemperatureUnit: {
+          type: "string",
+          default: "C"
+        },
+        bufferRangeCelsius: {
+          type: "int",
+          default: 2
+        },
+        commandOnlyTemperatureSetting: {
+          type: "bool",
+          default: false
+        },
+        queryOnlyTemperatureSetting: {
+          type: "bool",
+          default: false
+        }
+      },
+      params: [
+        'thermostatMode',
+        'thermostatTemperatureSetpoint',
+        'thermostatTemperatureAmbient',
+        'thermostatTemperatureSetpointHigh',
+        'thermostatTemperatureSetpointLow',
+        'thermostatHumidityAmbient'
+      ],
+      commands: []
+    },
+    "action.devices.traits.OpenClose": {
+      name: 'Open or close',
+      attributes: {
+        discreteOnlyOpenClose: {
+          type: "bool",
+          default: false
+        },
+        openDirection: {
+          type: "array",
+          default: ["UP","DOWN","LEFT","RIGHT","IN","OUT"]
+        },
+        commandOnlyOpenClose: {
+          type: "bool",
+          default: false
+        },
+        queryOnlyOpenClose: {
+          type: "bool",
+          default: false
+        }
+      },
+      params: ['openPercent'],
+      commands: []
+    },
+    "action.devices.traits.Rotation": {
+      name: 'Rotation',
+      attributes: {
+        commandOnlyRotation: {
+          type: "bool",
+          default: false
+        },
+        supportsContinuousRotation: {
+          type: "bool",
+          default: false
+        },
+        supportsDegrees: {
+          type: "bool",
+          default: false
+        },
+        supportsPercent: {
+          type: "bool",
+          default: false
+        },
+        rotationDegreesRange: {
+          type: "object",
+          default: {
+            rotationDegreesMin: 0,
+            rotationDegreesMax: 0
+          },
+          content: {
+            rotationDegreesMin: {
+              type: "int"
+            },
+            rotationDegreesMax: {
+              type: "int"
+            }
+          }
+        }
+      },
+      params: ['rotationPercent','rotationDegrees'],
+      commands: []
+    },
+    "action.devices.traits.LockUnlock": {
+      name: 'Lock or unlock',
+      attributes: {},
+      params: ['isLocked','isJammed'],
+      commands: [
+        {
+          command: 'lock',
+          description: 'Lock'
+        },
+        {
+          command: 'unlock',
+          description: 'Unlock'
+        }
+      ]
+    },
+    "action.devices.traits.Scene": {
+      name: 'Scene',
+      attributes: {
+        sceneReversible: {
+          type: "bool",
+          default: true
+        }
+      },
+      params: ['deactivate'],
+      commands: []
+    },
+    "action.devices.traits.Dock": {
+      name: 'Dock',
+      attributes: {},
+      params: ['isDocked'],
+      commands: []
+    },
+    "action.devices.traits.Toggles": {
+      name: 'Toogles',
+      attributes: {
+        availableToggles: {
+          type: "strigifyedObject",
+          default: []
+        },
+        commandOnlyToggles: {
+          type: "bool",
+          default: false
+        }
+      },
+      params: ['currentToggleSettings'],
+      commands: []
+    },
+    "action.devices.traits.StartStop": {
+      name: 'Start and stop',
+      attributes: {
+        availableZones: {
+          type: "array",
+          default: []
+        },
+        pausable: {
+          type: "bool",
+          default: false
+        }
+      },
+      params: ['isRunning','isPaused','activeZones'],
+      commands: [
+        {
+          command: 'start',
+          description: 'Start the process'
+        },
+        {
+          command: 'stop',
+          description: 'Stop the process'
+        },
+        {
+          command: 'pause',
+          description: 'Pause cooking'
+        },
+        {
+          command: 'unpause',
+          description: 'Unpause cooking'
+        }
+      ]
+    },
+    "action.devices.traits.Timer": {
+      name: 'Timer',
+      attributes: {
+        maxTimerLimitSec: {
+          type: "int",
+          default: 1000
+        },
+        commandOnlyTimer: {
+          type: "bool",
+          default: false
+        }
+      },
+      params: ['timerRemainingSec', 'timerPaused'],
+      commands: []
+    },
+    "action.devices.traits.TemperatureControl": {
+      name: 'Temperature control',
+      attributes: {
+        temperatureStepCelsius: {
+          type: "int",
+          default: 5
+        },
+        temperatureUnitForUX: {
+          type: "string",
+          default: "C"
+        },
+        queryOnlyTemperatureControl: {
+          type: "bool",
+          default: false
+        },
+        commandOnlyTemperatureControl: {
+          type: "bool",
+          default: false
+        },
+        temperatureRange: {
+          type: "object",
+          default: {
+            minThresholdCelsius: 0,
+            maxThresholdCelsius: 150
+          },
+          content: {
+            minThresholdCelsius: {
+              type: "int"
+            },
+            maxThresholdCelsius: {
+              type: "int"
+            }
+          }
+        }
+      },
+      params: ['temperatureSetpointCelsius','temperatureAmbientCelsius'],
+      commands: []
+    },
+    "action.devices.traits.FanSpeed": {
+      name: 'Fan Speed',
+      attributes: {
+        availableFanSpeeds: {
+          type: "strigifyedObject",
+          default: {
+            speeds: [],
+            ordered: true
+          }
+        },
+        reversible: {
+          type: "bool",
+          default: true
+        },
+        commandOnlyFanSpeed: {
+          type: "bool",
+          default: true
+        }
+      },
+      params: ['currentFanSpeedSetting'],
+      commands: []
+    },
+    "action.devices.traits.ArmDisarm": {
+      name: 'Arm or disarm',
+      attributes: {
+        availableArmLevels: {
+          type: "strigifyedObject",
+          default: {
+            levels: [],
+            ordered: true
+          }
+        }
+      },
+      params: ['isArmed', 'currentArmLevel','exitAllowance'],
+      commands: [
+        {
+          command: 'cancel',
+          description: 'The arm process must be canceled'
+        },
+        {
+          command: 'arm',
+          description: 'Arm the system'
+        },
+        {
+          command: 'disarm',
+          description: 'Disarm the system'
+        }
+      ]
+    },
+    "action.devices.traits.Fill": {
+      name: 'Fill',
+      attributes: {
+        availableFillLevels: {
+          type: "strigifyedObject",
+          default: {
+            levels: [],
+            ordered: true
+          }
+        }
+      },
+      params: ['isFilled','currentFillLevel'],
+      commands: [
+        {
+          command: 'fill',
+          description: 'Fill'
+        },
+        {
+          command: 'drain',
+          description: 'Drain'
+        }
+      ]
+    },
+    "action.devices.traits.RunCycle": {
+      name: 'RunCycle',
+      attributes: {},
+      params: [],
+      commands: []
+    },
+    "action.devices.traits.StatusReport": {
+      name: 'Status report',
+      attributes: {},
+      params: ['currentStatusReport'],
+      commands: []
+    },
+    "action.devices.traits.HumiditySetting": {
+      name: 'Humidity setting',
+      attributes: {
+        humiditySetpointRange: {
+          type: "object",
+          default: {
+            minPercent: 0,
+            maxPercent: 100
+          },
+          content: {
+            minPercent: {
+              type: "int"
+            },
+            maxPercent: {
+              type: "int"
+            }
+          }
+        },
+        commandOnlyHumiditySetting: {
+          type: "bool",
+          default: false
+        },
+        queryOnlyHumiditySetting: {
+          type: "bool",
+          default: false
+        }
+      },
+      params: ['humiditySetpointPercent','humidityAmbientPercent'],
+      commands: []
+    },
+    "action.devices.traits.Cook": {
+      name: 'Cooking',
+      attributes: {
+        foodPresets: {
+          type: "strigifyedObject",
+          default: []
+        },
+        supportedCookingModes: {
+          type: "selectToArray",
+          default: []
+        }
+      },
+      params: ['currentCookingMode','currentFoodPreset','currentFoodQuantity','currentFoodUnit'],
+      commands: []
+    },
+    "action.devices.traits.Modes": {
+      name: 'Modes',
+      attributes: {
+        availableModes: {
+          type: "strigifyedObject",
+          default: []
+        },
+        commandOnlyModes: {
+          type: "bool",
+          default: false
+        }
+      },
+      params: ['currentModeSettings'],
+      commands: [
+        {
+          command: 'start',
+          description: 'Start cooking'
+        },
+        {
+          command: 'stop',
+          description: 'Stop cooking'
+        }
+      ]
+    },
+    "action.devices.traits.Locator": {
+      name: 'Locator',
+      attributes: {
+      },
+      params: [],
+      commands: [
+        {
+          command: 'silence',
+          description: 'Stop the alarm'
+        }
+      ]
+    },
+    "action.devices.traits.SensorState": {
+      name: 'Sesnor',
+      attributes: {
+        sensorStatesSupported: {
+          type: 'object',
+          default: [
+            {
+              name: ""
+            }
+          ]
+        }
+      },
+      params: ['currentSensorStateData'],
+      commands: []
+    }
+  },
   params: {
     thermostatTemperatureAmbient: {
       type: "int",
-      name: 'Ambient temperature'
+      name: 'Ambient temperature',
+      commanded: false,
+      default: 21
     },
     thermostatTemperatureSetpoint: {
       type: "int",
-      name: 'Temperature set point'
+      name: 'Temperature set point',
+      commanded: true,
+      default: 22
     },
     thermostatHumidityAmbient: {
       type: "int",
-      name: 'Ambient humidity'
+      name: 'Ambient humidity',
+      commanded: false,
+      default: 60
     },
     thermostatMode: {
       type: "list",
       select: ["cool","heat","off","on","heatcool","auto","fan-only","purifier","eco","dry"],
-      name: 'Mode'
+      name: 'Mode',
+      commanded: true,
+      default: 'off'
     },
     on: {
       type: "bool",
       select: ["true","false"],
-      name: 'Power'
+      name: 'Power',
+      commanded: true,
+      default: false
     },
     deactivate: {
       type: "bool",
       select: ["true","false"],
-      name: 'Deactivate'
+      name: 'Deactivate',
+      commanded: true,
+      default: true
     },
     brightness: {
       type: "int",
-      name: 'Brightness'
+      name: 'Brightness',
+      commanded: true,
+      default: 80
     },
     online: {
       type: "bool",
       select: ["true","false"],
-      name: 'Online'
+      name: 'Online',
+      commanded: false,
+      default: true
     },
     color: {
       type: "color",
-      name: 'Color'
+      name: 'Color',
+      commanded: true,
+      default: {
+        spectrumRgb: 16711935
+      }
     },
     thermostatTemperatureSetpointHigh: {
       type: "int",
-      name: 'Hight set point in heatcool mode'
+      name: 'Hight set point in heatcool mode',
+      commanded: true,
+      default: 22
     },
     thermostatTemperatureSetpointLow: {
       type: "int",
-      name: 'Low set point in heatcool mode'
+      name: 'Low set point in heatcool mode',
+      commanded: true,
+      default: 18
     },
     openPercent: {
       type: "int",
-      name: 'Open percentage'
+      name: 'Open percentage',
+      commanded: true,
+      default: 60
     },
     rotationPercent: {
-      type: "d2i",
-      name: 'Rotation percentage'
+      type: "int",
+      name: 'Rotation percentage',
+      commanded: true,
+      default: 50
     },
     rotationDegrees: {
       type: "int",
-      name: 'Ration degrees'
+      name: 'Ration degrees',
+      commanded: true,
+      default: 90
     },
     isLocked: {
       type: "bool",
-      name: 'Is locked'
+      name: 'Is locked',
+      commanded: false,
+      default: false
     },
     isJammed: {
       type: "bool",
-      name: 'Is jammed'
+      name: 'Is jammed',
+      commanded: false,
+      default: false
     },
     isDocked: {
       type: "bool",
-      name: 'Is docked'
+      name: 'Is docked',
+      commanded: false,
+      default: false
     },
-    isRunnin: {
+    isRunning: {
       type: "bool",
-      name: 'Is running'
+      name: 'Is running',
+      commanded: false,
+      default: false
     },
     isPaused: {
       type: "bool",
-      name: 'Is paused'
+      name: 'Is paused',
+      commanded: false,
+      default: false
+    },
+    activeZones: {
+      type: "object",
+      name: 'Active Zones',
+      commanded: true,
+      default: []
     },
     timerRemainingSec: {
       type: "int",
-      name: 'Remaining time [seconds]'
+      name: 'Remaining time [seconds]',
+      commanded: true,
+      default: 0
     },
     timerPaused: {
       type: "bool",
-      name: 'Is paused'
+      name: 'Is paused',
+      commanded: true,
+      default: false
     },
     temperatureSetpointCelsius: {
       type: "int",
-      name: 'Set point'
+      name: 'Set point',
+      commanded: true,
+      default: 22
     },
     temperatureAmbientCelsius: {
       type: "int",
-      name: 'Ambient'
+      name: 'Ambient',
+      commanded: false,
+      default: 21
     },
     currentFanSpeedSetting: {
       type: "string",
-      name: 'Fan speed setting'
+      name: 'Fan speed setting',
+      commanded: true,
+      default: ''
     },
     isArmed: {
       type: "bool",
-      name: 'Is armed'
+      name: 'Is armed',
+      commanded: false,
+      default: false
     },
     exitAllowance: {
       type: "int",
-      name: 'Time to leave'
+      name: 'Time to leave',
+      commanded: true,
+      default: 20
     },
     isFilled: {
       type: "bool",
-      name: 'Is filled'
+      name: 'Is filled',
+      commanded: false,
+      default: false
     },
     humiditySetpointPercent: {
       type: "int",
-      name: 'Humidity set point'
+      name: 'Humidity set point',
+      commanded: true,
+      default: 70
     },
     humidityAmbientPercent: {
       type: "int",
-      name: 'Ambient humidity'
+      name: 'Ambient humidity',
+      commanded: false,
+      default: 60
     },
     currentArmLevel: {
       type: "string",
-      name: 'Current security level'
+      name: 'Current security level',
+      commanded: true,
+      default: ''
     },
     currentFillLevel: {
       type: "string",
-      name: 'Current fill levell'
+      name: 'Current fill levell',
+      commanded: true,
+      default: ''
     },
     currentCookingMode: {
       type: "string",
-      name: 'Current cooking mode'
+      name: 'Current cooking mode',
+      commanded: true,
+      default: ''
     },
     currentFoodPreset: {
       type: "string",
-      name: 'Current food preset'
+      name: 'Current food preset',
+      commanded: true,
+      default: ''
     },
     currentFoodQuantity: {
       type: "int",
-      name: 'Current food quantity'
+      name: 'Current food quantity',
+      commanded: true,
+      default: ''
     },
     currentFoodUnit: {
       type: "string",
-      name: 'Current food unit'
+      name: 'Current food unit',
+      commanded: true,
+      default: ''
+    },
+    currentToggleSettings: {
+      type: "object",
+      name: 'Toggles status',
+      commanded: true,
+      default: []
+    },
+    currentModeSettings: {
+      type: "object",
+      name: 'Modes status',
+      commanded: true,
+      default: []
     },
   }
 }

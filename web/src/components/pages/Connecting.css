@@ -1,0 +1,64 @@
+@media only screen and (min-width: 800px) {
+  .param_table_row {
+    width: 80%;
+    height: 50px;
+    margin-left: 10%;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 40% 50% 10%;
+  }
+
+  .param_table_header {
+    border-bottom: 1px solid #eee;
+    text-align: center;
+  }
+
+  .param_table_cel {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    vertical-align: middle;
+    text-align: center;
+  }
+
+  .command_table_row {
+    width: 80%;
+    height: 50px;
+    margin-left: 10%;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 30% 30% 40%;
+  }
+
+  .command_table_header {
+    border-bottom: 1px solid #eee;
+    text-align: center;
+  }
+
+  .command_table_cel {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    vertical-align: middle;
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+}
+
+.device_card {
+  width: 100%;
+  height: 120px;
+  border-radius: 20px;
+  background-color: white;
+}
+
+.device_card_title {
+  margin-top: 5px;
+  margin-bottom: 5px
+}
+
+.device_card_divider {
+  width: 80%;
+}

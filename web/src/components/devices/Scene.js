@@ -1,5 +1,6 @@
 import React from 'react';
 import Information from './aux/Information'
+import Connecting from './aux/Connecting'
 import Edit from './aux/Edit'
 
 class Scene extends React.Component {
@@ -27,6 +28,7 @@ class Scene extends React.Component {
           <hr className="device_card_divider"/>
           <div style={traits_container}>
             <Information id={ this.props.device.id }/>
+            <Connecting id={ this.props.device.id }/>
             <Edit id={ this.props.device.id }/>
           </div>
         </div>

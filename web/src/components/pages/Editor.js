@@ -133,9 +133,9 @@ class Editor extends React.Component {
           temp_device.attributes[attribute] = attributes[attribute].default
         });
         //Set the default status params
-        var params = deviceReference.traits[event.target.id].param;
-        Object.keys(params).forEach((param, i) => {
-          temp_status[param] = params[param].default
+        var params = deviceReference.traits[event.target.id].params;
+        params.forEach((param, i) => {
+          temp_status[param] = deviceReference.params[param].default
         });
       }
     } else {

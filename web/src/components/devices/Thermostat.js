@@ -1,6 +1,7 @@
 import React from 'react';
 import TemperatureSetting from './traits/TemperatureSetting'
 import Information from './aux/Information'
+import Connecting from './aux/Connecting'
 import Edit from './aux/Edit'
 
 class Thermostat extends React.Component {
@@ -50,6 +51,7 @@ class Thermostat extends React.Component {
           <div style={traits_container}>
             <TemperatureSetting id={ this.props.device.id } status={this.props.status} on={ this.props.status } reload={ this.props.reload }/>
             <Information id={ this.props.device.id }/>
+            <Connecting id={ this.props.device.id }/>
             <Edit id={ this.props.device.id }/>
           </div>
         </div>

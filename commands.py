@@ -170,6 +170,9 @@ class Commands:
                 new_toogle[toggle] = self.params['updateToggleSettings'][toggle]
                 state.append(new_toogle)
             self.hData.updateParamStatus(self.device, 'currentToggleSettings', state)
+            publish.single("device/"+self.device+"/"+'currentToggleSettings', json.dumps(state), hostname="localhost")
+            publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
+
 
     def SetModes(self):
         if 'updateModeSettings' in self.params.keys():
@@ -180,3 +183,5 @@ class Commands:
                 new_mode[mode] = self.params['updateModeSettings'][mode]
                 state.append(new_mode)
             self.hData.updateParamStatus(self.device, 'currentModeSettings', state)
+            publish.single("device/"+self.device+"/"+'currentModeSettings', json.dumps(state), hostname="localhost")
+            publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
