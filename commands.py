@@ -43,9 +43,11 @@ class Commands:
             change = {
                 'temperature': 'temperatureK',
                 'spectrumRGB': 'spectrumRgb',
-                'spectrumHSV':  'spectrumHsv'
+                'spectrumHSV': 'spectrumHsv'
             }
-            color[change[self.params['color'].keys()[0]]] = self.params['color'][self.params['color'].keys()[0]]
+            if 'spectrumRGB' in self.params['color'].keys():
+                color['spectrumRGB'] = self.params['color']['spectrumRGB']
+                color['spectrumRgb'] = self.params['color']['spectrumRGB']
             self.hData.updateParamStatus(self.device, 'color', color)
             publish.single("device/"+self.device+"/color", json.dumps(color), hostname="localhost")
             publish.single("device/"+self.device, json.dumps(self.hData.getStatus()[self.device]), hostname="localhost")
