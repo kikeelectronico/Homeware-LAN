@@ -14,10 +14,12 @@ case "$response" in
         sudo apt-get update
         sudo apt install git
         sudo git clone https://github.com/kikeelectronico/Homeware-LAN.git
+        git checkout develop
         echo
         echo "Installing Homeware-LAN and its dependencies."
         echo "---------------------------------------------"
         cd Homeware-LAN
+        echo $PWD
         sudo apt install python3-pip
         pip3 install install -r requirements.txt
         sudo apt install nginx
@@ -37,6 +39,7 @@ case "$response" in
         sudo make
         sudo make install
         cd ../../
+        echo $PWD
         echo
         echo "Intall the new services."
         echo "---------------------------------------------"
@@ -55,6 +58,7 @@ case "$response" in
         sudo systemctl start homewareRedis
         sudo systemctl start homeware
         echo
+        echo $PWD
         read -r -p "Press enter to continue." e
         clear
         echo "User configuration."
