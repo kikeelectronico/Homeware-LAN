@@ -19,9 +19,6 @@ case "$response" in
         cd ../
         sudo chmod -R 777 Homeware-LAN
         cd Homeware-LAN
-        echo
-        read -r -p "Press enter to continue." e
-        clear
         echo "Installing Homeware-LAN and its dependencies."
         echo "---------------------------------------------"
         sudo apt install python3-pip
@@ -32,10 +29,7 @@ case "$response" in
         sudo apt install curl -y
         sudo apt install mosquitto mosquitto-clients -y
         sudo apt install redis-server -y
-        echo
-        read -r -p "Press enter to continue." e
-        clear
-        echo "Intall the new services."
+        echo "Install the new services."
         echo "---------------------------------------------"
         sudo cp configuration_templates/homeware.service /lib/systemd/system/
         sudo cp configuration_templates/homewareMQTT.service /lib/systemd/system/
@@ -117,6 +111,7 @@ case "$response" in
         echo "Google needs to comunicate with the Raspberry Pi via HTTPS, so we need a SSL certicate for Homeware."
         echo
         echo "Follow the Certbot instructions. When Certbot ask you about redirecting http to https, enable it."
+        echo
         sudo certbot --nginx
         echo
         read -r -p "Press enter to continue." e
