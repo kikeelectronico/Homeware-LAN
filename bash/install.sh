@@ -21,7 +21,7 @@ case "$response" in
         cd Homeware-LAN
         echo "Installing Homeware-LAN and its dependencies."
         echo "---------------------------------------------"
-        sudo apt install python3-pip
+        sudo apt install python3-pip -y
         sudo pip3 install install -r requirements.txt
         sudo apt install nginx -y
         sudo apt install software-properties-common -y
