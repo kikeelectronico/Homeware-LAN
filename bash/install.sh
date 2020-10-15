@@ -28,7 +28,7 @@ case "$response" in
         sudo pip3 install install -r requirements.txt
         sudo apt install nginx
         sudo apt install software-properties-common
-        sudo apt install certbot
+        sudo apt install certbot python3-certbot-nginx
         sudo apt install curl
         sudo apt install mosquitto mosquitto-clients
         sudo apt install redis-server
