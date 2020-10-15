@@ -264,18 +264,22 @@ class Data:
         status[device][param] = value
         self.redis.set('status',json.dumps(status))
         # Try to get username and password
+        msgs = [
+            {'topic': "device/" + device + '/' + param, 'payload': str(value)},
+            {'topic': "device/" + device, 'payload': json.dumps(status[device])}
+        ]
         try:
             mqttData = self.getMQTT()
             if not mqttData['user'] == "":
                 client.username_pw_set(mqttData['user'], mqttData['password'])
+                publish.multiple(msgs, hostname="localhost", auth={'username':mqttData['user'], 'password': mqttData['password']})
                 # publish.single("device/" + device + '/' + param, str(value), hostname="localhost", auth={'username':mqttData['user'], 'password': mqttData['password']})
-                publish.single("device/" + device, json.dumps(status[device]), hostname="localhost", auth={'username':mqttData['user'], 'password': mqttData['password']})
+                # publish.single("device/" + device, json.dumps(status[device]), hostname="localhost", auth={'username':mqttData['user'], 'password': mqttData['password']})
             else:
-                # publish.single("device/" + device + '/' + param, str(value), hostname="localhost")
-                publish.single("device/" + device, json.dumps(status[device]), hostname="localhost")
+                publish.multiple(msgs, hostname="localhost")
+
         except:
-            # publish.single("device/" + device + '/' + param, str(value), hostname="localhost")
-            publish.single("device/" + device, json.dumps(status[device]), hostname="localhost")
+            publish.multiple(msgs, hostname="localhost")
 
 
 # SECURE
