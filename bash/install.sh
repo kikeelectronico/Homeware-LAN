@@ -14,7 +14,7 @@ case "$response" in
         sudo apt-get update
         sudo apt install git
         sudo git clone https://github.com/kikeelectronico/Homeware-LAN.git
-        git checkout develop
+        sudo git checkout develop
         echo
         echo "Installing Homeware-LAN and its dependencies."
         echo "---------------------------------------------"
@@ -33,8 +33,8 @@ case "$response" in
         sudo pip3 install redis
         sudo mkdir redis
         cd redis
-        wget http://download.redis.io/redis-stable.tar.gz
-        tar xvzf redis-stable.tar.gz
+        sudo wget http://download.redis.io/redis-stable.tar.gz
+        sudo tar xvzf redis-stable.tar.gz
         cd redis-stable
         sudo make
         sudo make install
