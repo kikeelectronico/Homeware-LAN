@@ -14,14 +14,15 @@ case "$response" in
         sudo apt-get update
         sudo apt install git
         sudo git clone https://github.com/kikeelectronico/Homeware-LAN.git
-        sudo git checkout develop
+        sudo chmod -R 777 Homeware-LAN
+        cd Homeware-LAN
+        git checkout develop
         echo
         echo "Installing Homeware-LAN and its dependencies."
         echo "---------------------------------------------"
-        cd Homeware-LAN
-        echo $PWD
+        read -r -p "Press enter to continue." e
         sudo apt install python3-pip
-        pip3 install install -r requirements.txt
+        sudo pip3 install install -r requirements.txt
         sudo apt install nginx
         sudo apt install software-properties-common
         sudo apt install certbot python-certbot-nginx
@@ -30,16 +31,15 @@ case "$response" in
         echo
         echo "Intall the database."
         echo "---------------------------------------------"
-        sudo pip3 install redis
-        sudo mkdir redis
+        mkdir redis
         cd redis
-        sudo wget http://download.redis.io/redis-stable.tar.gz
-        sudo tar xvzf redis-stable.tar.gz
+        wget http://download.redis.io/redis-stable.tar.gz
+        tar xvzf redis-stable.tar.gz
         cd redis-stable
-        sudo make
+        make
         sudo make install
         cd ../../
-        echo $PWD
+        read -r -p "Press enter to continue." e
         echo
         echo "Intall the new services."
         echo "---------------------------------------------"
@@ -53,12 +53,10 @@ case "$response" in
         sudo systemctl enable homewareRedis
         sudo systemctl enable homeware
 
-        sudo systemctl start homewareMQTT
-        sudo systemctl start homewareTasks
         sudo systemctl start homewareRedis
         sudo systemctl start homeware
-        echo
-        echo $PWD
+        sudo systemctl start homewareMQTT
+        sudo systemctl start homewareTasks
         read -r -p "Press enter to continue." e
         clear
         echo "User configuration."
