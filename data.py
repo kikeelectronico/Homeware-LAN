@@ -273,8 +273,6 @@ class Data:
             if not mqttData['user'] == "":
                 client.username_pw_set(mqttData['user'], mqttData['password'])
                 publish.multiple(msgs, hostname="localhost", auth={'username':mqttData['user'], 'password': mqttData['password']})
-                # publish.single("device/" + device + '/' + param, str(value), hostname="localhost", auth={'username':mqttData['user'], 'password': mqttData['password']})
-                # publish.single("device/" + device, json.dumps(status[device]), hostname="localhost", auth={'username':mqttData['user'], 'password': mqttData['password']})
             else:
                 publish.multiple(msgs, hostname="localhost")
 
