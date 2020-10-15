@@ -11,16 +11,13 @@ case "$response" in
         echo "Cloning the respository."
         echo "---------------------------------------------"
         cd /usr/share
-        if [$PWD !=== '/usr/share']
-        then
-          exit 0
-        fi
         sudo apt-get update
         sudo apt install git
-        git clone https://github.com/DigiCraftFV/digicraft-ia.git
+        sudo git clone https://github.com/DigiCraftFV/digicraft-ia.git
         echo
         echo "Installing Homeware-LAN and its dependencies."
         echo "---------------------------------------------"
+        cd Homeware-LAN
         sudo apt install python3-pip
         pip3 install install -r requirements.txt
         sudo apt install nginx
