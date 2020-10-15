@@ -15,18 +15,19 @@ case "$response" in
         then
           exit 0
         fi
+        sudo apt-get update
+        sudo apt install git
         git clone https://github.com/DigiCraftFV/digicraft-ia.git
         echo
         echo "Installing Homeware-LAN and its dependencies."
         echo "---------------------------------------------"
-        sudo apt-get update
-        sudo apt-get install python3-pip
+        sudo apt install python3-pip
         pip3 install install -r requirements.txt
-        sudo apt-get install nginx
-        sudo apt-get install software-properties-common
-        sudo apt-get install certbot python-certbot-nginx
-        sudo apt-get install curl
-        sudo apt-get install mosquitto mosquitto-clients
+        sudo apt install nginx
+        sudo apt install software-properties-common
+        sudo apt install certbot python-certbot-nginx
+        sudo apt install curl
+        sudo apt install mosquitto mosquitto-clients
         echo
         echo "Intall the database."
         echo "---------------------------------------------"
