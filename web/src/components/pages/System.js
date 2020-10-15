@@ -196,17 +196,6 @@ class System extends React.Component {
         </div>
 
         <div className="page_block_container">
-          <h2>Plugins</h2>
-          <hr/>
-          <div className="page_block_content_container">
-            WIP
-          </div>
-          <div className="advise">
-            <span></span>
-          </div>
-        </div>
-
-        <div className="page_block_container">
           <h2>Version</h2>
           <hr/>
           <div className="page_block_content_container">

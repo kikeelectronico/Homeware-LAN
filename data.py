@@ -263,8 +263,19 @@ class Data:
         status = json.loads(self.redis.get('status'))
         status[device][param] = value
         self.redis.set('status',json.dumps(status))
-        publish.single("device/" + device + '/' + param, str(value), hostname="localhost")
-        publish.single("device/" + device, json.dumps(status[device]), hostname="localhost")
+        # Try to get username and password
+        try:
+            mqttData = self.getMQTT()
+            if not mqttData['user'] == "":
+                client.username_pw_set(mqttData['user'], mqttData['password'])
+                publish.single("device/" + device + '/' + param, str(value), hostname="localhost", auth={'username':mqttData['user'], 'password': mqttData['password']})
+                publish.single("device/" + device, json.dumps(status[device]), hostname="localhost", auth={'username':mqttData['user'], 'password': mqttData['password']})
+            else:
+                publish.single("device/" + device + '/' + param, str(value), hostname="localhost")
+                publish.single("device/" + device, json.dumps(status[device]), hostname="localhost")
+        except:
+            publish.single("device/" + device + '/' + param, str(value), hostname="localhost")
+            publish.single("device/" + device, json.dumps(status[device]), hostname="localhost")
 
 
 # SECURE
