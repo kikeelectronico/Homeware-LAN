@@ -12,7 +12,7 @@ case "$response" in
         echo "---------------------------------------------"
         cd /usr/share
         sudo apt-get update
-        sudo apt install git
+        sudo apt install git -y
         sudo git clone https://github.com/kikeelectronico/Homeware-LAN.git
         cd Homeware-LAN
         git checkout develop
@@ -26,25 +26,12 @@ case "$response" in
         echo "---------------------------------------------"
         sudo apt install python3-pip
         sudo pip3 install install -r requirements.txt
-        sudo apt install nginx
-        sudo apt install software-properties-common
-        sudo apt install certbot python3-certbot-nginx
-        sudo apt install curl
-        sudo apt install mosquitto mosquitto-clients
-        sudo apt install redis-server
-        # echo
-        # read -r -p "Press enter to continue." e
-        # clear
-        # echo "Intall the database."
-        # echo "---------------------------------------------"
-        # mkdir redis
-        # cd redis
-        # wget http://download.redis.io/redis-stable.tar.gz
-        # tar xvzf redis-stable.tar.gz
-        # cd redis-stable
-        # make
-        # sudo make install
-        # cd ../../
+        sudo apt install nginx -y
+        sudo apt install software-properties-common -y
+        sudo apt install certbot python3-certbot-nginx -y
+        sudo apt install curl -y
+        sudo apt install mosquitto mosquitto-clients -y
+        sudo apt install redis-server -y
         echo
         read -r -p "Press enter to continue." e
         clear
