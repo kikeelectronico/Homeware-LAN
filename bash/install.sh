@@ -14,9 +14,11 @@ case "$response" in
         sudo apt-get update
         sudo apt install git
         sudo git clone https://github.com/kikeelectronico/Homeware-LAN.git
-        sudo chmod -R 777 Homeware-LAN
         cd Homeware-LAN
         git checkout develop
+        cd ../
+        sudo chmod -R 777 Homeware-LAN
+        cd Homeware-LAN
         echo
         echo "Installing Homeware-LAN and its dependencies."
         echo "---------------------------------------------"
