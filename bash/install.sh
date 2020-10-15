@@ -20,9 +20,10 @@ case "$response" in
         sudo chmod -R 777 Homeware-LAN
         cd Homeware-LAN
         echo
+        read -r -p "Press enter to continue." e
+        clear
         echo "Installing Homeware-LAN and its dependencies."
         echo "---------------------------------------------"
-        read -r -p "Press enter to continue." e
         sudo apt install python3-pip
         sudo pip3 install install -r requirements.txt
         sudo apt install nginx
@@ -31,6 +32,8 @@ case "$response" in
         sudo apt install curl
         sudo apt install mosquitto mosquitto-clients
         echo
+        read -r -p "Press enter to continue." e
+        clear
         echo "Intall the database."
         echo "---------------------------------------------"
         mkdir redis
@@ -41,8 +44,9 @@ case "$response" in
         make
         sudo make install
         cd ../../
-        read -r -p "Press enter to continue." e
         echo
+        read -r -p "Press enter to continue." e
+        clear
         echo "Intall the new services."
         echo "---------------------------------------------"
         sudo cp configuration_templates/homeware.service /lib/systemd/system/
@@ -59,6 +63,7 @@ case "$response" in
         sudo systemctl start homeware
         sudo systemctl start homewareMQTT
         sudo systemctl start homewareTasks
+        echo
         read -r -p "Press enter to continue." e
         clear
         echo "User configuration."
