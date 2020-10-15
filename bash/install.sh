@@ -28,22 +28,23 @@ case "$response" in
         sudo pip3 install install -r requirements.txt
         sudo apt install nginx
         sudo apt install software-properties-common
-        sudo apt install certbot python-certbot-nginx
+        sudo apt install certbot
         sudo apt install curl
         sudo apt install mosquitto mosquitto-clients
-        echo
-        read -r -p "Press enter to continue." e
-        clear
-        echo "Intall the database."
-        echo "---------------------------------------------"
-        mkdir redis
-        cd redis
-        wget http://download.redis.io/redis-stable.tar.gz
-        tar xvzf redis-stable.tar.gz
-        cd redis-stable
-        make
-        sudo make install
-        cd ../../
+        sudo apt install redis-server
+        # echo
+        # read -r -p "Press enter to continue." e
+        # clear
+        # echo "Intall the database."
+        # echo "---------------------------------------------"
+        # mkdir redis
+        # cd redis
+        # wget http://download.redis.io/redis-stable.tar.gz
+        # tar xvzf redis-stable.tar.gz
+        # cd redis-stable
+        # make
+        # sudo make install
+        # cd ../../
         echo
         read -r -p "Press enter to continue." e
         clear
@@ -98,7 +99,7 @@ case "$response" in
         cd bash
         sudo sh confignginx.sh $hostname
         cd ../
-        curl -X GET http://localhost:5001/api/settings/domain/$hostname
+        curl -X GET http://localhost:5001/api/settings/domain/$hostname/
         echo
         read -r -p "Press enter to continue." e
         clear
