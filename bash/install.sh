@@ -13,7 +13,7 @@ case "$response" in
         cd /usr/share
         sudo apt-get update
         sudo apt install git
-        sudo git clone https://github.com/DigiCraftFV/digicraft-ia.git
+        sudo git clone https://github.com/kikeelectronico/Homeware-LAN.git
         echo
         echo "Installing Homeware-LAN and its dependencies."
         echo "---------------------------------------------"
