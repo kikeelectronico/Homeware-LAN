@@ -157,6 +157,9 @@ class Editor extends React.Component {
           this.setState({
              save_status: "Saved correctly."
            });
+           if (this.state.create) {
+             window.location.href = '/devices'
+           }
         } else {
           console.error(http.statusText);
           this.setState({
