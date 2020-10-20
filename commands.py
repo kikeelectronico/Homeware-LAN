@@ -154,12 +154,7 @@ class Commands:
             toggles = self.params['updateToggleSettings'].keys()
             state = self.hData.getStatus()[self.device]['currentToggleSettings']
             for toggle in toggles:
-                if toggle in state.keys():
-                    state[toggle] = self.params['updateToggleSettings'][toggle]
-                else:
-                    new_toogle = {}
-                    new_toogle[toggle] = self.params['updateToggleSettings'][toggle]
-                    state.append(new_toogle)
+                state[toggle] = self.params['updateToggleSettings'][toggle]
             self.hData.updateParamStatus(self.device, 'currentToggleSettings', state)
 
 
@@ -168,10 +163,5 @@ class Commands:
             modes = self.params['updateModeSettings'].keys()
             state = self.hData.getStatus()[self.device]['currentModeSettings']
             for mode in modes:
-                if mode in state.keys():
-                    state[mode] = self.params['updateModeSettings'][mode]
-                else:
-                    new_mode = {}
-                    new_mode[mode] = self.params['updateModeSettings'][mode]
-                    state.append(new_mode)
+                state[mode] = self.params['updateModeSettings'][mode]
             self.hData.updateParamStatus(self.device, 'currentModeSettings', state)
