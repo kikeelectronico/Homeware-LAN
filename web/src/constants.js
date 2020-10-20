@@ -1243,13 +1243,13 @@ const deviceReference = {
       type: "object",
       name: 'Toggles status',
       commanded: true,
-      default: []
+      default: {}
     },
     currentModeSettings: {
       type: "object",
       name: 'Modes status',
       commanded: true,
-      default: []
+      default: {}
     },
   }
 }
