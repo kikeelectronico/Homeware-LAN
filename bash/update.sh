@@ -10,6 +10,11 @@ sudo git pull
 #Update Python modules
 pip3 install -r requirements.txt
 
+#Build the UI
+cd web
+npm install
+npm run build
+
 #Start services
 sudo systemctl restart homewareMQTT
 sudo systemctl restart homewareTasks
