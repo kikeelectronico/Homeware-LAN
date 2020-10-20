@@ -46,15 +46,15 @@ case "$response" in
         sudo systemctl start homeware
         sudo systemctl start homewareMQTT
         sudo systemctl start homewareTasks
-        echo
-        read -r -p "Press enter to continue." e
-        clear
-        echo "Build UI."
-        echo "---------------------------------------------"
-        cd web
-        npm install
-        npm run build
-        cd ../
+        # echo
+        # read -r -p "Press enter to continue." e
+        # clear
+        # echo "Build UI."
+        # echo "---------------------------------------------"
+        # cd web
+        # npm install
+        # npm run build
+        # cd ../
         echo
         read -r -p "Press enter to continue." e
         clear
