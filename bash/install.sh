@@ -54,6 +54,7 @@ case "$response" in
         cd web
         npm install
         npm run build
+        cd ../
         echo
         read -r -p "Press enter to continue." e
         clear
