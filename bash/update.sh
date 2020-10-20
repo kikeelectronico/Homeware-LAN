@@ -11,9 +11,9 @@ sudo git pull
 pip3 install -r requirements.txt
 
 #Build the UI
-cd web
-npm install
-npm run build
+# cd web
+# npm install
+# npm run build
 
 #Start services
 sudo systemctl restart homewareMQTT
