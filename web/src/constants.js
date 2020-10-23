@@ -666,7 +666,7 @@ const deviceReference = {
       commands: []
     },
     "action.devices.traits.Rotation": {
-      name: 'Rotation',
+      name: 'Rotation - Google doesn\'t respond',
       attributes: {
         commandOnlyRotation: {
           type: "bool",
@@ -783,7 +783,7 @@ const deviceReference = {
       ]
     },
     "action.devices.traits.Timer": {
-      name: 'Timer',
+      name: 'Timer - Google doesn\'t respond',
       attributes: {
         maxTimerLimitSec: {
           type: "int",
@@ -1001,7 +1001,7 @@ const deviceReference = {
       ]
     },
     "action.devices.traits.SensorState": {
-      name: 'Sesnor',
+      name: 'Sesnor - Google doesn\'t respond',
       attributes: {
         sensorStatesSupported: {
           type: 'object',
