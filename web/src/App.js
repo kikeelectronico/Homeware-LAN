@@ -26,6 +26,7 @@ class App extends React.Component {
       version: ''
     }
     this.logout = this.logout.bind(this);
+    this.menu = this.menu.bind(this);
   }
 
   componentDidMount() {
@@ -77,6 +78,11 @@ class App extends React.Component {
     window.location.href = '/'
   }
 
+  menu() {
+    document.getElementById('menuIcon').classList.toggle("change_menu_icon");
+    document.getElementById('menu').classList.toggle("menu_show_up");
+  }
+
   render() {
 
     if (!this.state.session && !window.location.href.includes('login'))
@@ -92,10 +98,17 @@ class App extends React.Component {
         <Router>
           <div className="App">
             <div className="upper-menu">
-              Homeware-LAN
+              <div className="menu_icon_container" id="menuIcon" onClick={this.menu}>
+                <div className="menu_icon_bar_1"></div>
+                <div className="menu_icon_bar_2"></div>
+                <div className="menu_icon_bar_3"></div>
+              </div>
+              <div className="uppper_menu_title">
+                <h1>Homeware-LAN</h1>
+              </div>
             </div>
             <div className="main-app">
-              <div className="menu">
+              <div className="menu" id="menu">
                 <div>
                   <Menu image="/menu/devices_icon.png" title="Devices" href="/devices"/>
                   <Menu image="/menu/tasks_icon.png" title="Tasks" href="/tasks"/>
