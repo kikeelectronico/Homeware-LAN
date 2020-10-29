@@ -76,7 +76,7 @@
 
   .two_table_row {
     width: 80%;
-    height: 50px;
+    min-height: 50px;
     margin-left: 10%;
     margin-top: 20px;
     display: grid;
@@ -85,16 +85,14 @@
 
   .two_table_cel {
     width: 100%;
-    height: 100px;
     line-height: 50px;
     vertical-align: middle;
     text-align: left;
   }
 
   .three_table_row {
-    width: 80%;
-    height: 50px;
-    margin-left: 10%;
+    width: 100%;
+    min-height: 50px;
     margin-top: 20px;
     display: grid;
     grid-template-columns: 200px 300px auto
@@ -102,8 +100,6 @@
 
   .three_table_cel {
     width: 100%;
-    height: 50px;
-    line-height: 50px;
     vertical-align: middle;
     text-align: left;
   }
@@ -144,11 +140,15 @@
   }
 
   .page_block_content_container {
-    width: 80%;
-    margin-left: 10%;
+    width: 90%;
+    margin-left: 5%;
     margin-top: 10px;
     font-size: 18px;
     text-align: left;
+  }
+
+  .page_block_content_container > h2{
+    text-align: center;
   }
 
   .page_buttons_containter {
@@ -281,6 +281,21 @@
     text-align: left;
   }
 
+  .three_table_row {
+    width: 100%;
+    min-height: 50px;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 100%);
+  }
+
+  .three_table_cel {
+    width: 100%;
+    margin-top: 5px;
+    vertical-align: middle;
+    text-align: left;
+  }
+
   .page_block_buttons_container {
     margin-top: 50px;
   }
@@ -314,11 +329,14 @@
   }
 
   .page_block_content_container {
-    width: 80%;
-    margin-left: 10%;
+    width: 90%;
     margin-top: 10px;
     font-size: 18px;
     text-align: left;
+  }
+
+  .page_block_content_container > h2{
+    text-align: center;
   }
 
   .page_buttons_containter {
@@ -328,7 +346,7 @@
   }
 
   .two_input{
-    width: 90%;
+    width: 100%;
   }
 
   .two_table_cel label{

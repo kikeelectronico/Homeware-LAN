@@ -282,7 +282,7 @@ class Editor extends React.Component {
         <hr className="separator"/>
         <div className="three_table_row">
           <div className="three_table_cel">
-            {deviceReference.traits[trait].name}
+            <b>{deviceReference.traits[trait].name}</b>
           </div>
           <div className="three_table_cel">
             <label>
@@ -307,45 +307,47 @@ class Editor extends React.Component {
             <span>General settings of the device.</span>
             <hr/>
           </div>
-          <div className="two_table_row">
-            <div className="two_table_cel">
-              Device ID*
+          <div className="page_block_content_container">
+            <div className="two_table_row">
+              <div className="two_table_cel">
+                Device ID*
+              </div>
+              <div className="two_table_cel">
+                <input type="text" className="two_input" id="id" defaultValue={this.state.device.id} onChange={this.updateId} disabled={ this.state.create ? false : true }/>
+              </div>
             </div>
-            <div className="two_table_cel">
-              <input type="text" className="two_input" id="id" defaultValue={this.state.device.id} onChange={this.updateId} disabled={ this.state.create ? false : true }/>
+            <div className="two_table_row">
+              <div className="two_table_cel">
+                Device Type*
+              </div>
+              <div className="two_table_cel">
+                <select name="type" className="two_input" id="type" value={this.state.device.type} onChange={this.updateType} disabled={ this.state.create ? false : true }>
+                  <option value="default">Select a device</option>
+                  {types}
+                </select>
+              </div>
             </div>
-          </div>
-          <div className="two_table_row">
-            <div className="two_table_cel">
-              Device Type*
+            <Text name="Nick names*" data="nicknames" value={nicknames} update={this.updateNames}/>
+            <Text name="Hardware version" data="deviceInfo/hwVersion" value={this.state.device.deviceInfo ? this.state.device.deviceInfo.hwVersion : ''} update={this.update}/>
+            <Text name="Software version" data="deviceInfo/swVersion" value={this.state.device.deviceInfo ? this.state.device.deviceInfo.swVersion : ''} update={this.update}/>
+            <Text name="Manufacturer" data="deviceInfo/manufacturer" value={this.state.device.deviceInfo ? this.state.device.deviceInfo.manufacturer : ''} update={this.update}/>
+            <Text name="Model" data="deviceInfo/model" value={this.state.device.deviceInfo ? this.state.device.deviceInfo.model : ''} update={this.update}/>
+            <div className="advise">
+              <span>Nick names must be separeted by <i>,</i> commas.</span><br/>
+              <span>* data is required.</span>
             </div>
-            <div className="two_table_cel">
-              <select name="type" className="two_input" id="type" value={this.state.device.type} onChange={this.updateType} disabled={ this.state.create ? false : true }>
-                <option value="default">Select a device</option>
-                {types}
-              </select>
+            <hr/>
+            <h2>Traits</h2>
+            <div className="advise">
+              <span>The traits define what the device can do.</span>
             </div>
-          </div>
-          <Text name="Nick names*" data="nicknames" value={nicknames} update={this.updateNames}/>
-          <Text name="Hardware version" data="deviceInfo/hwVersion" value={this.state.device.deviceInfo ? this.state.device.deviceInfo.hwVersion : ''} update={this.update}/>
-          <Text name="Software version" data="deviceInfo/swVersion" value={this.state.device.deviceInfo ? this.state.device.deviceInfo.swVersion : ''} update={this.update}/>
-          <Text name="Manufacturer" data="deviceInfo/manufacturer" value={this.state.device.deviceInfo ? this.state.device.deviceInfo.manufacturer : ''} update={this.update}/>
-          <Text name="Model" data="deviceInfo/model" value={this.state.device.deviceInfo ? this.state.device.deviceInfo.model : ''} update={this.update}/>
-          <div className="advise">
-            <span>Nick names must be separeted by <i>,</i> commas.</span><br/>
-            <span>* data is required.</span>
-          </div>
-          <hr/>
-          <h2>Traits</h2>
-          <div className="advise">
-            <span>The traits define what the device can do.</span>
-          </div>
-          {traits}
-          <hr/>
-          <div className="two_table_cel">
-            <button type="button" style={ this.state.create ? deleteButtonDisabled : deleteButton } onClick={ this.delete } disabled={ this.state.create ? true : false}>Delete</button>
-            <button type="button" onClick={ this.save }>Save</button>
-            <span>{this.state.save_status}</span>
+            {traits}
+            <hr/>
+            <div className="two_table_cel">
+              <button type="button" style={ this.state.create ? deleteButtonDisabled : deleteButton } onClick={ this.delete } disabled={ this.state.create ? true : false}>Delete</button>
+              <button type="button" onClick={ this.save }>Save</button>
+              <span>{this.state.save_status}</span>
+            </div>
           </div>
         </div>
 
