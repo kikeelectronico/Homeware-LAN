@@ -13,6 +13,12 @@ class SensorState extends React.Component {
     }
 
     switch (value) {
+      default:
+        sensor['descriptiveCapabilities'] = {
+          availableStates: ['fair','good','healthy','moderate','poor','severe','unhealthy','unhealthy for sensitive groups','very poor','very unhealthy','unknown'],
+        }
+        sensor['numericCapabilities']= { rawValueUnit: "AQI" }
+        break;
       case 'AirQuality':
         sensor['descriptiveCapabilities'] = {
           availableStates: ['fair','good','healthy','moderate','poor','severe','unhealthy','unhealthy for sensitive groups','very poor','very unhealthy','unknown'],
