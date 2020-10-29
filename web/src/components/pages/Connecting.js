@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactJson from 'react-json-view'
 import getCookieValue from '../../functions'
 import { root, deviceReference } from '../../constants'
 
@@ -74,6 +75,11 @@ class Connecting extends React.Component {
       )
     })
 
+    var example = {"id":"light001","param":"brightness","value":"80","intent":"execute"}
+    var advise = {
+      textAlign: 'left'
+    }
+
     return (
       <div>
 
@@ -91,10 +97,10 @@ class Connecting extends React.Component {
             <div className="param_table_cel"><b>Type</b></div>
           </div>
           {params}
-          <div className="advise">
+          <div className="advise" style={advise}>
             <hr/>
             <p>The device can change the value of any param sending an execute request to device/control topic as follow</p>
-            <p>&#123;"id":"light001","param":"brightness","value":"80","intent":"execute"&#125;</p>
+            <ReactJson src={example}/>
           </div>
         </div>
 

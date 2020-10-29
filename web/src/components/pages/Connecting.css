@@ -45,6 +45,33 @@
 }
 
 @media only screen and (max-width: 800px) {
+  .param_table_row {
+    width: 80%;
+    height: 50px;
+    margin-left: 10%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .param_table_cel {
+    width: 100%;
+    vertical-align: middle;
+    text-align: left;
+  }
+
+  .command_table_row {
+    width: 80%;
+    height: 50px;
+    margin-left: 10%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .command_table_cel {
+    width: 100%;
+    vertical-align: middle;
+    text-align: left;
+  }
 }
 
 .device_card {

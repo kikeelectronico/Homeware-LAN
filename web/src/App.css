@@ -85,7 +85,7 @@
 
   .two_table_cel {
     width: 100%;
-    height: 50px;
+    height: 100px;
     line-height: 50px;
     vertical-align: middle;
     text-align: left;
@@ -253,7 +253,8 @@
     width: 100%;
     padding-top: 40px;
     padding-bottom: 40px;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 
   .page_cards_container {
@@ -266,18 +267,15 @@
   }
 
   .two_table_row {
-    width: 80%;
-    height: 50px;
-    margin-left: 10%;
-    margin-top: 30px;
+    width: 100%;
+    min-height: 50px;
     display: grid;
     grid-template-columns: repeat(auto-fill, 100%);
-    grid-gap: 10px;
   }
 
   .two_table_cel {
     width: 100%;
-    height: 35px;
+    min-height: 35px;
     line-height: 50px;
     vertical-align: middle;
     text-align: left;
@@ -330,7 +328,7 @@
   }
 
   .two_input{
-    width: 100%;
+    width: 90%;
   }
 
   .two_table_cel label{

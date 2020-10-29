@@ -120,9 +120,6 @@ class Settings extends React.Component {
               <div className="two_table_cel">
                 <input type="text" className="two_input" id="google/client_id" defaultValue={this.state.settings.google.client_id} onChange={this.update}/>
               </div>
-              <div className="two_table_cel">
-                <span className="advise"></span>
-              </div>
             </div>
             <div className="two_table_row">
               <div className="two_table_cel">
@@ -130,9 +127,6 @@ class Settings extends React.Component {
               </div>
               <div className="two_table_cel">
                 <input type="text" className="two_input" id="google/client_secret" defaultValue={this.state.settings.google.client_secret} onChange={this.update}/>
-              </div>
-              <div className="two_table_cel">
-                <span className="advise"></span>
               </div>
             </div>
             <div className="two_table_row">
@@ -142,9 +136,6 @@ class Settings extends React.Component {
               <div className="two_table_cel">
                 <input type="text" className="two_input" defaultValue={this.state.url.auth} disabled/>
               </div>
-              <div className="two_table_cel">
-                <span className="advise"></span>
-              </div>
             </div>
             <div className="two_table_row">
               <div className="two_table_cel">
@@ -153,9 +144,6 @@ class Settings extends React.Component {
               <div className="two_table_cel">
                 <input type="text" className="two_input" defaultValue={this.state.url.token} disabled/>
               </div>
-              <div className="two_table_cel">
-                <span className="advise"></span>
-              </div>
             </div>
             <div className="two_table_row">
               <div className="two_table_cel">
@@ -163,9 +151,6 @@ class Settings extends React.Component {
               </div>
               <div className="two_table_cel">
                 <input type="text" className="two_input" defaultValue={this.state.url.fulfillment} disabled/>
-              </div>
-              <div className="two_table_cel">
-                <span className="advise"></span>
               </div>
             </div>
           </div>
