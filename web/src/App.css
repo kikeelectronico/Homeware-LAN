@@ -11,7 +11,11 @@
   position: absolute;
 }
 
+<<<<<<< HEAD
 @media screen and (min-width: 1300px) {
+=======
+@media only screen and (min-width: 1300px) {
+>>>>>>> dbdd4cb6fcf749ac594be381aac0490862c08bf6
   .App {
     text-align: center;
     height: 100%;
@@ -166,7 +170,11 @@
   }
 }
 
+<<<<<<< HEAD
 @media screen and (max-width: 1300px) {
+=======
+@media only screen and (max-width: 1300px) {
+>>>>>>> dbdd4cb6fcf749ac594be381aac0490862c08bf6
   .App {
     text-align: center;
     height: 100%;
