@@ -99,9 +99,13 @@ class Manager extends React.Component {
       if (http.readyState === 4) {
         if (http.status === 200) {
           JSON.parse(http.responseText);
-          this.setState({
-             save_status: "Saved correctly."
-           });
+           if (this.state.create){
+             window.location.href = "/tasks"
+           } else {
+             this.setState({
+                save_status: "Saved correctly."
+              });
+           }
         } else {
           console.error(http.statusText);
           this.setState({
@@ -130,7 +134,7 @@ class Manager extends React.Component {
   }
 
   delete(){
-    if(window.confirm('Do you want to delete the device?')){
+    if(window.confirm('Do you want to delete the task?')){
       var http = new XMLHttpRequest();
       http.onload = function (e) {
         if (http.readyState === 4) {
@@ -279,56 +283,54 @@ class Manager extends React.Component {
     })
 
     return (
-      <div>
-
       <div className="page_block_container">
         <h2>Task</h2>
         <hr style={separator}/>
-        <div className="two_table_row">
-          <div className="two_table_cel">
-            Name*
+        <div className="page_block_content_container">
+          <div className="two_table_row">
+            <div className="two_table_cel">
+              Name*
+            </div>
+            <div className="two_table_cel">
+              <input type="text" className="two_input" id="title" defaultValue={this.state.task.title} onChange={this.update}/>
+            </div>
           </div>
-          <div className="two_table_cel">
-            <input type="text" className="two_input" id="title" defaultValue={this.state.task.title} onChange={this.update}/>
+          <div className="two_table_row">
+            <div className="two_table_cel">
+              Description*
+            </div>
+            <div className="two_table_cel">
+              <input type="text" className="two_input" id="description" defaultValue={this.state.task.description} onChange={this.update}/>
+            </div>
           </div>
-        </div>
-        <div className="two_table_row">
-          <div className="two_table_cel">
-            Description*
+          <hr/>
+          <h2>Triggers</h2>
+          <div className="advise">
+            <span></span>
           </div>
-          <div className="two_table_cel">
-            <input type="text" className="two_input" id="description" defaultValue={this.state.task.description} onChange={this.update}/>
+          {
+            this.state.trigger_assistant_parent !== 0
+            ?
+            <Assistant devices={this.state.devices} status={this.state.status} closeTriggerAssistant={this.closeTriggerAssistant} addTriggerOperation={this.addTriggerOperation}/>
+            :
+            <Triggers id="trigger" triggers={this.state.task.triggers} devices={this.state.devices} delete={this.deleteTrigger} addTriggerLogic={this.addTriggerLogic} openTriggerAssistant={this.openTriggerAssistant}/>
+          }
+          <hr/>
+          <h2>Targets</h2>
+          <div className="advise">
+            <span></span>
           </div>
-        </div>
-        <hr/>
-        <h2>Triggers</h2>
-        <div className="advise">
-          <span></span>
-        </div>
-        {
-          this.state.trigger_assistant_parent !== 0
-          ?
-          <Assistant devices={this.state.devices} status={this.state.status} closeTriggerAssistant={this.closeTriggerAssistant} addTriggerOperation={this.addTriggerOperation}/>
-          :
-          <Triggers id="trigger" triggers={this.state.task.triggers} devices={this.state.devices} delete={this.deleteTrigger} addTriggerLogic={this.addTriggerLogic} openTriggerAssistant={this.openTriggerAssistant}/>
-        }
-        <hr/>
-        <h2>Targets</h2>
-        <div className="advise">
-          <span></span>
-        </div>
-        {targets}
-        <DeviceTarget devices={this.state.devices} status={this.state.status} addTarget={this.addTarget}/>
+          {targets}
+          <DeviceTarget devices={this.state.devices} status={this.state.status} addTarget={this.addTarget}/>
 
-        <hr/>
-        <div className="two_table_cel">
-          <button type="button" style={ this.state.create ? deleteButtonDisabled : deleteButton } onClick={ this.delete } disabled={ this.state.create ? true : false}>Delete</button>
-          <button type="button" onClick={ this.save }>Save</button>
-          <span>{this.state.save_status}</span>
+          <hr/>
+          <div className="two_table_cel">
+            <button type="button" style={ this.state.create ? deleteButtonDisabled : deleteButton } onClick={ this.delete } disabled={ this.state.create ? true : false}>Delete</button>
+            <button type="button" onClick={ this.save }>Save</button>
+            <span>{this.state.save_status}</span>
+          </div>
         </div>
       </div>
-
-    </div>
   );
   }
 }

@@ -1,5 +1,5 @@
 
-@media only screen and (min-width: 800px) {
+@media only screen and (min-width: 1300px) {
   .trigger_logic_container {
     width: 90%;
     margin-left: 5%;
@@ -61,6 +61,73 @@
   .trigger_assistant_button {
     padding: 2px;
     width: 180px;
+  }
+}
+
+@media only screen and (max-width: 1300px) {
+  .trigger_logic_container {
+    width: 90%;
+    margin-left: 5%;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    padding: 5px;
+    border-radius: 20px;
+    border: 1px solid #aaa;
+  }
+
+  .trigger_logic_title {
+    margin-top: 2px;
+    margin-bottom: 2px;
+  }
+
+  .trigger_device_container {
+    width: 90%;
+    margin-left: 5%;
+    padding: 5px;
+    border-radius: 20px;
+    border: 1px solid #aaa;
+    display: grid;
+    grid-template-columns: 80% auto;
+  }
+
+  .trigger_delete {
+    width: 20px;
+    cursor: 'pointer';
+  }
+
+  .trigger_logic_button {
+    padding: 2px;
+    width: 70px;
+    margin-top: 10px;
+  }
+
+  .trigger_logic_buttons_container {
+    margin-top: 10px;
+  }
+
+  .trigger_assistant_container {
+    width: 90%;
+    margin-left: 5%;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    padding: 5px;
+    border-radius: 20px;
+    border: 1px solid #aaa;
+  }
+
+  .trigger_assistant_title {
+    margin-top: 2px;
+    margin-bottom: 2px;
+  }
+
+  .trigger_assisstant_buttons_container {
+    margin-top: 10px;
+  }
+
+  .trigger_assistant_button {
+    padding: 2px;
+    width: 180px;
+    margin-top: 10px;
   }
 }
 
