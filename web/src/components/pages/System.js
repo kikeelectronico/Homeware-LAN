@@ -100,20 +100,21 @@ class System extends React.Component {
       this.setState({
         upgrading: true
       });
-
-      var conn = new XMLHttpRequest();
-      conn.onload = function (e) {
-        if (conn.readyState === 4) {
-          if (conn.status === 200) {
-            this.areYouAwake();
-          } else {
-            console.error(conn.statusText);
+      window.setTimeout(function() {
+        var conn = new XMLHttpRequest();
+        conn.onload = function (e) {
+          if (conn.readyState === 4) {
+            if (conn.status === 200) {
+              this.areYouAwake();
+            } else {
+              console.error(conn.statusText);
+            }
           }
-        }
-      }.bind(this)
-      conn.open("GET", root + "api/system/upgrade/");
-      conn.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-      conn.send();
+        }.bind(this)
+        conn.open("GET", root + "api/system/upgrade/");
+        conn.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+        conn.send();
+      }.bind(this),2000);
     }
   }
 
