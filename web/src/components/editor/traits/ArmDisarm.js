@@ -69,10 +69,11 @@ class ArmDisarm extends React.Component {
       <div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
+          <div className="three_table_cel align_right">
+            Add a security level
           </div>
           <div className="three_table_cel">
-            Add a security level <button type="button" className="add_attribute_button" onClick={ this.addSecurityLevel }>Add</button>
+            <button type="button" className="add_attribute_button" onClick={ this.addSecurityLevel }>Add</button>
           </div>
         </div>
 

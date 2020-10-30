@@ -169,20 +169,22 @@ class Cook extends React.Component {
       <div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
+          <div className="three_table_cel align_right">
+            Add a cooking mode
           </div>
           <div className="three_table_cel">
-            Add a cooking mode <button type="button" className="add_attribute_button" onClick={ this.addMode }>Add</button>
+            <button type="button" className="add_attribute_button" onClick={ this.addMode }>Add</button>
           </div>
         </div>
 
         {modes}
 
         <div className="three_table_row">
-          <div className="three_table_cel">
+          <div className="three_table_cel align_right">
+            Add a preset
           </div>
           <div className="three_table_cel">
-            Add a preset <button type="button" className="add_attribute_button" onClick={ this.addPreset }>Add</button>
+            <button type="button" className="add_attribute_button" onClick={ this.addPreset }>Add</button>
           </div>
         </div>
 

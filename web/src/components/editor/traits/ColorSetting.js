@@ -1,4 +1,5 @@
 import React from 'react';
+import Switch from "react-switch";
 
 class ColorSetting extends React.Component {
   constructor(props) {
@@ -11,16 +12,16 @@ class ColorSetting extends React.Component {
     this.props.update('attributes/' + event.target.id,event.target.value);
   }
 
-  updateCheckbox(event){
-    this.props.update('attributes/' + event.target.id,event.target.checked);
+  updateCheckbox(checked, attribute){
+    this.props.update('attributes/' + attribute,checked);
   }
 
   render() {
     return (
       <div>
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            <i>Color type</i>
           </div>
           <div className="three_table_cel">
             <select name="type" id="colorModel" className="table_input" value={this.props.attributes.colorModel} onChange={this.update}>
@@ -35,36 +36,33 @@ class ColorSetting extends React.Component {
           </div>
         </div>
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            Minimum temperature
           </div>
           <div className="three_table_cel">
-            Minimum temperature: <input type="number" id="colorTemperatureRange/temperatureMinK" defaultValue={ this.props.attributes.colorTemperatureRange ? this.props.attributes.colorTemperatureRange.temperatureMinK : 0} min="0" max="10000" onChange={this.update} className="int_input"/>
+            <input type="number" id="colorTemperatureRange/temperatureMinK" defaultValue={ this.props.attributes.colorTemperatureRange ? this.props.attributes.colorTemperatureRange.temperatureMinK : 0} min="0" max="10000" onChange={this.update} className="int_input"/>
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Minimum color temperature (in Kelvin) supported by the device.</span>
           </div>
         </div>
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            Maximum temperature
           </div>
           <div className="three_table_cel">
-            Maximum temperature: <input type="number" id="colorTemperatureRange/temperatureMaxK" defaultValue={this.props.attributes.colorTemperatureRange ? this.props.attributes.colorTemperatureRange.temperatureMaxK : 0} min="0" max="10000" onChange={this.update} className="int_input"/>
+            <input type="number" id="colorTemperatureRange/temperatureMaxK" defaultValue={this.props.attributes.colorTemperatureRange ? this.props.attributes.colorTemperatureRange.temperatureMaxK : 0} min="0" max="10000" onChange={this.update} className="int_input"/>
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Maximum color temperature (in Kelvin) supported by the device.</span>
           </div>
         </div>
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            <i>commandOnlyColorSetting</i>
           </div>
           <div className="three_table_cel">
-            <label>
-              <input type="checkbox" id="commandOnlyColorSetting" defaultChecked={this.props.attributes.commandOnlyColorSetting} onChange={this.updateCheckbox}/>
-              <span className=""><i>commandOnlyColorSetting</i></span>
-            </label>
+            <Switch onChange={(checked) => {this.updateCheckbox(checked,"commandOnlyColorSetting")}} checked={this.props.attributes.commandOnlyColorSetting} />
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the color.</span>

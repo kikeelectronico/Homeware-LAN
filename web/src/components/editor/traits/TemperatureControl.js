@@ -1,4 +1,5 @@
 import React from 'react';
+import Switch from "react-switch";
 
 class TemperatureControl extends React.Component {
   constructor(props) {
@@ -11,8 +12,8 @@ class TemperatureControl extends React.Component {
     this.props.update('attributes/' + event.target.id,event.target.value);
   }
 
-  updateCheckbox(event){
-    this.props.update('attributes/' + event.target.id,event.target.checked);
+  updateCheckbox(checked, attribute){
+    this.props.update('attributes/' + attribute,checked);
   }
 
   render() {
@@ -22,14 +23,11 @@ class TemperatureControl extends React.Component {
       <div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            <i>commandOnlyTemperatureControl</i>
           </div>
           <div className="three_table_cel">
-            <label>
-              <input type="checkbox" id="commandOnlyTemperatureControl" defaultChecked={this.props.attributes.commandOnlyTemperatureControl} onChange={this.updateCheckbox}/>
-              <span className=""><i>commandOnlyTemperatureControl</i></span>
-            </label>
+            <Switch onChange={(checked) => {this.updateCheckbox(checked,"commandOnlyTemperatureControl")}} checked={this.props.attributes.commandOnlyTemperatureControl} />
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the temperature.</span>
@@ -37,13 +35,11 @@ class TemperatureControl extends React.Component {
         </div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
+          <div className="three_table_cel align_right">
+            <i>queryOnlyTemperatureControl</i>
           </div>
           <div className="three_table_cel">
-            <label>
-              <input type="checkbox" id="queryOnlyTemperatureControl" defaultChecked={this.props.attributes.queryOnlyTemperatureControl} onChange={this.updateCheckbox}/>
-              <span className=""><i>queryOnlyTemperatureControl</i></span>
-            </label>
+            <Switch onChange={(checked) => {this.updateCheckbox(checked,"queryOnlyTemperatureControl")}} checked={this.props.attributes.queryOnlyTemperatureControl} />
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Enable it if Google shouldn't change the device temperature settings.</span>
@@ -51,11 +47,11 @@ class TemperatureControl extends React.Component {
         </div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            Minimum temperature
           </div>
           <div className="three_table_cel">
-            Minimum temperature: <input type="number" id="temperatureRange/minThresholdCelsius" defaultValue={ this.props.attributes.temperatureRange ? this.props.attributes.temperatureRange.minThresholdCelsius : 0} min="0" max="400" onChange={this.update} className="int_input"/>
+            <input type="number" id="temperatureRange/minThresholdCelsius" defaultValue={ this.props.attributes.temperatureRange ? this.props.attributes.temperatureRange.minThresholdCelsius : 0} min="0" max="400" onChange={this.update} className="int_input"/>
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Minimum temperature (in Celsius) supported by the device.</span>
@@ -63,11 +59,11 @@ class TemperatureControl extends React.Component {
         </div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            Maximum temperature
           </div>
           <div className="three_table_cel">
-            Maximum temperature: <input type="number" id="temperatureRange/maxThresholdCelsius" defaultValue={this.props.attributes.temperatureRange ? this.props.attributes.temperatureRange.maxThresholdCelsius : 0} min="0" max="400" onChange={this.update} className="int_input"/>
+            <input type="number" id="temperatureRange/maxThresholdCelsius" defaultValue={this.props.attributes.temperatureRange ? this.props.attributes.temperatureRange.maxThresholdCelsius : 0} min="0" max="400" onChange={this.update} className="int_input"/>
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Maximum temperature (in Celsius) supported by the device.</span>
@@ -75,11 +71,11 @@ class TemperatureControl extends React.Component {
         </div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            Step
           </div>
           <div className="three_table_cel">
-            Step: <input type="number" id="temperatureStepCelsius" defaultValue={this.props.attributes.temperatureStepCelsius} min="0" max="400" onChange={this.update} className="int_input"/>
+            <input type="number" id="temperatureStepCelsius" defaultValue={this.props.attributes.temperatureStepCelsius} min="0" max="400" onChange={this.update} className="int_input"/>
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Specifies the relative temperature step.</span>
@@ -87,8 +83,8 @@ class TemperatureControl extends React.Component {
         </div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            Units
           </div>
           <div className="three_table_cel">
             <select name="type" id="temperatureUnitForUX" className="table_input" value={this.props.attributes.temperatureUnitForUX} onChange={this.update}>

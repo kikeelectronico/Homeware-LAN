@@ -1,4 +1,5 @@
 import React from 'react';
+import Switch from "react-switch";
 
 class Toggles extends React.Component {
   constructor(props) {
@@ -9,8 +10,8 @@ class Toggles extends React.Component {
   }
 
 
-  updateCheckbox(event){
-    this.props.update('attributes/' + event.target.id,event.target.checked);
+  updateCheckbox(checked, attribute){
+    this.props.update('attributes/' + attribute,checked);
   }
 
   updatetoggle(event){
@@ -77,14 +78,11 @@ class Toggles extends React.Component {
       <div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            <i>commandOnlyToggles</i>
           </div>
           <div className="three_table_cel">
-            <label>
-              <input type="checkbox" id="commandOnlyToggles" defaultChecked={this.props.attributes.reversible} onChange={this.updateCheckbox}/>
-              <span className=""><i>commandOnlyToggles</i></span>
-            </label>
+            <Switch onChange={(checked) => {this.updateCheckbox(checked,"commandOnlyToggles")}} checked={this.props.attributes.commandOnlyToggles} />
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the states.</span>
@@ -92,10 +90,11 @@ class Toggles extends React.Component {
         </div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
+          <div className="three_table_cel align_right">
+            Add a toggle
           </div>
           <div className="three_table_cel">
-            Add a toggle <button type="button" className="add_attribute_button" onClick={ this.addToggle }>Add</button>
+            <button type="button" className="add_attribute_button" onClick={ this.addToggle }>Add</button>
           </div>
         </div>
 

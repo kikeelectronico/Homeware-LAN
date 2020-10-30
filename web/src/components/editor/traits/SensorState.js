@@ -92,8 +92,8 @@ class SensorState extends React.Component {
     return (
       <div>
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            Sensor type
           </div>
           <div className="three_table_cel">
             <select name="type" id="sensorStatesSupported" className="table_input" value={this.props.attributes.sensorStatesSupported[0].name} onChange={this.update}>

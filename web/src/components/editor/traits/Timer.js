@@ -1,4 +1,5 @@
 import React from 'react';
+import Switch from "react-switch";
 
 class Timer extends React.Component {
   constructor(props) {
@@ -8,8 +9,8 @@ class Timer extends React.Component {
   }
 
 
-  updateCheckbox(event){
-    this.props.update('attributes/' + event.target.id,event.target.checked);
+  updateCheckbox(checked, attribute){
+    this.props.update('attributes/' + attribute,checked);
   }
 
   update(event){
@@ -20,14 +21,11 @@ class Timer extends React.Component {
     return (
       <div>
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            <i>commandOnlyTimer</i>
           </div>
           <div className="three_table_cel">
-            <label>
-              <input type="checkbox" id="commandOnlyTimer" defaultChecked={this.props.attributes.commandOnlyTimer} onChange={this.updateCheckbox}/>
-              <span className=""><i>commandOnlyTimer</i></span>
-            </label>
+            <Switch onChange={(checked) => {this.updateCheckbox(checked,"commandOnlyTimer")}} checked={this.props.attributes.commandOnlyTimer} />
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the state.</span>
@@ -35,11 +33,11 @@ class Timer extends React.Component {
         </div>
 
         <div className="two_table_row">
-          <div className="two_table_cel">
-
+          <div className="two_table_cel align_right">
+            Max time
           </div>
           <div className="two_table_cel">
-            Max time: <input type="text" id="maxTimerLimitSec" defaultValue={this.props.attributes.maxTimerLimitSec} onChange={this.update} className="text_input"/>
+            <input type="text" id="maxTimerLimitSec" defaultValue={this.props.attributes.maxTimerLimitSec} onChange={this.update} className="text_input"/>
           </div>
         </div>
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import Switch from "react-switch";
 
 class OpenClose extends React.Component {
   constructor(props) {
@@ -7,22 +8,19 @@ class OpenClose extends React.Component {
   }
 
 
-  updateCheckbox(event){
-    this.props.update('attributes/' + event.target.id,event.target.checked);
+  updateCheckbox(checked, attribute){
+    this.props.update('attributes/' + attribute,checked);
   }
 
   render() {
     return (
       <div>
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            <i>discreteOnlyOpenClose</i>
           </div>
           <div className="three_table_cel">
-            <label>
-              <input type="checkbox" id="discreteOnlyOpenClose" defaultChecked={this.props.attributes.discreteOnlyOpenClose} onChange={this.updateCheckbox}/>
-              <span className=""><i>discreteOnlyOpenClose</i></span>
-            </label>
+            <Switch onChange={(checked) => {this.updateCheckbox(checked,"discreteOnlyOpenClose")}} checked={this.props.attributes.discreteOnlyOpenClose} />
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Enable it if the device must either be fully open or fully closed.</span>
@@ -30,13 +28,11 @@ class OpenClose extends React.Component {
         </div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
+          <div className="three_table_cel align_right">
+            <i>commandOnlyOpenClose</i>
           </div>
           <div className="three_table_cel">
-            <label>
-              <input type="checkbox" id="commandOnlyOpenClose" defaultChecked={this.props.attributes.commandOnlyOpenClose} onChange={this.updateCheckbox}/>
-              <span className=""><i>commandOnlyOpenClose</i></span>
-            </label>
+            <Switch onChange={(checked) => {this.updateCheckbox(checked,"commandOnlyOpenClose")}} checked={this.props.attributes.commandOnlyOpenClose} />
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the state.</span>
@@ -44,13 +40,11 @@ class OpenClose extends React.Component {
         </div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
+          <div className="three_table_cel align_right">
+            <i>queryOnlyOpenClose</i>
           </div>
           <div className="three_table_cel">
-            <label>
-              <input type="checkbox" id="queryOnlyOpenClose" defaultChecked={this.props.attributes.queryOnlyOpenClose} onChange={this.updateCheckbox}/>
-              <span className=""><i>queryOnlyOpenClose</i></span>
-            </label>
+            <Switch onChange={(checked) => {this.updateCheckbox(checked,"queryOnlyOpenClose")}} checked={this.props.attributes.queryOnlyOpenClose} />
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Enable it if Google shouldn't change the device state.</span>

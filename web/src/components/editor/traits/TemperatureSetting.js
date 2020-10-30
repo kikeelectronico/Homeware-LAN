@@ -1,4 +1,5 @@
 import React from 'react';
+import Switch from "react-switch";
 
 class TemperatureSetting extends React.Component {
   constructor(props) {
@@ -33,8 +34,8 @@ class TemperatureSetting extends React.Component {
     this.props.update('attributes/availableThermostatModes', temp_availableThermostatModes);
   }
 
-  updateCheckbox(event){
-    this.props.update('attributes/' + event.target.id,event.target.checked);
+  updateCheckbox(checked, attribute){
+    this.props.update('attributes/' + attribute,checked);
   }
 
 
@@ -76,24 +77,22 @@ class TemperatureSetting extends React.Component {
       <div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
+          <div className="three_table_cel align_right">
+            Add a thermostat mode
           </div>
           <div className="three_table_cel">
-            Add a thermostat mode <button type="button" className="add_attribute_button" onClick={ this.addMode }>Add</button>
+            <button type="button" className="add_attribute_button" onClick={ this.addMode }>Add</button>
           </div>
         </div>
 
         {modes}
 
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            <i>commandOnlyTemperatureSetting</i>
           </div>
           <div className="three_table_cel">
-            <label>
-              <input type="checkbox" id="commandOnlyTemperatureSetting" defaultChecked={this.props.attributes.commandOnlyTemperatureSetting} onChange={this.updateCheckbox}/>
-              <span className=""><i>commandOnlyTemperatureSetting</i></span>
-            </label>
+            <Switch onChange={(checked) => {this.updateCheckbox(checked,"commandOnlyTemperatureSetting")}} checked={this.props.attributes.commandOnlyTemperatureSetting} />
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the temperature.</span>
@@ -101,13 +100,11 @@ class TemperatureSetting extends React.Component {
         </div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
+          <div className="three_table_cel align_right">
+            <i>queryOnlyTemperatureSetting</i>
           </div>
           <div className="three_table_cel">
-            <label>
-              <input type="checkbox" id="queryOnlyTemperatureSetting" defaultChecked={this.props.attributes.queryOnlyTemperatureSetting} onChange={this.updateCheckbox}/>
-              <span className=""><i>queryOnlyTemperatureSetting</i></span>
-            </label>
+            <Switch onChange={(checked) => {this.updateCheckbox(checked,"queryOnlyTemperatureSetting")}} checked={this.props.attributes.queryOnlyTemperatureSetting} />
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Enable it if Google shouldn't change the device temperature settings.</span>
@@ -115,11 +112,11 @@ class TemperatureSetting extends React.Component {
         </div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            Minimum temperature
           </div>
           <div className="three_table_cel">
-            Minimum temperature: <input type="number" id="thermostatTemperatureRange/minThresholdCelsius" defaultValue={ this.props.attributes.thermostatTemperatureRange ? this.props.attributes.thermostatTemperatureRange.minThresholdCelsius : 0} min="0" max="50" onChange={this.update} className="int_input"/>
+            <input type="number" id="thermostatTemperatureRange/minThresholdCelsius" defaultValue={ this.props.attributes.thermostatTemperatureRange ? this.props.attributes.thermostatTemperatureRange.minThresholdCelsius : 0} min="0" max="50" onChange={this.update} className="int_input"/>
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Minimum temperature (in Celsius) supported by the device.</span>
@@ -127,11 +124,11 @@ class TemperatureSetting extends React.Component {
         </div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            Maximum temperature
           </div>
           <div className="three_table_cel">
-            Maximum temperature: <input type="number" id="thermostatTemperatureRange/maxThresholdCelsius" defaultValue={this.props.attributes.thermostatTemperatureRange ? this.props.attributes.thermostatTemperatureRange.maxThresholdCelsius : 0} min="0" max="50" onChange={this.update} className="int_input"/>
+            <input type="number" id="thermostatTemperatureRange/maxThresholdCelsius" defaultValue={this.props.attributes.thermostatTemperatureRange ? this.props.attributes.thermostatTemperatureRange.maxThresholdCelsius : 0} min="0" max="50" onChange={this.update} className="int_input"/>
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Maximum temperature (in Celsius) supported by the device.</span>
@@ -139,11 +136,11 @@ class TemperatureSetting extends React.Component {
         </div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            Range
           </div>
           <div className="three_table_cel">
-            Range: <input type="number" id="bufferRangeCelsius" defaultValue={this.props.attributes.bufferRangeCelsius} min="0" max="50" onChange={this.update} className="int_input"/>
+            <input type="number" id="bufferRangeCelsius" defaultValue={this.props.attributes.bufferRangeCelsius} min="0" max="50" onChange={this.update} className="int_input"/>
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Specifies the minimum offset between heat-cool setpoints in Celsius.</span>
@@ -151,8 +148,8 @@ class TemperatureSetting extends React.Component {
         </div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            Units
           </div>
           <div className="three_table_cel">
             <select name="type" id="thermostatTemperatureUnit" className="table_input" value={this.props.attributes.thermostatTemperatureUnit} onChange={this.update}>

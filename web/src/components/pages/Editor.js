@@ -1,4 +1,5 @@
 import React from 'react';
+import Switch from "react-switch";
 import Text from '../editor/Text'
 import Scene from '../editor/traits/Scene'
 import OnOff from '../editor/traits/OnOff'
@@ -120,27 +121,27 @@ class Editor extends React.Component {
      });
   }
 
-  updateTraits(event){
+  updateTraits(checked, trait){
     var temp_device = this.state.device
     var temp_status = this.state.status
-    if (event.target.checked) {
-      if (this.state.device.traits.includes(event.target.id) === false){
+    if (checked) {
+      if (this.state.device.traits.includes(trait) === false){
         //Push the trait to the device
-        temp_device.traits.push(event.target.id)
+        temp_device.traits.push(trait)
         //Set the default values
-        var attributes = deviceReference.traits[event.target.id].attributes;
+        var attributes = deviceReference.traits[trait].attributes;
         Object.keys(attributes).forEach((attribute, i) => {
           temp_device.attributes[attribute] = attributes[attribute].default
         });
         //Set the default status params
-        var params = deviceReference.traits[event.target.id].params;
+        var params = deviceReference.traits[trait].params;
         params.forEach((param, i) => {
           temp_status[param] = deviceReference.params[param].default
         });
       }
     } else {
-      if (this.state.device.traits.includes(event.target.id) === true){
-        temp_device.traits = temp_device.traits.filter(function(value, index, arr){ return value !== event.target.id;});
+      if (this.state.device.traits.includes(trait) === true){
+        temp_device.traits = temp_device.traits.filter(function(value, index, arr){ return value !== trait;});
       }
     }
     this.setState({
@@ -285,10 +286,7 @@ class Editor extends React.Component {
             <b>{deviceReference.traits[trait].name}</b>
           </div>
           <div className="three_table_cel">
-            <label>
-              <input type="checkbox" id={trait} defaultChecked={this.state.device.traits.includes(trait)} onChange={this.updateTraits}/>
-
-            </label>
+            <Switch onChange={(checked) => {this.updateTraits(checked,trait)}} checked={this.state.device.traits.includes(trait)} />
           </div>
           <div className="three_table_cel">
             Read Google's <a href={"https://developers.google.com/assistant/smarthome/traits/" + trait.split('.')[3].toLowerCase()} target="blanck">documentation</a>

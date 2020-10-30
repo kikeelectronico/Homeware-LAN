@@ -1,4 +1,5 @@
 import React from 'react';
+import Switch from "react-switch";
 
 class Scene extends React.Component {
   constructor(props) {
@@ -7,8 +8,8 @@ class Scene extends React.Component {
   }
 
 
-  updateCheckbox(event){
-    this.props.update('attributes/' + event.target.id,event.target.checked);
+  updateCheckbox(checked, attribute){
+    this.props.update('attributes/' + attribute,checked);
   }
 
   render() {
@@ -17,14 +18,11 @@ class Scene extends React.Component {
     return (
       <div>
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            <i>sceneReversible</i>
           </div>
           <div className="three_table_cel">
-            <label>
-              <input type="checkbox" id="sceneReversible" defaultChecked={this.props.sceneReversible} onChange={this.updateCheckbox}/>
-              <span className=""><i>sceneReversible</i></span>
-            </label>
+            <Switch onChange={(checked) => {this.updateCheckbox(checked,"sceneReversible")}} checked={this.props.attributes.sceneReversible} />
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Enable it if the scene can be desabled.</span>

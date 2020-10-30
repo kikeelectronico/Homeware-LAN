@@ -1,4 +1,5 @@
 import React from 'react';
+import Switch from "react-switch";
 
 class Brightness extends React.Component {
   constructor(props) {
@@ -7,8 +8,8 @@ class Brightness extends React.Component {
   }
 
 
-  updateCheckbox(event){
-    this.props.update('attributes/' + event.target.id,event.target.checked);
+  updateCheckbox(checked, attribute){
+    this.props.update('attributes/' + attribute,checked);
   }
 
   render() {
@@ -17,14 +18,11 @@ class Brightness extends React.Component {
     return (
       <div>
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            <i>commandOnlyBrightness</i>
           </div>
           <div className="three_table_cel">
-            <label>
-              <input type="checkbox" id="commandOnlyBrightness" defaultChecked={this.props.commandOnlyBrightness} onChange={this.updateCheckbox}/>
-              <span className=""><i>commandOnlyBrightness</i></span>
-            </label>
+            <Switch onChange={(checked) => {this.updateCheckbox(checked,"commandOnlyBrightness")}} checked={this.props.commandOnlyBrightness} />
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the brightness.</span>

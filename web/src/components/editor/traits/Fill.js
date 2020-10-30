@@ -68,10 +68,11 @@ class Fill extends React.Component {
       <div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
+          <div className="three_table_cel align_right">
+            Add a level
           </div>
           <div className="three_table_cel">
-            Add a level <button type="button" className="add_attribute_button" onClick={ this.addLevel }>Add</button>
+            <button type="button" className="add_attribute_button" onClick={ this.addLevel }>Add</button>
           </div>
         </div>
 

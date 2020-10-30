@@ -1,4 +1,5 @@
 import React from 'react';
+import Switch from "react-switch";
 
 class HumiditySetting extends React.Component {
   constructor(props) {
@@ -11,8 +12,8 @@ class HumiditySetting extends React.Component {
     this.props.update('attributes/' + event.target.id,event.target.value);
   }
 
-  updateCheckbox(event){
-    this.props.update('attributes/' + event.target.id,event.target.checked);
+  updateCheckbox(checked, attribute){
+    this.props.update('attributes/' + attribute,checked);
   }
 
   render() {
@@ -20,11 +21,11 @@ class HumiditySetting extends React.Component {
       <div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            Minimum humidity
           </div>
           <div className="three_table_cel">
-            Minimum humidity <input type="number" id="humiditySetpointRange/minPercent" defaultValue={ this.props.attributes.humiditySetpointRange ? this.props.attributes.humiditySetpointRange.minPercent : 0} min="0" max="100" onChange={this.update} className="int_input"/>
+            <input type="number" id="humiditySetpointRange/minPercent" defaultValue={ this.props.attributes.humiditySetpointRange ? this.props.attributes.humiditySetpointRange.minPercent : 0} min="0" max="100" onChange={this.update} className="int_input"/>
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Minimum humidity level as percentage.</span>
@@ -32,11 +33,11 @@ class HumiditySetting extends React.Component {
         </div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            Maximum humidity
           </div>
           <div className="three_table_cel">
-            Maximum humidity <input type="number" id="humiditySetpointRange/maxPercent" defaultValue={this.props.attributes.humiditySetpointRange ? this.props.attributes.humiditySetpointRange.maxPercent : 0} min="0" max="100" onChange={this.update} className="int_input"/>
+            <input type="number" id="humiditySetpointRange/maxPercent" defaultValue={this.props.attributes.humiditySetpointRange ? this.props.attributes.humiditySetpointRange.maxPercent : 0} min="0" max="100" onChange={this.update} className="int_input"/>
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Maximum humidity level as percentage.</span>
@@ -44,14 +45,11 @@ class HumiditySetting extends React.Component {
         </div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            <i>commandOnlyHumiditySetting</i>
           </div>
           <div className="three_table_cel">
-            <label>
-              <input type="checkbox" id="commandOnlyHumiditySetting" defaultChecked={this.props.attributes.commandOnlyHumiditySetting} onChange={this.updateCheckbox}/>
-              <span className=""><i>commandOnlyHumiditySetting</i></span>
-            </label>
+            <Switch onChange={(checked) => {this.updateCheckbox(checked,"commandOnlyHumiditySetting")}} checked={this.props.attributes.commandOnlyHumiditySetting} />
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the humidity.</span>
@@ -59,14 +57,11 @@ class HumiditySetting extends React.Component {
         </div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            <i>queryOnlyHumiditySetting</i>
           </div>
           <div className="three_table_cel">
-            <label>
-              <input type="checkbox" id="queryOnlyHumiditySetting" defaultChecked={this.props.attributes.queryOnlyHumiditySetting} onChange={this.updateCheckbox}/>
-              <span className=""><i>queryOnlyHumiditySetting</i></span>
-            </label>
+            <Switch onChange={(checked) => {this.updateCheckbox(checked,"queryOnlyHumiditySetting")}} checked={this.props.attributes.queryOnlyHumiditySetting} />
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Enable it if Google shouldn't change the device humidity.</span>

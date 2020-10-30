@@ -1,4 +1,5 @@
 import React from 'react';
+import Switch from "react-switch";
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
@@ -20,7 +21,7 @@ class Settings extends React.Component {
       }
     }
     this.update = this.update.bind(this);
-    this.updateCheckbox = this.updateCheckbox.bind(this);
+    this.enableDdnsProvider = this.enableDdnsProvider.bind(this);
     this.save = this.save.bind(this);
   }
 
@@ -64,15 +65,9 @@ class Settings extends React.Component {
      });
   }
 
-  updateCheckbox(event){
-    // this.props.update('attributes/' + event.target.id,event.target.value);
-    const id = event.target.id.split("/");
+  enableDdnsProvider(checked){
     var settings = this.state.settings;
-    if (id.length === 1){
-      settings[id[0]] = event.target.checked;
-    } else if (id.length === 2){
-      settings[id[0]][id[1]] = event.target.checked;
-    }
+    settings.ddns.enabled = checked;
     this.setState({
        settings: settings
      });
@@ -222,7 +217,7 @@ class Settings extends React.Component {
                 Enable
               </div>
               <div className="two_table_cel">
-                <input type="checkbox" id="ddns/enabled" defaultChecked={this.state.settings.ddns.enabled} onChange={this.updateCheckbox}/>
+                <Switch onChange={this.enableDdnsProvider} checked={this.state.settings.ddns.enabled} />
               </div>
             </div>
             <div className="two_table_row">

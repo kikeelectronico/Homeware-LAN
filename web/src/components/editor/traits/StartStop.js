@@ -1,4 +1,5 @@
 import React from 'react';
+import Switch from "react-switch";
 
 class StartStop extends React.Component {
   constructor(props) {
@@ -8,8 +9,8 @@ class StartStop extends React.Component {
   }
 
 
-  updateCheckbox(event){
-    this.props.update('attributes/' + event.target.id,event.target.checked);
+  updateCheckbox(checked, attribute){
+    this.props.update('attributes/' + attribute,checked);
   }
 
   updateArray(event){
@@ -20,14 +21,11 @@ class StartStop extends React.Component {
     return (
       <div>
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            <i>pausable</i>
           </div>
           <div className="three_table_cel">
-            <label>
-              <input type="checkbox" id="pausable" defaultChecked={this.props.attributes.pausable} onChange={this.updateCheckbox}/>
-              <span className=""><i>pausable</i></span>
-            </label>
+            <Switch onChange={(checked) => {this.updateCheckbox(checked,"pausable")}} checked={this.props.attributes.pausable} />
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Enable it if the device can be paused.</span>
@@ -35,11 +33,11 @@ class StartStop extends React.Component {
         </div>
 
         <div className="two_table_row">
-          <div className="two_table_cel">
-
+          <div className="two_table_cel align_right">
+            Zones
           </div>
           <div className="two_table_cel">
-            Zones: <input type="text" id="availableThermostatModes" defaultValue={this.props.attributes.availableZones} onChange={this.updateArray} className="text_input"/>
+            <input type="text" id="availableThermostatModes" defaultValue={this.props.attributes.availableZones} onChange={this.updateArray} className="text_input"/>
           </div>
         </div>
 

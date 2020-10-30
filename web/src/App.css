@@ -90,12 +90,17 @@
     text-align: left;
   }
 
+  .two_table_cel > div {
+    transform: translateY(25%);
+  }
+
   .three_table_row {
     width: 100%;
     min-height: 50px;
     margin-top: 20px;
     display: grid;
-    grid-template-columns: 200px 300px auto
+    grid-gap: 10px;
+    grid-template-columns: 250px 250px auto
   }
 
   .three_table_cel {
@@ -281,6 +286,10 @@
     text-align: left;
   }
 
+  .two_table_cel > div {
+    transform: translateY(25%);
+  }
+
   .three_table_row {
     width: 100%;
     min-height: 50px;
@@ -378,4 +387,10 @@
   background-color: rgba(255,255,0,0.5);
   color: black;
   border-radius: 20px;
+}
+
+.align_right {
+  text-align: right;
+  padding: 0px 0;
+  padding-right: 10px;
 }

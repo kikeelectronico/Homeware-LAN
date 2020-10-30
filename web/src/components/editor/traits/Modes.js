@@ -1,4 +1,5 @@
 import React from 'react';
+import Switch from "react-switch";
 
 class Modes extends React.Component {
   constructor(props) {
@@ -9,8 +10,8 @@ class Modes extends React.Component {
   }
 
 
-  updateCheckbox(event){
-    this.props.update('attributes/' + event.target.id,event.target.checked);
+  updateCheckbox(checked, attribute){
+    this.props.update('attributes/' + attribute,checked);
   }
 
   updateMode(event){
@@ -111,14 +112,11 @@ class Modes extends React.Component {
       <div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
-
+          <div className="three_table_cel align_right">
+            <i>commandOnlyModes</i>
           </div>
           <div className="three_table_cel">
-            <label>
-              <input type="checkbox" id="commandOnlyModes" defaultChecked={this.props.attributes.reversible} onChange={this.updateCheckbox}/>
-              <span className=""><i>commandOnlyModes</i></span>
-            </label>
+            <Switch onChange={(checked) => {this.updateCheckbox(checked,"commandOnlyModes")}} checked={this.props.attributes.commandOnlyModes} />
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the modes.</span>
@@ -126,12 +124,12 @@ class Modes extends React.Component {
         </div>
 
         <div className="three_table_row">
-          <div className="three_table_cel">
+          <div className="three_table_cel align_right">
+            Add a mode
           </div>
           <div className="three_table_cel">
-            Add a mode <button type="button" className="add_attribute_button" onClick={ this.addMode }>Add</button>
+            <button type="button" className="add_attribute_button" onClick={ this.addMode }>Add</button>
           </div>
-
         </div>
 
         {modes}
