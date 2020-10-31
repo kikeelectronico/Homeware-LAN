@@ -16,7 +16,9 @@ class System extends React.Component {
         code: 0
       },
       version: '',
-      upgrading: false
+      upgrading: false,
+      show_system_message: false,
+      system_message: ''
     }
 
     this.loadComponents = this.loadComponents.bind(this);
@@ -98,7 +100,8 @@ class System extends React.Component {
     if(window.confirm('Are you sure?')){
       window.open(root + "files/buckup/homeware/" + getCookieValue('token'))
       this.setState({
-        upgrading: true
+        show_system_message: true,
+        system_message: 'Upgrading the system. It will take a couple of minutes and then you will be redirected to the home page.'
       });
       window.setTimeout(function() {
         var upg = new XMLHttpRequest();
@@ -136,15 +139,14 @@ class System extends React.Component {
   }
 
   restart(){
+    this.setState({
+      show_system_message: true,
+      system_message: 'Restarting Homeware. It will take a couple of minutes and then you will be redirected to the home page.'
+    });
     var res = new XMLHttpRequest();
     res.onload = function (e) {
       if (res.readyState === 4) {
-        if (res.status === 200) {
-          window.location.href = '/'
-        } else {
-          console.error(res.statusText);
-          setTimeout(this.areYouAwake,2000);
-        }
+        setTimeout(this.areYouAwake,2000);
       }
     }.bind(this)
     res.open("GET", root + "api/system/restart");
@@ -153,15 +155,14 @@ class System extends React.Component {
   }
 
   reboot(){
+    this.setState({
+      show_system_message: true,
+      system_message: 'Rebooting the system. It will take a couple of minutes and then you will be redirected to the home page.'
+    });
     var reb = new XMLHttpRequest();
     reb.onload = function (e) {
       if (reb.readyState === 4) {
-        if (reb.status === 200) {
-          window.location.href = '/'
-        } else {
-          console.error(reb.statusText);
-          setTimeout(this.areYouAwake,2000);
-        }
+        setTimeout(this.areYouAwake,2000);
       }
     }.bind(this)
     reb.open("GET", root + "api/system/reboot");
@@ -170,15 +171,14 @@ class System extends React.Component {
   }
 
   shutdown(){
+    this.setState({
+      show_system_message: true,
+      system_message: 'The system will be shut down, you will lose the connection with Homeware.'
+    });
     var shu = new XMLHttpRequest();
     shu.onload = function (e) {
       if (shu.readyState === 4) {
-        if (shu.status === 200) {
-          window.location.href = '/'
-        } else {
-          console.error(shu.statusText);
-          setTimeout(this.areYouAwake,2000);
-        }
+        setTimeout(this.areYouAwake,2000);
       }
     }.bind(this)
     shu.open("GET", root + "api/system/shutdown");
@@ -201,7 +201,8 @@ class System extends React.Component {
       paddingTop: '20px',
       paddingBottom: '20px',
       borderRadius: '20px',
-      border: '1px solid #aaa'
+      border: '1px solid #aaa',
+      textAlign: 'left'
     }
 
     const red_text = {
@@ -212,53 +213,70 @@ class System extends React.Component {
       <Component title={ component.title } status={ component.status } enable={ component.enable } key={ component.title }/>
     );
 
-    var upgrade = '';
-    if(this.state.version !== this.state.git.version && this.state.git.code === 200 && !this.state.upgrading){
-      upgrade = <div><b>New version:</b> { this.state.git.version} <div style={ git_description }> <ReactMarkdown source={this.state.git.description} /> <button type="button" style={ upgrade_button } onClick={ this.upgrade }>Upgrade</button></div> </div>
-    } else if(this.state.git.code === 403 && !this.state.upgrading){
-      upgrade = <div><b>New version:</b> { this.state.git.version}</div>
-    } else if (this.state.upgrading) {
-      upgrade = <div style={ git_description }><b style={ red_text }>Upgrading</b>. It will take a couple of minutes. You will be redirected to the homepage once finished.</div>
-    }
-
-
     return (
       <div>
-        <div className="page_block_container">
-          <h2>System status</h2>
-          <hr/>
-          <div className="page_block_content_container">
-            { components }
-          </div>
-          <div className="advise">
-            <span>These are the core elements of Homeware-LAN. All must be running.</span>
-          </div>
-        </div>
+        {
+          this.state.show_system_message
+          ?
+            <div className="page_block_container">
+              <h2>System message</h2>
+              <hr/>
+              <div className="page_block_content_container">
+                { this.state.system_message }
+              </div>
+            </div>
+          :
+          <div>
+            <div className="page_block_container">
+              <h2>System status</h2>
+              <hr/>
+              <div className="page_block_content_container">
+                { components }
+              </div>
+              <div className="advise">
+                <span>These are the core elements of Homeware-LAN. All must be running.</span>
+              </div>
+            </div>
 
-        <div className="page_block_container">
-          <h2>Version</h2>
-          <hr/>
-          <div className="page_block_content_container">
-            <b>System version:</b> { this.state.version }
-            { upgrade }
-          </div>
-          <div className="advise">
-            <span>Verify if there is any code update and upgrade the software if an update is available.</span>
-          </div>
-        </div>
+            <div className="page_block_container">
+              <h2>Version</h2>
+              <hr/>
+              <div className="page_block_content_container">
+                <b>System version:</b> { this.state.version }
+                {
+                  this.state.version !== this.state.git.version
+                  ?
+                  <div>
+                    <b>New version:</b> { this.state.git.version}
+                    <div style={ git_description }>
+                      <ReactMarkdown source={this.state.git.description} />
+                      <button type="button" style={ upgrade_button } onClick={ this.upgrade }>Upgrade</button>
+                    </div>
+                  </div>
+                  :
+                  ' - The system is up to date.'
+                }
 
-        <div className="page_block_container">
-          <h2>Power</h2>
-          <hr/>
-          <div className="page_block_buttons_container">
-            <button type="button" onClick={ this.restart }>Restart Homeware</button>
-            <button type="button" onClick={ this.reboot }>Reboot System</button>
-            <button type="button" onClick={ this.shutdown }>Shutdown System</button>
+              </div>
+              <div className="advise">
+                <span>Verify if there is any code update and upgrade if necessary.</span>
+              </div>
+            </div>
+
+            <div className="page_block_container">
+              <h2>Power</h2>
+              <hr/>
+              <div className="page_block_buttons_container">
+                <button type="button" onClick={ this.restart }>Restart Homeware</button>
+                <button type="button" onClick={ this.reboot }>Reboot System</button>
+                <button type="button" onClick={ this.shutdown }>Shutdown System</button>
+              </div>
+              <div className="advise">
+                <span>Control the device and restart the Homeware-LAN installation.</span>
+              </div>
+            </div>
           </div>
-          <div className="advise">
-            <span>Control the device and restart the Homeware-LAN installation.</span>
-          </div>
-        </div>
+        }
 
       </div>
     );
