@@ -38,6 +38,8 @@ case "$response" in
         sudo cp configuration_templates/homewareMQTT.service /lib/systemd/system/
         sudo cp configuration_templates/homewareTasks.service /lib/systemd/system/
 
+        sudo systemctl daemon-reload
+
         sudo systemctl enable homeware
         sudo systemctl enable homewareMQTT
         sudo systemctl enable homewareTasks
