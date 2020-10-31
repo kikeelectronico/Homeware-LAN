@@ -91,7 +91,7 @@ class Data:
         data = {
             'devices': json.loads(self.redis.get('devices')),
             'status': json.loads(self.redis.get('status')),
-            'tasks': json.loads(self.redis.get('tasks'))
+            'tasks': json.loads(self.redis.get('tasks')),
             'secure': json.loads(self.redis.get('secure'))
         }
         file = open('../' + self.homewareFile, 'w')
