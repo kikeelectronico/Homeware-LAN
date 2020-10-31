@@ -132,7 +132,7 @@ class System extends React.Component {
           window.location.href = '/'
         } else {
           console.error(awa.statusText);
-          setTimeout(this.areYouAwake,2000);
+          setTimeout(this.areYouAwake,5000);
         }
       }
     }.bind(this)
