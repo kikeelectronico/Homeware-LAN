@@ -130,7 +130,7 @@ class System extends React.Component {
           console.error(awa.statusText);
         }
       }
-    }.bind(this)
+    }
     awa.open("GET", root + "test/");
     awa.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
     awa.send();
@@ -196,10 +196,6 @@ class System extends React.Component {
       borderRadius: '20px',
       border: '1px solid #aaa',
       textAlign: 'left'
-    }
-
-    const red_text = {
-      color: 'red'
     }
 
     const components = this.state.components.map((component) =>
