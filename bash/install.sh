@@ -37,14 +37,11 @@ case "$response" in
         sudo cp configuration_templates/homeware.service /lib/systemd/system/
         sudo cp configuration_templates/homewareMQTT.service /lib/systemd/system/
         sudo cp configuration_templates/homewareTasks.service /lib/systemd/system/
-        sudo cp configuration_templates/homewareRedis.service /lib/systemd/system/
 
+        sudo systemctl enable homeware
         sudo systemctl enable homewareMQTT
         sudo systemctl enable homewareTasks
-        sudo systemctl enable homewareRedis
-        sudo systemctl enable homeware
 
-        sudo systemctl start homewareRedis
         sudo systemctl start homeware
         sudo systemctl start homewareMQTT
         sudo systemctl start homewareTasks
