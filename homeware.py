@@ -367,7 +367,7 @@ def front(operation = "", segment = "", value = ''):
                     # subprocess.run(["sudo", "systemctl", "start", "homewareUpgrader"],  stdout=subprocess.PIPE)
                     subprocess.run(["sudo", "sh", "bash/update.sh"],  stdout=subprocess.PIPE)
                     responseData = {
-                        'code': '202'
+                        'code': '200'
                     }
                 elif operation == 'status':
 
@@ -410,8 +410,21 @@ def front(operation = "", segment = "", value = ''):
                             responseData['tasks']['status'] = "Running"
                     except:
                         print("fail")
-
-
+                elif operation == 'restart':
+                    subprocess.run(["sudo", "sh", "bash/restart.sh"],  stdout=subprocess.PIPE)
+                    responseData = {
+                        'code': '200'
+                    }
+                elif operation == 'reboot':
+                    subprocess.run(["sudo", "reboot"],  stdout=subprocess.PIPE)
+                    responseData = {
+                        'code': '200'
+                    }
+                elif operation == 'shutdown':
+                    subprocess.run(["sudo", "poweroff"],  stdout=subprocess.PIPE)
+                    responseData = {
+                        'code': '200'
+                    }
                 else:
                     responseData = {
                         'error': 'Operation not supported',

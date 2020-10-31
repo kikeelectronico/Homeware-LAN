@@ -101,50 +101,89 @@ class System extends React.Component {
         upgrading: true
       });
       window.setTimeout(function() {
-        var conn = new XMLHttpRequest();
-        conn.onload = function (e) {
-          if (conn.readyState === 4) {
-            if (conn.status === 200) {
+        var upg = new XMLHttpRequest();
+        upg.onload = function (e) {
+          if (upg.readyState === 4) {
+            if (upg.status === 200) {
               this.areYouAwake();
             } else {
-              console.error(conn.statusText);
+              console.error(upg.statusText);
             }
           }
         }.bind(this)
-        conn.open("GET", root + "api/system/upgrade/");
-        conn.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-        conn.send();
+        upg.open("GET", root + "api/system/upgrade/");
+        upg.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+        upg.send();
       }.bind(this),2000);
     }
   }
 
   areYouAwake(){
-    var conn = new XMLHttpRequest();
-    conn.onload = function (e) {
-      if (conn.readyState === 4) {
-        if (conn.status === 200) {
+    var awa = new XMLHttpRequest();
+    awa.onload = function (e) {
+      if (awa.readyState === 4) {
+        if (awa.status === 200) {
           window.location.href = '/'
         } else {
-          console.error(conn.statusText);
+          console.error(awa.statusText);
           setTimeout(this.areYouAwake,2000);
         }
       }
     }.bind(this)
-    conn.open("GET", root + "test/");
-    conn.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-    conn.send();
+    awa.open("GET", root + "test/");
+    awa.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    awa.send();
   }
 
   restart(){
-    alert('WIP');
+    var res = new XMLHttpRequest();
+    res.onload = function (e) {
+      if (res.readyState === 4) {
+        if (res.status === 200) {
+          window.location.href = '/'
+        } else {
+          console.error(res.statusText);
+          setTimeout(this.areYouAwake,2000);
+        }
+      }
+    }.bind(this)
+    res.open("GET", root + "api/system/restart");
+    res.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    res.send();
   }
 
   reboot(){
-    alert('WIP');
+    var reb = new XMLHttpRequest();
+    reb.onload = function (e) {
+      if (reb.readyState === 4) {
+        if (reb.status === 200) {
+          window.location.href = '/'
+        } else {
+          console.error(reb.statusText);
+          setTimeout(this.areYouAwake,2000);
+        }
+      }
+    }.bind(this)
+    reb.open("GET", root + "api/system/reboot");
+    reb.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    reb.send();
   }
 
   shutdown(){
-    alert('WIP');
+    var shu = new XMLHttpRequest();
+    shu.onload = function (e) {
+      if (shu.readyState === 4) {
+        if (shu.status === 200) {
+          window.location.href = '/'
+        } else {
+          console.error(shu.statusText);
+          setTimeout(this.areYouAwake,2000);
+        }
+      }
+    }.bind(this)
+    shu.open("GET", root + "api/system/shutdown");
+    shu.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    shu.send();
   }
 
   render() {
