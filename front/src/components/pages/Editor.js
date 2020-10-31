@@ -138,7 +138,6 @@ class Editor extends React.Component {
         params.forEach((param, i) => {
           temp_status[param] = deviceReference.params[param].default
         });
-        temp_device.status = temp_status;
       }
     } else {
       if (this.state.device.traits.includes(trait) === true){
@@ -146,7 +145,8 @@ class Editor extends React.Component {
       }
     }
     this.setState({
-      device: temp_device
+      device: temp_device,
+      status: temp_status
     })
   }
 
