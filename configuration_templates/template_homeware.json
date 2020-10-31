@@ -23,21 +23,57 @@
         ]
       },
       "traits": [
-        "action.devices.traits.OnOff",
-        "action.devices.traits.Brightness"
+        "action.devices.traits.OnOff"
       ],
-      "type": "action.devices.types.LIGHT"
+      "type": "action.devices.types.LIGHT",
+      "attributes": {
+        "commandOnlyOnOff": false,
+        "queryOnlyOnOff": false
+      }
     }
   ],
-  "rules": [],
   "tasks": [],
-  "settings": {
-  },
   "status": {
     "light": {
-      "brightness": 100,
       "on": false,
       "online": true
+    }
+  },
+  "secure": {
+    "key": "",
+    "domain": "",
+    "user": "",
+    "pass": "",
+    "token": {
+      "front": "noset",
+      "google": {
+        "access_token": {
+          "timestamp": 1579452782954,
+          "value": "-"
+        },
+        "authorization_code": {
+          "timestamp": 1579452777875,
+          "value": "-"
+        },
+        "client_id": "123",
+        "client_secret": "456",
+        "refresh_token": {
+          "timestamp": 1579452782954,
+          "value": "-"
+        }
+      },
+      "apikey": ""
+    },
+    "ddns": {
+      "enabled": false,
+      "status": "Unknown",
+      "code": "Unknown",
+      "last": "Unknown",
+      "ip": "Unknown",
+      "provider": "noip",
+      "hostname": "",
+      "username": "",
+      "password": ""
     }
   }
 }

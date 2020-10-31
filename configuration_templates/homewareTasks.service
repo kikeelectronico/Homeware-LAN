@@ -3,10 +3,8 @@ Description=Homeware LAN MQTT
 After=network-online.target
 
 [Service]
-ExecStart=python3 /home/pi/Homeware-LAN/homewareTasks.py
-WorkingDirectory=/home/pi/Homeware-LAN/
-StandardOutput=inherit
-StandardError=inherit
+ExecStart=python3 /usr/share/Homeware-LAN/back/homewareTasks.py
+WorkingDirectory=/usr/share/Homeware-LAN/back/
 Restart=always
 User=pi
 

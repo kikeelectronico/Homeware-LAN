@@ -4,9 +4,7 @@ After=network-online.target
 
 [Service]
 ExecStart=redis-server
-WorkingDirectory=/home/pi/Homeware-LAN/redis/redis-stable/
-StandardOutput=inherit
-StandardError=inherit
+WorkingDirectory=/usr/share/Homeware-LAN/back/
 Restart=always
 User=pi
 
