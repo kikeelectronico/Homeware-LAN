@@ -5,40 +5,43 @@
     }
   },
   "devices": [
-    {
-      "deviceInfo": {
-        "hwVersion": "2.1",
-        "manufacturer": "Enrique",
-        "model": "ACR",
-        "swVersion": "1.0"
-      },
-      "id": "light",
-      "name": {
-        "defaultNames": [
-          "ACR 2.1"
+      {
+        "attributes": {
+          "commandOnlyOnOff": true,
+          "queryOnlyOnOff": true,
+          "commandOnlyBrightness": true
+        },
+        "deviceInfo": {
+          "hwVersion": "1.0",
+          "swVersion": "1.0",
+          "manufacturer": "Homeware",
+          "model": "Homeware Lamp"
+        },
+        "id": "light",
+        "name": {
+          "defaultNames": [
+            "Lamp"
+          ],
+          "nicknames": [
+            "Lamp"
+          ],
+          "name": "Lamp"
+        },
+        "traits": [
+          "action.devices.traits.OnOff",
+          "action.devices.traits.Brightness"
         ],
-        "name": "ACR 2.1",
-        "nicknames": [
-          "Bulb"
-        ]
-      },
-      "traits": [
-        "action.devices.traits.OnOff"
-      ],
-      "type": "action.devices.types.LIGHT",
-      "attributes": {
-        "commandOnlyOnOff": false,
-        "queryOnlyOnOff": false
+        "type": "action.devices.types.LIGHT"
       }
-    }
-  ],
-  "tasks": [],
+    ],
   "status": {
-    "light": {
-      "on": false,
-      "online": true
-    }
-  },
+      "light": {
+        "online": true,
+        "on": false,
+        "brightness": 80
+      }
+    },
+  "tasks": [],
   "secure": {
     "key": "",
     "domain": "",
