@@ -11,11 +11,7 @@ import paho.mqtt.publish as publish
 class Data:
 
     version = 'v1.0'
-
-    homewareData = {}
     homewareFile = 'homeware.json'
-    secureData = {}
-    secureFile = 'secure.json'
     apikey = ''
     userToken = ''
     userName = ''
@@ -26,30 +22,27 @@ class Data:
         self.verbose = False
 
         if not self.redis.get('transfer'):
-            print('Must create the database')
+            print('The database must be created')
             try:
                 with open(self.homewareFile, 'r') as f:
                     data = json.load(f)
                     self.redis.set('devices',json.dumps(data['devices']))
                     self.redis.set('status',json.dumps(data['status']))
-                    self.redis.set('rules',json.dumps(data['rules']))
+                    self.redis.set('alive',json.dumps(data['alive']))
                     self.redis.set('tasks',json.dumps(data['tasks']))
-                with open(self.secureFile, 'r') as f:
-                    data = json.load(f)
-                    self.redis.set('secure',json.dumps(data))
+                    self.redis.set('secure',json.dumps(data['secure']))
+                print('Using a provided homeware file')
             except:
-                subprocess.run(["cp", "configuration_templates/template_secure.json", "secure.json"],  stdout=subprocess.PIPE)
                 subprocess.run(["cp", "configuration_templates/template_homeware.json", "homeware.json"],  stdout=subprocess.PIPE)
 
                 with open(self.homewareFile, 'r') as f:
                     data = json.load(f)
                     self.redis.set('devices',json.dumps(data['devices']))
                     self.redis.set('status',json.dumps(data['status']))
-                    self.redis.set('rules',json.dumps(data['rules']))
+                    self.redis.set('alive',json.dumps(data['alive']))
                     self.redis.set('tasks',json.dumps(data['tasks']))
-                with open(self.secureFile, 'r') as f:
-                    data = json.load(f)
-                    self.redis.set('secure',json.dumps(data))
+                    self.redis.set('secure',json.dumps(data['secure']))
+                print('Using a template')
 
             self.redis.set('transfer', "true");
 
@@ -190,8 +183,6 @@ class Data:
 # DEVICES
 
     def getDevices(self):
-        # with open(self.homewareFile, 'w') as f:
-        #     json.dump(self.homewareData, f)
         return json.loads(self.redis.get('devices'))
 
     def updateDevice(self, incommingData):
@@ -202,9 +193,8 @@ class Data:
                 temp_devices.append(incommingData['device'])
             else:
                 temp_devices.append(device)
-        # self.ddbb.homewareData['devices'] = temp_devices
+
         self.redis.set('devices',json.dumps(temp_devices))
-        # self.save()
 
     def createDevice(self, incommingData):
         deviceID = incommingData['device']['id']
