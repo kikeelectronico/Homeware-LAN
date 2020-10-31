@@ -111,7 +111,7 @@ class System extends React.Component {
         upg.onload = function (e) {
           if (upg.readyState === 4) {
             if (upg.status === 200) {
-              this.areYouAwake();
+              setInterval(this.areYouAwake,2000);
             } else {
               console.error(upg.statusText);
             }
@@ -132,7 +132,6 @@ class System extends React.Component {
           window.location.href = '/'
         } else {
           console.error(awa.statusText);
-          // setTimeout(this.areYouAwake,5000);
         }
       }
     }.bind(this)
@@ -149,7 +148,7 @@ class System extends React.Component {
     var res = new XMLHttpRequest();
     res.onload = function (e) {
       if (res.readyState === 4) {
-        setTimeout(this.areYouAwake,2000);
+        setInterval(this.areYouAwake,2000);
       }
     }.bind(this)
     res.open("GET", root + "api/system/restart");
@@ -179,11 +178,6 @@ class System extends React.Component {
       system_message: 'The system will be shut down, you will lose the connection with Homeware.'
     });
     var shu = new XMLHttpRequest();
-    shu.onload = function (e) {
-      if (shu.readyState === 4) {
-        setTimeout(this.areYouAwake,2000);
-      }
-    }.bind(this)
     shu.open("GET", root + "api/system/shutdown");
     shu.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
     shu.send();
