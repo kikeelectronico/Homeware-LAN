@@ -3,8 +3,8 @@ Description=Homeware LAN MQTT
 After=network-online.target
 
 [Service]
-ExecStart=python3 /usr/share/Homeware-LAN/homewareMQTT.py
-WorkingDirectory=/usr/share/Homeware-LAN/
+ExecStart=python3 /usr/share/Homeware-LAN/back/homewareMQTT.py
+WorkingDirectory=/usr/share/Homeware-LAN/back/
 Restart=always
 
 [Install]

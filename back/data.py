@@ -24,7 +24,7 @@ class Data:
         if not self.redis.get('transfer'):
             print('The database must be created')
             try:
-                with open(self.homewareFile, 'r') as f:
+                with open('../' + self.homewareFile, 'r') as f:
                     data = json.load(f)
                     self.redis.set('devices',json.dumps(data['devices']))
                     self.redis.set('status',json.dumps(data['status']))
@@ -33,9 +33,9 @@ class Data:
                     self.redis.set('secure',json.dumps(data['secure']))
                 print('Using a provided homeware file')
             except:
-                subprocess.run(["cp", "configuration_templates/template_homeware.json", "homeware.json"],  stdout=subprocess.PIPE)
+                subprocess.run(["cp", "../configuration_templates/template_homeware.json", "../homeware.json"],  stdout=subprocess.PIPE)
 
-                with open(self.homewareFile, 'r') as f:
+                with open('../' + self.homewareFile, 'r') as f:
                     data = json.load(f)
                     self.redis.set('devices',json.dumps(data['devices']))
                     self.redis.set('status',json.dumps(data['status']))
@@ -98,12 +98,12 @@ class Data:
             'rules': json.loads(self.redis.get('rules')),
             'secure': json.loads(self.redis.get('secure'))
         }
-        file = open(self.homewareFile, 'w')
+        file = open('../' + self.homewareFile, 'w')
         file.write(json.dumps(data))
         file.close()
 
     def load(self):
-        with open(self.homewareFile, 'r') as f:
+        with open('../' + self.homewareFile, 'r') as f:
             data = json.load(f)
             self.redis.set('devices',json.dumps(data['devices']))
             self.redis.set('status',json.dumps(data['status']))
@@ -114,7 +114,7 @@ class Data:
 # LOG
 
     def log(self, severity, message):
-        log_file = open("homeware.log", "a")
+        log_file = open('../' + "homeware.log", "a")
         now = datetime.now()
         date_time = now.strftime("%d/%m/%Y, %H:%M:%S")
         log_register = severity + ' - ' + date_time  + ' - ' + message + '\n';
@@ -130,7 +130,7 @@ class Data:
     def getLog(self):
         log = []
 
-        log_file = open("homeware.log","r")
+        log_file = open('../' + "homeware.log","r")
         registers = log_file.readlines()
         for register in registers:
             try:

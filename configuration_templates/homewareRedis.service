@@ -4,7 +4,7 @@ After=network-online.target
 
 [Service]
 ExecStart=redis-server
-WorkingDirectory=/usr/share/Homeware-LAN/
+WorkingDirectory=/usr/share/Homeware-LAN/back/
 Restart=always
 
 [Install]

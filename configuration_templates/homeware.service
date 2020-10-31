@@ -3,8 +3,8 @@ Description=Homeware LAN
 After=network-online.target
 
 [Service]
-ExecStart=sh /usr/share/Homeware-LAN/homeware.sh
-WorkingDirectory=/usr/share/Homeware-LAN/
+ExecStart=sh /usr/share/Homeware-LAN/back/homeware.sh
+WorkingDirectory=/usr/share/Homeware-LAN/back/
 Restart=always
 
 [Install]

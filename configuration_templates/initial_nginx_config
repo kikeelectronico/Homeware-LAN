@@ -3,7 +3,7 @@ server {
         server_name domain;
 
         location / {
-                root /usr/share/Homeware-LAN/web/build/;
+                root /usr/share/Homeware-LAN/front/build/;
                 try_files $uri /index.html;
         }
 

@@ -13,7 +13,7 @@ import subprocess
 from data import Data
 from commands import Commands
 
-UPLOAD_FOLDER = ''
+UPLOAD_FOLDER = '../'
 ALLOWED_EXTENSIONS = {'json'}
 
 app = Flask(__name__)
@@ -496,7 +496,7 @@ def files(operation = '', file = '', token = ''):
             # Download file
             now = datetime.now()
             date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
-            result = send_file(file + '.json',
+            result = send_file('../' + file + '.json',
                mimetype = "application/json", # use appropriate type based on file
                attachment_filename = file + '_' + str(date_time) + '.json',
                as_attachment = True,
@@ -507,7 +507,7 @@ def files(operation = '', file = '', token = ''):
             # Download file
             now = datetime.now()
             date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
-            result = send_file('homeware.log',
+            result = send_file('../' + 'homeware.log',
                mimetype = "text/plain", # use appropriate type based on file
                attachment_filename = 'homeware_' + str(date_time) + '.log',
                as_attachment = True,
@@ -524,7 +524,7 @@ def files(operation = '', file = '', token = ''):
                 if file and allowed_file(file.filename):
                     filename = file.filename
                     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    subprocess.run(["mv", file.filename, "homeware.json"],  stdout=subprocess.PIPE)
+                    subprocess.run(["mv", '../' + file.filename, "../homeware.json"],  stdout=subprocess.PIPE)
                     hData.load()
                     hData.log('Warning', 'A backup file has been restored')
                     return redirect('/backup/ok/')

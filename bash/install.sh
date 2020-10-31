@@ -22,7 +22,9 @@ case "$response" in
         echo "Installing Homeware-LAN and its dependencies."
         echo "---------------------------------------------"
         sudo apt install python3-pip -y
+        cd back
         sudo pip3 install install -r requirements.txt
+        cd ../
         sudo apt install nginx -y
         sudo apt install software-properties-common -y
         sudo apt install certbot python3-certbot-nginx -y
