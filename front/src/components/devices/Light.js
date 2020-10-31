@@ -13,7 +13,7 @@ class Light extends React.Component {
     }
 
     var color = 'yellow';
-    if (this.props.device.traits.includes("action.devices.traits.ColorSetting")){
+    if (this.props.device.traits.includes("action.devices.traits.ColorSetting" && Object.keys(this.props.status).includes("color"))){
       if (Object.keys(this.props.status.color).includes("spectrumRgb"))
         color = "#" + this.props.status.color.spectrumRgb.toString(16);
       else
