@@ -24,6 +24,9 @@ class System extends React.Component {
     this.loadComponents = this.loadComponents.bind(this);
     this.upgrade = this.upgrade.bind(this);
     this.areYouAwake = this.areYouAwake.bind(this);
+    this.restart = this.restart.bind(this);
+    this.reboot = this.reboot.bind(this);
+    this.shutdown = this.shutdown.bind(this);
   }
 
   componentDidMount() {
