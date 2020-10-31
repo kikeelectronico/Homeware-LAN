@@ -132,7 +132,7 @@ class System extends React.Component {
           window.location.href = '/'
         } else {
           console.error(awa.statusText);
-          setTimeout(this.areYouAwake,5000);
+          // setTimeout(this.areYouAwake,5000);
         }
       }
     }.bind(this)
@@ -165,7 +165,7 @@ class System extends React.Component {
     var reb = new XMLHttpRequest();
     reb.onload = function (e) {
       if (reb.readyState === 4) {
-        setTimeout(this.areYouAwake,2000);
+        setInterval(this.areYouAwake,2000);
       }
     }.bind(this)
     reb.open("GET", root + "api/system/reboot");
