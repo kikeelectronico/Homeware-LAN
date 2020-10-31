@@ -3,7 +3,7 @@ Description=Homeware LAN
 After=network-online.target
 
 [Service]
-ExecStart=sh /usr/share/Homeware-LAN/back/homeware.sh
+ExecStart=sh homeware.sh
 WorkingDirectory=/usr/share/Homeware-LAN/back/
 Restart=always
 User=pi
