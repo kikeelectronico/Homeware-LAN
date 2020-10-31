@@ -110,11 +110,7 @@ class System extends React.Component {
         var upg = new XMLHttpRequest();
         upg.onload = function (e) {
           if (upg.readyState === 4) {
-            if (upg.status === 200) {
-              setInterval(this.areYouAwake,2000);
-            } else {
-              console.error(upg.statusText);
-            }
+            setInterval(this.areYouAwake,2000);
           }
         }.bind(this)
         upg.open("GET", root + "api/system/upgrade/");
