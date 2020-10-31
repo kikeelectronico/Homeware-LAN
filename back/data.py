@@ -28,7 +28,6 @@ class Data:
                     data = json.load(f)
                     self.redis.set('devices',json.dumps(data['devices']))
                     self.redis.set('status',json.dumps(data['status']))
-                    self.redis.set('alive',json.dumps(data['alive']))
                     self.redis.set('tasks',json.dumps(data['tasks']))
                     self.redis.set('secure',json.dumps(data['secure']))
                 print('Using a provided homeware file')
@@ -39,7 +38,6 @@ class Data:
                     data = json.load(f)
                     self.redis.set('devices',json.dumps(data['devices']))
                     self.redis.set('status',json.dumps(data['status']))
-                    self.redis.set('alive',json.dumps(data['alive']))
                     self.redis.set('tasks',json.dumps(data['tasks']))
                     self.redis.set('secure',json.dumps(data['secure']))
                 print('Using a template')
@@ -85,8 +83,7 @@ class Data:
         data = {
             'devices': json.loads(self.redis.get('devices')),
             'status': json.loads(self.redis.get('status')),
-            'tasks': json.loads(self.redis.get('tasks')),
-            'rules': json.loads(self.redis.get('rules'))
+            'tasks': json.loads(self.redis.get('tasks'))
         }
         return data
 
@@ -94,8 +91,7 @@ class Data:
         data = {
             'devices': json.loads(self.redis.get('devices')),
             'status': json.loads(self.redis.get('status')),
-            'tasks': json.loads(self.redis.get('tasks')),
-            'rules': json.loads(self.redis.get('rules')),
+            'tasks': json.loads(self.redis.get('tasks'))
             'secure': json.loads(self.redis.get('secure'))
         }
         file = open('../' + self.homewareFile, 'w')
@@ -108,7 +104,6 @@ class Data:
             self.redis.set('devices',json.dumps(data['devices']))
             self.redis.set('status',json.dumps(data['status']))
             self.redis.set('tasks',json.dumps(data['tasks']))
-            self.redis.set('rules',json.dumps(data['rules']))
             self.redis.set('secure',json.dumps(data['secure']))
 
 # LOG

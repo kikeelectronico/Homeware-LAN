@@ -201,55 +201,6 @@ def front(operation = "", segment = "", value = ''):
                     'code': 401,
                     'note': 'See the documentation'
                 }
-        elif segment == 'rules':
-            if accessLevel >= 10:
-                if operation == 'update':
-                    incommingData = request.get_json()
-                    hData.updateRule(incommingData)
-                    responseData = {
-                        'status': 'Success',
-                        'code': 200
-                    }
-                elif operation == 'create':
-                    incommingData = request.get_json()
-                    hData.createRule(incommingData)
-                    responseData = {
-                        'status': 'Success',
-                        'code': 200
-                    }
-                elif operation == 'delete':
-                    hData.deleteRule(value)
-                    responseData = {
-                        'status': 'Success',
-                        'code': 200
-                    }
-                elif operation == 'get':
-                    rules = hData.getRules()
-                    try:
-                        if not value == '':
-                            if 0 <= int(value) < len(rules):
-                                responseData = rules[int(value)]
-                            else:
-                                responseData = {
-                                    'error': 'Rule not found',
-                                    'code': 404,
-                                    'note': 'See the documentation'
-                                }
-                        else:
-                            responseData = rules
-                    except:
-                        responseData = {
-                            'error': 'Invalid rule ID, it must be a integer',
-                            'code': 409,
-                            'note': 'See the documentation'
-                        }
-            else:
-                hData.log('Alert', 'Request to API > rules endpoint with bad authentication')
-                responseData = {
-                    'error': 'Bad authentication',
-                    'code': 401,
-                    'note': 'See the documentation'
-                }
         elif segment == 'tasks':
             if accessLevel >= 10:
                 if operation == 'update':
