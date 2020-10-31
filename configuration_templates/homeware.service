@@ -6,7 +6,6 @@ After=network-online.target
 ExecStart=sh homeware.sh
 WorkingDirectory=/usr/share/Homeware-LAN/back/
 Restart=always
-User=pi
 
 [Install]
 WantedBy=multi-user.target

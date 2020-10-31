@@ -6,7 +6,6 @@ After=network-online.target
 ExecStart=redis-server
 WorkingDirectory=/usr/share/Homeware-LAN/back/
 Restart=always
-User=pi
 
 [Install]
 WantedBy=multi-user.target
