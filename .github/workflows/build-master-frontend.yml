@@ -11,6 +11,7 @@ on:
     paths:
       - "front/**"
 
+
 env:
   working-directory: ./front
 
