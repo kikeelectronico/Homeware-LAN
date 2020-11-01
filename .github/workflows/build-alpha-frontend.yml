@@ -5,11 +5,6 @@ on:
       - alpha
     paths:
       - "front/**"
-  pull_request:
-    branches:
-      - alpha
-    paths:
-      - "front/**"
 
 env:
   working-directory: ./front
