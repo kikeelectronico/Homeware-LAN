@@ -30,8 +30,6 @@ jobs:
     - name: Build React JS
       run: npm run build
       working-directory: ${{env.working-directory}}
-    - name: Test branch
-      run: echo ${{github.base_ref}}
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"
