@@ -43,15 +43,15 @@ The main resository is composed of 3 permanent branches: master, develop and alp
 
 The project is separeted in two main directories: back and front.
 
-### back end
+### Backend
 
-The back end is coded in Python 3.7 and it is available inside the `back` directory.
+The backend is coded in Python 3.7 and it is available inside the `back` directory.
 
 Read the back README in order to start working.
 
-### Front end
+### Frontend
 
-The front end is coded in React js and it is available inside the `front` directory.
+The frontend is coded in React js and it is available inside the `front` directory.
 
 Read the front README in order to start working.
 

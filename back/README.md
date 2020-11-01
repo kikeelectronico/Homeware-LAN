@@ -1,4 +1,4 @@
-# Back end developmnet
+# Backend developmnet
 
 ## Install
 
@@ -33,7 +33,7 @@ Install all dependencies.
 
 `pip3 install install -r requirements.txt`
 
-Install and run the back end following the back end README.
+Install and run the backend following the backend README.
 
 ## Run Redis
 

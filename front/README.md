@@ -1,4 +1,4 @@
-# Front end developmnet
+# Frontend developmnet
 
 ## Install
 
@@ -12,9 +12,9 @@ Install all dependencies.
 
 `npm install`
 
-Install and run the back end following the back end README.
+Install and run the backend following the back end README.
 
-## Run the fornt end develpment server
+## Run the forntend develpment server
 
 You must have the backend (Redis server and API at least) installed in order to use the frontend.
 
