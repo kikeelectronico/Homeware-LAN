@@ -5,6 +5,12 @@ on:
       - master
     paths:
       - "front/**"
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "front/**"
+
 
 env:
   working-directory: ./front
@@ -23,7 +29,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Remove last version
-      run: rm -r ${{env.working-directory}}/build
+      run: rm -rf ${{env.working-directory}}/build
     - name: Install Packages
       run: npm install
       working-directory: ${{env.working-directory}}
