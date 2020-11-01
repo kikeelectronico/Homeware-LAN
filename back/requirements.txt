@@ -4,4 +4,4 @@ paho-mqtt==1.5.1
 redis==3.5.3
 requests==2.24.0
 flask_cors==3.0.9
-cryptography==3.2
+cryptography==3.2.1
