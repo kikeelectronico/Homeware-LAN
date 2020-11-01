@@ -18,4 +18,4 @@ Install and run the backend following the back end README.
 
 You must have the backend (Redis server and API at least) installed in order to use the frontend.
 
-`npm start`
+`npm start` 
