@@ -1,6 +1,6 @@
 # Contributing to Homeware
 
-First off all, thank you for thinking in contributing.
+First of all, thank you for thinking in contributing.
 
 # Ways to help
 
