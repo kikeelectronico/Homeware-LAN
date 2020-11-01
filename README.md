@@ -7,7 +7,7 @@ Homeware containts a backend that does the integration and a web forntend that a
 <img alt="Super Grover" src="https://github.com/kikeelectronico/homeware/raw/master/images/cloud.png" /></center>
 
 ## Homeware has been tested on
-
+ 
 | Operating System | Version |
 |-------|-------|
 | Ubuntu | 20.04 |
