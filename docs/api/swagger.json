@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "description": "Homeware's API documentation.",
-    "version": "v0.4",
+    "version": "v1.0.0",
     "title": "Homeware's API",
     "contact": {
       "email": "hola@rinconingenieril.es"
@@ -20,8 +20,8 @@
       "description": "Everything about the devices definition and status."
     },
     {
-      "name": "Rules",
-      "description": "Everything about the rules."
+      "name": "Tasks",
+      "description": "Everything about the tasks."
     },
     {
       "name": "Global",
@@ -33,7 +33,15 @@
     },
     {
       "name": "Settings",
-      "description": "System settings"
+      "description": "Homeware settings"
+    },
+    {
+      "name": "System",
+      "description": "System operations"
+    },
+    {
+      "name": "Log",
+      "description": "System logs"
     }
   ],
   "schemes": [
@@ -249,6 +257,26 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not found. The device does not exists.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Device not found"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 404
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
           }
         }
       }
@@ -392,6 +420,26 @@
                 "code": {
                   "type": "int",
                   "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found. The device does not exists.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Device not found"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 404
                 },
                 "note": {
                   "type": "string",
@@ -636,13 +684,13 @@
         }
       }
     },
-    "/rules/get/": {
+    "/tasks/get/": {
       "get": {
         "tags": [
-          "Rules"
+          "Tasks"
         ],
-        "summary": "Get all the rules info",
-        "description": "Returns all the rules and theirs definition.",
+        "summary": "Get all the tasks info",
+        "description": "Returns all the tasks and theirs definitions.",
         "produces": [
           "application/json"
         ],
@@ -662,7 +710,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful operation. Returns an array with all the rules.",
+            "description": "Successful operation. Returns an array with all the tasks.",
             "schema": {
               "$ref": "#/definitions/rulesList"
             }
@@ -690,13 +738,13 @@
         }
       }
     },
-    "/rules/get/{id}/": {
+    "/tasks/get/{id}/": {
       "get": {
         "tags": [
-          "Rules"
+          "Tasks"
         ],
-        "summary": "Get a rule info",
-        "description": "Returns the rule and its definition or admin Token.",
+        "summary": "Get a task info",
+        "description": "Returns the task and its definition.",
         "produces": [
           "application/json"
         ],
@@ -715,7 +763,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "The id of the rule that wants to be consulted.",
+            "description": "The id of the task that wants to be consulted.",
             "required": true,
             "type": "int",
             "schema": {
@@ -726,7 +774,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful operation. Returns the requested rule.",
+            "description": "Successful operation. Returns the requested task.",
             "schema": {
               "$ref": "#/definitions/rule"
             }
@@ -752,13 +800,13 @@
             }
           },
           "404": {
-            "description": "Not found. The rule does not exists.",
+            "description": "Not found. The task does not exists.",
             "schema": {
               "type": "object",
               "properties": {
                 "error": {
                   "type": "string",
-                  "example": "Rule not found"
+                  "example": "Task not found"
                 },
                 "code": {
                   "type": "int",
@@ -774,13 +822,13 @@
         }
       }
     },
-    "/rules/delete/{id}/": {
+    "/tasks/delete/{id}/": {
       "get": {
         "tags": [
-          "Rules"
+          "Tasks"
         ],
-        "summary": "Delete a rule",
-        "description": "Delete a rule.",
+        "summary": "Delete a task",
+        "description": "Delete a task.",
         "produces": [
           "application/json"
         ],
@@ -799,7 +847,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "The id of the rule that wants to be deleted.",
+            "description": "The id of the task that wants to be deleted.",
             "required": true,
             "type": "int",
             "schema": {
@@ -846,13 +894,13 @@
             }
           },
           "404": {
-            "description": "Not found. The rule does not exists.",
+            "description": "Not found. The task does not exists.",
             "schema": {
               "type": "object",
               "properties": {
                 "error": {
                   "type": "string",
-                  "example": "Rule not found"
+                  "example": "Task not found"
                 },
                 "code": {
                   "type": "int",
@@ -868,13 +916,13 @@
         }
       }
     },
-    "/rules/create/": {
+    "/tasks/create/": {
       "post": {
         "tags": [
-          "Rules"
+          "Tasks"
         ],
-        "summary": "Create a rule",
-        "description": "Create a rule.",
+        "summary": "Create a task",
+        "description": "Create a task.",
         "consumes": [
           "application/json"
         ],
@@ -896,7 +944,7 @@
          {
            "in": "body",
            "name": "body",
-           "description": "New rule description.",
+           "description": "New task definition.",
            "required": true,
            "schema": {
              "$ref": "#/definitions/createRule"
@@ -939,37 +987,17 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not found. The rule does not exists.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "error": {
-                  "type": "string",
-                  "example": "Rule not found"
-                },
-                "code": {
-                  "type": "int",
-                  "example": 404
-                },
-                "note": {
-                  "type": "string",
-                  "example": "See the documentation"
-                }
-              }
-            }
           }
         }
       }
     },
-    "/rules/update/": {
+    "/tasks/update/": {
       "post": {
         "tags": [
-          "Rules"
+          "Tasks"
         ],
-        "summary": "Update a rule",
-        "description": "Update a rule.",
+        "summary": "Update a task",
+        "description": "Update a task.",
         "consumes": [
           "application/json"
         ],
@@ -991,7 +1019,7 @@
          {
            "in": "body",
            "name": "body",
-           "description": "New rule description.",
+           "description": "New task definition.",
            "required": true,
            "schema": {
              "$ref": "#/definitions/updateRule"
@@ -1034,6 +1062,26 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not found. The task does not exists.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Task not found"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 404
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
           }
         }
       }
@@ -1067,6 +1115,60 @@
             "description": "Successful operation. Returns the version.",
             "schema": {
               "$ref": "#/definitions/version"
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An API Key or admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/global/get/": {
+      "get": {
+        "tags": [
+          "Global"
+        ],
+        "summary": "Get all the devices, status and tasks info",
+        "description": "Returns all the devices, status and tasks and theirs definitions.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "example": "baerer {yor-API-Key}",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns an object with all the data.",
+            "schema": {
+              "$ref": "#/definitions/rulesList"
             }
           },
           "401": {
@@ -1376,7 +1478,7 @@
       }
     },
     "/settings/update/": {
-      "get": {
+      "post": {
         "tags": [
           "Settings"
         ],
@@ -1473,6 +1575,351 @@
                 "code": {
                   "type": "int",
                   "example": 200
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The assistant was configured in the past",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "The assistant was configured in the past."
+                },
+                "code": {
+                  "type": "int",
+                  "example": 403
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/setAssistantDone/": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Finish the initial configuration setup.",
+        "description": "Finish the initial configuration setup that run during the installation process.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns the requested device.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "Success"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 200
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The assistant was configured in the past",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "The assistant was configured in the past."
+                },
+                "code": {
+                  "type": "int",
+                  "example": 403
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/system/upgrade/": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Upgrade the Homeware installation.",
+        "description": "Upgrade the Homeware installation with latest code available at the GitHub repository.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "example": "baerer {yor-API-Key}",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "int",
+              "example": 200
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/system/restart/": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Restart Homeware.",
+        "description": "Restart the Homeware services.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "example": "baerer {yor-API-Key}",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "int",
+              "example": 200
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/system/reboot/": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Reboot the operating system.",
+        "description": "Reboot the operating system.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "example": "baerer {yor-API-Key}",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "int",
+              "example": 200
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/system/shutdown/": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Power off the system.",
+        "description": "Power off the system.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "example": "baerer {yor-API-Key}",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "type": "int",
+              "example": 200
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/log/get/": {
+      "get": {
+        "tags": [
+          "Log"
+        ],
+        "summary": "Get Homeware's logs",
+        "description": "Get Homeware's logs",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "example": "baerer {yor-API-Key}",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns an array with all the devices.",
+            "schema": {
+              "$ref": "#/definitions/log"
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An API Key or admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
                 }
               }
             }
