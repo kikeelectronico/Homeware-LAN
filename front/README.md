@@ -14,7 +14,7 @@ Install all dependencies.
 
 Install and run the backend following the back end README.
 
-## Run the forntend develpment server
+## Run the forntend development server
 
 You must have the backend (Redis server and API at least) installed in order to use the frontend.
 
