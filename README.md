@@ -23,9 +23,7 @@ Subscribe to this Telegram channel: [https://t.me/homeware_up_to_date](https://t
 
 # Contribute
 
-Any idea will be well received! You can collaborate forking the project and helping with the development using PR or by simply telling me what do you expect from Homeware by opening an issue.
-
-If you decide to help with the development you can take any issue that is open and has the label ToDo.
+Read CONTRIBUTING.md
 
 # Documentation
 
