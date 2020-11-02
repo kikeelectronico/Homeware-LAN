@@ -77,7 +77,10 @@
           "200": {
             "description": "Successful operation. Returns an array with all the devices.",
             "schema": {
-              "$ref": "#/definitions/deviceList"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/device"
+              }
             }
           },
           "401": {
@@ -312,7 +315,15 @@
            "description": "New device description.",
            "required": true,
            "schema": {
-             "$ref": "#/definitions/createDevice"
+             "type": "object",
+             "properties": {
+               "device": {
+                 "$ref": "#/definitions/device"
+               },
+               "status":{
+                 "$ref": "#/definitions/status"
+               }
+             }
            }
          }
         ],
@@ -387,7 +398,12 @@
            "description": "New device description.",
            "required": true,
            "schema": {
-             "$ref": "#/definitions/updateDevice"
+             "type": "object",
+             "properties": {
+               "device": {
+                 "$ref": "#/definitions/device"
+               }
+             }
            }
          }
         ],
@@ -479,7 +495,12 @@
           "200": {
             "description": "Successful operation. Returns an array with all the devices' status.",
             "schema": {
-              "$ref": "#/definitions/statusList"
+              "type": "object",
+              "properties": {
+                "deviceID": {
+                  "$ref": "#/definitions/status"
+                }
+              }
             }
           },
           "401": {
@@ -640,7 +661,21 @@
            "description": "New devie description.",
            "required": true,
            "schema": {
-             "$ref": "#/definitions/updateStatus"
+             "type": "object",
+             "properties": {
+               "id": {
+                 "type": "array",
+                 "example": "sitch001"
+               },
+               "param": {
+                 "type": "array",
+                 "example": "on"
+               },
+               "value": {
+                 "type": "bool",
+                 "example": true
+               }
+             }
            }
          }
         ],
@@ -712,7 +747,10 @@
           "200": {
             "description": "Successful operation. Returns an array with all the tasks.",
             "schema": {
-              "$ref": "#/definitions/rulesList"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/rule"
+              }
             }
           },
           "401": {
@@ -947,7 +985,12 @@
            "description": "New task definition.",
            "required": true,
            "schema": {
-             "$ref": "#/definitions/createRule"
+             "type": "object",
+             "properties": {
+               "rule": {
+                 "$ref": "#/definitions/rule"
+               }
+             }
            }
          }
         ],
@@ -1022,7 +1065,16 @@
            "description": "New task definition.",
            "required": true,
            "schema": {
-             "$ref": "#/definitions/updateRule"
+             "type": "object",
+             "properties": {
+               "rule": {
+                 "$ref": "#/definitions/rule"
+               },
+               "id":{
+                 "type": "int",
+                 "example": 1
+               }
+             }
            }
          }
         ],
@@ -1211,7 +1263,7 @@
             "description": "User credentials.",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/userCredentials"
+              "$ref": "#/definitions/user_credentials"
             }
           }
         ],
@@ -1995,60 +2047,10 @@
         }
       }
     },
-    "deviceList": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/device"
-      }
-    },
     "status": {
       "type": "object",
       "properties": {
         "online": {
-          "type": "bool",
-          "example": true
-        }
-      }
-    },
-    "statusList": {
-      "type": "object",
-      "properties": {
-        "deviceID": {
-          "$ref": "#/definitions/status"
-        }
-      }
-    },
-    "createDevice": {
-      "type": "object",
-      "properties": {
-        "device": {
-          "$ref": "#/definitions/device"
-        },
-        "status":{
-          "$ref": "#/definitions/status"
-        }
-      }
-    },
-    "updateDevice": {
-      "type": "object",
-      "properties": {
-        "device": {
-          "$ref": "#/definitions/device"
-        }
-      }
-    },
-    "updateStatus": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "array",
-          "example": "sitch001"
-        },
-        "param": {
-          "type": "array",
-          "example": "on"
-        },
-        "value": {
           "type": "bool",
           "example": true
         }
@@ -2069,12 +2071,6 @@
             "$ref": "#/definitions/target"
           }
         }
-      }
-    },
-    "rulesList": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/rule"
       }
     },
     "trigger": {
@@ -2117,26 +2113,6 @@
         }
       }
     },
-    "createRule": {
-      "type": "object",
-      "properties": {
-        "rule": {
-          "$ref": "#/definitions/rule"
-        }
-      }
-    },
-    "updateRule": {
-      "type": "object",
-      "properties": {
-        "rule": {
-          "$ref": "#/definitions/rule"
-        },
-        "id":{
-          "type": "int",
-          "example": 1
-        }
-      }
-    },
     "version": {
       "type": "object",
       "properties": {
@@ -2146,7 +2122,7 @@
         }
       }
     },
-    "userCredentials": {
+    "user_credentials": {
       "type": "object",
       "properties": {
         "user": {
@@ -2199,6 +2175,29 @@
               "example": false
             }
           }
+        }
+      }
+    },
+    "log": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/log_register"
+      }
+    },
+    "log_register": {
+      "type": "object",
+      "properties": {
+        "severity": {
+          "type": "string",
+          "example": "Alert"
+        },
+        "time": {
+          "type": "string",
+          "example": "31/10/2020, 20:53:04"
+        },
+        "message": {
+          "type": "string",
+          "example": "Catch an error on execution ofControl luz salón"
         }
       }
     }
