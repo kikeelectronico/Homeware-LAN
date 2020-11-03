@@ -749,7 +749,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/rule"
+                "$ref": "#/definitions/task"
               }
             }
           },
@@ -814,7 +814,7 @@
           "200": {
             "description": "Successful operation. Returns the requested task.",
             "schema": {
-              "$ref": "#/definitions/rule"
+              "$ref": "#/definitions/task"
             }
           },
           "401": {
@@ -987,8 +987,8 @@
            "schema": {
              "type": "object",
              "properties": {
-               "rule": {
-                 "$ref": "#/definitions/rule"
+               "task": {
+                 "$ref": "#/definitions/task"
                }
              }
            }
@@ -1067,8 +1067,8 @@
            "schema": {
              "type": "object",
              "properties": {
-               "rule": {
-                 "$ref": "#/definitions/rule"
+               "task": {
+                 "$ref": "#/definitions/task"
                },
                "id":{
                  "type": "int",
@@ -1220,7 +1220,27 @@
           "200": {
             "description": "Successful operation. Returns an object with all the data.",
             "schema": {
-              "$ref": "#/definitions/rulesList"
+              "type": "object",
+              "properties": {
+                "devices": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/device"
+                  }
+                },
+                "status": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/definitions/status"
+                  }
+                },
+                "tasks": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/task"
+                  }
+                }
+              }
             }
           },
           "401": {
@@ -2056,60 +2076,24 @@
         }
       }
     },
-    "rule": {
+    "task": {
       "type": "object",
       "properties": {
+        "title": {
+          "type": "string",
+          "example": "Turn on the light"
+        },
+        "description": {
+          "type": "string",
+          "example": "Turn on the light"
+        },
         "triggers": {
+          "type": "object",
+          "example": {}
+        },
+        "target": {
           "type": "array",
-          "items": {
-            "$ref": "#/definitions/trigger"
-          }
-        },
-        "targets": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/target"
-          }
-        }
-      }
-    },
-    "trigger": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "example": "switch001"
-        },
-        "param": {
-          "type": "string",
-          "example": "on"
-        },
-        "operator": {
-          "type": "string",
-          "enum": ["1", "2", "3", "4"],
-          "example": "1",
-          "description": "1 -> =,2 -> <,3 -> >, 4 -> Time -> h:m:index_of_days_of_the_week (0 = Sunday)"
-        },
-        "value": {
-          "type": "string,bool,int",
-          "example": "true"
-        }
-      }
-    },
-    "target": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "example": "switch001"
-        },
-        "param": {
-          "type": "string",
-          "example": "on"
-        },
-        "value": {
-          "type": "string,bool,int",
-          "example": "true"
+          "example": []
         }
       }
     },
@@ -2138,16 +2122,21 @@
     "settings": {
       "type": "object",
       "properties": {
-        "google": {
+        "token": {
           "type": "object",
           "properties": {
-            "client_id": {
-              "type": "string",
-              "example": "123"
-            },
-            "client_secret": {
-              "type": "string",
-              "example": "456"
+            "google": {
+              "type": "object",
+              "properties": {
+                "client_id": {
+                  "type": "string",
+                  "example": "123"
+                },
+                "client_secret": {
+                  "type": "string",
+                  "example": "456"
+                }
+              }
             }
           }
         },
@@ -2173,6 +2162,19 @@
             "enabled": {
               "type": "bool",
               "example": false
+            }
+          }
+        },
+        "mqtt": {
+          "type": "object",
+          "properties": {
+            "user": {
+              "type": "string",
+              "example": "username"
+            },
+            "password": {
+              "type": "string",
+              "example": "password"
             }
           }
         }
