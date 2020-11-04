@@ -6,7 +6,7 @@ class TestData(unittest.TestCase):
         self.data = Data()
 
     def test_version(self):
-        self.assertEqual({'version': 'v1.0.0'}, self.data.getVersion())
+        self.assertEqual({'version': 'v1.0.1'}, self.data.getVersion())
 
 
 if __name__ == '__main__':
