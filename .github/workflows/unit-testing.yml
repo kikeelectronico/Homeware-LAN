@@ -23,4 +23,4 @@ jobs:
       with:
         redis-version: ${{ matrix.redis-version }}
     - name: Test
-        uses: onichandame/python-test-action@master
+      uses: onichandame/python-test-action@master
