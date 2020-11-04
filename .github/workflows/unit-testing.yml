@@ -1,0 +1,26 @@
+name: Testing
+on:
+  push:
+    branches:
+      - develop
+  pull-request:
+    branches:
+      - develop
+
+jobs:
+  back:
+    name: Test backend
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        redis-version: [5, 6]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Copy database template
+      run: cp configuration_templates/template_homeware.json homeware.json
+    - name: Start Redis
+      uses: supercharge/redis-github-action@1.1.0
+      with:
+        redis-version: ${{ matrix.redis-version }}
+    - name: Test
+        uses: onichandame/python-test-action@master
