@@ -186,8 +186,8 @@ class Data:
         for device in json.loads(self.redis.get('devices')):
             if device['id'] == deviceID:
                 temp_devices.append(incommingData['device'])
-            else:
-                temp_devices.append(device)
+                return True
+        return False
 
         self.redis.set('devices',json.dumps(temp_devices))
 
@@ -199,22 +199,26 @@ class Data:
         self.redis.set('devices',json.dumps(devices))
 
         status = json.loads(self.redis.get('status'))
-        status[deviceID] = {}
-        status[deviceID] = incommingData['status']
+        status = {
+            "deviceID": incommingData['status']
+        }
         self.redis.set('status',json.dumps(status))
-        # self.save()
 
     def deleteDevice(self, value):
         temp_devices = [];
+        found = False
         for device in json.loads(self.redis.get('devices')):
             if device['id'] != value:
                 temp_devices.append(device)
+                found = True
         self.redis.set('devices',json.dumps(temp_devices))
         # Delete status
-        status = json.loads(self.redis.get('status'))
-        del status[value]
-        self.redis.set('status',json.dumps(status))
-        # self.save()
+        if found:
+            status = json.loads(self.redis.get('status'))
+            del status[value]
+            self.redis.set('status',json.dumps(status))
+
+        return found
 
 # TASKS
 
@@ -226,8 +230,12 @@ class Data:
 
     def updateTask(self, incommingData):
         tasks = json.loads(self.redis.get('tasks'))
-        tasks[int(incommingData['id'])] = incommingData['task']
-        self.redis.set('tasks',json.dumps(tasks))
+        if int(incommingData['id']) < len(tasks):
+            tasks[int(incommingData['id'])] = incommingData['task']
+            self.redis.set('tasks',json.dumps(tasks))
+            return True
+        else:
+            return False
 
     def createTask(self, task):
         tasks = json.loads(self.redis.get('tasks'))
@@ -236,9 +244,12 @@ class Data:
 
     def deleteTask(self, i):
         tasks = json.loads(self.redis.get('tasks'))
-        del tasks[int(i)]
-        self.redis.set('tasks', json.dumps(tasks))
-
+        if int(incommingData['id']) < len(tasks):
+            del tasks[int(i)]
+            self.redis.set('tasks', json.dumps(tasks))
+            return True
+        else:
+            return False
 # STATUS
 
     def getStatus(self):
@@ -246,23 +257,27 @@ class Data:
 
     def updateParamStatus(self, device, param, value):
         status = json.loads(self.redis.get('status'))
-        status[device][param] = value
-        self.redis.set('status',json.dumps(status))
-        # Try to get username and password
-        msgs = [
-            {'topic': "device/" + device + '/' + param, 'payload': str(value)},
-            {'topic': "device/" + device, 'payload': json.dumps(status[device])}
-        ]
-        try:
-            mqttData = self.getMQTT()
-            if not mqttData['user'] == "":
-                client.username_pw_set(mqttData['user'], mqttData['password'])
-                publish.multiple(msgs, hostname="localhost", auth={'username':mqttData['user'], 'password': mqttData['password']})
-            else:
-                publish.multiple(msgs, hostname="localhost")
+        if device in status.keys():
+            status[device][param] = value
+            self.redis.set('status',json.dumps(status))
+            # Try to get username and password
+            msgs = [
+                {'topic': "device/" + device + '/' + param, 'payload': str(value)},
+                {'topic': "device/" + device, 'payload': json.dumps(status[device])}
+            ]
+            try:
+                mqttData = self.getMQTT()
+                if not mqttData['user'] == "":
+                    client.username_pw_set(mqttData['user'], mqttData['password'])
+                    publish.multiple(msgs, hostname="localhost", auth={'username':mqttData['user'], 'password': mqttData['password']})
+                else:
+                    publish.multiple(msgs, hostname="localhost")
 
-        except:
-            publish.multiple(msgs, hostname="localhost")
+            except:
+                publish.multiple(msgs, hostname="localhost")
+            return True
+        else:
+            return False
 
 
 # SECURE
@@ -377,11 +392,15 @@ class Data:
         secure['token']['apikey'] = token
         self.redis.set('secure',json.dumps(secure))
         self.apikey = token
-        return token
+        data = {
+            "apikey": token
+        }
+
+        return data
 
 # ACCESS
 
-    def getAccess(self):
+    def getAPIKey(self):
 
         secure = json.loads(self.redis.get('secure'))
         data = {

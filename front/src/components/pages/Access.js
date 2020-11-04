@@ -41,7 +41,7 @@ class Access extends React.Component {
         }
       }
     };
-    http.open("GET", root + "api/settings/apikey/");
+    http.open("GET", root + "api/access/create/");
     http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
     http.send();
   }

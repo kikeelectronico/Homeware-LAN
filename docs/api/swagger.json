@@ -29,7 +29,11 @@
     },
     {
       "name": "User",
-      "description": "User login and sync"
+      "description": "User login and validation"
+    },
+    {
+      "name": "Access",
+      "description": "API Key releated operations"
     },
     {
       "name": "Settings",
@@ -515,26 +519,6 @@
                 "code": {
                   "type": "int",
                   "example": 401
-                },
-                "note": {
-                  "type": "string",
-                  "example": "See the documentation"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found. The device does not exists.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "error": {
-                  "type": "string",
-                  "example": "Device not found"
-                },
-                "code": {
-                  "type": "int",
-                  "example": 404
                 },
                 "note": {
                   "type": "string",
@@ -1437,12 +1421,12 @@
         }
       }
     },
-    "/settings/apiKey/": {
+    "/access/create/": {
       "get": {
         "tags": [
-          "Settings"
+          "Access"
         ],
-        "summary": "Generate a mew API Key",
+        "summary": "Generate a new API Key",
         "description": "Generate a new API Key. This operation can only be done with a user Token not with an API Key.",
         "produces": [
           "application/json"
@@ -1466,9 +1450,68 @@
             "schema": {
               "type": "object",
               "properties": {
-                "status": {
+                "apikey": {
                   "type": "string",
-                  "example": "in"
+                  "example": "aToken"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Insufficient Authentication Level. An admin Token is needed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Bad authentication"
+                },
+                "code": {
+                  "type": "int",
+                  "example": 401
+                },
+                "note": {
+                  "type": "string",
+                  "example": "See the documentation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/access/get/": {
+      "get": {
+        "tags": [
+          "Access"
+        ],
+        "summary": "Get the API Key",
+        "description": "Get the API Key. This operation can only be done with a user Token not with an API Key.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: Admin Token.",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "baerer {admin-session-token}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns the new API key.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "apikey": {
+                  "type": "string",
+                  "example": "aToken"
                 }
               }
             }
@@ -1617,7 +1660,7 @@
           "Settings"
         ],
         "summary": "Set the DDNS domain up",
-        "description": "Set the DDNS domain up.",
+        "description": "Set the DDNS domain up. Only can be set once.",
         "produces": [
           "application/json"
         ],
@@ -1680,7 +1723,7 @@
           "Settings"
         ],
         "summary": "Finish the initial configuration setup.",
-        "description": "Finish the initial configuration setup that run during the installation process.",
+        "description": "Finish the initial configuration setup that run during the installation process. Only can be set once.",
         "produces": [
           "application/json"
         ],
