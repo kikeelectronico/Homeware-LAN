@@ -24,3 +24,4 @@ jobs:
         redis-version: ${{ matrix.redis-version }}
     - name: Test
       uses: onichandame/python-test-action@master
+      working-directory: ./back
