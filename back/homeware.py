@@ -64,15 +64,15 @@ def test():
 def checkAccessLevel(headers):
 
     accessLevel = 0
-    if 'authorization' in headers.keys():
-        autorización = headers['authorization'].split(' ')[1]
+    try:
+        authorization = headers['authorization'].split(' ')[1]
         savedToken = hData.getToken('front')
         savedAPIKey = hData.getToken('apikey')
         if authorization == savedAPIKey:
             accessLevel = 10
         elif authorization == savedToken:
             accessLevel = 100
-    else:
+    except:
         accessLevel = 0
 
     return accessLevel
