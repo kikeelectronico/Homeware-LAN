@@ -47,6 +47,7 @@ class TestData(unittest.TestCase):
             'pass': 'passTest'
             }
         user = self.data.setUser(user)
+        print(user)
         response = {
             'status': 'in'
         }
