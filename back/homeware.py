@@ -306,10 +306,10 @@ def apiSettings(operation = "", value = ''):
     if accessLevel >= 100:
         if operation == 'update':
             incommingData = request.get_json()
-            hData.updateSecure(incommingData)
-            responseData = hData.getSecure()
+            hData.updateSettings(incommingData)
+            responseData = hData.getSettings()
         elif operation == 'get':
-            responseData = hData.getSecure()
+            responseData = hData.getSettings()
         else:
             hData.log('Alert', 'Request to API > settings endpoint with bad authentication')
             responseData = FOUR_O_O

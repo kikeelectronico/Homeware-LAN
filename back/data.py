@@ -22,7 +22,7 @@ class Data:
         self.verbose = False
 
         if not self.redis.get('transfer'):
-            print('The database must be created')
+            self.log('Warning','The database must be created')
             try:
                 with open('../' + self.homewareFile, 'r') as f:
                     data = json.load(f)
@@ -30,7 +30,7 @@ class Data:
                     self.redis.set('status',json.dumps(data['status']))
                     self.redis.set('tasks',json.dumps(data['tasks']))
                     self.redis.set('secure',json.dumps(data['secure']))
-                print('Using a provided homeware file')
+                self.log('Warning','Using a provided homeware file')
             except:
                 subprocess.run(["cp", "../configuration_templates/template_homeware.json", "../homeware.json"],  stdout=subprocess.PIPE)
 
@@ -40,12 +40,12 @@ class Data:
                     self.redis.set('status',json.dumps(data['status']))
                     self.redis.set('tasks',json.dumps(data['tasks']))
                     self.redis.set('secure',json.dumps(data['secure']))
-                print('Using a template')
+                self.log('Warning','Using a template homeware file')
 
             self.redis.set('transfer', "true");
 
         else:
-            print('DDBB connection up and running')
+            self.log('Log','DDBB connection up and running')
 
         # Create the tasks key if needed
         if not self.redis.get('tasks'):
@@ -59,25 +59,6 @@ class Data:
     def getVersion(self):
         return {'version': self.version}
 
-    def redisStatus(self):
-        status = {}
-        try:
-            response = self.redis.client_list()
-            status =  {
-                'enable': True,
-                'status': 'Running',
-                'title': 'Redis database'
-            }
-        except redis.ConnectionError:
-            status = {
-                'enable': True,
-                'status': 'Stopped',
-                'title': 'Redis database'
-            }
-        return status
-
-    def firstRun(self):
-        return False
 
     def getGlobal(self):
         data = {
@@ -105,75 +86,6 @@ class Data:
             self.redis.set('status',json.dumps(data['status']))
             self.redis.set('tasks',json.dumps(data['tasks']))
             self.redis.set('secure',json.dumps(data['secure']))
-
-# LOG
-
-    def log(self, severity, message):
-        log_file = open('../' + "homeware.log", "a")
-        now = datetime.now()
-        date_time = now.strftime("%d/%m/%Y, %H:%M:%S")
-        log_register = severity + ' - ' + date_time  + ' - ' + message + '\n';
-        log_file.write(log_register)
-        log_file.close()
-
-        if (self.verbose):
-            print(log_register)
-
-    def setVerbose(self, verbose):
-        self.verbose = verbose
-
-    def getLog(self):
-        log = []
-
-        log_file = open('../' + "homeware.log","r")
-        registers = log_file.readlines()
-        for register in registers:
-            try:
-                content = register.split(' - ')
-                log.append({
-                    "severity": content[0],
-                    "time": content[1],
-                    "message": content[2]
-                })
-            except:
-                log.append({
-                    "severity": 'Log',
-                    "time": '',
-                    "message": content
-                })
-        log_file.close()
-
-        return log
-
-
-# ASSISTANT
-
-    def getAssistantDone(self):
-        try:
-            if not self.redis.get('assistantDone') == None:
-                return True
-            else:
-                return False
-        except:
-            return False
-
-    def setAssistantDone(self):
-        self.redis.set('assistantDone',"True")
-
-# ALIVE
-
-    def updateAlive(self, core):
-        ts = int(time.time())
-        alive = {}
-        try:
-            alive = json.loads(self.redis.get('alive'))
-        except:
-            alive = {}
-        alive[core] = ts
-        self.redis.set('alive', json.dumps(alive))
-
-    def getAlive(self):
-        return json.loads(self.redis.get('alive'))
 
 # DEVICES
 
@@ -220,36 +132,6 @@ class Data:
 
         return found
 
-# TASKS
-
-    def getTasks(self):
-        return json.loads(self.redis.get('tasks'))
-
-    def getTask(self, i):
-        return json.loads(self.redis.get('tasks'))[i]
-
-    def updateTask(self, incommingData):
-        tasks = json.loads(self.redis.get('tasks'))
-        if int(incommingData['id']) < len(tasks):
-            tasks[int(incommingData['id'])] = incommingData['task']
-            self.redis.set('tasks',json.dumps(tasks))
-            return True
-        else:
-            return False
-
-    def createTask(self, task):
-        tasks = json.loads(self.redis.get('tasks'))
-        tasks.append(task)
-        self.redis.set('tasks',json.dumps(tasks))
-
-    def deleteTask(self, i):
-        tasks = json.loads(self.redis.get('tasks'))
-        if int(incommingData['id']) < len(tasks):
-            del tasks[int(i)]
-            self.redis.set('tasks', json.dumps(tasks))
-            return True
-        else:
-            return False
 # STATUS
 
     def getStatus(self):
@@ -280,64 +162,38 @@ class Data:
             return False
 
 
-# SECURE
+# TASKS
 
-    def getSecure(self):
+    def getTasks(self):
+        return json.loads(self.redis.get('tasks'))
 
-        secure = json.loads(self.redis.get('secure'))
-        data = {
-            "google": {
-                "client_id": secure['token']["google"]["client_id"],
-                "client_secret": secure['token']["google"]["client_secret"],
-            },
-            "ddns": secure['ddns'],
-            "apikey": secure['token']['apikey']
-        }
-        try:
-            data['mqtt'] = secure['mqtt']
-        except:
-            data['mqtt'] = {"user":"","password":""}
+    def getTask(self, i):
+        return json.loads(self.redis.get('tasks'))[i]
 
-
-        return data
-
-    def updateSecure(self, incommingData):
-        secure = json.loads(self.redis.get('secure'))
-
-        secure['token']["google"]["client_id"] = incommingData['google']['client_id']
-        secure['token']["google"]["client_secret"] = incommingData['google']['client_secret']
-        secure['ddns']['username'] = incommingData['ddns']['username']
-        secure['ddns']['password'] = incommingData['ddns']['password']
-        secure['ddns']['provider'] = incommingData['ddns']['provider']
-        secure['ddns']['hostname'] = incommingData['ddns']['hostname']
-        secure['ddns']['enabled'] = incommingData['ddns']['enabled']
-        secure['mqtt'] = {}
-        secure['mqtt']['user'] = incommingData['mqtt']['user']
-        secure['mqtt']['password'] = incommingData['mqtt']['password']
-
-        self.redis.set('secure',json.dumps(secure))
-        # self.save()
-
-    def getMQTT(self):
-        return json.loads(self.redis.get('secure'))['mqtt']
-
-
-    def getToken(self,agent):
-        if agent == 'front':
-            return self.userToken
-        elif agent == 'apikey':
-            return self.apikey
+    def updateTask(self, incommingData):
+        tasks = json.loads(self.redis.get('tasks'))
+        if int(incommingData['id']) < len(tasks):
+            tasks[int(incommingData['id'])] = incommingData['task']
+            self.redis.set('tasks',json.dumps(tasks))
+            return True
         else:
-            return json.loads(self.redis.get('secure'))['token'][agent]
+            return False
 
-    def updateToken(self,agent,type,value,timestamp):
-        secure = json.loads(self.redis.get('secure'))
+    def createTask(self, task):
+        tasks = json.loads(self.redis.get('tasks'))
+        tasks.append(task)
+        self.redis.set('tasks',json.dumps(tasks))
 
-        secure['token'][agent][type]['value'] = value
-        secure['token'][agent][type]['timestamp'] = timestamp
+    def deleteTask(self, i):
+        tasks = json.loads(self.redis.get('tasks'))
+        if int(incommingData['id']) < len(tasks):
+            del tasks[int(i)]
+            self.redis.set('tasks', json.dumps(tasks))
+            return True
+        else:
+            return False
 
-        self.redis.set('secure',json.dumps(secure))
-        # self.save()
+# USER
 
     def setUser(self, incommingData):
         if json.loads(self.redis.get('secure'))['user'] == '':
@@ -353,63 +209,6 @@ class Data:
             return 'Saved correctly!'
         else:
             return 'Your user has been set in the past'
-
-    def setDomain(self, value):
-        secure = json.loads(self.redis.get('secure'))
-
-        secure['domain'] = value
-        secure['ddns']['hostname'] = value
-
-        self.redis.set('secure',json.dumps(secure))
-
-
-        # self.save()
-
-    def getDDNS(self):
-        return json.loads(self.redis.get('secure'))['ddns']
-
-    def updateDDNS(self, ip, status, code, enabled, last):
-
-        secure = json.loads(self.redis.get('secure'))
-
-        secure['ddns']['ip'] = ip
-        secure['ddns']['status'] = status
-        secure['ddns']['code'] = code
-        secure['ddns']['enabled'] = enabled
-        secure['ddns']['last'] = last
-
-        self.redis.set('secure',json.dumps(secure))
-        # self.save()
-
-    def generateAPIKey(self):
-        chars = 'abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-        token = ''
-        i = 0
-        while i < 40:
-            token += random.choice(chars)
-            i += 1
-        secure = json.loads(self.redis.get('secure'))
-        secure['token']['apikey'] = token
-        self.redis.set('secure',json.dumps(secure))
-        self.apikey = token
-        data = {
-            "apikey": token
-        }
-
-        return data
-
-# ACCESS
-
-    def getAPIKey(self):
-
-        secure = json.loads(self.redis.get('secure'))
-        data = {
-            "apikey": secure['token']['apikey']
-        }
-
-        return data
-
-# LOGIN
 
     def login(self, headers):
         user = headers['user']
@@ -447,7 +246,7 @@ class Data:
                 'status': 'fail'
             }
             self.log('Alert','Login failed, user: ' + user)
-        # self.save()
+
         return responseData
 
     def validateUserToken(self, headers):
@@ -481,3 +280,181 @@ class Data:
             return responseURL
         else:
             return "fail"
+
+# ACCESS
+
+    def getAPIKey(self):
+        secure = json.loads(self.redis.get('secure'))
+        data = {
+            "apikey": secure['token']['apikey']
+        }
+
+        return data
+
+    def generateAPIKey(self):
+        chars = 'abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+        token = ''
+        i = 0
+        while i < 40:
+            token += random.choice(chars)
+            i += 1
+        secure = json.loads(self.redis.get('secure'))
+        secure['token']['apikey'] = token
+        self.redis.set('secure',json.dumps(secure))
+        self.apikey = token
+        data = {
+            "apikey": token
+        }
+
+        return data
+
+    def getToken(self,agent):
+        if agent == 'front':
+            return self.userToken
+        elif agent == 'apikey':
+            return self.apikey
+        else:
+            return json.loads(self.redis.get('secure'))['token'][agent]
+
+    def updateToken(self,agent,type,value,timestamp):
+        secure = json.loads(self.redis.get('secure'))
+
+        secure['token'][agent][type]['value'] = value
+        secure['token'][agent][type]['timestamp'] = timestamp
+
+        self.redis.set('secure',json.dumps(secure))
+
+# SETTINGS
+
+    def getSettings(self):
+
+        secure = json.loads(self.redis.get('secure'))
+        data = {
+            "google": {
+                "client_id": secure['token']["google"]["client_id"],
+                "client_secret": secure['token']["google"]["client_secret"],
+            },
+            "ddns": secure['ddns']
+        }
+        try:
+            data['mqtt'] = secure['mqtt']
+        except:
+            data['mqtt'] = {"user":"","password":""}
+
+
+        return data
+
+    def updateSettings(self, incommingData):
+        secure = json.loads(self.redis.get('secure'))
+
+        secure['token']["google"]["client_id"] = incommingData['google']['client_id']
+        secure['token']["google"]["client_secret"] = incommingData['google']['client_secret']
+        secure['ddns']['username'] = incommingData['ddns']['username']
+        secure['ddns']['password'] = incommingData['ddns']['password']
+        secure['ddns']['provider'] = incommingData['ddns']['provider']
+        secure['ddns']['hostname'] = incommingData['ddns']['hostname']
+        secure['ddns']['enabled'] = incommingData['ddns']['enabled']
+        secure['mqtt'] = {}
+        secure['mqtt']['user'] = incommingData['mqtt']['user']
+        secure['mqtt']['password'] = incommingData['mqtt']['password']
+
+        self.redis.set('secure',json.dumps(secure))
+
+    def getAssistantDone(self):
+        try:
+            if not self.redis.get('assistantDone') == None:
+                return True
+            else:
+                return False
+        except:
+            return False
+
+    def setAssistantDone(self):
+        self.redis.set('assistantDone',"True")
+
+    def setDomain(self, value):
+        secure = json.loads(self.redis.get('secure'))
+
+        secure['domain'] = value
+        secure['ddns']['hostname'] = value
+
+        self.redis.set('secure',json.dumps(secure))
+
+# SYSTEM
+
+    def getMQTT(self):
+        return json.loads(self.redis.get('secure'))['mqtt']
+
+    def getDDNS(self):
+        return json.loads(self.redis.get('secure'))['ddns']
+
+    def redisStatus(self):
+        status = {}
+        try:
+            response = self.redis.client_list()
+            status =  {
+                'enable': True,
+                'status': 'Running',
+                'title': 'Redis database'
+            }
+        except redis.ConnectionError:
+            status = {
+                'enable': True,
+                'status': 'Stopped',
+                'title': 'Redis database'
+            }
+        return status
+
+# LOG
+
+    def log(self, severity, message):
+        log_file = open('../' + "homeware.log", "a")
+        now = datetime.now()
+        date_time = now.strftime("%d/%m/%Y, %H:%M:%S")
+        log_register = severity + ' - ' + date_time  + ' - ' + message + '\n';
+        log_file.write(log_register)
+        log_file.close()
+
+        if (self.verbose):
+            print(log_register)
+
+    def setVerbose(self, verbose):
+        self.verbose = verbose
+
+    def getLog(self):
+        log = []
+
+        log_file = open('../' + "homeware.log","r")
+        registers = log_file.readlines()
+        for register in registers:
+            try:
+                content = register.split(' - ')
+                log.append({
+                    "severity": content[0],
+                    "time": content[1],
+                    "message": content[2]
+                })
+            except:
+                log.append({
+                    "severity": 'Log',
+                    "time": '',
+                    "message": content
+                })
+        log_file.close()
+
+        return log
+
+# ALIVE
+
+    def updateAlive(self, core):
+        ts = int(time.time())
+        alive = {}
+        try:
+            alive = json.loads(self.redis.get('alive'))
+        except:
+            alive = {}
+        alive[core] = ts
+        self.redis.set('alive', json.dumps(alive))
+
+    def getAlive(self):
+        return json.loads(self.redis.get('alive'))
