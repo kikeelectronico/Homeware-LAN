@@ -39,30 +39,6 @@ class TestData(unittest.TestCase):
         }
         self.assertEqual(response,self.data.validateUserToken(login_data))
 
-
-    # def test_login(self):
-    #     user = {
-    #         'user': 'userTest',
-    #         'pass': 'passTest'
-    #         }
-    #     self.data.setUser(user)
-    #     self.assertEqual('in',self.data.login(user)['status'])
-    #     self.assertEqual(user['user'],self.data.login(user)['user'])
-
-    # def test_validateToken(self):
-    #     user = {
-    #         'user': 'userTest',
-    #         'pass': 'passTest'
-    #         }
-    #     print(self.data.userName)
-    #     user = self.data.setUser(user)
-    #     user = self.data.login(user)
-    #     print(user)
-    #     response = {
-    #         'status': 'in'
-    #     }
-    #     self.assertEqual(response,self.data.validateUserToken(user))
-
 # ACCESS
 
     def test_getAPIKey(self):
