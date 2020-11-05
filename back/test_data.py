@@ -31,29 +31,37 @@ class TestData(unittest.TestCase):
             }
         self.assertEqual('Saved correctly!',self.data.setUser(user))
         self.assertEqual('Your user has been set in the past',self.data.setUser(user))
-
-    def test_login(self):
-        user = {
-            'user': 'userTest',
-            'pass': 'passTest'
-            }
-        self.data.setUser(user)
-        self.assertEqual('in',self.data.login(user)['status'])
-        self.assertEqual(user['user'],self.data.login(user)['user'])
-
-    def test_validateToken(self):
-        user = {
-            'user': 'userTest',
-            'pass': 'passTest'
-            }
-        print(self.data.userName)
-        user = self.data.setUser(user)
-        user = self.data.login(user)
-        print(user)
+        login_data = self.data.login(user)
+        self.assertEqual('in',login_data['status'])
+        self.assertEqual(user['user'],login_data['user'])
         response = {
             'status': 'in'
         }
-        self.assertEqual(response,self.data.validateUserToken(user))
+        self.assertEqual(response,self.data.validateUserToken(login_data))
+
+
+    # def test_login(self):
+    #     user = {
+    #         'user': 'userTest',
+    #         'pass': 'passTest'
+    #         }
+    #     self.data.setUser(user)
+    #     self.assertEqual('in',self.data.login(user)['status'])
+    #     self.assertEqual(user['user'],self.data.login(user)['user'])
+
+    # def test_validateToken(self):
+    #     user = {
+    #         'user': 'userTest',
+    #         'pass': 'passTest'
+    #         }
+    #     print(self.data.userName)
+    #     user = self.data.setUser(user)
+    #     user = self.data.login(user)
+    #     print(user)
+    #     response = {
+    #         'status': 'in'
+    #     }
+    #     self.assertEqual(response,self.data.validateUserToken(user))
 
 # ACCESS
 
