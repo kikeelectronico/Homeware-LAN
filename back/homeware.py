@@ -323,8 +323,7 @@ def apiSettings(operation = "", value = ''):
                         'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
                     }
                 else:
-                    hData.setDomain(value)
-                    responseData = TWO_O_O
+                    return hData.setDomain(value)
             elif operation == 'setAssistantDone':
                 hData.setAssistantDone()
                 responseData = TWO_O_O

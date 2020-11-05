@@ -373,12 +373,16 @@ class Data:
         self.redis.set('assistantDone',"True")
 
     def setDomain(self, value):
-        secure = json.loads(self.redis.get('secure'))
+        try:
+            secure = json.loads(self.redis.get('secure'))
 
-        secure['domain'] = value
-        secure['ddns']['hostname'] = value
+            secure['domain'] = value
+            secure['ddns']['hostname'] = value
 
-        self.redis.set('secure',json.dumps(secure))
+            self.redis.set('secure',json.dumps(secure))
+            return 'Saved correctly!'
+        except:
+            return 'Something goes wrong'
 
 # SYSTEM
 
