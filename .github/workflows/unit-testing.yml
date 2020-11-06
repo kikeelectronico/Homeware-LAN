@@ -25,7 +25,7 @@ jobs:
       with:
         redis-version: ${{ matrix.redis-version }}
     - name: Start Mosquitto
-        uses: Namoshek/mosquitto-github-action@v0.1.0
+        uses: Namoshek/mosquitto-github-action@master
         with:
           version: ${{ matrix.mosquitto-version }}
     - name: Set up Python ${{ matrix.python-version }}
