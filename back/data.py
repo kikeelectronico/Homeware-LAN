@@ -120,6 +120,7 @@ class Data:
         for device in json.loads(self.redis.get('devices')):
             if device['id'] != value:
                 temp_devices.append(device)
+            else
                 found = True
         self.redis.set('devices',json.dumps(temp_devices))
         # Delete status
