@@ -142,9 +142,9 @@ class TestData(unittest.TestCase):
         }
         # Crate a new device
         self.data.createDevice({"device":device,"status":status})
-        # Update the device status        
+        # Update the device status
         self.assertFalse(self.data.getStatus()['light003']['on'])
-        self.data.updateParamStatus('light003'],"on",True)
+        self.data.updateParamStatus('light003',"on",True)
         self.assertTrue(self.data.getStatus()['light003']['on'])
 
     def test_deleteDevice(self):
