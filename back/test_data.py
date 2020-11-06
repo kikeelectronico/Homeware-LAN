@@ -10,7 +10,7 @@ class TestData(unittest.TestCase):
     def test_version(self):
         self.assertEqual({'version': 'v1.0.1'}, self.data.getVersion())
 
-    def test_global(self):
+    def test_redisStatus(self):
         response = {
             'enable': True,
             'status': 'Running',
