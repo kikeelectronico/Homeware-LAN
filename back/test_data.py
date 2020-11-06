@@ -63,7 +63,8 @@ class TestData(unittest.TestCase):
         # Update the device info
         device['name']['name'] = 'Diodi'
         self.assertTrue(self.data.updateDevice({"device": device}))
-        self.assertEqual('Diodi',self.data.getDevices()[1]['name']['name'])
+        devices = self.data.getDevices()
+        self.assertEqual('Diodi',devices[len(devices)]['name']['name'])
         # Update the device status
         # A mosquito server is needed for this
         # self.assertFalse(self.data.getStatus()[device['id']]['on'])
@@ -72,7 +73,7 @@ class TestData(unittest.TestCase):
         # Delete a device that doesn't exists
         self.assertFalse(self.data.deleteDevice('charger'))
         # Delete the device
-        self.assertTrue(self.data.deleteDevice('light001'))
+        self.assertTrue(self.data.deleteDevice('light'))
 
 # TASKS
 
