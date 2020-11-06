@@ -98,10 +98,9 @@ class Data:
         for device in json.loads(self.redis.get('devices')):
             if device['id'] == deviceID:
                 temp_devices.append(incommingData['device'])
+                self.redis.set('devices',json.dumps(temp_devices))
                 return True
         return False
-
-        self.redis.set('devices',json.dumps(temp_devices))
 
     def createDevice(self, incommingData):
         deviceID = incommingData['device']['id']
