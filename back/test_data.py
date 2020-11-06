@@ -56,15 +56,16 @@ class TestData(unittest.TestCase):
         }
         # Verify that only exists a device
         self.assertEqual(1,len(self.data.getDevices()))
+        print(self.data.getDevices())
         # Crate a new device and check if it is saved in the ddbb
         self.data.createDevice({"device":device,"status":status})
+        print(self.data.getDevices
         self.assertEqual(device,self.data.getDevices()[1])
         self.assertEqual(status,self.data.getStatus()[device['id']])
         # Update the device info
         device['name']['name'] = 'Diodi'
         self.assertTrue(self.data.updateDevice({"device": device}))
         get_devices = self.data.getDevices()
-        print(get_devices)
         self.assertEqual('Diodi',get_devices[len(get_devices)-1]['name']['name'])
         # Update the device status
         # A mosquito server is needed for this
