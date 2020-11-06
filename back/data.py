@@ -111,9 +111,7 @@ class Data:
         self.redis.set('devices',json.dumps(devices))
 
         status = json.loads(self.redis.get('status'))
-        status = {
-            "deviceID": incommingData['status']
-        }
+        status[deviceID] = incommingData['status']
         self.redis.set('status',json.dumps(status))
 
     def deleteDevice(self, value):
