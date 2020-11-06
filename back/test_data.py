@@ -62,9 +62,7 @@ class TestData(unittest.TestCase):
         self.assertEqual(status,self.data.getStatus()[device['id']])
         # Update the device info
         device['name']['name'] = 'Diodi'
-        print(device['name']['name'])
         self.assertTrue(self.data.updateDevice({"device": device}))
-        print(self.data.getDevices()[1]['name']['name'])
         self.assertEqual('Diodi',self.data.getDevices()[1]['name']['name'])
         # Update the device status
         # A mosquito server is needed for this
