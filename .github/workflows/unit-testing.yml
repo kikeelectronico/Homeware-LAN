@@ -24,7 +24,7 @@ jobs:
       uses: supercharge/redis-github-action@1.1.0
       with:
         redis-version: ${{ matrix.redis-version }}
-    - name: Start Mosquitto
+    - name: Start Mosquitto broker
       uses: Namoshek/mosquitto-github-action@v0.1.0
       with:
         version: ${{ matrix.mosquitto-version }}
