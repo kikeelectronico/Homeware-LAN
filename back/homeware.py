@@ -19,17 +19,17 @@ ALLOWED_EXTENSIONS = {'json'}
 FOUR_O_ONE = {
     'error': 'Bad authentication',
     'code': 401,
-    'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
+    'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api-docs.html'
 }
 FOUR_O_FOUR = {
     'error': 'Not found',
     'code': 404,
-    'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
+    'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api-docs.html'
 }
 FOUR_O_O = {
     'error': 'Operation not supported',
     'code': 400,
-    'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
+    'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api-docs.html'
 }
 TWO_O_O = {
     'status': 'Success',
@@ -306,10 +306,10 @@ def apiSettings(operation = "", value = ''):
     if accessLevel >= 100:
         if operation == 'update':
             incommingData = request.get_json()
-            hData.updateSecure(incommingData)
-            responseData = hData.getSecure()
+            hData.updateSettings(incommingData)
+            responseData = hData.getSettings()
         elif operation == 'get':
-            responseData = hData.getSecure()
+            responseData = hData.getSettings()
         else:
             hData.log('Alert', 'Request to API > settings endpoint with bad authentication')
             responseData = FOUR_O_O
@@ -323,8 +323,7 @@ def apiSettings(operation = "", value = ''):
                         'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
                     }
                 else:
-                    hData.setDomain(value)
-                    responseData = TWO_O_O
+                    return hData.setDomain(value)
             elif operation == 'setAssistantDone':
                 hData.setAssistantDone()
                 responseData = TWO_O_O

@@ -130,7 +130,7 @@ case "$response" in
         echo "Google."
         echo "---------------------------------------------"
         echo "Google needs to know where Homeware is."
-        echo "Follow the instructions on this wiki https://github.com/kikeelectronico/Homeware-LAN/wiki/Connect-Homeware-LAN-with-Google"
+        echo "Follow the instructions at this guide https://kikeelectronico.github.io/Homeware-LAN/2020/11/09/connect-with-google/"
         echo "During the process you will use the following Client Information. You will be able to change it from the Settings page in the future."
         echo ""
         echo "\tClient ID: 123"
