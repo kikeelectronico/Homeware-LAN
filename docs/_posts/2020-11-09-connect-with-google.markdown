@@ -23,10 +23,10 @@ Go to <a href="https://myaccount.google.com/activitycontrols" target="blanck">Ac
 
 
 <kbd>
-<img src="https://github.com/kikeelectronico/homeware/raw/master/images/B1C1.png" width="400"/>
+<img src="/Homeware-LAN/images/pages/post/connect-with-google/B1C1.png" width="400"/>
 </kbd>
 <kbd>
-<img src="https://github.com/kikeelectronico/homeware/raw/master/images/B1C2.png" width="400"/>  <img src="https://github.com/kikeelectronico/homeware/raw/master/images/B1C3.png" width="400"/>
+<img src="/Homeware-LAN/images/pages/post/connect-with-google/B1C2.png" width="400"/>  <img src="/Homeware-LAN/images/pages/post/connect-with-google/B1C3.png" width="400"/>
 </kbd>
 
 ## Actions on Google Project
@@ -37,19 +37,19 @@ Go to <a href="https://console.actions.google.com/" target="blanck">Actions on G
 2. Write a name for the project.
 
 <kbd>
-<img src="https://github.com/kikeelectronico/homeware/raw/master/images/B2C2.png"/>
+<img src="/Homeware-LAN/images/pages/post/connect-with-google/B2C2.png"/>
 </kbd>
 
 3. Select `Home control`.
 
 <kbd>
-<img src="https://github.com/kikeelectronico/homeware/raw/master/images/B2C3.png"/>
+<img src="/Homeware-LAN/images/pages/post/connect-with-google/B2C3.png"/>
 </kbd>
 
 4. Select `Smart home`.
 
 <kbd>
-<img src="https://github.com/kikeelectronico/homeware/raw/master/images/B2C4.png"/>
+<img src="/Homeware-LAN/images/pages/post/connect-with-google/B2C4.png"/>
 </kbd>
 
 5. Go to `Develop` from the top menu and select `Invocation` in the left side menu.
