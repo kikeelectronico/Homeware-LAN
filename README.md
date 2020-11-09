@@ -4,9 +4,6 @@ Homeware is a _Google Home Provider Cloud Service_, a complete ecosystem that al
 
 Homeware containts a backend that does the integration and a web forntend that allows you to manage your devices and program tasks.
 
-<center>
-<img alt="Cloud devices" src="https://github.com/kikeelectronico/homeware/raw/master/images/cloud.png" /></center>
-
 ## Homeware has been tested on
 
 | Operating System | Version |
@@ -16,7 +13,14 @@ Homeware containts a backend that does the integration and a web forntend that a
 
 # Install
 
-Follow the instructions located at the wiki [https://github.com/kikeelectronico/Homeware-LAN/wiki](https://github.com/kikeelectronico/Homeware-LAN/wiki).
+1. Open a terminal window in your Raspberry Pi and run:
+```
+wget https://raw.githubusercontent.com/kikeelectronico/Homeware-LAN/master/bash/install.sh
+```
+```
+sudo sh install.sh
+```
+2. Follow the instructions that appear in the screen.
 
 # Stay up to date
 
@@ -24,17 +28,13 @@ Subscribe to this Telegram channel: [https://t.me/homeware_up_to_date](https://t
 
 # Contribute
 
-Read CONTRIBUTING.md
+Read [CONTRIBUTING.md](https://kikeelectronico.github.io/Homeware-LAN/CONTRIBUTING.html) and [CODE_OF_CONDUCT.md](https://kikeelectronico.github.io/Homeware-LAN/CODE_OF_CONDUCT.html).
 
 # Documentation
 
 ## Homeware Docs
 
 https://kikeelectronico.github.io/Homeware-LAN/
-
-## Homeware API
-
-https://kikeelectronico.github.io/Homeware-LAN/api/
 
 ## Google guides
 
