@@ -19,17 +19,17 @@ ALLOWED_EXTENSIONS = {'json'}
 FOUR_O_ONE = {
     'error': 'Bad authentication',
     'code': 401,
-    'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
+    'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api-docs.html'
 }
 FOUR_O_FOUR = {
     'error': 'Not found',
     'code': 404,
-    'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
+    'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api-docs.html'
 }
 FOUR_O_O = {
     'error': 'Operation not supported',
     'code': 400,
-    'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
+    'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api-docs.html'
 }
 TWO_O_O = {
     'status': 'Success',

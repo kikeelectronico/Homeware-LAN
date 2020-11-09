@@ -119,7 +119,7 @@ class App extends React.Component {
                   <Menu image="/menu/logs_icon.png" title="Logs" href="/logs"/>
                   <hr/>
                   <Menu image="/menu/repo_icon.png" title="Repo" href="https://github.com/kikeelectronico/Homeware-LAN"/>
-                  <Menu image="/menu/help_icon.png" title="How to" href="https://github.com/kikeelectronico/Homeware-LAN/wiki"/>
+                  <Menu image="/menu/help_icon.png" title="How to" href="https://kikeelectronico.github.io/Homeware-LAN/"/>
                   <hr/>
                   <Menu image="/menu/logout_icon.png" title="Logout" exec={ this.logout }/>
                 </div>
