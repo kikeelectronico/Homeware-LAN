@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Credits
-image: post/how-to.jpg
+image: post/credits.jpg
 ---
 
 Homeware is possible thanks to a lot of open source software, modules and resources. Thank you all.
@@ -31,10 +31,8 @@ Homeware is possible thanks to a lot of open source software, modules and resour
 - [react-scripts](https://github.com/facebook/create-react-app)
 - [react-switch](https://github.com/markusenglund/react-switch)
 
-
-
-
+Let me know if I have forgot something.
 
 ...
 
-Image credit: [qimono](https://pixabay.com/es/photos/idea-vac%C3%ADo-de-papel-pluma-1876658/)
+Image credit: [RyanMcGuire](https://pixabay.com/es/photos/gracias-luces-de-ne%C3%B3n-ne%C3%B3n-362164/)
