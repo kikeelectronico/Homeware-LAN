@@ -552,6 +552,7 @@ table tr:hover {
   -webkit-transition: right 0.35s cubic-bezier(0.565, 1.65, 0.765, 0.9);
   -o-transition: right 0.35s cubic-bezier(0.565, 1.65, 0.765, 0.9);
   transition: right 0.35s cubic-bezier(0.565, 1.65, 0.765, 0.9);
+  overflow-x: hidden;
 }
 
 .full-page-container.open {
