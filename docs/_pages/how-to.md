@@ -30,4 +30,4 @@ There are two things you must do.
 
 ...
 
-Image credit: [qimono](https://pixabay.com/es/photos/idea-vac%C3%ADo-de-papel-pluma-1876658/)
+Image credit: [qimono](https://pixabay.com/es/photos/idea-vac%C3%ADo-de-papel-pluma-1876658/){:target="_blank"}

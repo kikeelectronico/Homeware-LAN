@@ -70,4 +70,4 @@ The hardware can request its information to Homeware at any time by sending a re
 
 ...
 
-Image credit: [blickpixel](https://pixabay.com/es/photos/cables-de-red-rj45-parche-499792/)
+Image credit: [blickpixel](https://pixabay.com/es/photos/cables-de-red-rj45-parche-499792/){:target="_blank"}

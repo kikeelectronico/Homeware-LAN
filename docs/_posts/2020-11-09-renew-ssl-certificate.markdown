@@ -20,4 +20,4 @@ You can find the revoke date using your web browser:
 
 ...
 
-Image credit: [MSA-90](https://pixabay.com/es/photos/clave-llavero-metal-gris-brillante-2501911/)
+Image credit: [MSA-90](https://pixabay.com/es/photos/clave-llavero-metal-gris-brillante-2501911/){:target="_blank"}

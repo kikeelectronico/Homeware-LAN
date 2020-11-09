@@ -19,4 +19,4 @@ sudo sh install.sh
 
 ...
 
-Image credit: [Sid74](https://pixabay.com/es/photos/electricista-3087536/)
+Image credit: [Sid74](https://pixabay.com/es/photos/electricista-3087536/){:target="_blank"}

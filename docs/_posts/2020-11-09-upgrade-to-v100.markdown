@@ -42,4 +42,4 @@ Do not forget to clean your web browser's cache.
 
 ...
 
-Image credit: [viarami](https://pixabay.com/es/photos/actualizaci%C3%B3n-publicaci%C3%B3n-blog-5238354/)
+Image credit: [viarami](https://pixabay.com/es/photos/actualizaci%C3%B3n-publicaci%C3%B3n-blog-5238354/){:target="_blank"}

@@ -101,4 +101,4 @@ Note: If you open the Bulb in the Home App and the Bulb it is not online (there 
 
 ...
 
-Image credit: [Myriams-Fotos](https://pixabay.com/es/photos/fideos-espagueti-pasta-anudado-4851996/)
+Image credit: [Myriams-Fotos](https://pixabay.com/es/photos/fideos-espagueti-pasta-anudado-4851996/){:target="_blank"}
