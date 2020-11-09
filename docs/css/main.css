@@ -668,7 +668,7 @@ table tr:hover {
 
 .site-logo a {
   display: inline-block;
-  font-family: 'Dancing Script', cursive;
+  /* font-family: 'Dancing Script', cursive; */
   font-size: 36px;
   font-weight: 400;
   text-decoration: none;
@@ -1696,7 +1696,7 @@ table tr:hover {
 .site-footer .footer-heading {
   margin: 0 0 30px;
   font-size: 37px;
-  font-family: 'Dancing Script', cursive;
+  /* font-family: 'Dancing Script', cursive; */
   text-align: center;
   font-weight: 400;
   line-height: 30px;
