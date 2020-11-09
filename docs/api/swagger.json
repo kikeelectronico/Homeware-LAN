@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "description": "Homeware's API documentation.",
-    "version": "v1.0.0",
+    "version": "v1.x.x",
     "title": "Homeware's API",
     "contact": {
       "email": "hola@rinconingenieril.es"
