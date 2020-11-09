@@ -1,10 +1,19 @@
 ---
 layout: post
-title: About the benefits of water
-date: 2017-10-09 17:33:28 +0300
-img: post/traffic-light.jpg
-tags: Rest
+title: Install Homeware
+date: 2020-11-09 12:29:00 +0200
+img: post/install.jpg
+tags: intall
 ---
-# Post example
+1. Open a terminal window in your Raspberry Pi and run:
+```
+wget https://raw.githubusercontent.com/kikeelectronico/Homeware-LAN/master/bash/install.sh
+```
+```
+sudo sh install.sh
+```
+2. Follow the script instructions.
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+...
+
+Image credit: [Sid74](https://pixabay.com/es/photos/electricista-3087536/)
