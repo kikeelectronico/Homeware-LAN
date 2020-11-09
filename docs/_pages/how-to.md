@@ -23,7 +23,7 @@ How to [connect a hardware device](https://kikeelectronico.github.io/Homeware-LA
 
 # Maintenance
 
-There are two things that you must do.
+There are two things you must do.
 
 1. Check for code updates from the _System_ tab at you Homeware panel.
 2. Keep you ssl updated. Follow this [instructions](https://kikeelectronico.github.io/Homeware-LAN/2020/11/09/renew-ssl-certificate/).
