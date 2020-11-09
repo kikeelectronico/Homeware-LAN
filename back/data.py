@@ -184,7 +184,7 @@ class Data:
 
     def deleteTask(self, i):
         tasks = json.loads(self.redis.get('tasks'))
-        if int(incommingData['id']) < len(tasks):
+        if i < len(tasks):
             del tasks[int(i)]
             self.redis.set('tasks', json.dumps(tasks))
             return True
