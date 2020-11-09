@@ -1773,6 +1773,12 @@ table tr:hover {
 }
 
 .page {
+  width: 700px%;
+  margin-left: 20px auto;
+  background-color: #ffffff;
+}
+
+.page-full {
   width: 80%;
   margin-left: 10%;
   background-color: #ffffff;
