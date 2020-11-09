@@ -8,8 +8,6 @@ from data import Data
 #Init the data managment object
 hData = Data()
 
-hData.setVerbose(True)
-
 def verifyTasks():
     tasks = hData.getTasks()
     status = hData.getStatus()
@@ -18,7 +16,6 @@ def verifyTasks():
         triggers = taskData['triggers']
         try:
             execution_value = operationExecutor('trigger', triggers, status)
-            # print(taskData['title'], execution_value, sep=": ")
             if execution_value:
                 for target in taskData['target']:
                     hData.updateParamStatus(target['device'], target['param'], target['value'])
