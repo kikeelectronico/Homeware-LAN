@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Credits
+title: Libs
 image: post/credits.jpg
 ---
 
