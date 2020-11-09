@@ -5,7 +5,7 @@ baseurl: "/Homeware-LAN" # the subpath of your site, e.g. /blog
 url: "https://kikeelectronico.github.io/Homeware-LAN/" # the base hostname & protocol for your site, e.g. http://example.com
 
 # Banner Section
-hero: warm-and-cozy.jpg
+hero: /home/warm-and-cozy.jpg
 hero-title: Welcome to Homeware
 hero-description: A full ecosystem for Google Home integration using Raspberry Pi.
 
