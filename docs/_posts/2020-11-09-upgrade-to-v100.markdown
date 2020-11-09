@@ -1,0 +1,45 @@
+---
+layout: post
+title: Upgrade to v1.0.0
+date: 2020-11-09 12:29:00 +0200
+img: post/upgrade-to-v100.jpg
+tags: upgrade update
+---
+
+Please, **backup your system**. Use the backup file option.
+
+# Process
+
+You shouldn't upgrade to v1.0 from an older versión. You **MUST INSTALL THE NEW VERSION** and restore your backup file after installation.
+
+# Installation process
+
+First you need to delete some old files and configurations
+
+## Delete the cron jobs
+
+Run: ```sudo crontab -e``` and delete the following lines:
+
+@reboot sudo systemctl start homeware
+
+@reboot sudo systemctl start homewareMQTT
+
+@reboot sudo systemctl start homewareTask
+
+@reboot sudo systemctl start homewareRedis
+
+## Delete the Redis service
+
+```
+sudo rm /lib/systemd/system/homewareRedis.service
+```
+
+## Install the new version
+
+https://github.com/kikeelectronico/Homeware-LAN/wiki/Install-Homeware-LAN
+
+Do not forget to clean your web browser's cache.
+
+...
+
+Image credit: [viarami](https://pixabay.com/es/photos/actualizaci%C3%B3n-publicaci%C3%B3n-blog-5238354/){:target="_blank"}
