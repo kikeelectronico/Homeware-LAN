@@ -18,7 +18,7 @@ First you need to delete some old files and configurations
 
 ## Delete the cron jobs
 
-Run: `sudo crontab -e` and delete the following lines:
+Run: ```sudo crontab -e``` and delete the following lines:
 
 @reboot sudo systemctl start homeware
 
@@ -30,7 +30,9 @@ Run: `sudo crontab -e` and delete the following lines:
 
 ## Delete the Redis service
 
-`sudo rm /lib/systemd/system/homewareRedis.service`
+```
+sudo rm /lib/systemd/system/homewareRedis.service
+```
 
 ## Install the new version
 
