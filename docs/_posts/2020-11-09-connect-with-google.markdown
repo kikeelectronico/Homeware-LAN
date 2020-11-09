@@ -60,7 +60,7 @@ Go to <a href="https://console.actions.google.com/" target="blanck">Actions on G
 
 8. Add the fullfillment URL using your domain.
 
-```Markdown
+```
 https://<your.domain.com>/smarthome/
 ```
 9. Select `Save`.
