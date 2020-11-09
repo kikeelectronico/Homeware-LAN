@@ -6,7 +6,7 @@ img: post/connect-with-google.jpg
 tags: intall begin connect google
 ---
 
-Once you have installed Homeware in your server, you must tell Google where your server is. Follow this instrucctions:
+Once you have installed Homeware on your server, you must tell Google where your server is. Follow this instrucctions:
 
 This is **important**.
 - Follow this steps one by one and in order.
