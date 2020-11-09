@@ -5,7 +5,7 @@ image: post/how-to.jpg
 ---
 # Install Homeware
 
-The first step is to install Homeware in your Raspberry Pi or server. Follow this [instructions](https://kikeelectronico.github.io/Homeware-LAN/2020/11/09/install/)
+The first step is to install Homeware in your Raspberry Pi or server. Follow this [instructions](https://kikeelectronico.github.io/Homeware-LAN/2020/11/09/install/).
 
 # Create
 
@@ -19,14 +19,14 @@ WIP
 
 ## Connect a hardware device to Homeware
 
-How to [connect a hardware device](https://kikeelectronico.github.io/Homeware-LAN/2020/11/09/connecting/)
+How to [connect a hardware device](https://kikeelectronico.github.io/Homeware-LAN/2020/11/09/connecting/).
 
 # Maintenance
 
 There are two things that you must do.
 
 1. Check for code updates from the _System_ tab at you Homeware panel.
-2. Keep you ssl updated. Follow this [instructions](https://kikeelectronico.github.io/Homeware-LAN/2020/11/09/renew-ssl-certificate/)
+2. Keep you ssl updated. Follow this [instructions](https://kikeelectronico.github.io/Homeware-LAN/2020/11/09/renew-ssl-certificate/).
 
 ...
 
