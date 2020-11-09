@@ -3,22 +3,4 @@ layout: page-full
 title: API docs
 image: 13.jpg
 ---
-<div id="swagger-ui"></div>
-
-<script src="/Homeware-LAN/api/swagger-ui-bundle.js"></script>
-<script src="/Homeware-LAN/api/swagger-ui-standalone-preset.js"></script>
-
-<script>
-window.onload = function() {
-  const ui = SwaggerUIBundle({
-    url: "/Homeware-LAN/api/swagger.json",
-    dom_id: '#swagger-ui',
-    presets: [
-      SwaggerUIBundle.presets.apis,
-      SwaggerUIStandalonePreset
-    ]
-  })
-
-  window.ui = ui
-}
-</script>
+<iframe style="width: 100%, height: 100%" src="/Homeware-LAN/api/"></iframe>
