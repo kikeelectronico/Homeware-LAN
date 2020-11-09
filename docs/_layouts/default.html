@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  {% include head.html %}
+  
+  {% if page.url == '/' %}
+    {% assign class = 'body-post' %}
+  <body class="{{ class }}">
+  {% endif %}
+  
+    {% if site.google-analytics %}
+      {% include google-analytics.html %}
+    {% endif %}
+
+    <div class="full-page-container">
+      <div class="overlay"></div>
+      {% include header.html %}
+      {% include search.html %}
+
+        {{ content }}
+
+      {% include scroll-top.html %}
+      {% include footer.html %}
+    </div> <!-- /.full-page-container -->
+
+    {% include javascripts.html %}
+  </body>
+
+</html>
