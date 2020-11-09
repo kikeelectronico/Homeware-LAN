@@ -1773,9 +1773,9 @@ table tr:hover {
 }
 
 .page {
-  width: 740px;
+  width: 80%;
   max-width: 100%;
-  margin: 80px auto;
+  margin-left: 10%;
   background-color: #ffffff;
 }
 
