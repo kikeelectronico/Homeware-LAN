@@ -7,8 +7,8 @@ class test_homeware(unittest.TestCase):
     def setUp(self):
         self.tester = app.test_client(self)
         self.user = {
-            'user': 'enrique',
-            'pass': 'enrique'
+            'user': 'userTest',
+            'pass': 'passTest'
             }
         response = self.tester.post("/api/user/set/",data=self.user)
         print(response.data)
