@@ -1,7 +1,7 @@
 import unittest
 from data import Data
 
-class TestData(unittest.TestCase):
+class Test_data(unittest.TestCase):
     def setUp(self):
         self.data = Data()
 
