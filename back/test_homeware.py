@@ -10,7 +10,8 @@ class test_homeware(unittest.TestCase):
             'user': 'enrique',
             'pass': 'enrique'
             }
-        self.tester.post("/api/user/set/",data=self.user)
+        response = self.tester.post("/api/user/set/",data=self.user)
+        print(response.data)
         creds = json.loads(self.tester.post("/api/user/login/",headers=self.user).data)
         print(creds)
         self.token = {
