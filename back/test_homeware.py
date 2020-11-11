@@ -464,8 +464,22 @@ class test_homeware(unittest.TestCase):
 
 # SYSTEM
 
+    def test_system_status(self):
+        response = self.tester.get("/api/system/status/",headers=self.token)
+        data = json.loads(response.data)
+        self.assertEqual(data["api"]["status"],"Running")
+        self.assertEqual(data["mqtt"]["status"],"Stopped")
+        self.assertEqual(data["tasks"]["status"],"Stopped")
+        self.assertEqual(data["redis"]["status"],"Running")
 
+    def test_system_401(self):
+        response = self.tester.get("/api/system/status/")
+        self.assertEqual(json.loads(response.data)['code'], 401)
 # LOG
+
+    def test_log_get(self):
+        response = self.tester.get("/api/log/get/",headers=self.token)
+        self.assertEqual(type(json.loads(response.data)), list)
 
 if __name__ == "__main__":
     unittest.main()
