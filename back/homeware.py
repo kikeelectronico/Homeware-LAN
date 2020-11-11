@@ -183,7 +183,7 @@ def apiTasks(operation = "", value = ''):
             hData.createTask(incommingData['task'])
             responseData = TWO_O_O
         elif operation == 'delete':
-            if hData.deleteTask(value):
+            if hData.deleteTask(int(value)):
                 responseData = TWO_O_O
             else:
                 responseData = FOUR_O_FOUR
@@ -355,7 +355,7 @@ def apiSystem(operation = "", value = ''):
 
     if accessLevel >= 100:
         if operation == 'upgrade':
-            subprocess.run(["sudo", "sh", "bash/update.sh"],  stdout=subprocess.PIPE)
+            subprocess.run(["sudo", "sh", "../bash/update.sh"],  stdout=subprocess.PIPE)
             responseData = TWO_O_O
         elif operation == 'status':
 
@@ -397,9 +397,9 @@ def apiSystem(operation = "", value = ''):
                 if (ts - int(alive['tasks'])) < 10:
                     responseData['tasks']['status'] = "Running"
             except:
-                print("fail")
+                print("homewareMQTT stopped")
         elif operation == 'restart':
-            subprocess.run(["sudo", "sh", "bash/restart.sh"],  stdout=subprocess.PIPE)
+            subprocess.run(["sudo", "sh", "../bash/restart.sh"],  stdout=subprocess.PIPE)
             responseData = TWO_O_O
         elif operation == 'reboot':
             subprocess.run(["sudo", "reboot"],  stdout=subprocess.PIPE)
