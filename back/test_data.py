@@ -190,7 +190,7 @@ class Test_data(unittest.TestCase):
 
 # TASKS
 
-    def test_createYask(self):
+    def test_createTask(self):
         task = {
           "title": "Light",
           "description": "Light control description",

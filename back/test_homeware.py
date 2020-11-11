@@ -7,13 +7,11 @@ class test_homeware(unittest.TestCase):
     def setUp(self):
         self.tester = app.test_client(self)
         self.user = {
-            'user': 'userTest',
-            'pass': 'passTest'
+            'user': 'enrique',
+            'pass': 'enrique'
             }
         response = self.tester.post("/api/user/set/",data=self.user)
-        print(response.data)
         creds = json.loads(self.tester.post("/api/user/login/",headers=self.user).data)
-        print(creds)
         self.token = {
             "authorization": "baerer " + creds['token']
         }
@@ -21,6 +19,8 @@ class test_homeware(unittest.TestCase):
     def test_test(self):
         response = self.tester.get("/test/",content_type="html/text")
         self.assertEqual(response.data, b"Load")
+
+# DEVICES
 
     def test_devices_create(self):
         device = {
@@ -188,6 +188,263 @@ class test_homeware(unittest.TestCase):
     def test_devices_401(self):
         response = self.tester.post("/api/devices/delete/not/")
         self.assertEqual(json.loads(response.data)['code'], 401)
+
+# STATUS
+
+    def test_status_update(self):
+        device = {
+            "attributes": {
+              "commandOnlyOnOff": True,
+              "queryOnlyOnOff": True,
+              "commandOnlyBrightness": True
+            },
+            "deviceInfo": {
+              "hwVersion": "1.0",
+              "swVersion": "1.0",
+              "manufacturer": "Homeware",
+              "model": "Homeware Lamp 2.0"
+            },
+            "id": "light014",
+            "name": {
+              "defaultNames": [
+                "Lamp"
+              ],
+              "nicknames": [
+                "Lamp"
+              ],
+              "name": "Test Lamp"
+            },
+            "traits": [
+              "action.devices.traits.OnOff",
+              "action.devices.traits.Brightness"
+            ],
+            "type": "action.devices.types.LIGHT"
+        }
+        status = {
+            "online": True,
+            "on": False,
+            "brightness": 80
+        }
+        # Create a device
+        response = self.tester.post("/api/devices/create/",json={"device":device,"status":status},headers=self.token)
+        self.assertEqual(json.loads(response.data)["code"], 200)
+        # Update and check the params
+        response = self.tester.get("/api/status/get/",headers=self.token)
+        self.assertFalse(json.loads(response.data)["light014"]["on"])
+        response = self.tester.get("/api/status/update/",json={"id": "light014","param":"on","value":True},headers=self.token)
+        self.assertEqual(json.loads(response.data)["code"], 200)
+        response = self.tester.get("/api/status/get/",headers=self.token)
+        self.assertTrue(json.loads(response.data)["light014"]["on"])
+
+
+# TASKS
+
+    def test_tasks_create(self):
+        task = {
+          "title": "Light",
+          "description": "Light control description",
+          "triggers": {
+            "trigger": {
+              "type": "or",
+              "parent": "triggers",
+              "operation": [
+                1594745594679
+              ]
+            },
+            "1594745594679": {
+              "type": "and",
+              "parent": "trigger",
+              "operation": [
+                "1594745648295",
+                "1594746507144"
+              ]
+            },
+            "1594745648295": {
+              "type": "d2b",
+              "parent": "1594745594679",
+              "operation": "light:on:=:false"
+            },
+            "1594746507144": {
+              "type": "d2b",
+              "parent": "1594745594679",
+              "operation": "light:alive:=:true"
+            }
+          },
+          "target": [
+            {
+              "device": "light",
+              "param": "on",
+              "value": True
+            }
+          ]
+        }
+        response = self.tester.post("/api/tasks/create/",json={"task": task},headers=self.token)
+        self.assertEqual(json.loads(response.data)['code'], 200)
+
+    def test_tasks_get(self):
+        task = {
+          "title": "Light",
+          "description": "Light control description",
+          "triggers": {
+            "trigger": {
+              "type": "or",
+              "parent": "triggers",
+              "operation": [
+                1594745594679
+              ]
+            },
+            "1594745594679": {
+              "type": "and",
+              "parent": "trigger",
+              "operation": [
+                "1594745648295",
+                "1594746507144"
+              ]
+            },
+            "1594745648295": {
+              "type": "d2b",
+              "parent": "1594745594679",
+              "operation": "light:on:=:false"
+            },
+            "1594746507144": {
+              "type": "d2b",
+              "parent": "1594745594679",
+              "operation": "light:alive:=:true"
+            }
+          },
+          "target": [
+            {
+              "device": "light",
+              "param": "on",
+              "value": True
+            }
+          ]
+        }
+        id = len(json.loads(self.tester.get("/api/tasks/get/",headers=self.token).data))
+        self.tester.post("/api/tasks/create/",json={"task": task},headers=self.token)
+        response = self.tester.get("/api/tasks/get/" + str(id) + "/",headers=self.token)
+        self.assertEqual(json.loads(response.data)["title"], "Light")
+
+    def test_tasks_update(self):
+        task = {
+          "title": "Light",
+          "description": "Light control description",
+          "triggers": {
+            "trigger": {
+              "type": "or",
+              "parent": "triggers",
+              "operation": [
+                1594745594679
+              ]
+            },
+            "1594745594679": {
+              "type": "and",
+              "parent": "trigger",
+              "operation": [
+                "1594745648295",
+                "1594746507144"
+              ]
+            },
+            "1594745648295": {
+              "type": "d2b",
+              "parent": "1594745594679",
+              "operation": "light:on:=:false"
+            },
+            "1594746507144": {
+              "type": "d2b",
+              "parent": "1594745594679",
+              "operation": "light:alive:=:true"
+            }
+          },
+          "target": [
+            {
+              "device": "light",
+              "param": "on",
+              "value": True
+            }
+          ]
+        }
+        # Create a task, update it and check it
+        id = len(json.loads(self.tester.get("/api/tasks/get/",headers=self.token).data))
+        self.tester.post("/api/tasks/create/",json={"task": task},headers=self.token)
+        task['title'] = 'Hello'
+        response = self.tester.post("/api/tasks/update/",json={"task": task, "id": id},headers=self.token)
+        self.assertEqual(json.loads(response.data)['code'], 200)
+        response = self.tester.get("/api/tasks/get/" + str(id) + "/",headers=self.token)
+        self.assertEqual(json.loads(response.data)['title'], "Hello")
+        # Try to update a task that doesn't exists
+        task['title'] = 'not'
+        response = self.tester.post("/api/tasks/update/",json={"task": task, "id": 100},headers=self.token)
+        self.assertEqual(json.loads(response.data)['code'], 404)
+
+    def test_tasks_delete(self):
+        task = {
+          "title": "Light",
+          "description": "Light control description",
+          "triggers": {
+            "trigger": {
+              "type": "or",
+              "parent": "triggers",
+              "operation": [
+                1594745594679
+              ]
+            },
+            "1594745594679": {
+              "type": "and",
+              "parent": "trigger",
+              "operation": [
+                "1594745648295",
+                "1594746507144"
+              ]
+            },
+            "1594745648295": {
+              "type": "d2b",
+              "parent": "1594745594679",
+              "operation": "light:on:=:false"
+            },
+            "1594746507144": {
+              "type": "d2b",
+              "parent": "1594745594679",
+              "operation": "light:alive:=:true"
+            }
+          },
+          "target": [
+            {
+              "device": "light",
+              "param": "on",
+              "value": True
+            }
+          ]
+        }
+        # Create a device and delete
+        id = len(json.loads(self.tester.get("/api/tasks/get/",headers=self.token).data))
+        self.tester.post("/api/tasks/create/",json={"task": task},headers=self.token)
+        response = self.tester.post("/api/tasks/delete/1/",headers=self.token)
+        self.assertEqual(json.loads(response.data)['code'], 200)
+        # Try to delete a device that doesn't exists
+        response = self.tester.post("/api/tasks/delete/100/",headers=self.token)
+        self.assertEqual(json.loads(response.data)['code'], 404)
+
+    def test_tasks_401(self):
+        response = self.tester.post("/api/tasks/delete/1/")
+        self.assertEqual(json.loads(response.data)['code'], 401)
+
+# GLOBAL
+
+
+# USER
+
+
+# ACCESS
+
+
+# SETTINGS
+
+
+# SYSTEM
+
+
+# LOG
 
 if __name__ == "__main__":
     unittest.main()
