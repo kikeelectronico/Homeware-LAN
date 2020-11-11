@@ -7,11 +7,13 @@ class test_homeware(unittest.TestCase):
     def setUp(self):
         self.tester = app.test_client(self)
         self.user = {
-            'user': 'enrique',
-            'pass': 'enrique'
+            "user": "enrique",
+            "pass": "enrique",
+            "token": ""
             }
         response = self.tester.post("/api/user/set/",data=self.user)
         creds = json.loads(self.tester.post("/api/user/login/",headers=self.user).data)
+        self.user["token"] = creds['token']
         self.token = {
             "authorization": "baerer " + creds['token']
         }
@@ -431,12 +433,31 @@ class test_homeware(unittest.TestCase):
 
 # GLOBAL
 
+    def test_global_version(self):
+        response = self.tester.get("/api/global/version/",content_type="html/text")
+        self.assertEqual(response.status_code, 200)
+
+    def test_global_get(self):
+        response = self.tester.get("/api/global/get/",headers=self.token)
+        data = json.loads(response.data)
+        self.assertIn("devices",data.keys())
+        self.assertIn("status",data.keys())
+        self.assertIn("tasks",data.keys())
+
 
 # USER
 
+    def test_user_validateToken(self):
+        response = self.tester.post("/api/user/validateToken/",headers=self.user)
+        self.assertEqual(json.loads(response.data)['status'], "in")
 
 # ACCESS
 
+    def test_access(self):
+        response = self.tester.get("/api/access/create/",headers=self.token)
+        apikey = json.loads(response.data)["apikey"]
+        response = self.tester.get("/api/access/get/",headers=self.token)
+        self.assertEqual(apikey, json.loads(response.data)["apikey"])
 
 # SETTINGS
 
