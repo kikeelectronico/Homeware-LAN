@@ -183,7 +183,7 @@ def apiTasks(operation = "", value = ''):
             hData.createTask(incommingData['task'])
             responseData = TWO_O_O
         elif operation == 'delete':
-            if hData.deleteTask(value):
+            if hData.deleteTask(int(value)):
                 responseData = TWO_O_O
             else:
                 responseData = FOUR_O_FOUR
