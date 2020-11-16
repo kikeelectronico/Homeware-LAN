@@ -8,7 +8,7 @@ class Test_data(unittest.TestCase):
 # GLOBAL
 
     def test_version(self):
-        self.assertEqual({'version': 'v1.0.1'}, self.data.getVersion())
+        self.assertEqual('v', self.data.getVersion()['version'][0])
 
     def test_redisStatus(self):
         response = {
