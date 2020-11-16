@@ -27,7 +27,10 @@ class App extends React.Component {
     this.state = {
       session: false,
       version: "",
-      git: ""
+      git: {
+        code: "",
+        version: 0
+      }
     }
     this.checkoutGitVersion = this.checkoutGitVersion.bind(this);
     this.logout = this.logout.bind(this);
@@ -83,9 +86,19 @@ class App extends React.Component {
       if (git.readyState === 4) {
         if (git.status === 200) {
           const latestRelease = JSON.parse(git.responseText);
-          this.setState({ git: latestRelease.tag_name });
+          this.setState({ git: {
+            version: latestRelease.tag_name,
+            description: latestRelease.body,
+            code: 200
+            }
+          });
         } else if (git.status === 403) {
-          this.setState({ git: 0 });
+        this.setState({
+          git: {
+            code: "",
+            version: 403
+          }
+        });
         } else {
           console.error(git.statusText);
         }
@@ -151,7 +164,7 @@ class App extends React.Component {
                 </div>
                 <div className="menu_data">
                   {
-                    this.state.git !== this.state.Version && this.state.git !== ''
+                    this.state.git.version !== this.state.Version && this.state.git.version !== ''
                     ?
                     <Link to="/system" className="text_decoration_none">
                       <div className="menu_data_alert">New update available</div>
@@ -164,18 +177,18 @@ class App extends React.Component {
                 </div>
               </div>
               <div className="page">
-                <Route exact={ true } path="/" component={ Devices }/>
-                <Route exact={ true } path="/devices" component={ Devices }/>
-                <Route path="/devices/editor" component={ Editor }/>
-                <Route path="/devices/info" component={ Info }/>
-                <Route path="/devices/connecting" component={ Connecting }/>
-                <Route exact={ true } path="/tasks" component={ Tasks }/>
-                <Route path="/tasks/manager" component={ Manager }/>
-                <Route path="/settings" component={ Settings }/>
-                <Route path="/system" component={ System }/>
-                <Route path="/backup" component={ Backup }/>
-                <Route path="/access" component={ Access }/>
-                <Route path="/logs" component={ Logs }/>
+                <Route exact={ true } path="/"> <Devices/> </Route>
+                <Route exact={ true } path="/devices"> <Devices/> </Route>
+                <Route path="/devices/editor"> <Editor/> </Route>
+                <Route path="/devices/info"> <Info/> </Route>
+                <Route path="/devices/connecting"> <Connecting/> </Route>
+                <Route exact={ true } path="/tasks"> <Tasks/> </Route>
+                <Route path="/tasks/manager"> <Manager/> </Route>
+                <Route path="/settings"> <Settings/> </Route>
+                <Route path="/system"> <System git={this.state.git} version={this.state.version}/> </Route>
+                <Route path="/backup"> <Backup/> </Route>
+                <Route path="/access"> <Access/> </Route>
+                <Route path="/logs"> <Logs/> </Route>
               </div>
             </div>
           </div>

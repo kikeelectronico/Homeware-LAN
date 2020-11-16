@@ -4,19 +4,13 @@ import { root } from '../../constants'
 import Component from '../system/Component.js'
 const ReactMarkdown = require('react-markdown')
 
+const COMPONENTS_CHECK_INTERVAL = 3;
 
 class System extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       components: [],
-      git: {
-        version: '',
-        description: '',
-        code: 0
-      },
-      version: '',
-      upgrading: false,
       show_system_message: false,
       system_message: ''
     }
@@ -30,50 +24,8 @@ class System extends React.Component {
   }
 
   componentDidMount() {
-
     this.loadComponents();
-    setInterval(this.loadComponents,3000)
-
-    var vers = new XMLHttpRequest();
-    vers.onload = function (e) {
-      if (vers.readyState === 4) {
-        if (vers.status === 200) {
-          var version = JSON.parse(vers.responseText);
-          this.setState({ version: version.version });
-        } else {
-          console.error(vers.statusText);
-        }
-      }
-    }.bind(this);
-    vers.open("GET", root + "api/global/version/");
-    vers.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-    vers.send();
-
-    var git = new XMLHttpRequest();
-    git.onload = function (e) {
-      if (git.readyState === 4) {
-        if (git.status === 200) {
-          const latestRelease = JSON.parse(git.responseText);
-          const description = latestRelease.body
-          this.setState({ git: {
-            version: latestRelease.tag_name,
-            description: description,
-            code: 200
-            }
-          });
-        } else if (git.status === 403) {
-          this.setState({ git: {
-            version: 'GitHub rate limit exceeded. You have reloaded so many times. It will reset after some time.',
-            code: 403
-            }
-          });
-        } else {
-          console.error(git.statusText);
-        }
-      }
-    }.bind(this);
-    git.open("GET", 'https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest');
-    git.send();
+    setInterval(this.loadComponents,COMPONENTS_CHECK_INTERVAL*1000)
   }
 
   loadComponents() {
@@ -231,20 +183,20 @@ class System extends React.Component {
               <h2>System update</h2>
               <hr/>
               <div className="page_block_content_container text_left">
-                <b>System version:</b> { this.state.version }
+                <b>System version:</b> { this.props.version }
                 {
-                  this.state.git.code !== 200
+                  this.props.git.code !== 200
                   ?
                   <div><br/> Unable to verify if there is a system update.</div>
                   :
                   <div>
                     {
-                      this.state.version !== this.state.git.version
+                      this.props.version !== this.props.git.version
                       ?
                       <div>
-                        <h2>System update available - { this.state.git.version }</h2>
+                        <h2>System update available - { this.props.git.version }</h2>
                         <div style={ git_description }>
-                          <ReactMarkdown source={this.state.git.description} />
+                          <ReactMarkdown source={this.props.git.description} />
                           <button type="button" style={ upgrade_button } onClick={ this.upgrade }>Download and install</button>
                         </div>
                       </div>
