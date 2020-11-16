@@ -25,8 +25,10 @@ jobs:
     - name: Remove last version
       run: rm -rf build
       working-directory: ${{env.working-directory}}
-    - name: Change color to alpha palette
+    - name: Change color to alpha palette App.css
       run: sed -i -e 's/1c8adb/F03780/g' src/App.css
+    - name: Change color to alpha palette index.css
+      run: sed -i -e 's/1c8adb/F03780/g' src/index.css
       working-directory: ${{env.working-directory}}
     - name: Install Packages
       run: npm install
