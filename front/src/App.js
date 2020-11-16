@@ -18,13 +18,17 @@ import Access from './components/pages/Access'
 import Logs from './components/pages/Logs'
 import Login from './components/pages/Login'
 
+const GIT_CHECK_INTERVAL = 600;
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       session: false,
-      version: ''
+      version: "",
+      git: ""
     }
+    this.checkoutGitVersion = this.checkoutGitVersion.bind(this);
     this.logout = this.logout.bind(this);
     this.menu = this.menu.bind(this);
   }
@@ -66,7 +70,30 @@ class App extends React.Component {
       vers.open("GET", root + "api/global/version/");
       vers.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
       vers.send();
+
+      this.checkoutGitVersion();
+      window.setInterval(this.checkoutGitVersion,GIT_CHECK_INTERVAL*1000)
     }
+  }
+
+  checkoutGitVersion() {
+    var git = new XMLHttpRequest();
+    git.onload = function (e) {
+      if (git.readyState === 4) {
+        if (git.status === 200) {
+          const latestRelease = JSON.parse(git.responseText);
+          const description = latestRelease.body
+          this.setState({ git: latestRelease.tag_name });
+        } else if (git.status === 403) {
+          this.setState({ git: 0 });
+          console.log('So much requests')
+        } else {
+          console.error(git.statusText);
+        }
+      }
+    }.bind(this);
+    git.open("GET", 'https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest');
+    git.send();
   }
 
   logout() {
@@ -118,13 +145,21 @@ class App extends React.Component {
                   <Menu image="/menu/access_icon.png" title="Access" href="/access"/>
                   <Menu image="/menu/logs_icon.png" title="Logs" href="/logs"/>
                   <hr/>
-                  <Menu image="/menu/repo_icon.png" title="Repo" href="https://github.com/kikeelectronico/Homeware-LAN"/>
-                  <Menu image="/menu/help_icon.png" title="How to" href="https://kikeelectronico.github.io/Homeware-LAN/"/>
+                  <Menu image="/menu/repo_icon.png" title="Repo" exec={ ()=>{window.location.href = "https://github.com/kikeelectronico/Homeware-LAN"} }/>
+                  <Menu image="/menu/help_icon.png" title="How to" exec={ ()=>{window.location.href = "https://kikeelectronico.github.io/Homeware-LAN/"} }/>
                   <hr/>
                   <Menu image="/menu/logout_icon.png" title="Logout" exec={ this.logout }/>
                 </div>
-                <div className="menu-data">
-                  <p>Version: { this.state.version }</p>
+                <div className="menu_data">
+                  {
+                    this.state.git !== this.state.Version && this.state.git !== ''
+                    ?
+                    <div className="menu_data_alert" onClick={()=>{window.location.href = "/system"}}>New update available</div>
+                    :
+                    ""
+                  }
+
+                  <p className="menu_data_version">Version: { this.state.version }</p>
                 </div>
               </div>
               <div className="page">

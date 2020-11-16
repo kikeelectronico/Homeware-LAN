@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 function Menu(props) {
 
@@ -18,11 +19,9 @@ function Menu(props) {
 
   const text = {
     fontSize: '18px',
-    cursor: 'pointer'
-  }
-
-  function go (){
-    window.location.href = props.href;
+    textDecoration: 'none',
+    cursor: 'pointer',
+    color: 'black'
   }
 
   return (
@@ -31,7 +30,15 @@ function Menu(props) {
         <img src={ props.image } alt={ props.image } style={ image }/>
       </div>
       <div style={ textContainer }>
-        <span style={ text } onClick={ props.exec ? props.exec : go}>{ props.title }</span>
+        {
+          props.exec
+          ?
+          <span style={ text } onClick={props.exec}>{ props.title }</span>
+          :
+          <Link to={props.href} style={ text }>
+            <span > { props.title }</span>
+          </Link>
+        }
       </div>
     </div>
   );

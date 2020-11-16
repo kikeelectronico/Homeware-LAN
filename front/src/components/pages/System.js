@@ -228,23 +228,32 @@ class System extends React.Component {
             </div>
 
             <div className="page_block_container">
-              <h2>Version</h2>
+              <h2>System update</h2>
               <hr/>
-              <div className="page_block_content_container">
+              <div className="page_block_content_container text_left">
                 <b>System version:</b> { this.state.version }
                 {
-                  this.state.version !== this.state.git.version
+                  this.state.git.code !== 200
                   ?
-                  <div>
-                    <b>New version:</b> { this.state.git.version}
-                    <div style={ git_description }>
-                      <ReactMarkdown source={this.state.git.description} />
-                      <button type="button" style={ upgrade_button } onClick={ this.upgrade }>Upgrade</button>
-                    </div>
-                  </div>
+                  <div><br/> Unable to verify if there is a system update.</div>
                   :
-                  ' - The system is up to date.'
+                  <div>
+                    {
+                      this.state.version !== this.state.git.version
+                      ?
+                      <div>
+                        <h2>System update available - { this.state.git.version }</h2>
+                        <div style={ git_description }>
+                          <ReactMarkdown source={this.state.git.description} />
+                          <button type="button" style={ upgrade_button } onClick={ this.upgrade }>Download and install</button>
+                        </div>
+                      </div>
+                      :
+                      <div><br/> The system is up to date.</div>
+                    }
+                  </div>
                 }
+
 
               </div>
               <div className="advise">
