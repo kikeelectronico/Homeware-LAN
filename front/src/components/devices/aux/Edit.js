@@ -1,13 +1,9 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 class Edit extends React.Component {
   constructor(props) {
     super(props);
-    this.go = this.go.bind(this);
-  }
-
-  go(){
-    window.location.href = "/devices/editor/" + this.props.id + "/"
   }
 
   render() {
@@ -23,7 +19,9 @@ class Edit extends React.Component {
 
     return (
       <div style={container}>
-        <img src="/devices/edit.png" onClick={ this.go } alt={ this.props.image } style={ image }/>
+        <Link to={"/devices/editor/" + this.props.id + "/"}>
+          <img src="/devices/edit.png" alt={ this.props.image } style={ image }/>
+        </Link>
       </div>
     );
   }

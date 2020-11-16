@@ -1,13 +1,9 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 class Information extends React.Component {
   constructor(props) {
     super(props);
-    this.go = this.go.bind(this);
-  }
-
-  go(){
-    window.location.href = "/devices/info/" + this.props.id + "/"
   }
 
   render() {
@@ -23,7 +19,9 @@ class Information extends React.Component {
 
     return (
       <div style={container}>
-        <img src="/devices/information.png" onClick={ this.go } alt={ this.props.image } style={ image }/>
+        <Link to={"/devices/info/" + this.props.id + "/"}>
+          <img src="/devices/information.png" alt={ this.props.image } style={ image }/>
+        </Link>
       </div>
     );
   }
