@@ -10,6 +10,10 @@
   position: absolute;
 }
 
+.text_left {
+  text-align: left;
+}
+
 @media only screen and (min-width: 1300px) {
   .App {
     text-align: center;
