@@ -137,8 +137,8 @@ class App extends React.Component {
                   <Menu image="/menu/access_icon.png" title="Access" href="/access"/>
                   <Menu image="/menu/logs_icon.png" title="Logs" href="/logs"/>
                   <hr/>
-                  <Menu image="/menu/repo_icon.png" title="Repo" href="https://github.com/kikeelectronico/Homeware-LAN"/>
-                  <Menu image="/menu/help_icon.png" title="How to" href="https://kikeelectronico.github.io/Homeware-LAN/"/>
+                  <Menu image="/menu/repo_icon.png" title="Repo" exec={ ()=>{window.location.href = "https://github.com/kikeelectronico/Homeware-LAN"} }/>
+                  <Menu image="/menu/help_icon.png" title="How to" exec={ ()=>{window.location.href = "https://kikeelectronico.github.io/Homeware-LAN/"} }/>
                   <hr/>
                   <Menu image="/menu/logout_icon.png" title="Logout" exec={ this.logout }/>
                 </div>
