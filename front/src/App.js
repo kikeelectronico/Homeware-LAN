@@ -86,7 +86,6 @@ class App extends React.Component {
           this.setState({ git: latestRelease.tag_name });
         } else if (git.status === 403) {
           this.setState({ git: 0 });
-          console.log('So much requests')
         } else {
           console.error(git.statusText);
         }
