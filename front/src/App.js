@@ -82,7 +82,6 @@ class App extends React.Component {
       if (git.readyState === 4) {
         if (git.status === 200) {
           const latestRelease = JSON.parse(git.responseText);
-          const description = latestRelease.body
           this.setState({ git: latestRelease.tag_name });
         } else if (git.status === 403) {
           this.setState({ git: 0 });
