@@ -18,6 +18,8 @@ import Access from './components/pages/Access'
 import Logs from './components/pages/Logs'
 import Login from './components/pages/Login'
 
+const GIT_CHECK_INTERVAL = 600;
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -26,6 +28,7 @@ class App extends React.Component {
       version: "",
       git: ""
     }
+    this.checkoutGitVersion = this.checkoutGitVersion.bind(this);
     this.logout = this.logout.bind(this);
     this.menu = this.menu.bind(this);
   }
@@ -68,24 +71,29 @@ class App extends React.Component {
       vers.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
       vers.send();
 
-      var git = new XMLHttpRequest();
-      git.onload = function (e) {
-        if (git.readyState === 4) {
-          if (git.status === 200) {
-            const latestRelease = JSON.parse(git.responseText);
-            const description = latestRelease.body
-            this.setState({ git: latestRelease.tag_name });
-          } else if (git.status === 403) {
-            this.setState({ git: 0 });
-            console.log('So much requests')
-          } else {
-            console.error(git.statusText);
-          }
-        }
-      }.bind(this);
-      git.open("GET", 'https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest');
-      git.send();
+      this.checkoutGitVersion();
+      window.setInterval(this.checkoutGitVersion,GIT_CHECK_INTERVAL*1000)
     }
+  }
+
+  checkoutGitVersion() {
+    var git = new XMLHttpRequest();
+    git.onload = function (e) {
+      if (git.readyState === 4) {
+        if (git.status === 200) {
+          const latestRelease = JSON.parse(git.responseText);
+          const description = latestRelease.body
+          this.setState({ git: latestRelease.tag_name });
+        } else if (git.status === 403) {
+          this.setState({ git: 0 });
+          console.log('So much requests')
+        } else {
+          console.error(git.statusText);
+        }
+      }
+    }.bind(this);
+    git.open("GET", 'https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest');
+    git.send();
   }
 
   logout() {
@@ -144,7 +152,7 @@ class App extends React.Component {
                 </div>
                 <div className="menu_data">
                   {
-                    this.state.git !== this.state.Version
+                    this.state.git !== this.state.Version && this.state.git !== ''
                     ?
                     <div className="menu_data_alert" onClick={()=>{window.location.href = "/system"}}>New update available</div>
                     :
