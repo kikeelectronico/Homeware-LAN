@@ -23,7 +23,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       session: false,
-      version: ''
+      version: "",
+      git: ""
     }
     this.logout = this.logout.bind(this);
     this.menu = this.menu.bind(this);
@@ -66,6 +67,24 @@ class App extends React.Component {
       vers.open("GET", root + "api/global/version/");
       vers.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
       vers.send();
+
+      var git = new XMLHttpRequest();
+      git.onload = function (e) {
+        if (git.readyState === 4) {
+          if (git.status === 200) {
+            const latestRelease = JSON.parse(git.responseText);
+            const description = latestRelease.body
+            this.setState({ git: latestRelease.tag_name });
+          } else if (git.status === 403) {
+            this.setState({ git: 0 });
+            console.log('So much requests')
+          } else {
+            console.error(git.statusText);
+          }
+        }
+      }.bind(this);
+      git.open("GET", 'https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest');
+      git.send();
     }
   }
 
@@ -123,8 +142,16 @@ class App extends React.Component {
                   <hr/>
                   <Menu image="/menu/logout_icon.png" title="Logout" exec={ this.logout }/>
                 </div>
-                <div className="menu-data">
-                  <p>Version: { this.state.version }</p>
+                <div className="menu_data">
+                  {
+                    this.state.git !== this.state.Version
+                    ?
+                    <div className="menu_data_alert" onClick={()=>{window.location.href = "/system"}}>New update available</div>
+                    :
+                    ""
+                  }
+
+                  <p className="menu_data_version">Version: { this.state.version }</p>
                 </div>
               </div>
               <div className="page">

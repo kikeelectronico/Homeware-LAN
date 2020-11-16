@@ -369,13 +369,22 @@
   color: #aaa;
 }
 
-.menu-data {
+.menu_data {
   position: absolute;
   bottom: 0px;
 }
 
-.menu-data p {
+.menu_data_version {
+  padding: 10px;
   color: #aaa;
+}
+
+.menu_data_alert {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #1c8adb;
+  color: white;
+  cursor: pointer;
 }
 
 .alert_message {
