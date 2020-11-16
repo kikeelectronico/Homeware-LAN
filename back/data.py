@@ -390,6 +390,15 @@ class Data:
     def getDDNS(self):
         return json.loads(self.redis.get('secure'))['ddns']
 
+    def updateDDNS(self, ip, status, code, enabled, last):
+        secure = json.loads(self.redis.get('secure'))
+        secure['ddns']['ip'] = ip
+        secure['ddns']['status'] = status
+        secure['ddns']['code'] = code
+        secure['ddns']['enabled'] = enabled
+        secure['ddns']['last'] = last
+        self.redis.set('secure',json.dumps(secure))
+
     def redisStatus(self):
         status = {}
         try:
