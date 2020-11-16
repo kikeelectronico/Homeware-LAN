@@ -14,6 +14,10 @@
   text-align: left;
 }
 
+.text_decoration_none {
+  text-decoration: none;
+}
+
 @media only screen and (min-width: 1300px) {
   .App {
     text-align: center;

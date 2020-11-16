@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import getCookieValue from './functions'
 import { root } from './constants'
 
@@ -153,7 +154,9 @@ class App extends React.Component {
                   {
                     this.state.git !== this.state.Version && this.state.git !== ''
                     ?
-                    <div className="menu_data_alert" onClick={()=>{window.location.href = "/system"}}>New update available</div>
+                    <Link to="/system" className="text_decoration_none">
+                      <div className="menu_data_alert">New update available</div>
+                    </Link>
                     :
                     ""
                   }
