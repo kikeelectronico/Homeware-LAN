@@ -167,7 +167,7 @@ class App extends React.Component {
               </div>
               <div className="uppper_menu_title_container">
                 <h1 className="uppper_menu_title">Homeware-LAN</h1>
-                <div className="uppper_menua_alert">{this.state.alert == "set" ? "Alert - See the system log" : ""}</div>
+                <div className="uppper_menua_alert">{this.state.alert === "set" ? "Alert - See the system log" : ""}</div>
               </div>
             </div>
             <div className="main-app">

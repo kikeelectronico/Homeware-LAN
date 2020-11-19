@@ -2,10 +2,6 @@ import React from 'react';
 import { Link } from "react-router-dom";
 
 class Connecting extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
 
     const container = {
