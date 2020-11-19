@@ -431,6 +431,8 @@ def apiLog(operation = "", value = ''):
     if accessLevel >= 100:
         if operation == 'get':
             responseData = hData.getLog()
+        elif operation == 'alert':
+            responseData = hData.isThereAnAlert()
         else:
             responseData = FOUR_O_O
     else:
@@ -716,11 +718,11 @@ def clock():
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template('404.html')
+    return "404 error"
 
 @app.errorhandler(500)
 def page_not_found(error):
-    return render_template('500.html')
+    return "500 error"
 
 if __name__ == "__main__":
     runapp()
