@@ -8,8 +8,6 @@
     "@testing-library/user-event": "^12.2.0",
     "link": "^0.1.5",
     "react": "^16.13.1",
-    "react-alert": "^7.0.2",
-    "react-alert-template-basic": "^1.0.0",
     "react-dom": "^16.13.1",
     "react-json-view": "^1.19.1",
     "react-markdown": "^4.3.1",

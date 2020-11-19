@@ -19,68 +19,72 @@ import Access from './components/pages/Access'
 import Logs from './components/pages/Logs'
 import Login from './components/pages/Login'
 
-const GIT_CHECK_INTERVAL = 600;
+const GIT_CHECKOUT_INTERVAL = 600;
+const LOG_CHECKOUT_INTERVAL = 5
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       session: false,
+      alert: "clear",
       version: "",
       git: {
         code: "",
         version: 0
       }
     }
-    this.checkoutGitVersion = this.checkoutGitVersion.bind(this);
+    this.checkoutVersion = this.checkoutVersion.bind(this);
+    this.checkoutLog = this.checkoutLog.bind(this);
     this.logout = this.logout.bind(this);
     this.menu = this.menu.bind(this);
   }
 
   componentDidMount() {
-    if (!window.location.href.includes('assistant')) {
-      var http = new XMLHttpRequest();
-      http.onload = function (e) {
-        if (http.readyState === 4) {
-          if (http.status === 200) {
-            var data = JSON.parse(http.responseText);
-            if (data.status !== 'in' && !window.location.href.includes('login'))
-              window.location.href = '/login/'
-            else if (data.status === 'in')
-              this.setState({
-                session: true
-              });
-          } else {
-            console.error(http.statusText);
-          }
+    var http = new XMLHttpRequest();
+    http.onload = function (e) {
+      if (http.readyState === 4) {
+        if (http.status === 200) {
+          var data = JSON.parse(http.responseText);
+          if (data.status !== 'in' && !window.location.href.includes('login'))
+            window.location.href = '/login/'
+          else if (data.status === 'in')
+            this.setState({
+              session: true
+            });
+        } else {
+          console.error(http.statusText);
         }
-      }.bind(this);
-      http.open("GET", root + "api/user/validateToken/");
-      http.setRequestHeader('token', getCookieValue('token'))
-      http.setRequestHeader('user', getCookieValue('user'))
-      http.send();
+      }
+    }.bind(this);
+    http.open("GET", root + "api/user/validateToken/");
+    http.setRequestHeader('token', getCookieValue('token'))
+    http.setRequestHeader('user', getCookieValue('user'))
+    http.send();
 
-      var vers = new XMLHttpRequest();
-      vers.onload = function (e) {
-        if (vers.readyState === 4) {
-          if (vers.status === 200) {
-            var version = JSON.parse(vers.responseText);
-            this.setState({ version: version.version });
-          } else {
-            console.error(vers.statusText);
-          }
-        }
-      }.bind(this);
-      vers.open("GET", root + "api/global/version/");
-      vers.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-      vers.send();
-
-      this.checkoutGitVersion();
-      window.setInterval(this.checkoutGitVersion,GIT_CHECK_INTERVAL*1000)
-    }
+    this.checkoutVersion();
+    window.setInterval(this.checkoutVersion,GIT_CHECKOUT_INTERVAL*1000)
+    this.checkoutLog();
+    window.setInterval(this.checkoutLog,LOG_CHECKOUT_INTERVAL*1000)
   }
 
-  checkoutGitVersion() {
+  checkoutVersion() {
+
+    var vers = new XMLHttpRequest();
+    vers.onload = function (e) {
+      if (vers.readyState === 4) {
+        if (vers.status === 200) {
+          var version = JSON.parse(vers.responseText);
+          this.setState({ version: version.version });
+        } else {
+          console.error(vers.statusText);
+        }
+      }
+    }.bind(this);
+    vers.open("GET", root + "api/global/version/");
+    vers.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    vers.send();
+
     var git = new XMLHttpRequest();
     git.onload = function (e) {
       if (git.readyState === 4) {
@@ -106,6 +110,25 @@ class App extends React.Component {
     }.bind(this);
     git.open("GET", 'https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest');
     git.send();
+  }
+
+  checkoutLog() {
+    var vers = new XMLHttpRequest();
+    vers.onload = function (e) {
+      if (vers.readyState === 4) {
+        if (vers.status === 200) {
+          const alert = JSON.parse(vers.responseText)
+          this.setState({
+            "alert": alert.alert
+          });
+        } else {
+          console.error(vers.statusText);
+        }
+      }
+    }.bind(this);
+    vers.open("GET", root + "api/log/alert/");
+    vers.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    vers.send();
   }
 
   logout() {
@@ -142,8 +165,9 @@ class App extends React.Component {
                 <div className="menu_icon_bar_2"></div>
                 <div className="menu_icon_bar_3"></div>
               </div>
-              <div className="uppper_menu_title">
-                <h1>Homeware-LAN</h1>
+              <div className="uppper_menu_title_container">
+                <h1 className="uppper_menu_title">Homeware-LAN</h1>
+                <div className="uppper_menua_alert">{this.state.alert == "set" ? "Alert - See the system log" : ""}</div>
               </div>
             </div>
             <div className="main-app">

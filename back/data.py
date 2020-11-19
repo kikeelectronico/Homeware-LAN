@@ -51,6 +51,9 @@ class Data:
         if not self.redis.get('tasks'):
             self.redis.set('tasks',"[]")
 
+        if self.redis.get('alert') == None:
+            self.redis.set('alert','clear')
+
         self.userName = json.loads(self.redis.get('secure'))['user']
         self.userToken = json.loads(self.redis.get('secure'))['token']['front']
         self.apikey = json.loads(self.redis.get('secure'))['token']['apikey']
@@ -425,6 +428,8 @@ class Data:
         log_register = severity + ' - ' + date_time  + ' - ' + message + '\n';
         log_file.write(log_register)
         log_file.close()
+        if (severity == "Alert"):
+            self.redis.set('alert','set')
 
         if (self.verbose):
             print(log_register)
@@ -434,7 +439,6 @@ class Data:
 
     def getLog(self):
         log = []
-
         log_file = open('../' + "homeware.log","r")
         registers = log_file.readlines()
         for register in registers:
@@ -452,8 +456,12 @@ class Data:
                     "message": content
                 })
         log_file.close()
+        self.redis.set('alert','clear')
 
         return log
+
+    def isThereAnAlert(self):
+        return {"alert": str(self.redis.get('alert'))[2:-1]}
 
 # ALIVE
 
