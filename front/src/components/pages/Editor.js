@@ -48,7 +48,8 @@ class Editor extends React.Component {
       status: {
         online: true
       },
-      posible_traits: [],
+      device_tratis: [],
+      not_recomended_traits: false,
       save_status: ""
     }
     this.updateNames = this.updateNames.bind(this);
@@ -56,6 +57,7 @@ class Editor extends React.Component {
     this.updateId = this.updateId.bind(this);
     this.updateType = this.updateType.bind(this);
     this.updateTraits = this.updateTraits.bind(this);
+    this.notRecomendedTraits = this.notRecomendedTraits.bind(this);
     this.save = this.save.bind(this);
     this.delete = this.delete.bind(this);
     this.renderAttrinutes = this.renderAttrinutes.bind(this);
@@ -68,9 +70,14 @@ class Editor extends React.Component {
         if (http.readyState === 4) {
           if (http.status === 200) {
             var data = JSON.parse(http.responseText);
+            var recomended_tratis = deviceReference.devices[data.type].traits
+            var device_tratis = data.traits.concat(recomended_tratis)
+            device_tratis = device_tratis.filter((trait,index) => {
+              return (device_tratis.indexOf(trait) == index)
+            })
             this.setState({
                device: data,
-               posible_traits: deviceReference.devices[data.type].traits
+               device_tratis: device_tratis
              });
           } else {
             console.error(http.statusText);
@@ -117,7 +124,7 @@ class Editor extends React.Component {
   updateType(event){
     this.update('type',event.target.value)
     this.setState({
-       posible_traits: deviceReference.devices[event.target.value].traits
+       device_tratis: deviceReference.devices[event.target.value].traits
      });
   }
 
@@ -144,9 +151,18 @@ class Editor extends React.Component {
         temp_device.traits = temp_device.traits.filter(function(value, index, arr){ return value !== trait;});
       }
     }
+    console.log(temp_device)
+    console.log(trait)
     this.setState({
       device: temp_device,
       status: temp_status
+    })
+  }
+
+  notRecomendedTraits(){
+    this.setState({
+      device_tratis: Object.keys(deviceReference.traits),
+      not_recomended_traits: true
     })
   }
 
@@ -222,7 +238,7 @@ class Editor extends React.Component {
   renderAttrinutes(trait){
     if (this.state.device.traits.includes(trait)){
       if (trait === 'action.devices.traits.Scene')
-        return <Scene sceneReversible={this.state.device.attributes.sceneReversible} update={this.update}/>
+        return <Scene attributes={this.state.device.attributes} update={this.update}/>
       else if (trait === 'action.devices.traits.OnOff')
         return <OnOff attributes={this.state.device.attributes} update={this.update}/>
       else if (trait === 'action.devices.traits.Brightness')
@@ -279,7 +295,7 @@ class Editor extends React.Component {
       return name
     });
 
-    const traits = this.state.posible_traits.map((trait) =>
+    const traits = this.state.device_tratis.map((trait) =>
       <div key={trait}>
         <hr className="separator"/>
         <div className="three_table_row">
@@ -341,6 +357,14 @@ class Editor extends React.Component {
               <span>The traits define what the device can do.</span>
             </div>
             {traits}
+            {
+              this.state.not_recomended_traits
+              ?
+                ""
+              :
+                <button type="button" onClick={ this.notRecomendedTraits }>More traits</button>
+
+            }
             <hr/>
             <div className="two_table_cel">
               <button type="button" style={ this.state.create ? deleteButtonDisabled : deleteButton } onClick={ this.delete } disabled={ this.state.create ? true : false}>Delete</button>
