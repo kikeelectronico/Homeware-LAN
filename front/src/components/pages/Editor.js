@@ -73,7 +73,7 @@ class Editor extends React.Component {
             var recomended_tratis = deviceReference.devices[data.type].traits
             var device_tratis = data.traits.concat(recomended_tratis)
             device_tratis = device_tratis.filter((trait,index) => {
-              return (device_tratis.indexOf(trait) == index)
+              return (device_tratis.indexOf(trait) === index)
             })
             this.setState({
                device: data,
