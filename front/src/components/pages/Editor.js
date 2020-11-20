@@ -222,7 +222,7 @@ class Editor extends React.Component {
   renderAttrinutes(trait){
     if (this.state.device.traits.includes(trait)){
       if (trait === 'action.devices.traits.Scene')
-        return <Scene sceneReversible={this.state.device.attributes.sceneReversible} update={this.update}/>
+        return <Scene attributes={this.state.device.attributes} update={this.update}/>
       else if (trait === 'action.devices.traits.OnOff')
         return <OnOff attributes={this.state.device.attributes} update={this.update}/>
       else if (trait === 'action.devices.traits.Brightness')
