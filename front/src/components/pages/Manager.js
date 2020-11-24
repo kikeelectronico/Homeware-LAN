@@ -71,7 +71,6 @@ class Manager extends React.Component {
         if (tas.readyState === 4) {
           if (tas.status === 200) {
             var data = JSON.parse(tas.responseText);
-            console.log(data);
             this.setState({
                task: data
              });
@@ -120,7 +119,6 @@ class Manager extends React.Component {
         }.bind(this), 5000)
       }
     }.bind(this);
-    console.log(this.state.task)
     var payload = {
       "task": this.state.task
     }
