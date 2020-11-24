@@ -37,6 +37,7 @@ class Manager extends React.Component {
     this.addTriggerOperation = this.addTriggerOperation.bind(this);
     this.closeTriggerAssistant = this.closeTriggerAssistant.bind(this);
     this.addTarget = this.addTarget.bind(this);
+    this.deleteTarget = this.deleteTarget.bind(this);
   }
 
   componentDidMount() {
@@ -119,6 +120,7 @@ class Manager extends React.Component {
         }.bind(this), 5000)
       }
     }.bind(this);
+    console.log(this.state.task)
     var payload = {
       "task": this.state.task
     }
@@ -259,6 +261,14 @@ class Manager extends React.Component {
     });
   }
 
+  deleteTarget(id) {
+    var task = this.state.task;
+    task.target.splice(id,1)
+    this.setState({
+      task: task
+    });
+  }
+
   render() {
 
     const button = {
@@ -279,7 +289,7 @@ class Manager extends React.Component {
     }
 
     const targets = this.state.task.target.map((target, i) => {
-      return <Target key={i} target={target} devices={this.state.devices}/>
+      return <Target key={i} id={i} target={target} devices={this.state.devices} delete={this.deleteTarget} />
     })
 
     return (
