@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import getCookieValue from './functions'
 import { root } from './constants'
 
-import Menu from './components/web/Menu'
+import MenuElement from './components/web/MenuElement'
+import Modal from './components/web/Modal'
 import Devices from './components/pages/Devices'
 import Editor from './components/pages/Editor'
 import Info from './components/pages/Info'
@@ -167,24 +168,32 @@ class App extends React.Component {
               </div>
               <div className="uppper_menu_title_container">
                 <h1 className="uppper_menu_title">Homeware-LAN</h1>
-                <div className="uppper_menua_alert">{this.state.alert === "set" ? "Alert - See the system log" : ""}</div>
+                <div className="uppper_menua_alert">
+                  {
+                    this.state.alert === "set"
+                    ?
+                      <Modal trigger={<img src="/global/alert_icon.png" alt="bell" />} title="Alert" text="See the system log" />
+                    :
+                    ""
+                  }
+                </div>
               </div>
             </div>
             <div className="main-app">
               <div className="menu" id="menu">
                 <div>
-                  <Menu image="/menu/devices_icon.png" title="Devices" href="/devices"/>
-                  <Menu image="/menu/tasks_icon.png" title="Tasks" href="/tasks"/>
-                  <Menu image="/menu/settings_icon.png" title="Settings" href="/settings"/>
-                  <Menu image="/menu/status_icon.png" title="System" href="/system"/>
-                  <Menu image="/menu/backup_icon.png" title="Backup" href="/backup"/>
-                  <Menu image="/menu/access_icon.png" title="Access" href="/access"/>
-                  <Menu image="/menu/logs_icon.png" title="Logs" href="/logs"/>
+                  <MenuElement image="/menu/devices_icon.png" title="Devices" href="/devices"/>
+                  <MenuElement image="/menu/tasks_icon.png" title="Tasks" href="/tasks"/>
+                  <MenuElement image="/menu/settings_icon.png" title="Settings" href="/settings"/>
+                  <MenuElement image="/menu/status_icon.png" title="System" href="/system"/>
+                  <MenuElement image="/menu/backup_icon.png" title="Backup" href="/backup"/>
+                  <MenuElement image="/menu/access_icon.png" title="Access" href="/access"/>
+                  <MenuElement image="/menu/logs_icon.png" title="Logs" href="/logs"/>
                   <hr/>
-                  <Menu image="/menu/repo_icon.png" title="Repo" exec={ ()=>{window.location.href = "https://github.com/kikeelectronico/Homeware-LAN"} }/>
-                  <Menu image="/menu/help_icon.png" title="How to" exec={ ()=>{window.location.href = "https://kikeelectronico.github.io/Homeware-LAN/"} }/>
+                  <MenuElement image="/menu/repo_icon.png" title="Repo" exec={ ()=>{window.location.href = "https://github.com/kikeelectronico/Homeware-LAN"} }/>
+                  <MenuElement image="/menu/help_icon.png" title="How to" exec={ ()=>{window.location.href = "https://kikeelectronico.github.io/Homeware-LAN/"} }/>
                   <hr/>
-                  <Menu image="/menu/logout_icon.png" title="Logout" exec={ this.logout }/>
+                  <MenuElement image="/menu/logout_icon.png" title="Logout" exec={ this.logout }/>
                 </div>
                 <div className="menu_data">
                   {
@@ -196,7 +205,6 @@ class App extends React.Component {
                     :
                     ""
                   }
-
                   <p className="menu_data_version">Version: { this.state.version }</p>
                 </div>
               </div>
