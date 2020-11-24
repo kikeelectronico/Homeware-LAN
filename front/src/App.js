@@ -170,7 +170,7 @@ class App extends React.Component {
                 <h1 className="uppper_menu_title">Homeware-LAN</h1>
                 <div className="uppper_menua_alert">
                   {
-                    this.state.alert !== "set"
+                    this.state.alert === "set"
                     ?
                       <Modal trigger={<img src="/global/alert_icon.png" alt="bell" />} title="Alert" text="See the system log" />
                     :
