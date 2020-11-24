@@ -18,7 +18,10 @@ def verifyTasks():
             execution_value = operationExecutor('trigger', triggers, status)
             if execution_value:
                 for target in taskData['target']:
-                    hData.updateParamStatus(target['device'], target['param'], target['value'])
+                    value = target['value']
+                    if target['value'] == 'true': value = True
+                    elif target['value'] == 'false': value = False
+                    hData.updateParamStatus(target['device'], target['param'], value)
 
 
         except Exception as e:
@@ -100,8 +103,7 @@ def d2bExecutor(operation, status):
     device = op[0]
     param = op[1]
     sign = op[2]
-    value = True if op[3] == "true" else False
-
+    value = op[3] == "true"
     if sign == '=' and status[device][param] == value:
         return True
     else:
