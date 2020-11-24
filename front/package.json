@@ -14,7 +14,8 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
-    "react-switch": "^5.0.1"
+    "react-switch": "^5.0.1",
+    "reactjs-popup": "^2.0.4"
   },
   "scripts": {
     "start": "react-scripts start",

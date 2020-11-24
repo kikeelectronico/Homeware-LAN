@@ -6,6 +6,7 @@ import getCookieValue from './functions'
 import { root } from './constants'
 
 import Menu from './components/web/Menu'
+import Modal from './components/web/Modal'
 import Devices from './components/pages/Devices'
 import Editor from './components/pages/Editor'
 import Info from './components/pages/Info'
@@ -167,7 +168,15 @@ class App extends React.Component {
               </div>
               <div className="uppper_menu_title_container">
                 <h1 className="uppper_menu_title">Homeware-LAN</h1>
-                <div className="uppper_menua_alert">{this.state.alert === "set" ? "Alert - See the system log" : ""}</div>
+                <div className="uppper_menua_alert">
+                  {
+                    this.state.alert !== "set"
+                    ?
+                      <Modal trigger={<img src="/global/alert_icon.png" alt="bell" />} title="Alert" text="See the system log" />
+                    :
+                    ""
+                  }
+                </div>
               </div>
             </div>
             <div className="main-app">
