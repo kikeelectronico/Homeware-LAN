@@ -172,7 +172,7 @@ class App extends React.Component {
                   {
                     this.state.alert === "set"
                     ?
-                      <Modal trigger={<img src="/global/alert_icon.png" alt="bell" />} title="Alert" text="See the system log" />
+                      <Modal trigger={<img src="/global/alert_icon.png" alt="bell" className="alert_icon"/>} title="Alert" content={<p>See the system log</p>} />
                     :
                     ""
                   }

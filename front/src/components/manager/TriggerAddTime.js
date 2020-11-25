@@ -2,7 +2,7 @@ import React from 'react';
 
 import '../pages/Manager.css';
 
-class Assistant extends React.Component {
+class TriggerAddTime extends React.Component {
   constructor(props) {
     super(props);
     this.addTriggerOperation = this.addTriggerOperation.bind(this);
@@ -152,4 +152,4 @@ class Assistant extends React.Component {
   }
 }
 
-export default Assistant
+export default TriggerAddTime

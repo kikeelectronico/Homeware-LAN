@@ -1,5 +1,5 @@
 import React from 'react';
-import Logic from './Logic'
+import TriggerAddLogic from './TriggerAddLogic'
 import Trigger from './Trigger'
 
 class Triggers extends React.Component {
@@ -29,9 +29,9 @@ class Triggers extends React.Component {
       const device_triggers = ['d2b','d2d','d2i','d2l','time','d2c']
 
       if (operation.type === 'or'){
-        return <Logic id={this.props.id} triggers={this.props.triggers} devices={this.props.devices} delete={this.props.delete} addTriggerLogic={this.props.addTriggerLogic} openTriggerAssistant={this.props.openTriggerAssistant}/>
+        return <TriggerAddLogic id={this.props.id} triggers={this.props.triggers} devices={this.props.devices} delete={this.props.delete} addTriggerLogic={this.props.addTriggerLogic} openTriggerAssistant={this.props.openTriggerAssistant}/>
       } else if (operation.type === 'and'){
-        return <Logic id={this.props.id} triggers={this.props.triggers} devices={this.props.devices} delete={this.props.delete} addTriggerLogic={this.props.addTriggerLogic} openTriggerAssistant={this.props.openTriggerAssistant}/>
+        return <TriggerAddLogic id={this.props.id} triggers={this.props.triggers} devices={this.props.devices} delete={this.props.delete} addTriggerLogic={this.props.addTriggerLogic} openTriggerAssistant={this.props.openTriggerAssistant}/>
       } else if (device_triggers.includes(operation.type)){
         return <Trigger id={this.props.id} triggers={this.props.triggers} devices={this.props.devices} delete={this.props.delete}/>
       }
