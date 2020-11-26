@@ -25,7 +25,7 @@ def verifyTasks():
 
 
         except Exception as e:
-            hData.log('Alert', 'Catch an error on execution of' + taskData['title'] + 'task' + str(e))
+            hData.log('Alert', 'Catch an error in execution of ' + taskData['title'] + 'task' + str(e))
 
 def ddnsUpdater():
     ddns = hData.getDDNS()
