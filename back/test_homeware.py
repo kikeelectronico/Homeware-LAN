@@ -136,13 +136,13 @@ class test_homeware(unittest.TestCase):
         # Create a device, update it and check it
         self.tester.post("/api/devices/create/",json={"device":device,"status":status},headers=self.token)
         device['name']['name'] = 'Hello'
-        response = self.tester.post("/api/devices/update/",json={"device":device},headers=self.token)
+        response = self.tester.post("/api/devices/update/",json={"device":device,"status":status},headers=self.token)
         self.assertEqual(json.loads(response.data)['code'], 200)
         response = self.tester.get("/api/devices/get/light012/",headers=self.token)
         self.assertEqual(json.loads(response.data)['name']['name'], "Hello")
         # Try to update a device that doesn't exists
         device['id'] = 'not'
-        response = self.tester.post("/api/devices/update/",json={"device":device},headers=self.token)
+        response = self.tester.post("/api/devices/update/",json={"device":device,"status":status},headers=self.token)
         self.assertEqual(json.loads(response.data)['code'], 404)
 
     def test_devices_delete(self):
