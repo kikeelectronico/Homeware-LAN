@@ -1,15 +1,19 @@
-name: Testing
+name: Testing backend
 on:
   push:
     branches:
       - develop
+    paths:
+      - "back/**"
   pull_request:
     branches:
       - develop
+    paths:
+      - "back/**"
 
 jobs:
   back:
-    name: Test backend
+    name: Test (redis, py, mosquitto)
     runs-on: ubuntu-latest
     strategy:
       matrix:
