@@ -30,7 +30,10 @@ class AddTarget extends React.Component {
   addTarget(){
     const device = document.getElementById('device').value;
     const param = document.getElementById('param').value;
-    const value = document.getElementById('value').value;
+    let value = document.getElementById('value').value;
+
+    if(value[0] === '#')
+      value = parseInt(value.substring(1),16)
 
     const target = {
       device: device,
