@@ -21,11 +21,12 @@ def verifyTasks():
                     value = target['value']
                     if target['value'] == 'true': value = True
                     elif target['value'] == 'false': value = False
+                    elif target['param'] == 'color': value = {"spectrumRGB": value, "spectrumRgb": value}
                     hData.updateParamStatus(target['device'], target['param'], value)
 
 
         except Exception as e:
-            hData.log('Alert', 'Catch an error on execution of' + taskData['title'] + 'task' + str(e))
+            hData.log('Alert', 'Catch an error in execution of ' + taskData['title'] + 'task' + str(e))
 
 def ddnsUpdater():
     ddns = hData.getDDNS()
