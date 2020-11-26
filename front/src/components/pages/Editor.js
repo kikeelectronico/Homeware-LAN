@@ -88,6 +88,25 @@ class Editor extends React.Component {
       http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
       http.send();
     }
+
+    var sta = new XMLHttpRequest();
+    sta.onload = function (e) {
+      if (sta.readyState === 4) {
+        if (sta.status === 200) {
+          var data = JSON.parse(sta.responseText);
+          this.setState({
+             status: data
+           });
+           console.log(this.state.status)
+        } else {
+          console.error(sta.statusText);
+        }
+      }
+    }.bind(this);
+    sta.open("GET", root + "api/status/get/" + this.state.id + "/");
+    sta.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    sta.send();
+  
   }
 
   updateNames(dumy_key, value){
@@ -152,7 +171,7 @@ class Editor extends React.Component {
       }
     }
     console.log(temp_device)
-    console.log(trait)
+    console.log(temp_status)
     this.setState({
       device: temp_device,
       status: temp_status
@@ -192,11 +211,11 @@ class Editor extends React.Component {
       }
     }.bind(this);
     var payload = {
-      "device": this.state.device
+      device: this.state.device,
+      status: this.state.status
     }
     if (this.state.create){
       http.open("POST", root + "api/devices/create/");
-      payload.status = this.state.status
     } else {
       http.open("POST", root + "api/devices/update/");
     }
