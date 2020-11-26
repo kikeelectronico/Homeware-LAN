@@ -91,6 +91,17 @@ class AddTarget extends React.Component {
             </div>
           </div>
         )
+      } else if(type === 'd2c'){
+        value = (
+          <div className="two_table_row">
+            <div className="two_table_cel">
+              Value*
+            </div>
+            <div className="two_table_cel">
+              <input type="color" className="" id="value"/>
+            </div>
+          </div>
+        )
       } else if(type === 'd2b' || type === 'd2l'){
 
         const options = deviceReference.params[this.state.param].select.map((option) => {
