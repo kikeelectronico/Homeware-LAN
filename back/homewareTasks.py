@@ -21,6 +21,7 @@ def verifyTasks():
                     value = target['value']
                     if target['value'] == 'true': value = True
                     elif target['value'] == 'false': value = False
+                    elif target['param'] == 'color': value = {"spectrumRGB": value, "spectrumRgb": value}
                     hData.updateParamStatus(target['device'], target['param'], value)
 
 
