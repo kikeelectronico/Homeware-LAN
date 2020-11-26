@@ -1,0 +1,35 @@
+.component {
+  margin-top: 5px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 70% 30%;
+}
+
+.component_text_container {
+  text-align: left;
+  padding-top: 4px;
+}
+
+.component_text {
+  font-size: 18px;
+}
+
+.component_label_container {
+  text-align: right;
+  padding-top: 4px;
+}
+
+.component_label {
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  padding: 5px 10px 5px 10px;
+}
+
+.component_label_runnig {
+  background-color: green;
+}
+
+.component_label_stopped {
+  background-color: red;
+}

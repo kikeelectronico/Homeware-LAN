@@ -3,7 +3,7 @@ import { deviceReference } from '../../constants'
 
 import '../pages/Manager.css';
 
-class DeviceToDevice extends React.Component {
+class TriggerAddDeviceToDevice extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -121,4 +121,4 @@ class DeviceToDevice extends React.Component {
   }
 }
 
-export default DeviceToDevice
+export default TriggerAddDeviceToDevice

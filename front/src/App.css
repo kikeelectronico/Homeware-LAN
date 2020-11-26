@@ -18,6 +18,10 @@
   text-decoration: none;
 }
 
+.alert_icon {
+  height: 25px;
+}
+
 @media only screen and (min-width: 1300px) {
   .App {
     text-align: center;
@@ -178,6 +182,10 @@
 
   .two_input{
     width: 100%;
+  }
+
+  .number_input{
+    width: 80px;
   }
 
   .two_table_cel label{
@@ -370,6 +378,10 @@
 
   .two_input{
     width: 100%;
+  }
+
+  .number_input{
+    width: 90%;
   }
 
   .two_table_cel label{

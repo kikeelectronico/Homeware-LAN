@@ -9,7 +9,7 @@ const Modal = (props) => (
     <div className="modal">
       <h2>{props.title}</h2>
       <hr/>
-      <p>{props.text}</p>
+      {props.content}
     </div>
   </Popup>
 );

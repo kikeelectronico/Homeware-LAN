@@ -88,6 +88,25 @@ class Editor extends React.Component {
       http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
       http.send();
     }
+
+    var sta = new XMLHttpRequest();
+    sta.onload = function (e) {
+      if (sta.readyState === 4) {
+        if (sta.status === 200) {
+          var data = JSON.parse(sta.responseText);
+          this.setState({
+             status: data
+           });
+           console.log(this.state.status)
+        } else {
+          console.error(sta.statusText);
+        }
+      }
+    }.bind(this);
+    sta.open("GET", root + "api/status/get/" + this.state.id + "/");
+    sta.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    sta.send();
+
   }
 
   updateNames(dumy_key, value){
@@ -135,7 +154,7 @@ class Editor extends React.Component {
       if (this.state.device.traits.includes(trait) === false){
         //Push the trait to the device
         temp_device.traits.push(trait)
-        //Set the default values
+        //Set the default attributes values
         var attributes = deviceReference.traits[trait].attributes;
         Object.keys(attributes).forEach((attribute, i) => {
           temp_device.attributes[attribute] = attributes[attribute].default
@@ -147,12 +166,25 @@ class Editor extends React.Component {
         });
       }
     } else {
+      //Delete the trait from the list
       if (this.state.device.traits.includes(trait) === true){
         temp_device.traits = temp_device.traits.filter(function(value, index, arr){ return value !== trait;});
       }
+      //Delete the attributes values
+      var attributes = deviceReference.traits[trait].attributes;
+      Object.keys(attributes).forEach((attribute, i) => {
+        if(Object.keys(temp_device.attributes).includes(attribute))
+          delete temp_device.attributes[attribute]
+      });
+      //Delete the status params
+      var params = deviceReference.traits[trait].params;
+      params.forEach((param, i) => {
+        if(Object.keys(temp_status).includes(param))
+          delete temp_status[param]
+      });
     }
     console.log(temp_device)
-    console.log(trait)
+    console.log(temp_status)
     this.setState({
       device: temp_device,
       status: temp_status
@@ -192,11 +224,11 @@ class Editor extends React.Component {
       }
     }.bind(this);
     var payload = {
-      "device": this.state.device
+      device: this.state.device,
+      status: this.state.status
     }
     if (this.state.create){
       http.open("POST", root + "api/devices/create/");
-      payload.status = this.state.status
     } else {
       http.open("POST", root + "api/devices/update/");
     }

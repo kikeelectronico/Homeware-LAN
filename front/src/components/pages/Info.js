@@ -3,6 +3,8 @@ import ReactJson from 'react-json-view'
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
+import './Info.css'
+
 class Editor extends React.Component {
   constructor(props) {
     super(props);
@@ -63,39 +65,29 @@ class Editor extends React.Component {
     sta.send();
   }
 
-
-
   render() {
-
-    const json_viewer = {
-      textAlign: 'left',
-    }
-
     return (
       <div>
-
         <div className="page_block_container">
           <h2>Device definition</h2>
           <div className="advise">
             <span>General settings of the device.</span>
             <hr/>
           </div>
-          <div style={json_viewer}>
+          <div className="json_viewer">
             <ReactJson src={this.state.device} />
           </div>
         </div>
-
         <div className="page_block_container">
           <h2>Device status</h2>
           <div className="advise">
             <span>Status of the device.</span>
             <hr/>
           </div>
-          <div style={json_viewer}>
+          <div className="json_viewer">
             <ReactJson src={this.state.status} />
           </div>
         </div>
-
       </div>
     );
   }

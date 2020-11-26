@@ -1,0 +1,15 @@
+.logs_line {
+  width: 80%;
+  margin: 10px 0 0 8%;
+  padding: 0 20px 10px 20px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.logs_yellow {
+  color: orange;
+}
+
+.logs_red {
+  color: red;
+}

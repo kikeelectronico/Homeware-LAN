@@ -97,7 +97,7 @@ class Test_data(unittest.TestCase):
         self.data.createDevice({"device":device,"status":status})
         # Update the device info
         device['name']['name'] = 'Diodi'
-        self.assertTrue(self.data.updateDevice({"device": device}))
+        self.assertTrue(self.data.updateDevice({"device": device,"status":status}))
         devices = self.data.getDevices()
         name = ''
         for device in devices:

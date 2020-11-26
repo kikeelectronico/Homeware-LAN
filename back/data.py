@@ -103,9 +103,14 @@ class Data:
             if device['id'] == deviceID:
                 temp_devices.append(incommingData['device'])
                 found = True
+                status = json.loads(self.redis.get('status'))
+                status[deviceID] = incommingData['status']
+                self.redis.set('status',json.dumps(status))
             else:
                 temp_devices.append(device)
         self.redis.set('devices',json.dumps(temp_devices))
+
+
         return found
 
     def createDevice(self, incommingData):

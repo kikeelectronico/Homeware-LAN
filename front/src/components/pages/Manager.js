@@ -1,8 +1,8 @@
 import React from 'react';
 import Triggers from '../manager/Triggers.js'
-import Assistant from '../manager/Assistant.js'
+import AddTrigger from '../manager/AddTrigger.js'
 import Target from '../manager/Target.js'
-import DeviceTarget from '../manager/DeviceTarget.js'
+import AddTarget from '../manager/AddTarget.js'
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
@@ -316,12 +316,13 @@ class Manager extends React.Component {
           <div className="advise">
             <span></span>
           </div>
+          <Triggers id="trigger" triggers={this.state.task.triggers} devices={this.state.devices} delete={this.deleteTrigger} addTriggerLogic={this.addTriggerLogic} openTriggerAssistant={this.openTriggerAssistant}/>
           {
             this.state.trigger_assistant_parent !== 0
             ?
-            <Assistant devices={this.state.devices} status={this.state.status} closeTriggerAssistant={this.closeTriggerAssistant} addTriggerOperation={this.addTriggerOperation}/>
+            <AddTrigger devices={this.state.devices} status={this.state.status} closeTriggerAssistant={this.closeTriggerAssistant} addTriggerOperation={this.addTriggerOperation}/>
             :
-            <Triggers id="trigger" triggers={this.state.task.triggers} devices={this.state.devices} delete={this.deleteTrigger} addTriggerLogic={this.addTriggerLogic} openTriggerAssistant={this.openTriggerAssistant}/>
+            ''
           }
           <hr/>
           <h2>Targets</h2>
@@ -329,8 +330,7 @@ class Manager extends React.Component {
             <span></span>
           </div>
           {targets}
-          <DeviceTarget devices={this.state.devices} status={this.state.status} addTarget={this.addTarget}/>
-
+          <AddTarget devices={this.state.devices} status={this.state.status} addTarget={this.addTarget}/>
           <hr/>
           <div className="two_table_cel">
             <button type="button" style={ this.state.create ? deleteButtonDisabled : deleteButton } onClick={ this.delete } disabled={ this.state.create ? true : false}>Delete</button>
