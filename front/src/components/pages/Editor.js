@@ -171,13 +171,13 @@ class Editor extends React.Component {
         temp_device.traits = temp_device.traits.filter(function(value, index, arr){ return value !== trait;});
       }
       //Delete the attributes values
-      var attributes = deviceReference.traits[trait].attributes;
+      attributes = deviceReference.traits[trait].attributes;
       Object.keys(attributes).forEach((attribute, i) => {
         if(Object.keys(temp_device.attributes).includes(attribute))
           delete temp_device.attributes[attribute]
       });
       //Delete the status params
-      var params = deviceReference.traits[trait].params;
+      params = deviceReference.traits[trait].params;
       params.forEach((param, i) => {
         if(Object.keys(temp_status).includes(param))
           delete temp_status[param]
