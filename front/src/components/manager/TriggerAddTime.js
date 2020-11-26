@@ -38,110 +38,38 @@ class TriggerAddTime extends React.Component {
     return (
       <div className="trigger_assistant_container">
         <h2 className="trigger_assistant_title">Triggered by time</h2>
-        <div className="three_table_row">
-          <div className="three_table_cel">
+        <div className="two_table_row">
+          <div className="two_table_cel">
             Hour*
           </div>
-          <div className="three_table_cel">
-            <input type="number" className="" id="hour" min="0" max="23"/>
-          </div>
-          <div className="three_table_cel">
-            <span className="advise">24h format</span>
+          <div className="two_table_cel">
+            <input type="number" className="number_input" id="hour" min="0" max="23"/>
           </div>
         </div>
-        <div className="three_table_row">
-          <div className="three_table_cel">
+        <div className="two_table_row">
+          <div className="two_table_cel">
             Minute*
           </div>
-          <div className="three_table_cel">
-            <input type="number" className="" id="minute" min="0" max="59"/>
-          </div>
-          <div className="three_table_cel">
-            <span className="advise"></span>
+          <div className="two_table_cel">
+            <input type="number" className="number_input" id="minute" min="0" max="59"/>
           </div>
         </div>
 
-        <div className="three_table_row">
-          <div className="three_table_cel">
+        <div className="two_table_row">
+          <div className="two_table_cel">
             Week*
           </div>
-          <div className="three_table_cel">
-            Sunday
-          </div>
-          <div className="three_table_cel">
-            <input type="checkbox" id="sunday"/>
-          </div>
-        </div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel">
-          </div>
-          <div className="three_table_cel">
-            Monday
-          </div>
-          <div className="three_table_cel">
-            <input type="checkbox" id="monday"/>
+          <div className="two_table_cel">
+            <input type="checkbox" id="sunday"/>Sunday
+            <input type="checkbox" id="monday"/>Monday
+            <input type="checkbox" id="tuesday"/>Tuesday
+            <input type="checkbox" id="wednesday"/>Wednesday
+            <input type="checkbox" id="thursday"/>Thursday
+            <input type="checkbox" id="friday"/>Friday
+            <input type="checkbox" id="saturday"/>Saturday
           </div>
         </div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel">
-          </div>
-          <div className="three_table_cel">
-            Tuesday
-          </div>
-          <div className="three_table_cel">
-            <input type="checkbox" id="tuesday"/>
-          </div>
-        </div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel">
-          </div>
-          <div className="three_table_cel">
-            Wednesday
-          </div>
-          <div className="three_table_cel">
-            <input type="checkbox" id="wednesday"/>
-          </div>
-        </div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel">
-          </div>
-          <div className="three_table_cel">
-            Thursday
-          </div>
-          <div className="three_table_cel">
-            <input type="checkbox" id="thursday"/>
-          </div>
-        </div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel">
-          </div>
-          <div className="three_table_cel">
-            Friday
-          </div>
-          <div className="three_table_cel">
-            <input type="checkbox" id="friday"/>
-          </div>
-        </div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel">
-          </div>
-          <div className="three_table_cel">
-            Saturday
-          </div>
-          <div className="three_table_cel">
-            <input type="checkbox" id="saturday"/>
-          </div>
-        </div>
-
-
-
-
+        <span className="advise">24h format</span>
 
         <div className="trigger_assisstant_buttons_container">
           <button type="button" className="trigger_assistant_button" onClick={ this.addTriggerOperation }>Save</button>

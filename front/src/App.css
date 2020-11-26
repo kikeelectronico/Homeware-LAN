@@ -184,6 +184,10 @@
     width: 100%;
   }
 
+  .number_input{
+    width: 80px;
+  }
+
   .two_table_cel label{
     margin-left: 20px;
   }
@@ -374,6 +378,10 @@
 
   .two_input{
     width: 100%;
+  }
+
+  .number_input{
+    width: 90%;
   }
 
   .two_table_cel label{

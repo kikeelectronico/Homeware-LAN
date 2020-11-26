@@ -1,6 +1,8 @@
 import React from 'react';
 import { root } from '../../constants'
 
+import './Login.css'
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -63,28 +65,20 @@ class Login extends React.Component {
 
   render() {
 
-    const form_container = {
-      margin: '20%',
-    }
-
-    const element = {
-      margin: '10px'
-    }
-
     var message = '';
     if (this.state.enable_message){
       message = <div className="alert_message"> { this.state.message } </div>
     }
 
     return (
-      <div style={ form_container }>
+      <div className="login_form_container">
         { window.location.href.includes('google') ? <p>Google request access to Homeware-Lan</p> : '' }
         <br/>
-        <span style={ element }>Username</span>
+        <span className="login_element">Username</span>
         <input type="text" name="user" id="user"/>
-        <span style={ element }>Password</span>
+        <span className="login_element">Password</span>
         <input type="password" name="password" id="password"/>
-        <button type="button" style={ element } onClick={ !window.location.href.includes('google') ? this.login : this.grantAccess }>{ !window.location.href.includes('google') ? <span>Login</span> : <span>Grant access</span> }</button>
+        <button type="button" className="login_element" onClick={ !window.location.href.includes('google') ? this.login : this.grantAccess }>{ !window.location.href.includes('google') ? <span>Login</span> : <span>Grant access</span> }</button>
         <br/>
         { message }
       </div>
