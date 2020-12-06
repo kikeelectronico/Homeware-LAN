@@ -10,7 +10,7 @@ class Backup extends React.Component {
   }
 
   backup(){
-    window.location = root + "files/buckup/homeware/" + getCookieValue('token')
+    window.location = root + "files/buckup/homeware/" + getCookieValue('token') + "?code=" + String(Math.random())
   }
 
   render() {
