@@ -23,7 +23,7 @@ class Logs extends React.Component {
       if (http.readyState === 4) {
         if (http.status === 200) {
           var data = JSON.parse(http.responseText);
-          this.setState({ data: data });
+          this.setState({ data: data.reverse() });
         } else {
           console.error(http.statusText);
         }
@@ -50,7 +50,7 @@ class Logs extends React.Component {
 
   render() {
 
-    const homeware_lan_log_data = this.state.data.reverse().slice(0, this.state.page * 10);
+    const homeware_lan_log_data = this.state.data.slice(0, this.state.page * 10);
     const homeware_lan_log = homeware_lan_log_data.map((register, i) =>
       <div className="logs_line" key={ i }>
         { register.severity === 'Log' ? <b>{ register.severity }</b> : '' }
