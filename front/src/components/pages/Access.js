@@ -126,7 +126,7 @@ class Access extends React.Component {
                 Password
               </div>
               <div className="two_table_cel">
-                <input type="text" className="two_input" id="pass" onChange={(event) => this.setState({pass: event.target.value})}/>
+                <input type="password" className="two_input" id="pass" onChange={(event) => this.setState({pass: event.target.value})}/>
               </div>
             </div>
             <div className="two_table_row">
@@ -134,7 +134,7 @@ class Access extends React.Component {
                 New password
               </div>
               <div className="two_table_cel">
-                <input type="text" className="two_input" id="new_pass" onChange={this.checkEqualPassword}/>
+                <input type="password" className="two_input" id="new_pass" onChange={this.checkEqualPassword}/>
               </div>
             </div>
             <div className="two_table_row">
@@ -142,7 +142,7 @@ class Access extends React.Component {
                 New password
               </div>
               <div className="two_table_cel">
-                <input type="text" className="two_input" id="new_pass_2" onChange={this.checkEqualPassword}/>
+                <input type="password" className="two_input" id="new_pass_2" onChange={this.checkEqualPassword}/>
               </div>
             </div>
           </div>
