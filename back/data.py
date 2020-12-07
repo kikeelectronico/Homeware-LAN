@@ -232,17 +232,16 @@ class Data:
         password = headers['pass']
         secure = json.loads(self.redis.get('secure'))
         auth = False
-        try:
-            if 'key' in secure.keys():
-                key = secure['key']
-                cipher_suite = Fernet(str.encode(secure['key'][2:len(secure['key'])]))
-                plain_text = cipher_suite.decrypt(str.encode(secure['pass'][2:len(secure['pass'])]))
-                if user == secure['user'] and plain_text == str.encode(password):
-                    hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-                    secure['pass'] = str(hashed)
-                    del secure['key']
-                    auth = True
-        except:
+        if 'key' in secure.keys():
+            key = secure['key']
+            cipher_suite = Fernet(str.encode(secure['key'][2:len(secure['key'])]))
+            plain_text = cipher_suite.decrypt(str.encode(secure['pass'][2:len(secure['pass'])]))
+            if user == secure['user'] and plain_text == str.encode(password):
+                hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+                secure['pass'] = str(hashed)
+                del secure['key']
+                auth = True
+        else:
             if bcrypt.checkpw(password.encode('utf-8'),secure['pass'][2:-1].encode('utf-8')):
                 auth = True
 
