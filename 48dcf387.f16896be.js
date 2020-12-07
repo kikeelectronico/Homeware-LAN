@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[9],{77:function(e,t,a){"use strict";a.r(t);var n=a(0),i=a.n(n),r=a(101);a(140);t.default=function(){return i.a.createElement(r.a,{title:"API"},i.a.createElement("iframe",{src:"/Homeware-LAN/api-build/",style:{width:"100%",height:800}}))}}}]);
