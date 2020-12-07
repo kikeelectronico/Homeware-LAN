@@ -1,7 +1,0 @@
-<div class="pagination-box">
-  {% assign postCount = site.posts | size %}
-  {% assign postsCovered = site.paginate | plus:offset %}
-  {% if postsCovered < postCount %}
-    <button class="load-more btn btn-middle">Load more posts</button>
-  {% endif %}
-</div> <!-- /.pagination-box -->

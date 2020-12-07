@@ -1,23 +1,39 @@
 {
-  "name": "starter_project_jekyll",
-  "version": "1.0.0",
-  "description": "A starter project - Jekyll + Gulp + Browsersync + Autoprefixer + Sass",
-  "main": "index.js",
+  "name": "docs",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "docusaurus": "docusaurus",
+    "start": "docusaurus start",
+    "build": "docusaurus build",
+    "swizzle": "docusaurus swizzle",
+    "deploy": "docusaurus deploy",
+    "serve": "docusaurus serve",
+    "clear": "docusaurus clear"
   },
-  "author": "",
-  "license": "MIT",
-  "devDependencies": {
-    "browser-sync": "^2.18.13",
-    "child_process": "^1.0.2",
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^4.0.0",
-    "gulp-cache": "^0.4.6",
-    "gulp-clean-css": "^3.9.0",
-    "gulp-group-css-media-queries": "^1.2.0",
-    "gulp-imagemin": "^3.4.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-sass": "^3.1.0"
+  "dependencies": {
+    "@docusaurus/core": "2.0.0-alpha.69",
+    "@docusaurus/preset-classic": "2.0.0-alpha.69",
+    "@mdx-js/react": "^1.6.21",
+    "clsx": "^1.1.1",
+    "node-fetch": "^2.6.1",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-markdown": "^5.0.3",
+    "swagger-ui-react": "^3.37.2",
+    "whatwg-fetch": "^3.5.0",
+    "xmlhttprequest": "^1.8.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
