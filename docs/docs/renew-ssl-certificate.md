@@ -2,7 +2,6 @@
 id: renew-ssl-certificate
 title: Renew the SSL certificate
 sidebar_label: SSL certificate
-slug: /renew-ssl-certificate
 ---
 
 Remember that the SSL certificate that you have installed will be revoked 3 months after creation. When this happen renew it running Certbot again:

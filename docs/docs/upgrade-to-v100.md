@@ -2,7 +2,6 @@
 id: upgrade-to-v100
 title: Upgrade to v1.0.0
 sidebar_label: Upgrade to v1.0.0
-slug: /upgrade-to-v100
 ---
 
 Please, **backup your system**. Use the backup file option.

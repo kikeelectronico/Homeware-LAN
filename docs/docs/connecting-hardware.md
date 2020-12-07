@@ -2,7 +2,6 @@
 id: connecting-hardware
 title: Connecting hardware to Homeware
 sidebar_label: Connect a device
-slug: /connecting-hardware
 ---
 
 Homeware LAN uses MQTT for communicate with your hardware devices. You can use any example and library that you want in order to make it works.
