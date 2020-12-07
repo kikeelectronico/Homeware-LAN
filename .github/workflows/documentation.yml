@@ -1,5 +1,4 @@
-name: documentation
-
+name: Documentation
 on:
   workflow_dispatch:
   push:
@@ -9,7 +8,8 @@ on:
       - "docs/**"
 
 jobs:
-  gh-release:
+  build-deploy:
+    name: Build and deploy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -34,6 +34,7 @@ jobs:
           USE_SSH: true
           GIT_USER: git
         run: |
+          cd docs
           git config --global user.email "actions@gihub.com"
           git config --global user.name "gh-actions"
           if [ -e yarn.lock ]; then
