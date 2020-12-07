@@ -16,13 +16,10 @@
     "@docusaurus/preset-classic": "2.0.0-alpha.69",
     "@mdx-js/react": "^1.6.21",
     "clsx": "^1.1.1",
-    "node-fetch": "^2.6.1",
+    "iframe-resizer-react": "^1.0.4",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-markdown": "^5.0.3",
-    "swagger-ui-react": "^3.37.2",
-    "whatwg-fetch": "^3.5.0",
-    "xmlhttprequest": "^1.8.0"
+    "react-markdown": "^5.0.3"
   },
   "browserslist": {
     "production": [

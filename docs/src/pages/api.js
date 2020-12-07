@@ -1,18 +1,14 @@
 import React from 'react';
 import Layout from '@theme/Layout';
-import SwaggerUI from "swagger-ui-react"
-import "swagger-ui-react/swagger-ui.css"
+import IframeResizer from 'iframe-resizer-react'
 
 function API() {
+
+  const height = 800;
+
   return (
     <Layout title="API">
-      <div
-        style={{
-        }}>
-
-        <SwaggerUI url="/Homeware-LAN/swagger.json" />
-
-      </div>
+      <iframe src="/Homeware-LAN/api-build/" style={{width: '100%', height: height}}/>
     </Layout>
   );
 }

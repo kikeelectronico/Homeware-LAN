@@ -17,32 +17,28 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/',
-          activeBasePath: 'docs',
-          label: 'Docs',
+          type: 'doc',
           position: 'left',
+          docId: 'install',
+          label: 'Docs',
         },
         {
           to: 'api/',
-          activeBasePath: 'api',
           label: 'API',
           position: 'left',
         },
         {
           to: 'libs/',
-          activeBasePath: 'libs',
           label: 'Libs',
           position: 'left',
         },
         {
           to: 'docs/code-of-conduct/',
-          activeBasePath: 'docs/code-of-conduct',
           label: 'Code of conduct',
           position: 'left',
         },
         {
           to: 'docs/contributing/',
-          activeBasePath: 'docs/contributing',
           label: 'Contributing',
           position: 'left',
         },
@@ -67,13 +63,13 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/',
+            'https://github.com/kikeelectronico/Homeware-LAN/tree/master/docs',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/blog/',
+            'https://github.com/kikeelectronico/Homeware-LAN/tree/master/docs/blog/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

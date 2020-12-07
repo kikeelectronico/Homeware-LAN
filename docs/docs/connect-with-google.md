@@ -2,7 +2,6 @@
 id: connect-with-google
 title: Connect Homeware with Google
 sidebar_label: Connect with Google
-slug: /connect-google
 ---
 
 Once you have installed Homeware in your server, you must tell Google where your server is. Follow this instrucctions:

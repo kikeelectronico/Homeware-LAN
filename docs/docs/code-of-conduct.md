@@ -1,7 +1,6 @@
 ---
 id: code-of-conduct
 title: Contributor Covenant Code of Conduct
-slug: /code-of-conduct
 ---
 
 ## Our Pledge

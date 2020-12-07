@@ -2,7 +2,6 @@
 id: install
 title: Install Homeware
 sidebar_label: Installation
-slug: /intall
 ---
 
 Homeware can be installed in different platforms like a Raspberry Pi or an Ubuntu server. Once you got your platform ready follow these instructions.
