@@ -18,7 +18,6 @@ pip3 install -r requirements.txt
 #Start services
 sudo systemctl restart homewareMQTT
 sudo systemctl restart homewareTasks
-sudo systemctl restart homewareRedis
 sudo systemctl restart homeware
 
 echo "\r\The upgrader has finished.\r\n"
