@@ -354,6 +354,24 @@ class Test_data(unittest.TestCase):
         }
         self.assertEqual(response,self.data.validateUserToken(login_data))
 
+    def updatePassword(self):
+        passwords = {
+            'new_pass': 'newPass',
+            'pass': 'passTest'
+            }
+        self.assertEqual('Updated.',self.data.updatePassword(passwords))
+        user = {
+            'user': 'userTest',
+            'pass': 'newPass'
+            }
+        login_data = self.data.login(user)
+        self.assertEqual('in',login_data['status'])
+        self.assertEqual(user['user'],login_data['user'])
+        response = {
+            'status': 'in'
+        }
+        self.assertEqual(response,self.data.validateUserToken(login_data))
+
 # ACCESS
 
     def test_getAPIKey(self):

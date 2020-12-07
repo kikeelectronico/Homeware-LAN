@@ -248,7 +248,10 @@ def apiUser(operation = "", value = ''):
 
     accessLevel = checkAccessLevel(request.headers)
 
-    if accessLevel >= 0:
+    if accessLevel >= 10:
+        if operation == 'password':
+            return hData.updatePassword(request.get_json())
+    elif accessLevel >= 0:
         if operation == 'set':
             return hData.setUser(request.get_json())
         elif operation == 'login':

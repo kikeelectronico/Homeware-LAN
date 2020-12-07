@@ -1,6 +1,7 @@
 import json
 import random
 from cryptography.fernet import Fernet
+import bcrypt
 import redis
 import time
 from datetime import datetime
@@ -207,28 +208,46 @@ class Data:
     def setUser(self, incommingData):
         if json.loads(self.redis.get('secure'))['user'] == '':
             data = {}
-            key = Fernet.generate_key()
             secure = json.loads(self.redis.get('secure'))
-            secure['key'] = str(key)
-            cipher_suite = Fernet(key)
-            ciphered_text = cipher_suite.encrypt(str.encode(incommingData['pass']))   #required to be bytes
             secure['user'] = incommingData['user']
-            secure['pass'] = str(ciphered_text)
+            secure['pass'] = str(bcrypt.hashpw(incommingData['pass'].encode('utf-8'), bcrypt.gensalt()))
             self.redis.set('secure',json.dumps(secure))
             return 'Saved correctly!'
         else:
             return 'Your user has been set in the past'
 
+    def updatePassword(self, incommingData):
+        secure = json.loads(self.redis.get('secure'))
+        password = incommingData['pass']
+        if bcrypt.checkpw(password.encode('utf-8'),secure['pass'][2:-1].encode('utf-8')):
+            secure['pass'] = str(bcrypt.hashpw(incommingData['new_pass'].encode('utf-8'), bcrypt.gensalt()))
+            self.redis.set('secure',json.dumps(secure))
+            return "Updated."
+        else:
+            return "Fail, the password hasn't been changed."
+
+
     def login(self, headers):
         user = headers['user']
         password = headers['pass']
-
         secure = json.loads(self.redis.get('secure'))
+        auth = False
+        try:
+            if 'key' in secure.keys():
+                key = secure['key']
+                cipher_suite = Fernet(str.encode(secure['key'][2:len(secure['key'])]))
+                plain_text = cipher_suite.decrypt(str.encode(secure['pass'][2:len(secure['pass'])]))
+                if user == secure['user'] and plain_text == str.encode(password):
+                    hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+                    secure['pass'] = str(hashed)
+                    del secure['key']
+                    auth = True
+        except:
+            if bcrypt.checkpw(password.encode('utf-8'),secure['pass'][2:-1].encode('utf-8')):
+                auth = True
 
-        cipher_suite = Fernet(str.encode(secure['key'][2:len(secure['key'])]))
-        plain_text = cipher_suite.decrypt(str.encode(secure['pass'][2:len(secure['pass'])]))
         responseData = {}
-        if user == secure['user'] and plain_text == str.encode(password):
+        if auth:
             #Generate the token
             chars = 'abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
             token = ''
