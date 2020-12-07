@@ -1,7 +1,6 @@
 ---
 id: contributing
 title: Contributing to Homeware
-slug: /contributing
 ---
 
 First of all, thank you for thinking in contributing.
