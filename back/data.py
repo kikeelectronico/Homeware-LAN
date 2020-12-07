@@ -216,6 +216,17 @@ class Data:
         else:
             return 'Your user has been set in the past'
 
+    def updatePassword(self, incommingData):
+        secure = json.loads(self.redis.get('secure'))
+        password = incommingData['pass']
+        if bcrypt.checkpw(password.encode('utf-8'),secure['pass'][2:-1].encode('utf-8')):
+            secure['pass'] = str(bcrypt.hashpw(incommingData['new_pass'].encode('utf-8'), bcrypt.gensalt()))
+            self.redis.set('secure',json.dumps(secure))
+            return "Updated."
+        else:
+            return "Fail, the password hasn't been changed."
+
+
     def login(self, headers):
         user = headers['user']
         password = headers['pass']
