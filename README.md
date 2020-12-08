@@ -24,7 +24,7 @@ sudo sh install.sh
 
 # Stay up to date
 
-Subscribe to this Telegram channel: [https://t.me/homeware_up_to_date](https://t.me/homeware_up_to_date)
+Spanish Telegram channel: [https://t.me/homeware_up_to_date](https://t.me/homeware_up_to_date)
 
 # Contribute
 
