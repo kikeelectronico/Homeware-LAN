@@ -1334,6 +1334,18 @@
         ],
         "parameters": [
           {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "example": "baerer {yor-API-Key}",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          },
+          {
             "in": "body",
             "name": "Password",
             "description": "User current password.",
