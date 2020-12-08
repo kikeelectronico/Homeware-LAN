@@ -20,7 +20,7 @@ wget https://raw.githubusercontent.com/kikeelectronico/Homeware-LAN/master/bash/
 ```
 sudo sh install.sh
 ```
-2. Follow the instructions that appear in the screen.
+2. Follow the instructions that appear in the screen. 
 
 # Stay up to date
 
