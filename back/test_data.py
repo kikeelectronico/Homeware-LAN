@@ -359,7 +359,7 @@ class Test_data(unittest.TestCase):
             'new_pass': 'newPass',
             'pass': 'passTest'
             }
-        self.assertEqual('Updated.',self.data.updatePassword(passwords))
+        self.assertEqual('Updated',self.data.updatePassword(passwords))
         user = {
             'user': 'userTest',
             'pass': 'newPass'
