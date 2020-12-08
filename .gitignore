@@ -6,6 +6,7 @@ hardware.py
 upgrader.log
 installations.txt
 /redis
+package-lock.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
