@@ -97,7 +97,6 @@ class Editor extends React.Component {
           this.setState({
              status: data
            });
-           console.log(this.state.status)
         } else {
           console.error(sta.statusText);
         }
@@ -183,8 +182,6 @@ class Editor extends React.Component {
           delete temp_status[param]
       });
     }
-    console.log(temp_device)
-    console.log(temp_status)
     this.setState({
       device: temp_device,
       status: temp_status
