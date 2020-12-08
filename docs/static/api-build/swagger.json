@@ -1279,7 +1279,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "body",
+            "name": "User",
             "description": "User credentials.",
             "required": true,
             "schema": {
@@ -1300,6 +1300,56 @@
             "schema": {
               "type": "string",
               "example": "Your user has beed set in the past"
+            }
+          }
+        }
+      }
+    },
+    "/user/password/": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update the admin password.",
+        "description": "Update the admin password.",
+        "produces": [
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Password",
+            "description": "User current password.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "mypassword"
+            }
+          },
+          {
+            "in": "body",
+            "name": "New password",
+            "description": "User new password.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "mynewpassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "example": "Updated"
+            }
+          },
+          "500": {
+            "description": "Fail",
+            "schema": {
+              "type": "string",
+              "example": "Fail, the password hasn't been changed"
             }
           }
         }
