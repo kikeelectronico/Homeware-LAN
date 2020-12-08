@@ -11,7 +11,7 @@ import paho.mqtt.publish as publish
 
 class Data:
 
-    version = 'v1.1.0'
+    version = 'v1.1.1'
     homewareFile = 'homeware.json'
     apikey = ''
     userToken = ''
