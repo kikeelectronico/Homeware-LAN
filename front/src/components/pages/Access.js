@@ -62,8 +62,6 @@ class Access extends React.Component {
   changePassword = () => {
     let new_pass = this.state.new_pass;
     if (new_pass.new_pass === new_pass.new_pass_2 && new_pass.new_pass.length > 0){
-        console.log(this.state.pass)
-        console.log(this.state.new_pass)
 
         var http = new XMLHttpRequest();
         http.onload = function (e) {

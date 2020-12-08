@@ -11,7 +11,7 @@ import paho.mqtt.publish as publish
 
 class Data:
 
-    version = 'v1.1.0'
+    version = 'v1.1.2'
     homewareFile = 'homeware.json'
     apikey = ''
     userToken = ''
@@ -222,9 +222,9 @@ class Data:
         if bcrypt.checkpw(password.encode('utf-8'),secure['pass'][2:-1].encode('utf-8')):
             secure['pass'] = str(bcrypt.hashpw(incommingData['new_pass'].encode('utf-8'), bcrypt.gensalt()))
             self.redis.set('secure',json.dumps(secure))
-            return "Updated."
+            return "Updated"
         else:
-            return "Fail, the password hasn't been changed."
+            return "Fail, the password hasn't been changed"
 
 
     def login(self, headers):
