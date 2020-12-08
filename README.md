@@ -20,11 +20,11 @@ wget https://raw.githubusercontent.com/kikeelectronico/Homeware-LAN/master/bash/
 ```
 sudo sh install.sh
 ```
-2. Follow the instructions that appear in the screen.
+2. Follow the instructions that appear in the screen. 
 
 # Stay up to date
 
-Subscribe to this Telegram channel: [https://t.me/homeware_up_to_date](https://t.me/homeware_up_to_date)
+Spanish Telegram channel: [https://t.me/homeware_up_to_date](https://t.me/homeware_up_to_date)
 
 # Contribute
 
