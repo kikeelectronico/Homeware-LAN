@@ -1,8 +1,8 @@
 import React from 'react';
 import Triggers from '../manager/Triggers.js'
-import Assistant from '../manager/Assistant.js'
+import AddTrigger from '../manager/AddTrigger.js'
 import Target from '../manager/Target.js'
-import DeviceTarget from '../manager/DeviceTarget.js'
+import AddTarget from '../manager/AddTarget.js'
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
@@ -37,6 +37,7 @@ class Manager extends React.Component {
     this.addTriggerOperation = this.addTriggerOperation.bind(this);
     this.closeTriggerAssistant = this.closeTriggerAssistant.bind(this);
     this.addTarget = this.addTarget.bind(this);
+    this.deleteTarget = this.deleteTarget.bind(this);
   }
 
   componentDidMount() {
@@ -70,7 +71,6 @@ class Manager extends React.Component {
         if (tas.readyState === 4) {
           if (tas.status === 200) {
             var data = JSON.parse(tas.responseText);
-            console.log(data);
             this.setState({
                task: data
              });
@@ -259,6 +259,14 @@ class Manager extends React.Component {
     });
   }
 
+  deleteTarget(id) {
+    var task = this.state.task;
+    task.target.splice(id,1)
+    this.setState({
+      task: task
+    });
+  }
+
   render() {
 
     const button = {
@@ -279,7 +287,7 @@ class Manager extends React.Component {
     }
 
     const targets = this.state.task.target.map((target, i) => {
-      return <Target key={i} target={target} devices={this.state.devices}/>
+      return <Target key={i} id={i} target={target} devices={this.state.devices} delete={this.deleteTarget} />
     })
 
     return (
@@ -308,12 +316,13 @@ class Manager extends React.Component {
           <div className="advise">
             <span></span>
           </div>
+          <Triggers id="trigger" triggers={this.state.task.triggers} devices={this.state.devices} delete={this.deleteTrigger} addTriggerLogic={this.addTriggerLogic} openTriggerAssistant={this.openTriggerAssistant}/>
           {
             this.state.trigger_assistant_parent !== 0
             ?
-            <Assistant devices={this.state.devices} status={this.state.status} closeTriggerAssistant={this.closeTriggerAssistant} addTriggerOperation={this.addTriggerOperation}/>
+            <AddTrigger devices={this.state.devices} status={this.state.status} closeTriggerAssistant={this.closeTriggerAssistant} addTriggerOperation={this.addTriggerOperation}/>
             :
-            <Triggers id="trigger" triggers={this.state.task.triggers} devices={this.state.devices} delete={this.deleteTrigger} addTriggerLogic={this.addTriggerLogic} openTriggerAssistant={this.openTriggerAssistant}/>
+            ''
           }
           <hr/>
           <h2>Targets</h2>
@@ -321,8 +330,7 @@ class Manager extends React.Component {
             <span></span>
           </div>
           {targets}
-          <DeviceTarget devices={this.state.devices} status={this.state.status} addTarget={this.addTarget}/>
-
+          <AddTarget devices={this.state.devices} status={this.state.status} addTarget={this.addTarget}/>
           <hr/>
           <div className="two_table_cel">
             <button type="button" style={ this.state.create ? deleteButtonDisabled : deleteButton } onClick={ this.delete } disabled={ this.state.create ? true : false}>Delete</button>

@@ -43,7 +43,6 @@
     },
   "tasks": [],
   "secure": {
-    "key": "",
     "domain": "",
     "user": "",
     "pass": "",

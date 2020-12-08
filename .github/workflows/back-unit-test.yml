@@ -1,0 +1,44 @@
+name: Testing backend
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - "back/**"
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - "back/**"
+
+jobs:
+  back:
+    name: Test (red, py, moss)
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        redis-version: [5, 6]
+        python-version: [3.7, 3.8, 3.9]
+        mosquitto-version: [latest]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Copy database template
+      run: cp configuration_templates/template_homeware.json homeware.json
+    - name: Start Redis ${{ matrix.redis-version }}
+      uses: supercharge/redis-github-action@1.1.0
+      with:
+        redis-version: ${{ matrix.redis-version }}
+    - name: Start Mosquitto broker
+      uses: Namoshek/mosquitto-github-action@v0.1.0
+      with:
+        version: ${{ matrix.mosquitto-version }}
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run:  pip install -r requirements.txt
+      working-directory: ./back
+    - name: Test
+      run: python -m unittest discover
+      working-directory: ./back

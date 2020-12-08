@@ -15,7 +15,7 @@ case "$response" in
         sudo apt install git -y
         sudo git clone https://github.com/kikeelectronico/Homeware-LAN.git
         # cd Homeware-LAN
-        # git checkout develop
+        # git checkout alpha
         # cd ../
         sudo chmod -R 777 Homeware-LAN
         cd Homeware-LAN

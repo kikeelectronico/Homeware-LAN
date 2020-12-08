@@ -19,8 +19,6 @@ def on_connect(client, userdata, flags, rc):
         client.subscribe(topic)
 
 def on_message(client, userdata, msg):
-    # print(msg.topic+" "+str(msg.payload))
-
     if msg.topic in TOPICS:
         if msg.topic == "device/control":
             payload = json.loads(msg.payload)
@@ -56,7 +54,6 @@ def control(payload):
     # Analyze the message
     if intent == 'execute':
         hData.updateParamStatus(id,param,value)
-        # publish.single("device/"+id, hData.getStatus()[id], hostname="localhost")
     elif intent == 'rules':
         hData.updateParamStatus(id,param,value)
     elif intent == 'request':
@@ -64,8 +61,6 @@ def control(payload):
         publish.single("device/"+id, json.dumps(status), hostname="localhost")
         for param in status.keys():
             publish.single("device/"+id+'/'+param, str(status[param]), hostname="localhost")
-
-
 
 if __name__ == "__main__":
     hData.log('Log', 'Starting HomewareMQTT core')

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
@@ -12,8 +13,6 @@ class Tasks extends React.Component {
       tasks: []
     }
     this.loadData = this.loadData.bind(this);
-    this.openManager = this.openManager.bind(this);
-    this.newTask = this.newTask.bind(this);
   }
 
   componentDidMount() {
@@ -40,23 +39,17 @@ class Tasks extends React.Component {
     http.send();
   }
 
-  openManager(event){
-    window.location.href = '/tasks/manager/' +  event.target.id.split('_')[1]
-  }
-
-  newTask(){
-    window.location.href = '/tasks/manager/'
-  }
-
   render() {
 
     const tasks = this.state.tasks.map((task, i) => {
       return(
-        <div key={i} className="task_card">
-          <h2 className="task_card_title" id={ 'task_' + i } onClick={ this.openManager }>{ task.title }</h2>
-          <hr className="task_card_divider"/>
-          <p>{ task.description }</p>
-        </div>
+        <Link key={i} to={'/tasks/manager/' + i} className="task_link">
+          <div className="task_card">
+            <h2 className="task_card_title" id={ 'task_' + i }>{ task.title }</h2>
+            <hr className="task_card_divider"/>
+            <p>{ task.description }</p>
+          </div>
+        </Link>
       )
     });
 
@@ -71,7 +64,9 @@ class Tasks extends React.Component {
         </div>
 
         <div className="page_buttons_containter">
-          <button type="button" onClick={ this.newTask }>New</button>
+          <Link to='/tasks/manager/'>
+            <button type="button">New</button>
+          </Link>
         </div>
       </div>
     );

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import Light from '../devices/Light'
 import Outlet from '../devices/Outlet'
 import AcUnit from '../devices/AcUnit'
@@ -44,7 +45,6 @@ class Devices extends React.Component {
       devices: []
     }
     this.loadData = this.loadData.bind(this);
-    this.newDevice = this.newDevice.bind(this);
   }
 
   componentDidMount() {
@@ -70,10 +70,6 @@ class Devices extends React.Component {
     http.open("GET", root + "api/global/get/");
     http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
     http.send();
-  }
-
-  newDevice(){
-    window.location.href = '/devices/editor/'
   }
 
   render() {
@@ -158,7 +154,9 @@ class Devices extends React.Component {
         </div>
 
         <div className="page_buttons_containter">
-          <button type="button" onClick={ this.newDevice }>New</button>
+          <Link to='/devices/editor/'>
+            <button type="button">New</button>
+          </Link>
         </div>
       </div>
     );

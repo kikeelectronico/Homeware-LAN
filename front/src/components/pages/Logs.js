@@ -2,6 +2,8 @@ import React from 'react';
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
+import './Logs.css'
+
 class Logs extends React.Component {
   constructor(props) {
     super(props);
@@ -21,7 +23,7 @@ class Logs extends React.Component {
       if (http.readyState === 4) {
         if (http.status === 200) {
           var data = JSON.parse(http.responseText);
-          this.setState({ data: data });
+          this.setState({ data: data.reverse() });
         } else {
           console.error(http.statusText);
         }
@@ -48,31 +50,12 @@ class Logs extends React.Component {
 
   render() {
 
-    const line = {
-      width: '80%',
-      marginLeft: '8%',
-      marginTop: '10px',
-      borderBottom: '1px solid #eee',
-      paddingLeft: '20px',
-      paddingBottom: '10px',
-      paddingRight: '20px',
-      textAlign: 'left'
-    }
-
-    const yellow = {
-      color: 'orange'
-    }
-
-    const red = {
-      color: 'red'
-    }
-
-    const homeware_lan_log_data = this.state.data.reverse().slice(0, this.state.page * 10);
+    const homeware_lan_log_data = this.state.data.slice(0, this.state.page * 10);
     const homeware_lan_log = homeware_lan_log_data.map((register, i) =>
-      <div style={ line } key={ i }>
+      <div className="logs_line" key={ i }>
         { register.severity === 'Log' ? <b>{ register.severity }</b> : '' }
-        { register.severity === 'Warning' ? <b style={ yellow }>{ register.severity }</b> : '' }
-        { register.severity === 'Alert' ? <b style={ red }>{ register.severity }</b> : '' }
+        { register.severity === 'Warning' ? <b className="logs_yellow">{ register.severity }</b> : '' }
+        { register.severity === 'Alert' ? <b className="logs_red">{ register.severity }</b> : '' }
          - { register.time }<br/>
         { register.message }
       </div>

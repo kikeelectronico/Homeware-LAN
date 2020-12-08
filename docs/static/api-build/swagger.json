@@ -1166,7 +1166,13 @@
           "200": {
             "description": "Successful operation. Returns the version.",
             "schema": {
-              "$ref": "#/definitions/version"
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "example": "v0.4"
+                }
+              }
             }
           },
           "401": {
@@ -1279,11 +1285,22 @@
         "parameters": [
           {
             "in": "body",
-            "name": "body",
-            "description": "User credentials.",
+            "name": "user",
+            "description": "Username.",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/user_credentials"
+              "type": "string",
+              "example": "myAdminUser"
+            }
+          },
+          {
+            "in": "body",
+            "name": "pass",
+            "description": "Password.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "myAdminPassword"
             }
           }
         ],
@@ -1300,6 +1317,68 @@
             "schema": {
               "type": "string",
               "example": "Your user has beed set in the past"
+            }
+          }
+        }
+      }
+    },
+    "/user/password/": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update the admin password.",
+        "description": "Update the admin password.",
+        "produces": [
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization code: API Key or admin Token.",
+            "required": true,
+            "type": "string",
+            "example": "baerer {yor-API-Key}",
+            "schema": {
+              "type": "string",
+              "example": "baerer {yor-API-Key}"
+            }
+          },
+          {
+            "in": "body",
+            "name": "Password",
+            "description": "User current password.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "mypassword"
+            }
+          },
+          {
+            "in": "body",
+            "name": "New password",
+            "description": "User new password.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "mynewpassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "example": "Updated"
+            }
+          },
+          "401": {
+            "description": "Fail",
+            "schema": {
+              "type": "string",
+              "example": "Fail, the password hasn't been changed"
             }
           }
         }
@@ -1973,7 +2052,10 @@
           "200": {
             "description": "Successful operation. Returns an array with all the devices.",
             "schema": {
-              "$ref": "#/definitions/log"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/log_register"
+              }
             }
           },
           "401": {
@@ -2097,28 +2179,6 @@
         }
       }
     },
-    "version": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "string",
-          "example": "v0.4"
-        }
-      }
-    },
-    "user_credentials": {
-      "type": "object",
-      "properties": {
-        "user": {
-          "type": "string",
-          "example": "myAdminUser"
-        },
-        "pass": {
-          "type": "string",
-          "example": "myAdminPassword"
-        }
-      }
-    },
     "settings": {
       "type": "object",
       "properties": {
@@ -2178,12 +2238,6 @@
             }
           }
         }
-      }
-    },
-    "log": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/log_register"
       }
     },
     "log_register": {

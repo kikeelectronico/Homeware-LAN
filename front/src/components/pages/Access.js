@@ -8,7 +8,10 @@ class Access extends React.Component {
     this.state = {
       data: {
         apikey: ''
-      }
+      },
+      change_password_message: "",
+      new_pass: {new_pass: "", new_pass_2: "d"},
+      equal_passwords: false
     }
   }
 
@@ -41,9 +44,49 @@ class Access extends React.Component {
         }
       }
     };
-    http.open("GET", root + "api/settings/apikey/");
+    http.open("GET", root + "api/access/create/");
     http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
     http.send();
+  }
+
+  checkEqualPassword = (event) => {
+    let new_pass = this.state.new_pass;
+    new_pass[event.target.id] = event.target.value
+    let change_password_message = "Passwords don't mach"
+    if(new_pass.new_pass === new_pass.new_pass_2) {
+      change_password_message = ""
+    }
+    this.setState({change_password_message: change_password_message, new_pass: new_pass})
+  }
+
+  changePassword = () => {
+    let new_pass = this.state.new_pass;
+    if (new_pass.new_pass === new_pass.new_pass_2 && new_pass.new_pass.length > 0){
+
+        var http = new XMLHttpRequest();
+        http.onload = function (e) {
+          if (http.readyState === 4) {
+            if (http.status === 200) {
+              this.setState({
+                 change_password_message: http.responseText
+               });
+            } else {
+              this.setState({
+                 save_status: "Error, the changes haven't been saved."
+               });
+            }
+            setTimeout(function(){
+              this.setState({
+                 save_status: ""
+               });
+            }.bind(this), 5000)
+          }
+        }.bind(this);
+        http.open("POST", root + "api/user/password/");
+        http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+        http.send(JSON.stringify({pass: this.state.pass, new_pass: this.state.new_pass.new_pass}));
+    }
   }
 
   render() {
@@ -69,6 +112,44 @@ class Access extends React.Component {
           </div>
           <div className="advise">
             <span>The API Key gives you access to the Homeware's API. Please do not generate an API Key if you are not sure of what you are doing.</span>
+          </div>
+        </div>
+
+        <div className="page_block_container">
+          <h2>Change password</h2>
+          <hr/>
+          <div className="page_block_content_container">
+            <div className="two_table_row">
+              <div className="two_table_cel">
+                Password
+              </div>
+              <div className="two_table_cel">
+                <input type="password" className="two_input" id="pass" onChange={(event) => this.setState({pass: event.target.value})}/>
+              </div>
+            </div>
+            <div className="two_table_row">
+              <div className="two_table_cel">
+                New password
+              </div>
+              <div className="two_table_cel">
+                <input type="password" className="two_input" id="new_pass" onChange={this.checkEqualPassword}/>
+              </div>
+            </div>
+            <div className="two_table_row">
+              <div className="two_table_cel">
+                New password
+              </div>
+              <div className="two_table_cel">
+                <input type="password" className="two_input" id="new_pass_2" onChange={this.checkEqualPassword}/>
+              </div>
+            </div>
+          </div>
+
+          <div className="page_block_buttons_container">
+            <div className="two_table_cel">
+              <button type="button" id="changePasswordButton" onClick={ this.changePassword }>Change</button>
+              <span>{this.state.change_password_message}</span>
+            </div>
           </div>
         </div>
       </div>

@@ -1,0 +1,7 @@
+.modal {
+  padding: 20px;
+}
+
+.modal > h2 {
+  text-align: center;
+}

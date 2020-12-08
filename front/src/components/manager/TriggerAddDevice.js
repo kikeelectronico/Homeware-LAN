@@ -3,7 +3,7 @@ import { deviceReference } from '../../constants'
 
 import '../pages/Manager.css';
 
-class Device extends React.Component {
+class TriggerAddDevice extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,7 +11,7 @@ class Device extends React.Component {
     }
     this.updateDevice = this.updateDevice.bind(this);
     this.updateParam = this.updateParam.bind(this);
-    this.addTarget = this.addTarget.bind(this);
+    this.addTriggerOperation = this.addTriggerOperation.bind(this);
     this.typeConversion = this.typeConversion.bind(this);
   }
 
@@ -27,22 +27,16 @@ class Device extends React.Component {
     });
   }
 
-  addTarget(){
+  addTriggerOperation(){
     const device = document.getElementById('device').value;
     const param = document.getElementById('param').value;
+    const comparator = document.getElementById('comparator').value;
     const value = document.getElementById('value').value;
 
-    const target = {
-      device: device,
-      param: param,
-      value: value
-    }
-    this.props.addTarget(target);
-    document.getElementById('device').value = '';
-    document.getElementById('param').value = '';
-    this.setState({
-      param: ''
-    });
+
+    const operation = device + ':' + param + ':' + comparator + ':' + value;
+    this.props.addTriggerOperation(this.typeConversion(deviceReference.params[this.state.param].type),operation);
+    this.props.closeTriggerAssistant();
   }
 
   typeConversion(origen) {
@@ -115,7 +109,7 @@ class Device extends React.Component {
 
     return (
       <div className="trigger_assistant_container">
-        <h2 className="trigger_assistant_title">New target</h2>
+        <h2 className="trigger_assistant_title">Triggered by a device</h2>
 
         <div className="two_table_row">
           <div className="two_table_cel">
@@ -139,15 +133,30 @@ class Device extends React.Component {
             </select>
           </div>
         </div>
+        <div className="two_table_row">
+          <div className="two_table_cel">
+            Comparator*
+          </div>
+          <div className="two_table_cel">
+            <select name="type" className="two_input" id="comparator">
+              <option>=</option>
+              <option>&lt;</option>
+              <option>&gt;</option>
+              <option>&lt;=</option>
+              <option>&gt;=</option>
+            </select>
+          </div>
+        </div>
 
         {value}
 
         <div className="trigger_assisstant_buttons_container">
-          <button type="button" className="trigger_assistant_button" onClick={ this.addTarget }>Add</button>
+          <button type="button" className="trigger_assistant_button" onClick={ this.addTriggerOperation }>Save</button>
+          <button type="button" className="trigger_assistant_button red_button" onClick={ this.props.closeTriggerAssistant }>Cancel</button>
         </div>
       </div>
     );
   }
 }
 
-export default Device
+export default TriggerAddDevice

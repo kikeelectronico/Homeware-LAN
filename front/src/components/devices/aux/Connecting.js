@@ -1,15 +1,7 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 class Connecting extends React.Component {
-  constructor(props) {
-    super(props);
-    this.go = this.go.bind(this);
-  }
-
-  go(){
-    window.location.href = "/devices/connecting/" + this.props.id + "/"
-  }
-
   render() {
 
     const container = {
@@ -23,7 +15,9 @@ class Connecting extends React.Component {
 
     return (
       <div style={container}>
-        <img src="/devices/connecting.png" onClick={ this.go } alt={ this.props.image } style={ image }/>
+        <Link to={"/devices/connecting/" + this.props.id + "/"}>
+          <img src="/devices/connecting.png" alt={ this.props.image } style={ image }/>
+        </Link>
       </div>
     );
   }

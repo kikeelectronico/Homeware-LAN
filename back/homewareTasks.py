@@ -8,8 +8,6 @@ from data import Data
 #Init the data managment object
 hData = Data()
 
-hData.setVerbose(True)
-
 def verifyTasks():
     tasks = hData.getTasks()
     status = hData.getStatus()
@@ -18,14 +16,17 @@ def verifyTasks():
         triggers = taskData['triggers']
         try:
             execution_value = operationExecutor('trigger', triggers, status)
-            # print(taskData['title'], execution_value, sep=": ")
             if execution_value:
                 for target in taskData['target']:
-                    hData.updateParamStatus(target['device'], target['param'], target['value'])
+                    value = target['value']
+                    if target['value'] == 'true': value = True
+                    elif target['value'] == 'false': value = False
+                    elif target['param'] == 'color': value = {"spectrumRGB": value, "spectrumRgb": value}
+                    hData.updateParamStatus(target['device'], target['param'], value)
 
 
         except Exception as e:
-            hData.log('Alert', 'Catch an error on execution of' + taskData['title'] + 'task' + str(e))
+            hData.log('Alert', 'Catch an error in execution of ' + taskData['title'] + 'task' + str(e))
 
 def ddnsUpdater():
     ddns = hData.getDDNS()
@@ -103,8 +104,7 @@ def d2bExecutor(operation, status):
     device = op[0]
     param = op[1]
     sign = op[2]
-    value = True if op[3] == "true" else False
-
+    value = op[3] == "true"
     if sign == '=' and status[device][param] == value:
         return True
     else:

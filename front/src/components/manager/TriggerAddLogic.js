@@ -3,7 +3,7 @@ import Triggers from './Triggers'
 
 import '../pages/Manager.css';
 
-class Logic extends React.Component {
+class TriggerAddLogic extends React.Component {
   constructor(props) {
     super(props);
     this.delete = this.delete.bind(this);
@@ -54,4 +54,4 @@ class Logic extends React.Component {
   }
 }
 
-export default Logic
+export default TriggerAddLogic
