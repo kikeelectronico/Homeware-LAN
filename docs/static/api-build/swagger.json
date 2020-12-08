@@ -1166,7 +1166,13 @@
           "200": {
             "description": "Successful operation. Returns the version.",
             "schema": {
-              "$ref": "#/definitions/version"
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "example": "v0.4"
+                }
+              }
             }
           },
           "401": {
@@ -1279,11 +1285,22 @@
         "parameters": [
           {
             "in": "body",
-            "name": "User",
-            "description": "User credentials.",
+            "name": "user",
+            "description": "Username.",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/user_credentials"
+              "type": "string",
+              "example": "myAdminUser"
+            }
+          },
+          {
+            "in": "body",
+            "name": "pass",
+            "description": "Password.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "myAdminPassword"
             }
           }
         ],
@@ -1345,7 +1362,7 @@
               "example": "Updated"
             }
           },
-          "500": {
+          "401": {
             "description": "Fail",
             "schema": {
               "type": "string",
@@ -2023,7 +2040,10 @@
           "200": {
             "description": "Successful operation. Returns an array with all the devices.",
             "schema": {
-              "$ref": "#/definitions/log"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/log_register"
+              }
             }
           },
           "401": {
@@ -2147,28 +2167,6 @@
         }
       }
     },
-    "version": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "string",
-          "example": "v0.4"
-        }
-      }
-    },
-    "user_credentials": {
-      "type": "object",
-      "properties": {
-        "user": {
-          "type": "string",
-          "example": "myAdminUser"
-        },
-        "pass": {
-          "type": "string",
-          "example": "myAdminPassword"
-        }
-      }
-    },
     "settings": {
       "type": "object",
       "properties": {
@@ -2228,12 +2226,6 @@
             }
           }
         }
-      }
-    },
-    "log": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/log_register"
       }
     },
     "log_register": {
