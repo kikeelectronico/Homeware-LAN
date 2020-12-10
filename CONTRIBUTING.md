@@ -81,5 +81,3 @@ If you find an issue that must be hotfixed you must create a hotfix branch.
 1. Create a feature branch called: `hotfix/<something>`. Where `<something>` describes in one or two words the hotfix.
 1. Commit your changes in small packages. The commit must have a description in present tense.
 1. Create a pull request to _master_ branch at the main repo.
-1. Create a pull request to _develop_ branch at the main repo.
-1. Create a pull request to _test_ branch at the main repo.

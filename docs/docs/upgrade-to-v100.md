@@ -34,6 +34,6 @@ sudo rm /lib/systemd/system/homewareRedis.service
 
 ## Install the new version
 
-https://github.com/kikeelectronico/Homeware-LAN/wiki/Install-Homeware-LAN
+https://kikeelectronico.github.io/Homeware-LAN/docs/install
 
 Do not forget to clean your web browser's cache.
