@@ -44,7 +44,7 @@
     padding-right: 30px;
     text-align: left;
     vertical-align: middle;
-    background-color: #1c8adb;
+    background-color: #F03780;
     color: white;
     font-size: 1.5em;
     -webkit-box-shadow: -1px 3px 22px -10px rgba(0,0,0,0.75);
@@ -211,7 +211,7 @@
     padding-left: 30px;
     text-align: left;
     vertical-align: middle;
-    background-color: #1c8adb;
+    background-color: #F03780;
     color: white;
     font-size: 1.5em;
     -webkit-box-shadow: -1px 3px 22px -10px rgba(0,0,0,0.75);
@@ -409,7 +409,7 @@
 .menu_data_alert {
   padding: 10px;
   border-radius: 5px;
-  background-color: #1c8adb;
+  background-color: #F03780;
   color: white;
   cursor: pointer;
 }
