@@ -11,7 +11,7 @@ import paho.mqtt.publish as publish
 
 class Data:
 
-    version = 'v1.1.2'
+    version = 'v1.1.3'
     homewareFile = 'homeware.json'
     apikey = ''
     userToken = ''
@@ -300,10 +300,7 @@ class Data:
 
         secure = json.loads(self.redis.get('secure'))
 
-        cipher_suite = Fernet(str.encode(secure['key'][2:len(secure['key'])]))
-        plain_text = cipher_suite.decrypt(str.encode(secure['pass'][2:len(secure['pass'])]))
-        responseData = {}
-        if user == secure['user'] and plain_text == str.encode(password):
+        if bcrypt.checkpw(password.encode('utf-8'),secure['pass'][2:-1].encode('utf-8')):
             return responseURL
         else:
             return "fail"

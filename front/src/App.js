@@ -197,7 +197,7 @@ class App extends React.Component {
                 </div>
                 <div className="menu_data">
                   {
-                    this.state.git.version !== this.state.Version && this.state.git.version !== ''
+                    this.state.git.version !== this.state.version && this.state.git.version !== ''
                     ?
                     <Link to="/system" className="text_decoration_none">
                       <div className="menu_data_alert">New update available</div>
