@@ -11,19 +11,6 @@ This is **important**.
 - Be patient
 - Use the same Google account in all steps
 
-## Activity Controls
-
-Go to <a href="https://myaccount.google.com/activitycontrols" target="blanck">Activity Control</a> by Google and enable:
-
-- Web & App Activity
-- Device Iformation
-- Voice & Audio Activity
-
-
-<img src="/Homeware-LAN/img/connect-with-google/S1C1.png" width="266"/>
-<img src="/Homeware-LAN/img/connect-with-google/S1C2.png" width="266"/>
-<img src="/Homeware-LAN/img/connect-with-google/S1C3.png" width="266"/>
-
 ## Actions on Google Project
 
 Go to <a href="https://console.actions.google.com/" target="blanck">Actions on Google console</a>.
