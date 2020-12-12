@@ -38,6 +38,10 @@ You will be asked for more information if needed. If you don't respond in 30 day
 - Describe the behavior you expected and why.
 - Include data of your system: OS, web browser, Homeware version, hardware platform, etc..
 
+## Asking a question or sharing your project
+
+You can share anything related with Homeware or ask any question by opening a [Discussion](https://github.com/kikeelectronico/Homeware-LAN/discussions).
+
 ## Code contribution
 
 If you want to code contributes you must fork the repository and work on you own fork.
