@@ -24,18 +24,18 @@ Go to <a href="https://console.actions.google.com/" target="blanck">Actions on G
 
 <img src="/Homeware-LAN/img/connect-with-google/S2C2.png"/>
 
-4. Go to `Develop` from the top menu, select `Invocation` in the left side menu, write `Home` as Display Name and click `Save`.
+4. Go to `Develop` from the top menu, select `Invocation` in the left side menu, write `Home` as *Display Name* and click `Save`.
 
 <img src="/Homeware-LAN/img/connect-with-google/S2C3.png"/>
 
-5. Select `Actions` in the left side menu, add the Fulfillment URL using your domain and click `Save`
+5. Select `Actions` in the left side menu, add the *Fulfillment URL* using your domain and click `Save`
 
 > - Fulfillment URL: `https://<your.domain.com>/smarthome/`
 
 
 <img src="/Homeware-LAN/img/connect-with-google/S2C4.png"/>
 
-6. Go to `Account Linking` in the left side menu. Enter the Client Information that the Homeware assistant gives you and click `Next`.
+6. Go to `Account Linking` in the left side menu. Enter the client information that the Homeware assistant gives you and click `Next`.
 
 > - Client ID: `123`
 - Client Secret: `456`
@@ -48,7 +48,7 @@ Go to <a href="https://console.actions.google.com/" target="blanck">Actions on G
 
 <img src="/Homeware-LAN/img/connect-with-google/S2C6.png"/>
 
-8. Enable `Google to transmit clientID and secret via HTTP basic auth header`, click `Next` and the click `Save`.
+8. Enable *Google to transmit clientID and secret via HTTP basic auth header*, click `Next` and the click `Save`.
 
 <img src="/Homeware-LAN/img/connect-with-google/S2C7.png"/>
 
@@ -64,11 +64,7 @@ Use your smartphone to link the project.
 
 4. Select `Works with Google`.
 
-5. Select the options that looks like:
-
-```
-[test] Home
-```
+5. Select the options that looks like: *[test] Home*
 
 Up & running
 
