@@ -20,7 +20,7 @@ wget https://raw.githubusercontent.com/kikeelectronico/Homeware-LAN/master/bash/
 ```
 sudo sh install.sh
 ```
-2. Follow the instructions that appear in the screen. 
+2. Follow the instructions that appear in the screen.
 
 # Stay up to date
 
@@ -28,7 +28,7 @@ Spanish Telegram channel: [https://t.me/homeware_up_to_date](https://t.me/homewa
 
 # Contribute
 
-Read [CONTRIBUTING.md](https://kikeelectronico.github.io/Homeware-LAN/CONTRIBUTING.html) and [CODE_OF_CONDUCT.md](https://kikeelectronico.github.io/Homeware-LAN/CODE_OF_CONDUCT.html).
+Read [CONTRIBUTING.md](http://localhost:3000/Homeware-LAN/docs/contributing/) and [CODE_OF_CONDUCT.md](http://localhost:3000/Homeware-LAN/docs/code-of-conduct/).
 
 # Documentation
 
