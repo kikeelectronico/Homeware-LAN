@@ -8,6 +8,8 @@ from datetime import datetime
 import subprocess
 import paho.mqtt.publish as publish
 
+from homegraph import HomeGraph
+homegraph = HomeGraph()
 
 class Data:
 
@@ -43,21 +45,25 @@ class Data:
                     self.redis.set('secure',json.dumps(data['secure']))
                 self.log('Warning','Using a template homeware file')
 
-            self.redis.set('transfer', "true");
+            self.redis.set("transfer", "true");
 
         else:
             self.log('Log','DDBB connection up and running')
 
         # Create the tasks key if needed
-        if not self.redis.get('tasks'):
-            self.redis.set('tasks',"[]")
+        if not self.redis.get("tasks"):
+            self.redis.set("tasks","[]")
 
-        if self.redis.get('alert') == None:
-            self.redis.set('alert','clear')
+        if self.redis.get("alert") == None:
+            self.redis.set("alert","clear")
+
+        if self.redis.get("homegraph") == None:
+            self.redis.set("homegraph","false")
 
         self.userName = json.loads(self.redis.get('secure'))['user']
         self.userToken = json.loads(self.redis.get('secure'))['token']['front']
         self.apikey = json.loads(self.redis.get('secure'))['token']['apikey']
+        self.domain = json.loads(self.redis.get('secure'))['domain']
 
 
     def getVersion(self):
@@ -110,7 +116,9 @@ class Data:
             else:
                 temp_devices.append(device)
         self.redis.set('devices',json.dumps(temp_devices))
-
+        # Inform Google Home Graph
+        if self.redis.get("homegraph") == "true":
+            homegraph.requestSync()
 
         return found
 
@@ -124,6 +132,10 @@ class Data:
         status = json.loads(self.redis.get('status'))
         status[deviceID] = incommingData['status']
         self.redis.set('status',json.dumps(status))
+
+        # Inform Google Home Graph
+        if self.redis.get("homegraph") == "true":
+            homegraph.requestSync()
 
     def deleteDevice(self, value):
         temp_devices = [];
@@ -139,6 +151,10 @@ class Data:
             status = json.loads(self.redis.get('status'))
             del status[value]
             self.redis.set('status',json.dumps(status))
+
+        # Inform Google Home Graph
+        if self.redis.get("homegraph") == "true":
+            homegraph.requestSync()
 
         return found
 
@@ -167,6 +183,14 @@ class Data:
 
             except:
                 publish.multiple(msgs, hostname="localhost")
+
+            # Inform Google Home Graph
+            if self.redis.get("homegraph") == "true":
+                states = {}
+                state[device] = {}
+                state[device][param] = value
+                homegraph.reportState(self.domain,states)
+
             return True
         else:
             return False
