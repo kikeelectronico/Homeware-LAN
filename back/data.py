@@ -27,30 +27,15 @@ class Data:
         if not self.redis.get('transfer'):
             self.log('Warning','The database must be created')
             try:
-                with open('../' + self.homewareFile, 'r') as f:
-                    data = json.load(f)
-                    self.redis.set('devices',json.dumps(data['devices']))
-                    self.redis.set('status',json.dumps(data['status']))
-                    self.redis.set('tasks',json.dumps(data['tasks']))
-                    self.redis.set('secure',json.dumps(data['secure']))
+                self.load()
                 self.log('Warning','Using a provided homeware file')
             except:
                 subprocess.run(["cp", "../configuration_templates/template_homeware.json", "../homeware.json"],  stdout=subprocess.PIPE)
-
-                with open('../' + self.homewareFile, 'r') as f:
-                    data = json.load(f)
-                    self.redis.set('devices',json.dumps(data['devices']))
-                    self.redis.set('status',json.dumps(data['status']))
-                    self.redis.set('tasks',json.dumps(data['tasks']))
-                    self.redis.set('secure',json.dumps(data['secure']))
+                self.load()
                 self.log('Warning','Using a template homeware file')
 
             self.redis.set("transfer", "true");
 
-        else:
-            self.log('Log','DDBB connection up and running')
-
-        # Create the tasks key if needed
         if not self.redis.get("tasks"):
             self.redis.set("tasks","[]")
 
@@ -68,7 +53,6 @@ class Data:
 
     def getVersion(self):
         return {'version': self.version}
-
 
     def getGlobal(self):
         data = {
