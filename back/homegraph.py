@@ -4,11 +4,13 @@ import time
 import json
 import requests
 
-class Google:
+class HomeGraph:
     """Do requests to Google Home Graph."""
 
+    self.expire = 3600
+
     def getJWT(self):
-        now = int(time.time())
+        self.generated = int(time.time())
         keyfile = "../google.json"
         # Get the service account email
         f = open(keyfile,'r')
@@ -16,8 +18,8 @@ class Google:
         f.close()
         # Build payload
         payload = {
-            'iat': now,
-            "exp": now + 30,
+            'iat': self.generated,
+            "exp": self.generated + self.expire,
             'iss': email,
             'aud':  "https://oauth2.googleapis.com/token",
             "scope": "https://www.googleapis.com/auth/homegraph"
@@ -44,6 +46,8 @@ class Google:
         return r.status_code == 200
 
     def requestSync(self, agentUserId):
+        if int(time.time()) > (self.generated + self.expire):
+            self.getToken()
         # Set the request
         url = "https://homegraph.googleapis.com/v1/devices:requestSync"
         data = {
@@ -57,6 +61,8 @@ class Google:
         r = requests.post(url, data=json.dumps(data), headers=headers)
 
     def reportState(self, agentUserId, states):
+        if int(time.time()) > (self.generated + self.expire):
+            self.getToken()
         # Set the request
         url = "https://homegraph.googleapis.com/v1/devices:reportStateAndNotification"
         data = {
