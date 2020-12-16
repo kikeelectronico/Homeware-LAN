@@ -6,11 +6,11 @@ from base64 import b64encode
 from data import Data
 
 #Init the data managment object
-hData = Data()
+data_conector = Data()
 
 def verifyTasks():
-	tasks = hData.getTasks()
-	status = hData.getStatus()
+	tasks = data_conector.getTasks()
+	status = data_conector.getStatus()
 
 	for taskData in tasks:
 		triggers = taskData['triggers']
@@ -22,14 +22,14 @@ def verifyTasks():
 					if target['value'] == 'true': value = True
 					elif target['value'] == 'false': value = False
 					elif target['param'] == 'color': value = {"spectrumRGB": value, "spectrumRgb": value}
-					hData.updateParamStatus(target['device'], target['param'], value)
+					data_conector.updateParamStatus(target['device'], target['param'], value)
 
 
 		except Exception as e:
-			hData.log('Alert', 'Catch an error in execution of ' + taskData['title'] + 'task' + str(e))
+			data_conector.log('Alert', 'Catch an error in execution of ' + taskData['title'] + 'task' + str(e))
 
 def ddnsUpdater():
-	ddns = hData.getDDNS()
+	ddns = data_conector.getDDNS()
 	ipServer = 'http://ip1.dynupdate.no-ip.com/'
 	if ddns['enabled']:
 
@@ -45,13 +45,13 @@ def ddnsUpdater():
 			user = ddns['username'] + ':' + ddns['password']
 			userEncoded = str(b64encode(bytes(user, 'utf-8')))
 			headers = {
-				'User-Agent': 'Homeware Homeware/v{} hola@rinconingenieril.es'.format(hData.getVersion()['version']),
+				'User-Agent': 'Homeware Homeware/v{} hola@rinconingenieril.es'.format(data_conector.getVersion()['version']),
 				'Authorization': 'Basic ' + userEncoded[2:len(userEncoded)-1]
 			}
 			noipRequest = requests.get(url= noipServer, params=params, headers=headers)
 			#Analyze the response
 			code = noipRequest.text.split(' ')[0]
-			hData.log('Log', 'IP update request sended to no-ip. Response: ' + noipRequest.text)
+			data_conector.log('Log', 'IP update request sended to no-ip. Response: ' + noipRequest.text)
 			status = {
 				'good': 'Running',
 				'nochg': 'Running, but the last request shouldn\'t have been done.',
@@ -66,9 +66,9 @@ def ddnsUpdater():
 			last = str(now.strftime("%m/%d/%Y, %H:%M:%S"))
 			if not 'good' in code and not 'nochg' in code:
 				code = noipRequest.text.split('\r')[0]
-				hData.updateDDNS(newIP, status[code], code, False, last)
+				data_conector.updateDDNS(newIP, status[code], code, False, last)
 			else:
-				hData.updateDDNS(newIP, status[code], code, True, last)
+				data_conector.updateDDNS(newIP, status[code], code, True, last)
 
 def operationExecutor(id, triggers, status):
 	operation = triggers[str(id)]
@@ -119,7 +119,7 @@ def d2iExecutor(operation, status):
 	try:
 		value = int(op[3])
 	except:
-		hData.log('Alert', device + param + value + 'is not an int')
+		data_conector.log('Alert', device + param + value + 'is not an int')
 
 	if sign == '=' and status[device][param] == value:
 		return True
@@ -144,7 +144,7 @@ def d2lExecutor(operation, status):
 	try:
 		value = str(op[3])
 	except:
-		hData.log('Alert', device + param + value + 'is not an string')
+		data_conector.log('Alert', device + param + value + 'is not an string')
 
 	if sign == '=' and status[device][param] == value:
 		return True
@@ -199,9 +199,9 @@ def timeExecutor(operation):
 
 
 if __name__ == "__main__":
-	hData.log('Log', 'Starting HomewareTask core')
+	data_conector.log('Log', 'Starting HomewareTask core')
 	while(True):
 		ddnsUpdater()
 		verifyTasks()
-		hData.updateAlive('tasks')
+		data_conector.updateAlive('tasks')
 		time.sleep(1)

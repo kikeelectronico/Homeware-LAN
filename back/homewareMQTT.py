@@ -5,7 +5,7 @@ import paho.mqtt.client as mqtt
 from data import Data
 
 #Init the data managment object
-hData = Data()
+data_conector = Data()
 
 #Constants
 TOPICS = ["device/control", "homeware/alive"]
@@ -24,9 +24,9 @@ def on_message(client, userdata, msg):
 			payload = json.loads(msg.payload)
 			control(payload)
 		elif msg.topic == "homeware/alive":
-			hData.updateAlive('mqtt')
+			data_conector.updateAlive('mqtt')
 	else:
-		hData.log('Warning', 'Received a message from a extrange MQTT topic')
+		data_conector.log('Warning', 'Received a message from a extrange MQTT topic')
 
 # MQTT reader
 def mqttReader():
@@ -36,7 +36,7 @@ def mqttReader():
 
 	# Try to get username and password
 	try:
-		mqttData = hData.getMQTT()
+		mqttData = data_conector.getMQTT()
 		if not mqttData['user'] == "":
 			client.username_pw_set(mqttData['user'], mqttData['password'])
 	except:
@@ -53,15 +53,15 @@ def control(payload):
 
 	# Analyze the message
 	if intent == 'execute':
-		hData.updateParamStatus(id,param,value)
+		data_conector.updateParamStatus(id,param,value)
 	elif intent == 'rules':
-		hData.updateParamStatus(id,param,value)
+		data_conector.updateParamStatus(id,param,value)
 	elif intent == 'request':
-		status = hData.getStatus()[id]
+		status = data_conector.getStatus()[id]
 		publish.single("device/"+id, json.dumps(status), hostname="localhost")
 		for param in status.keys():
 			publish.single("device/"+id+'/'+param, str(status[param]), hostname="localhost")
 
 if __name__ == "__main__":
-	hData.log('Log', 'Starting HomewareMQTT core')
+	data_conector.log('Log', 'Starting HomewareMQTT core')
 	mqttReader()

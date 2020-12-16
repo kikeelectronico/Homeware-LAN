@@ -4,8 +4,8 @@ import json
 class Commands:
 
 	def __init__(self, data):
-		self.hData = data
-		self.hData.log('Log', 'Starting commands executor')
+		self.data_conector = data
+		self.data_conector.log('Log', 'Starting commands executor')
 
 	def setParams(self, device, params):
 		self.device = device
@@ -13,7 +13,7 @@ class Commands:
 
 	def saveAndSend(self, input, output):
 		if input in self.params.keys():
-			self.hData.updateParamStatus(self.device, output, self.params[input])
+			self.data_conector.updateParamStatus(self.device, output, self.params[input])
 
 	def sendCommand(self,param,command):
 		if param in self.params.keys():
@@ -47,7 +47,7 @@ class Commands:
 			if 'spectrumHSV' in self.params['color'].keys():
 				color['spectrumHSV'] = self.params['color']['spectrumHSV']
 				color['spectrumHsv'] = self.params['color']['spectrumHSV']
-			self.hData.updateParamStatus(self.device, 'color', color)
+			self.data_conector.updateParamStatus(self.device, 'color', color)
 
 	def OnOff(self):
 		self.saveAndSend('on','on')
@@ -65,8 +65,8 @@ class Commands:
 
 	def TemperatureRelative(self):
 		if 'thermostatTemperatureRelativeDegree' in self.params.keys():
-			set_point = self.hData.getStatus()[self.device]['thermostatTemperatureSetpoint']
-			self.hData.updateParamStatus(self.device, 'thermostatTemperatureSetpoint', set_point + self.params['thermostatTemperatureRelativeDegree'])
+			set_point = self.data_conector.getStatus()[self.device]['thermostatTemperatureSetpoint']
+			self.data_conector.updateParamStatus(self.device, 'thermostatTemperatureSetpoint', set_point + self.params['thermostatTemperatureRelativeDegree'])
 
 	def ActivateScene(self):
 		self.saveAndSend('deactivate','deactivate')
@@ -84,11 +84,11 @@ class Commands:
 
 	def SetFanSpeedRelativeSpeed(self):
 		if 'fanSpeedRelativeWeight' in self.params.keys():
-			speed = self.hData.getStatus()[self.device]['currentFanSpeedPercent']
-			self.hData.updateParamStatus(self.device, 'currentFanSpeedPercent', speed + self.params['fanSpeedRelativeWeight'])
+			speed = self.data_conector.getStatus()[self.device]['currentFanSpeedPercent']
+			self.data_conector.updateParamStatus(self.device, 'currentFanSpeedPercent', speed + self.params['fanSpeedRelativeWeight'])
 		if 'fanSpeedRelativePercent' in self.params.keys():
-			speed = self.hData.getStatus()[self.device]['currentFanSpeedPercent']
-			self.hData.updateParamStatus(self.device, 'currentFanSpeedPercent', speed + self.params['fanSpeedRelativePercent'])
+			speed = self.data_conector.getStatus()[self.device]['currentFanSpeedPercent']
+			self.data_conector.updateParamStatus(self.device, 'currentFanSpeedPercent', speed + self.params['fanSpeedRelativePercent'])
 
 	def Reverse(self):
 		publish.single("device/"+self.device+"/command", 'reverse', hostname="localhost")
@@ -102,11 +102,11 @@ class Commands:
 
 	def HumidityRelative(self):
 		if 'humidityRelativePercent' in self.params.keys():
-			humidity = self.hData.getStatus()[self.device]['humiditySetpointPercent']
-			self.hData.updateParamStatus(self.device, 'humiditySetpointPercent', humidity + self.params['humidityRelativePercent'])
+			humidity = self.data_conector.getStatus()[self.device]['humiditySetpointPercent']
+			self.data_conector.updateParamStatus(self.device, 'humiditySetpointPercent', humidity + self.params['humidityRelativePercent'])
 		if 'humidityRelativeWeight' in self.params.keys():
-			humidity = self.hData.getStatus()[self.device]['humiditySetpointPercent']
-			self.hData.updateParamStatus(self.device, 'humiditySetpointPercent', humidity + self.params['humidityRelativeWeight'])
+			humidity = self.data_conector.getStatus()[self.device]['humiditySetpointPercent']
+			self.data_conector.updateParamStatus(self.device, 'humiditySetpointPercent', humidity + self.params['humidityRelativeWeight'])
 
 
 	def Locate(self):
@@ -120,8 +120,8 @@ class Commands:
 
 	def OpenCloseRelative(self):
 		if 'openRelativePercent' in self.params.keys():
-			open = self.hData.getStatus()[self.device]['openPercent']
-			self.hData.updateParamStatus(self.device, 'openPercent', open + self.params['openRelativePercent'])
+			open = self.data_conector.getStatus()[self.device]['openPercent']
+			self.data_conector.updateParamStatus(self.device, 'openPercent', open + self.params['openRelativePercent'])
 
 	def RotateAbsolute(self):
 		self.saveAndSend('rotationPercent','rotationPercent')
@@ -140,28 +140,28 @@ class Commands:
 		self.saveAndSend('timerTimeSec','timerRemainingSec')
 
 	def TimerPause(self):
-		self.hData.updateParamStatus(self.device, 'timerPaused', True)
+		self.data_conector.updateParamStatus(self.device, 'timerPaused', True)
 
 	def TimerResume(self):
-		self.hData.updateParamStatus(self.device, 'timerPaused', False)
+		self.data_conector.updateParamStatus(self.device, 'timerPaused', False)
 
 	def TimerCancel(self):
-		self.hData.updateParamStatus(self.device, 'timerRemainingSec', 0)
+		self.data_conector.updateParamStatus(self.device, 'timerRemainingSec', 0)
 
 
 	def SetToggles(self):
 		if 'updateToggleSettings' in self.params.keys():
 			toggles = self.params['updateToggleSettings'].keys()
-			state = self.hData.getStatus()[self.device]['currentToggleSettings']
+			state = self.data_conector.getStatus()[self.device]['currentToggleSettings']
 			for toggle in toggles:
 				state[toggle] = self.params['updateToggleSettings'][toggle]
-			self.hData.updateParamStatus(self.device, 'currentToggleSettings', state)
+			self.data_conector.updateParamStatus(self.device, 'currentToggleSettings', state)
 
 
 	def SetModes(self):
 		if 'updateModeSettings' in self.params.keys():
 			modes = self.params['updateModeSettings'].keys()
-			state = self.hData.getStatus()[self.device]['currentModeSettings']
+			state = self.data_conector.getStatus()[self.device]['currentModeSettings']
 			for mode in modes:
 				state[mode] = self.params['updateModeSettings'][mode]
-			self.hData.updateParamStatus(self.device, 'currentModeSettings', state)
+			self.data_conector.updateParamStatus(self.device, 'currentModeSettings', state)
