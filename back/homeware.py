@@ -44,10 +44,10 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 responseURL = ''
 
 #Init the data managment object
-hData = Data()
+data_conector = Data()
 
 #Init command executor
-commands = Commands(hData)
+commands = Commands(data_conector)
 
 #app
 def runapp():
@@ -66,8 +66,8 @@ def checkAccessLevel(headers):
 	accessLevel = 0
 	try:
 		authorization = headers['authorization'].split(' ')[1]
-		savedToken = hData.getToken('front')
-		savedAPIKey = hData.getToken('apikey')
+		savedToken = data_conector.getToken('front')
+		savedAPIKey = data_conector.getToken('apikey')
 		if authorization == savedAPIKey:
 			accessLevel = 10
 		elif authorization == savedToken:
@@ -88,23 +88,23 @@ def apiDevices(operation = "", value = ''):
 	if accessLevel >= 10:
 		if operation == 'update':
 			incommingData = request.get_json()
-			if hData.updateDevice(incommingData):
+			if data_conector.updateDevice(incommingData):
 				responseData = TWO_O_O
 			else:
 				responseData = FOUR_O_FOUR
 		elif operation == 'create':
 			incommingData = request.get_json()
-			hData.createDevice(incommingData)
+			data_conector.createDevice(incommingData)
 			responseData = TWO_O_O
 		elif operation == 'delete':
-			if hData.deleteDevice(value):
+			if data_conector.deleteDevice(value):
 				responseData = TWO_O_O
 			else:
 				responseData = FOUR_O_FOUR
 		elif operation == 'get':
 			if not value == '':
 				found = False
-				for device in hData.getDevices():
+				for device in data_conector.getDevices():
 					if device['id'] == value:
 						responseData = device
 						found = True
@@ -112,11 +112,11 @@ def apiDevices(operation = "", value = ''):
 				if not found:
 					responseData = FOUR_O_FOUR
 			else:
-				responseData = hData.getDevices()
+				responseData = data_conector.getDevices()
 		else:
 			responseData = FOUR_O_ONE
 	else:
-		hData.log('Alert', 'Request to api/devices with bad authentication')
+		data_conector.log('Alert', 'Request to api/devices with bad authentication')
 		responseData = FOUR_O_ONE
 
 	response = app.response_class(
@@ -137,12 +137,12 @@ def apiStatus(operation = "", value = ''):
 	if accessLevel >= 10:
 		if operation == 'update':
 			incommingData = request.get_json()
-			if hData.updateParamStatus(incommingData['id'],incommingData['param'],incommingData['value']):
+			if data_conector.updateParamStatus(incommingData['id'],incommingData['param'],incommingData['value']):
 				responseData = TWO_O_O
 			else:
 				responseData = FOUR_O_FOUR
 		elif operation == 'get':
-			status = hData.getStatus()
+			status = data_conector.getStatus()
 			if not value == '':
 				if value in status:
 					responseData = status[value]
@@ -153,7 +153,7 @@ def apiStatus(operation = "", value = ''):
 		else:
 			responseData = FOUR_O_O
 	else:
-		hData.log('Alert', 'Request to API > status endpoint with bad authentication')
+		data_conector.log('Alert', 'Request to API > status endpoint with bad authentication')
 		responseData = FOUR_O_ONE
 
 	response = app.response_class(
@@ -174,21 +174,21 @@ def apiTasks(operation = "", value = ''):
 	if accessLevel >= 10:
 		if operation == 'update':
 			incommingData = request.get_json()
-			if hData.updateTask(incommingData):
+			if data_conector.updateTask(incommingData):
 				responseData = TWO_O_O
 			else:
 				responseData = FOUR_O_FOUR
 		elif operation == 'create':
 			incommingData = request.get_json()
-			hData.createTask(incommingData['task'])
+			data_conector.createTask(incommingData['task'])
 			responseData = TWO_O_O
 		elif operation == 'delete':
-			if hData.deleteTask(int(value)):
+			if data_conector.deleteTask(int(value)):
 				responseData = TWO_O_O
 			else:
 				responseData = FOUR_O_FOUR
 		elif operation == 'get':
-			tasks = hData.getTasks()
+			tasks = data_conector.getTasks()
 			try:
 				if not value == '':
 					if 0 <= int(value) < len(tasks):
@@ -204,7 +204,7 @@ def apiTasks(operation = "", value = ''):
 					'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
 				}
 	else:
-		hData.log('Alert', 'Request to API > task endpoint with bad authentication')
+		data_conector.log('Alert', 'Request to API > task endpoint with bad authentication')
 		responseData = FOUR_O_ONE
 
 	response = app.response_class(
@@ -224,13 +224,13 @@ def apiGlobal(operation = "", value = ''):
 
 	if accessLevel >= 10:
 		if operation == 'version':
-			responseData = hData.getVersion()
+			responseData = data_conector.getVersion()
 		elif operation == 'get':
-			responseData = hData.getGlobal()
+			responseData = data_conector.getGlobal()
 		else:
 			responseData = FOUR_O_O
 	else:
-		hData.log('Alert', 'Request to API > global endpoint with bad authentication')
+		data_conector.log('Alert', 'Request to API > global endpoint with bad authentication')
 		responseData = FOUR_O_ONE
 
 	response = app.response_class(
@@ -250,20 +250,20 @@ def apiUser(operation = "", value = ''):
 
 	if accessLevel >= 10:
 		if operation == 'password':
-			return hData.updatePassword(request.get_json())
+			return data_conector.updatePassword(request.get_json())
 	elif accessLevel >= 0:
 		if operation == 'set':
-			return hData.setUser(request.get_json())
+			return data_conector.setUser(request.get_json())
 		elif operation == 'login':
-			responseData = hData.login(request.headers)
+			responseData = data_conector.login(request.headers)
 		elif operation == 'validateToken':
-			responseData = hData.validateUserToken(request.headers)
+			responseData = data_conector.validateUserToken(request.headers)
 		elif operation == 'googleSync':
-			return hData.googleSync(request.headers, responseURL)
+			return data_conector.googleSync(request.headers, responseURL)
 		else:
 			responseData = FOUR_O_O
 	else:
-		hData.log('Alert', 'Request to API > user endpoint with bad authentication')
+		data_conector.log('Alert', 'Request to API > user endpoint with bad authentication')
 		responseData = FOUR_O_ONE
 
 	response = app.response_class(
@@ -283,12 +283,12 @@ def apiAccess(operation = "", value = ''):
 
 	if accessLevel >= 100:
 		if operation == 'create':
-			hData.log('Warning', 'An API Key has been regenerated')
-			responseData = hData.generateAPIKey()
+			data_conector.log('Warning', 'An API Key has been regenerated')
+			responseData = data_conector.generateAPIKey()
 		elif operation == 'get':
-			responseData = hData.getAPIKey()
+			responseData = data_conector.getAPIKey()
 	else:
-		hData.log('Alert', 'Request to API > access endpoint.')
+		data_conector.log('Alert', 'Request to API > access endpoint.')
 		responseData = FOUR_O_ONE
 
 	response = app.response_class(
@@ -309,15 +309,15 @@ def apiSettings(operation = "", value = ''):
 	if accessLevel >= 100:
 		if operation == 'update':
 			incommingData = request.get_json()
-			hData.updateSettings(incommingData)
-			responseData = hData.getSettings()
+			data_conector.updateSettings(incommingData)
+			responseData = data_conector.getSettings()
 		elif operation == 'get':
-			responseData = hData.getSettings()
+			responseData = data_conector.getSettings()
 		else:
-			hData.log('Alert', 'Request to API > settings endpoint with bad authentication')
+			data_conector.log('Alert', 'Request to API > settings endpoint with bad authentication')
 			responseData = FOUR_O_O
 	elif accessLevel >= 0:
-		if not hData.getAssistantDone():
+		if not data_conector.getAssistantDone():
 			if operation == 'domain':
 				if value == '':
 					responseData = {
@@ -326,19 +326,19 @@ def apiSettings(operation = "", value = ''):
 						'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
 					}
 				else:
-					return hData.setDomain(value)
+					return data_conector.setDomain(value)
 			elif operation == 'setAssistantDone':
-				hData.setAssistantDone()
+				data_conector.setAssistantDone()
 				responseData = TWO_O_O
 		else:
-			hData.log('Alert', 'Request to API > assistant endpoint. The assistant was configured in the past')
+			data_conector.log('Alert', 'Request to API > assistant endpoint. The assistant was configured in the past')
 			responseData = {
 				'error': 'The assistant was configured in the past',
 				'code': 401,
 				'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
 			}
 	else:
-		hData.log('Alert', 'Request to API > assistant endpoint. The assistant was configured in the past')
+		data_conector.log('Alert', 'Request to API > assistant endpoint. The assistant was configured in the past')
 		responseData = FOUR_O_ONE
 
 	response = app.response_class(
@@ -364,7 +364,7 @@ def apiSystem(operation = "", value = ''):
 
 			# Try to get username and password
 			try:
-				mqttData = hData.getMQTT()
+				mqttData = data_conector.getMQTT()
 				if not mqttData['user'] == "":
 					client.username_pw_set(mqttData['user'], mqttData['password'])
 					publish.single("homeware/alive", "all", hostname="localhost", auth={'username':mqttData['user'], 'password': mqttData['password']})
@@ -389,12 +389,12 @@ def apiSystem(operation = "", value = ''):
 					'status': 'Stopped',
 					'title': 'Homeware Task'
 				},
-				'redis': hData.redisStatus()
+				'redis': data_conector.redisStatus()
 			}
 
 			try:
 				ts = int(time.time())
-				alive = hData.getAlive()
+				alive = data_conector.getAlive()
 				if (ts - int(alive['mqtt'])) < 10:
 					responseData['mqtt']['status'] = "Running"
 				if (ts - int(alive['tasks'])) < 10:
@@ -413,7 +413,7 @@ def apiSystem(operation = "", value = ''):
 		else:
 			responseData = FOUR_O_O
 	else:
-		hData.log('Alert', 'Request to API > system endpoint with bad authentication')
+		data_conector.log('Alert', 'Request to API > system endpoint with bad authentication')
 		responseData = FOUR_O_ONE
 
 	response = app.response_class(
@@ -433,13 +433,13 @@ def apiLog(operation = "", value = ''):
 
 	if accessLevel >= 100:
 		if operation == 'get':
-			responseData = hData.getLog()
+			responseData = data_conector.getLog()
 		elif operation == 'alert':
-			responseData = hData.isThereAnAlert()
+			responseData = data_conector.isThereAnAlert()
 		else:
 			responseData = FOUR_O_O
 	else:
-		hData.log('Alert', 'Request to API > log endpoint with bad authentication')
+		data_conector.log('Alert', 'Request to API > log endpoint with bad authentication')
 		responseData = FOUR_O_ONE
 
 	response = app.response_class(
@@ -458,11 +458,11 @@ def allowed_file(filename):
 @app.route("/files/<operation>/<file>/<token>/", methods=['GET','POST'])
 def files(operation = '', file = '', token = ''):
 	#Get the access_token
-	frontToken = hData.getToken('front')
+	frontToken = data_conector.getToken('front')
 	if token == frontToken:
 		if operation == 'buckup':
 			# Create file
-			hData.createFile('homeware')
+			data_conector.createFile('homeware')
 			# Download file
 			now = datetime.now()
 			date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
@@ -471,7 +471,7 @@ def files(operation = '', file = '', token = ''):
 			   attachment_filename = file + '_' + str(date_time) + '.json',
 			   as_attachment = True,
 			   conditional = False)
-			hData.log('Warning', 'A backup file has been downloaded')
+			data_conector.log('Warning', 'A backup file has been downloaded')
 			return result
 		elif operation == 'restore':
 			if request.method == 'POST':
@@ -484,8 +484,8 @@ def files(operation = '', file = '', token = ''):
 					filename = file.filename
 					file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 					subprocess.run(["mv", '../' + file.filename, "../homeware.json"],  stdout=subprocess.PIPE)
-					hData.load()
-					hData.log('Warning', 'A backup file has been restored')
+					data_conector.load()
+					data_conector.log('Warning', 'A backup file has been restored')
 					return redirect('/backup/?status=Success')
 		elif operation == 'download':
 			if file == "log":
@@ -497,7 +497,7 @@ def files(operation = '', file = '', token = ''):
 				   attachment_filename = 'homeware_' + str(date_time) + '.log',
 				   as_attachment = True,
 				   conditional = False)
-				hData.log('Warning', 'The log file has been downloaded')
+				data_conector.log('Warning', 'The log file has been downloaded')
 				return result
 		elif operation == 'upload':
 			if file == "google":
@@ -511,12 +511,13 @@ def files(operation = '', file = '', token = ''):
 						filename = file.filename
 						file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 						subprocess.run(["mv", '../' + file.filename, "../google.json"],  stdout=subprocess.PIPE)
-						hData.log('Info', 'A google auth file has been uploaded')
+						data_conector.log('Info', 'A google auth file has been uploaded')
+						data_conector.updateLinked(True)
 						return redirect('/settings/?status=Success')
 		else:
 			return 'Operation unknown'
 	else:
-		hData.log('Alert', 'Unauthorized access try to the backup and restore endpoint')
+		data_conector.log('Alert', 'Unauthorized access try to the backup and restore endpoint')
 		return 'Bad token'
 
 def tokenGenerator(agent, type):
@@ -540,22 +541,22 @@ def tokenGenerator(agent, type):
 	legalTypes = ['access_token', 'authorization_code', 'refresh_token']
 
 	if type in legalTypes:
-		hData.updateToken(agent,type,token,ts)
+		data_conector.updateToken(agent,type,token,ts)
 		return token
 	else:
-		hData.log('Warning', 'Try to create an incorrect type of token')
+		data_conector.log('Warning', 'Try to create an incorrect type of token')
 		return 'Something goes wrong'
 
 #Auth endpoint
 @app.route("/auth")
 @app.route("/auth/")
 def auth():
-	token = hData.getToken('google')               #Tokens from the DDBB
+	token = data_conector.getToken('google')               #Tokens from the DDBB
 	clientId = request.args.get('client_id')    #ClientId from the client
 	responseURI = request.args.get('redirect_uri')
 	state = request.args.get('state')
 	if clientId == token['client_id']:
-		hData.log('Warning', 'A new Google account has been linked from auth endpoint')
+		data_conector.log('Warning', 'A new Google account has been linked from auth endpoint')
 		#Create a new authorization_code
 		code = tokenGenerator('google', 'authorization_code')
 		#Compose the response URL
@@ -564,7 +565,7 @@ def auth():
 		return redirect("/login/google/", code=302)
 		# return '<a href="' + responseURL + '">enlace</a>'
 	else:
-		hData.log('Alert', 'Unauthorized try to link a Google Account. Verify the client id and client secret')
+		data_conector.log('Alert', 'Unauthorized try to link a Google Account. Verify the client id and client secret')
 		return 'Algo ha ido mal en la autorización'
 
 #Token's endpoint
@@ -590,7 +591,7 @@ def token():
 
 
 	#Get the tokens and ids from DDBB
-	token = hData.getToken(agent)
+	token = data_conector.getToken(agent)
 	obj = {}
 	#Verify the code
 	if code == token[grantType]['value']:
@@ -616,7 +617,7 @@ def token():
 			status=200,
 			mimetype='application/json'
 		)
-		hData.log('Warning', 'New token has been created for ' + agent)
+		data_conector.log('Warning', 'New token has been created for ' + agent)
 		return response
 	else:
 		#Response back
@@ -626,7 +627,7 @@ def token():
 			status=200,
 			mimetype='application/json'
 		)
-		hData.log('Alert', 'Unauthorized token request. The new token hasn\'t been sent.')
+		data_conector.log('Alert', 'Unauthorized token request. The new token hasn\'t been sent.')
 		return response
 
 #Google's endpoint
@@ -644,7 +645,7 @@ def smarthome():
 		agent = 'google';
 	#Get the access_token
 	tokenClient = request.headers['authorization'].split(' ')[1]
-	token = hData.getToken(agent)
+	token = data_conector.getToken(agent)
 	if tokenClient == token['access_token']['value']:
 		#Anlalyze the inputs
 		inputs = body['inputs']
@@ -654,8 +655,8 @@ def smarthome():
 				obj = {
 					'requestId': requestId,
 					'payload': {
-						'agentUserId': hData.getDDNS()['hostname'],
-						'devices': hData.getDevices()
+						'agentUserId': data_conector.getDDNS()['hostname'],
+						'devices': data_conector.getDevices()
 					}
 				}
 				response = app.response_class(
@@ -663,13 +664,14 @@ def smarthome():
 					status=200,
 					mimetype='application/json'
 				)
-				hData.log('Log', 'Sync request by ' + agent + ' with ' + obj['payload']['agentUserId'] + ' as agent user id')
+				data_conector.log('Log', 'Sync request by ' + agent + ' with ' + obj['payload']['agentUserId'] + ' as agent user id')
+				data_conector.updateLinked(True)
 				return response
 			elif input['intent'] == 'action.devices.QUERY':
 				obj = {
 					'requestId': requestId,
 					'payload': {
-						'devices': hData.getStatus()
+						'devices': data_conector.getStatus()
 					}
 				}
 				response = app.response_class(
@@ -677,7 +679,7 @@ def smarthome():
 					status=200,
 					mimetype='application/json'
 				)
-				hData.log('Log', 'Query request by ' + agent)
+				data_conector.log('Log', 'Query request by ' + agent)
 				return response
 			elif input['intent'] == 'action.devices.EXECUTE':
 				#Response
@@ -703,7 +705,7 @@ def smarthome():
 
 					command_response = {
 						'ids': ids,
-						'states': hData.getStatus(),
+						'states': data_conector.getStatus(),
 						'status': 'SUCCESS',
 					}
 					obj['payload']['commands'].append(command_response)
@@ -713,16 +715,17 @@ def smarthome():
 					status=200,
 					mimetype='application/json'
 				)
-				# hData.log('Log', 'Execute request by ' + agent)
+				# data_conector.log('Log', 'Execute request by ' + agent)
 				return response
 			elif input['intent'] == 'action.devices.DISCONNECT':
-				hData.log('Log', 'Disconnect request by ' + agent)
+				data_conector.log('Log', 'Disconnect request by ' + agent)
+				data_conector.updateLinked(False)
 				return 'Ok'
 
 			else:
-				hData.log('Log', 'Unknown request by ' + agent)
+				data_conector.log('Log', 'Unknown request by ' + agent)
 	else:
-		hData.log('Alert', 'Unauthorized request from ' + agent + '. Maybe the token has expired.')
+		data_conector.log('Alert', 'Unauthorized request from ' + agent + '. Maybe the token has expired.')
 		return "A"
 
 #Clock endpoint

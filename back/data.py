@@ -20,6 +20,7 @@ class Data:
 	userToken = ''
 	userName = ''
 	domain = ''
+	linked = False
 
 
 	def __init__(self):
@@ -38,16 +39,25 @@ class Data:
 
 			self.redis.set("transfer", "true");
 
-		if not self.redis.get("tasks"):
+		if self.redis.get("tasks") == None:
 			self.redis.set("tasks","[]")
 
 		if self.redis.get("alert") == None:
 			self.redis.set("alert","clear")
 
-		self.userName = json.loads(self.redis.get('secure'))['user']
-		self.userToken = json.loads(self.redis.get('secure'))['token']['front']
-		self.apikey = json.loads(self.redis.get('secure'))['token']['apikey']
-		self.domain = json.loads(self.redis.get('secure'))['domain']
+		secure = json.loads(self.redis.get('secure'))
+		try:
+			self.linked = secure['linked']
+		except:
+			secure['linked'] = False
+			self.linked = False
+			self.redis.set('secure',json.dumps(secure))
+
+		# Load some data into memory
+		self.userName = secure['user']
+		self.userToken = secure['token']['front']
+		self.apikey = secure['token']['apikey']
+		self.domain = secure['domain']
 
 
 	def getVersion(self):
@@ -100,7 +110,7 @@ class Data:
 				temp_devices.append(device)
 		self.redis.set('devices',json.dumps(temp_devices))
 		# Inform Google Home Graph
-		if os.path.exists("../google.json"):
+		if os.path.exists("../google.json") and self.linked:
 			homegraph.requestSync(self.domain)
 
 		return found
@@ -117,7 +127,7 @@ class Data:
 		self.redis.set('status',json.dumps(status))
 
 		# Inform Google Home Graph
-		if os.path.exists("../google.json"):
+		if os.path.exists("../google.json") and self.linked:
 			homegraph.requestSync(self.domain)
 
 	def deleteDevice(self, value):
@@ -136,7 +146,7 @@ class Data:
 			self.redis.set('status',json.dumps(status))
 
 		# Inform Google Home Graph
-		if os.path.exists("../google.json"):
+		if os.path.exists("../google.json") and self.linked:
 			homegraph.requestSync(self.domain)
 
 		return found
@@ -168,7 +178,7 @@ class Data:
 				publish.multiple(msgs, hostname="localhost")
 
 			# Inform Google Home Graph
-			if os.path.exists("../google.json"):
+			if os.path.exists("../google.json") and self.linked:
 				states = {}
 				states[device] = {}
 				states[device][param] = value
@@ -448,6 +458,12 @@ class Data:
 				'title': 'Redis database'
 			}
 		return status
+
+	def updateLinked(self,status):
+		secure = json.loads(self.redis.get('secure'))
+		secure['linked'] = status
+		self.linked = status
+		self.redis.set('secure',json.dumps(secure))
 
 # LOG
 
