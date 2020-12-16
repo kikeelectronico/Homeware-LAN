@@ -100,8 +100,8 @@ class Data:
                 temp_devices.append(device)
         self.redis.set('devices',json.dumps(temp_devices))
         # Inform Google Home Graph
-        if os.path.isFile("../google.json"):
-            homegraph.requestSync()
+        if os.path.exists("../google.json"):
+            homegraph.requestSync(self.domain)
 
         return found
 
@@ -117,8 +117,8 @@ class Data:
         self.redis.set('status',json.dumps(status))
 
         # Inform Google Home Graph
-        if os.path.isFile("../google.json"):
-            homegraph.requestSync()
+        if os.path.exists("../google.json"):
+            homegraph.requestSync(self.domain)
 
     def deleteDevice(self, value):
         temp_devices = [];
@@ -136,8 +136,8 @@ class Data:
             self.redis.set('status',json.dumps(status))
 
         # Inform Google Home Graph
-        if os.path.isFile("../google.json"):
-            homegraph.requestSync()
+        if os.path.exists("../google.json"):
+            homegraph.requestSync(self.domain)
 
         return found
 
@@ -168,7 +168,7 @@ class Data:
                 publish.multiple(msgs, hostname="localhost")
 
             # Inform Google Home Graph
-            if os.path.isFile("../google.json"):
+            if os.path.exists("../google.json"):
                 states = {}
                 state[device] = {}
                 state[device][param] = value
