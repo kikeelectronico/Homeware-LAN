@@ -7,8 +7,9 @@ import time
 from datetime import datetime
 import subprocess
 import paho.mqtt.publish as publish
+import os.path
 
-from homegraph import HomeGraph
+from homeGraph import HomeGraph
 homegraph = HomeGraph()
 
 class Data:
@@ -18,6 +19,7 @@ class Data:
     apikey = ''
     userToken = ''
     userName = ''
+    domain = ''
 
 
     def __init__(self):
@@ -41,9 +43,6 @@ class Data:
 
         if self.redis.get("alert") == None:
             self.redis.set("alert","clear")
-
-        if self.redis.get("homegraph") == None:
-            self.redis.set("homegraph","false")
 
         self.userName = json.loads(self.redis.get('secure'))['user']
         self.userToken = json.loads(self.redis.get('secure'))['token']['front']
@@ -101,7 +100,7 @@ class Data:
                 temp_devices.append(device)
         self.redis.set('devices',json.dumps(temp_devices))
         # Inform Google Home Graph
-        if self.redis.get("homegraph") == "true":
+        if os.path.isFile("../google.json"):
             homegraph.requestSync()
 
         return found
@@ -118,7 +117,7 @@ class Data:
         self.redis.set('status',json.dumps(status))
 
         # Inform Google Home Graph
-        if self.redis.get("homegraph") == "true":
+        if os.path.isFile("../google.json"):
             homegraph.requestSync()
 
     def deleteDevice(self, value):
@@ -137,7 +136,7 @@ class Data:
             self.redis.set('status',json.dumps(status))
 
         # Inform Google Home Graph
-        if self.redis.get("homegraph") == "true":
+        if os.path.isFile("../google.json"):
             homegraph.requestSync()
 
         return found
@@ -169,7 +168,7 @@ class Data:
                 publish.multiple(msgs, hostname="localhost")
 
             # Inform Google Home Graph
-            if self.redis.get("homegraph") == "true":
+            if os.path.isFile("../google.json"):
                 states = {}
                 state[device] = {}
                 state[device][param] = value

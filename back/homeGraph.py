@@ -7,7 +7,7 @@ import requests
 class HomeGraph:
     """Do requests to Google Home Graph."""
 
-    self.expire = 3600
+    expire = 3600
 
     def getJWT(self):
         self.generated = int(time.time())
