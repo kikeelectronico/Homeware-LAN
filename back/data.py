@@ -170,8 +170,8 @@ class Data:
             # Inform Google Home Graph
             if os.path.exists("../google.json"):
                 states = {}
-                state[device] = {}
-                state[device][param] = value
+                states[device] = {}
+                states[device][param] = value
                 homegraph.reportState(self.domain,states)
 
             return True
