@@ -16,17 +16,29 @@ First you need to delete some old files and configurations
 
 ## Delete the cron jobs
 
-Run: ```sudo crontab -e``` and delete the following lines:
+1. Run.
 
-@reboot sudo systemctl start homeware
+ ```
+ sudo crontab -e
+ ```
 
-@reboot sudo systemctl start homewareMQTT
+ 2. Delete the following lines.
 
-@reboot sudo systemctl start homewareTask
+> @reboot sudo systemctl start homeware
 
-@reboot sudo systemctl start homewareRedis
+> @reboot sudo systemctl start homewareMQTT
+
+> @reboot sudo systemctl start homewareTask
+
+> @reboot sudo systemctl start homewareRedis
+
+3. Save using `Ctrl + O`.
+
+4. Exit using `Ctrl + X`.
 
 ## Delete the Redis service
+
+1. Run.
 
 ```
 sudo rm /lib/systemd/system/homewareRedis.service

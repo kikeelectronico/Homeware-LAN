@@ -7,7 +7,10 @@ import time
 from datetime import datetime
 import subprocess
 import paho.mqtt.publish as publish
+import os.path
 
+from homeGraph import HomeGraph
+homegraph = HomeGraph()
 
 class Data:
 
@@ -16,6 +19,7 @@ class Data:
     apikey = ''
     userToken = ''
     userName = ''
+    domain = ''
 
 
     def __init__(self):
@@ -25,44 +29,29 @@ class Data:
         if not self.redis.get('transfer'):
             self.log('Warning','The database must be created')
             try:
-                with open('../' + self.homewareFile, 'r') as f:
-                    data = json.load(f)
-                    self.redis.set('devices',json.dumps(data['devices']))
-                    self.redis.set('status',json.dumps(data['status']))
-                    self.redis.set('tasks',json.dumps(data['tasks']))
-                    self.redis.set('secure',json.dumps(data['secure']))
+                self.load()
                 self.log('Warning','Using a provided homeware file')
             except:
                 subprocess.run(["cp", "../configuration_templates/template_homeware.json", "../homeware.json"],  stdout=subprocess.PIPE)
-
-                with open('../' + self.homewareFile, 'r') as f:
-                    data = json.load(f)
-                    self.redis.set('devices',json.dumps(data['devices']))
-                    self.redis.set('status',json.dumps(data['status']))
-                    self.redis.set('tasks',json.dumps(data['tasks']))
-                    self.redis.set('secure',json.dumps(data['secure']))
+                self.load()
                 self.log('Warning','Using a template homeware file')
 
-            self.redis.set('transfer', "true");
+            self.redis.set("transfer", "true");
 
-        else:
-            self.log('Log','DDBB connection up and running')
+        if not self.redis.get("tasks"):
+            self.redis.set("tasks","[]")
 
-        # Create the tasks key if needed
-        if not self.redis.get('tasks'):
-            self.redis.set('tasks',"[]")
-
-        if self.redis.get('alert') == None:
-            self.redis.set('alert','clear')
+        if self.redis.get("alert") == None:
+            self.redis.set("alert","clear")
 
         self.userName = json.loads(self.redis.get('secure'))['user']
         self.userToken = json.loads(self.redis.get('secure'))['token']['front']
         self.apikey = json.loads(self.redis.get('secure'))['token']['apikey']
+        self.domain = json.loads(self.redis.get('secure'))['domain']
 
 
     def getVersion(self):
         return {'version': self.version}
-
 
     def getGlobal(self):
         data = {
@@ -110,7 +99,9 @@ class Data:
             else:
                 temp_devices.append(device)
         self.redis.set('devices',json.dumps(temp_devices))
-
+        # Inform Google Home Graph
+        if os.path.isFile("../google.json"):
+            homegraph.requestSync()
 
         return found
 
@@ -124,6 +115,10 @@ class Data:
         status = json.loads(self.redis.get('status'))
         status[deviceID] = incommingData['status']
         self.redis.set('status',json.dumps(status))
+
+        # Inform Google Home Graph
+        if os.path.isFile("../google.json"):
+            homegraph.requestSync()
 
     def deleteDevice(self, value):
         temp_devices = [];
@@ -139,6 +134,10 @@ class Data:
             status = json.loads(self.redis.get('status'))
             del status[value]
             self.redis.set('status',json.dumps(status))
+
+        # Inform Google Home Graph
+        if os.path.isFile("../google.json"):
+            homegraph.requestSync()
 
         return found
 
@@ -167,6 +166,14 @@ class Data:
 
             except:
                 publish.multiple(msgs, hostname="localhost")
+
+            # Inform Google Home Graph
+            if os.path.isFile("../google.json"):
+                states = {}
+                state[device] = {}
+                state[device][param] = value
+                homegraph.reportState(self.domain,states)
+
             return True
         else:
             return False

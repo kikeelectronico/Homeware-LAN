@@ -14,22 +14,31 @@ Homeware LAN uses MQTT for communicate with your hardware devices. You can use a
 # Topics
 ## Homeware to hardware - receive data
 
-Each device has its own topic that will be used by Homeware to send information to the device every time something changes for the device.
+You can see all the device's topics at `https://<your.domain.com>/devices/connecting/<device-id>/`
 
-The **topic for each device** is ```device/<device-id>``` where ```<device-id>``` is the unique id of each device.
+### Main Topic
+
+Each device has its own main topic that will be used by Homeware to send information to the device.
+
+The **main topic for each device** is ```device/<device-id>``` where ```<device-id>``` is the unique id of each device.
 
 The data that Homeware will sent depends on the device type and is a JSON formatted string.
 
-### Example
-Imagine that we have a light in which both the On/Off status and the brightness can be controlled. Every time the status changes on Homeware, it will send something like:
+#### Example
+
+Imagine that we have a light in which both the On/Off status and the brightness can be controlled. Every time the status changes in Homeware, it will send something like:
 
 ```
 {"on":true,"brightness":80}
 ```
+### Individual Topics
 
-The JSON above has two parameters, the On/Off status and the brightness.
+Each device has individual topics for each param or command.
 
-Due to the data sent by Homeware depends on both the device type and your device configuration, you can use the ```request``` intent describe in the Hardware to Homeware - request data section to see the data for an specific device.
+#### Example
+
+Imagine that we have a light in which the On/Off status can be controlled. Every time the `on` status changes in Homeware, it will send the new status to `device/<device-id>/on`.
+
 
 ## Hardware to Homeware - send data
 The hardware can send data back to Homeware sending the data to the topic ```device/control``` and using the next format:
@@ -46,16 +55,16 @@ Imagine that we have a smart bulb which ```<device-id>``` at Homeware is light00
 
 The last parameter that must be configured is the intent, it can be set to:
 
-```execute``` -> Means that we only want to store the new value.
+`execute` -> Means that we only want to store the new value.
 
-```rules``` -> Means that we want to store the new value and verify all rules. It could be interesting if we know that one or more rules uses the parameter that we are changing as a trigger for do another job.
+`rules` -> Means that we want to store the new value and verify all rules. It could be interesting if we know that one or more rules uses the parameter that we are changing as a trigger for do another job.
 
-```request``` -> It will be address in Hardware to Homeware - request data.
+`request` -> Check [Hardware to Homeware - request data](#hardware-to-homeware---request-data).
 
-So, the complete request can be something like:
+The complete request can be something like:
 
 ```
-{"id":"light001","param":"brightness","value":"80","intent":"execute"}
+{"id":"light001","param":"brightness","value":80,"intent":"execute"}
 ```
 
 ## Hardware to Homeware - request data

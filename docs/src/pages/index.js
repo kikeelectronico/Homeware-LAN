@@ -13,7 +13,7 @@ const features = [
     url: "",
     description: (
       <>
-        Homeware runs in both a Raspberry Pi or an Ubuntu Server. Server illustration by <a href="https://pixabay.com/es/vectors/equipo-servidor-estaci%C3%B3n-de-trabajo-159837/" target="_blanck" rel="nofollow">OpenClipart-Vectors</a>.
+        Homeware runs in either a Raspberry Pi or an Ubuntu Server. Server illustration by <a href="https://pixabay.com/es/vectors/equipo-servidor-estaci%C3%B3n-de-trabajo-159837/" target="_blanck" rel="nofollow">OpenClipart-Vectors</a>.
       </>
     ),
   },

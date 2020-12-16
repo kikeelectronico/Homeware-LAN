@@ -1,13 +1,11 @@
-config.json
 homeware.json
-token.json
-secure.json
-hardware.py
-upgrader.log
-installations.txt
-/redis
-package-lock.json
+google.json
 .eslintcache
+build
+
+# Docusaurus generated files
+.docusaurus
+.cache-loader
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
