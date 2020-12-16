@@ -473,31 +473,46 @@ def files(operation = '', file = '', token = ''):
                conditional = False)
             hData.log('Warning', 'A backup file has been downloaded')
             return result
-        elif operation == 'log':
-            # Download file
-            now = datetime.now()
-            date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
-            result = send_file('../' + 'homeware.log',
-               mimetype = "text/plain", # use appropriate type based on file
-               attachment_filename = 'homeware_' + str(date_time) + '.log',
-               as_attachment = True,
-               conditional = False)
-            hData.log('Warning', 'The log file has been downloaded')
-            return result
         elif operation == 'restore':
             if request.method == 'POST':
                 if 'file' not in request.files:
-                    return redirect('/backup/fail:No file selected/')
+                    return redirect('/backup/?status=No file selected')
                 file = request.files['file']
                 if file.filename == '':
-                    return redirect('/backup/fail:Incorrect file name/')
+                    return redirect('/backup/?status=Incorrect file name')
                 if file and allowed_file(file.filename):
                     filename = file.filename
                     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                     subprocess.run(["mv", '../' + file.filename, "../homeware.json"],  stdout=subprocess.PIPE)
                     hData.load()
                     hData.log('Warning', 'A backup file has been restored')
-                    return redirect('/backup/ok/')
+                    return redirect('/backup/?status=Success')
+        elif operation == 'download':
+            if file == "log":
+	            # Download file
+	            now = datetime.now()
+	            date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
+	            result = send_file('../' + 'homeware.log',
+	               mimetype = "text/plain", # use appropriate type based on file
+	               attachment_filename = 'homeware_' + str(date_time) + '.log',
+	               as_attachment = True,
+	               conditional = False)
+	            hData.log('Warning', 'The log file has been downloaded')
+	            return result
+        elif operation == 'upload':
+            if file == "google":
+	            if request.method == 'POST':
+	                if 'file' not in request.files:
+	                    return redirect('/settings/?status=No file selected')
+	                file = request.files['file']
+	                if file.filename == '':
+	                    return redirect('/settings/?status=Incorrect file name')
+	                if file and allowed_file(file.filename):
+	                    filename = file.filename
+	                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+	                    subprocess.run(["mv", '../' + file.filename, "../google.json"],  stdout=subprocess.PIPE)
+	                    hData.log('Info', 'A google auth file has been uploaded')
+	                    return redirect('/settings/?status=Success')
         else:
             return 'Operation unknown'
     else:

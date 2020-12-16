@@ -6,8 +6,15 @@ class Backup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+			status: ""
     }
   }
+
+	componentDidMount() {
+		var url = new URL(window.location);
+		var status = url.searchParams.get("status");
+		this.setState({status})
+	}
 
   backup(){
     window.location = root + "files/buckup/homeware/" + getCookieValue('token') + "?code=" + String(Math.random())
@@ -15,7 +22,7 @@ class Backup extends React.Component {
 
   render() {
 
-    const restore_url = root + "files/restore/file/" + getCookieValue('token') + "/";
+    const restore_url = root + "files/restore/homeware/" + getCookieValue('token') + "/";
 
     return (
       <div>
@@ -32,10 +39,11 @@ class Backup extends React.Component {
         <div className="page_block_container">
           <h2>Restore</h2>
           <hr/>
+					{this.state.status}
           <div className="page_block_content_container">
             <form method="post" encType="multipart/form-data" action={ restore_url }>
               <input type="file" name="file"/>
-              <button type="submit" onClick={ this.restart }>Restore</button>
+              <button type="submit">Restore</button>
               </form>
           </div>
           <div className="advise">
