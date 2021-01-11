@@ -45,7 +45,7 @@ class Logs extends React.Component {
   }
 
   downloadLog() {
-    window.location = root + "files/log/homeware/" + getCookieValue('token')
+    window.location = root + "files/download/log/" + getCookieValue('token')
   }
 
   render() {
