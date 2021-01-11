@@ -1,5 +1,6 @@
 name: Build alpha frontend
 on:
+  workflow_dispatch:
   push:
     branches:
       - alpha

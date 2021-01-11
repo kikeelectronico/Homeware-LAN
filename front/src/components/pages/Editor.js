@@ -106,7 +106,6 @@ class Editor extends React.Component {
 	    sta.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
 	    sta.send();
     }
-
   }
 
   updateNames(dumy_key, value){
