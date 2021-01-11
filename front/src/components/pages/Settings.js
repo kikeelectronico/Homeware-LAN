@@ -18,7 +18,8 @@ class Settings extends React.Component {
         auth: "",
         token: "",
         fulfillment: ""
-      }
+      },
+			status: ""
     }
     this.update = this.update.bind(this);
     this.enableDdnsProvider = this.enableDdnsProvider.bind(this);
@@ -49,6 +50,10 @@ class Settings extends React.Component {
       http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
       http.send();
     }
+
+		var url = new URL(window.location);
+		var status = url.searchParams.get("status");
+		this.setState({status})
   }
 
   update(event){
@@ -101,6 +106,8 @@ class Settings extends React.Component {
   }
 
   render() {
+
+		const google_url = root + "files/upload/google/" + getCookieValue('token') + "/";
 
     return (
       <div>
@@ -158,6 +165,20 @@ class Settings extends React.Component {
           </div>
         </div>
 
+				<div className="page_block_container">
+          <h2>Automatic Sync with Google</h2>
+          <hr/>
+					{this.state.status}
+          <div className="page_block_content_container">
+            <form method="post" encType="multipart/form-data" action={ google_url }>
+              <input type="file" name="file"/>
+              <button type="submit">Upload</button>
+              </form>
+          </div>
+          <div className="advise">
+            <span>Upload the file needed for Google Auth. Read the <a href="https://kikeelectronico.github.io/Homeware-LAN/docs/google-auth" target="_blanck">instructions</a>.</span>
+          </div>
+        </div>
 
         <div className="page_block_container">
           <h2>MQTT</h2>
