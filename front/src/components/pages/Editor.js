@@ -87,24 +87,25 @@ class Editor extends React.Component {
       http.open("GET", root + "api/devices/get/" + this.state.id + "/");
       http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
       http.send();
-    }
 
-    var sta = new XMLHttpRequest();
-    sta.onload = function (e) {
-      if (sta.readyState === 4) {
-        if (sta.status === 200) {
-          var data = JSON.parse(sta.responseText);
-          this.setState({
-             status: data
-           });
-        } else {
-          console.error(sta.statusText);
-        }
-      }
-    }.bind(this);
-    sta.open("GET", root + "api/status/get/" + this.state.id + "/");
-    sta.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-    sta.send();
+			var sta = new XMLHttpRequest();
+	    sta.onload = function (e) {
+	      if (sta.readyState === 4) {
+	        if (sta.status === 200) {
+	          var data = JSON.parse(sta.responseText);
+						console.log('in');
+	          this.setState({
+	             status: data
+	           });
+	        } else {
+	          console.error(sta.statusText);
+	        }
+	      }
+	    }.bind(this);
+	    sta.open("GET", root + "api/status/get/" + this.state.id + "/");
+	    sta.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+	    sta.send();
+    }
 
   }
 

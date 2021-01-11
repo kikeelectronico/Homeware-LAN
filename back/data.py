@@ -14,6 +14,7 @@ homegraph = HomeGraph()
 
 class Data:
 
+
 	version = 'v1.2.0'
 	homewareFile = 'homeware.json'
 	apikey = ''
