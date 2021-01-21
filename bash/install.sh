@@ -8,15 +8,18 @@ read -r -p "Do you want to start? [y/N] " response
 case "$response" in
     [yY][eE][sS]|[yY])
         echo
-        echo "Cloning the respository."
+        echo "Download Homeware-LAN."
         echo "---------------------------------------------"
-        cd /usr/share
         sudo apt-get update
-        sudo apt install git -y
-        sudo git clone https://github.com/kikeelectronico/Homeware-LAN.git
-        # cd Homeware-LAN
-        # git checkout alpha
-        # cd ../
+        sudo apt install unzip -y
+        # Download the last version
+        LOCATION=$(curl -s https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest \
+          | grep "tag_name" \
+          | awk '{print "https://github.com/kikeelectronico/Homeware-LAN/archive/" substr($2, 2, length($2)-3) ".zip"}') \
+          ; curl -L -o Homeware-LAN.zip $LOCATION
+        unzip Homeware-LAN.zip
+        sudo mv Homeware-LAN-*/ /usr/share/Homeware-LAN
+        cd /usr/share
         sudo chmod -R 777 Homeware-LAN
         cd Homeware-LAN
         echo "Installing Homeware-LAN and its dependencies."
