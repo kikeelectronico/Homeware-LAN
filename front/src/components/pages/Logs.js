@@ -1,16 +1,17 @@
-import React from 'react';
-import getCookieValue from '../../functions'
-import { root } from '../../constants'
+import React from "react";
+import { ToastsContainer, ToastsStore } from "react-toasts";
+import getCookieValue from "../../functions";
+import { root } from "../../constants";
 
-import './Logs.css'
+import "./Logs.css";
 
 class Logs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
-      page: 1
-    }
+      page: 1,
+    };
 
     this.previousPage = this.previousPage.bind(this);
     this.nextPage = this.nextPage.bind(this);
@@ -30,53 +31,67 @@ class Logs extends React.Component {
       }
     }.bind(this);
     http.open("GET", root + "api/log/get/");
-    http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
     http.send();
   }
 
   previousPage() {
-    if (this.state.page > 1)
-      this.setState({ page: this.state.page - 1 });
+    if (this.state.page > 1) this.setState({ page: this.state.page - 1 });
   }
 
   nextPage() {
-    if (this.state.page < this.state.data.length/10-1)
+    if (this.state.page < this.state.data.length / 10 - 1)
       this.setState({ page: this.state.page + 1 });
   }
 
   downloadLog() {
-    window.location = root + "files/download/log/" + getCookieValue('token')
+    ToastsStore.warning("Downloading");
+    window.location = root + "files/download/log/" + getCookieValue("token");
   }
 
   render() {
-
-    const homeware_lan_log_data = this.state.data.slice(0, this.state.page * 10);
-    const homeware_lan_log = homeware_lan_log_data.map((register, i) =>
-      <div className="logs_line" key={ i }>
-        { register.severity === 'Log' ? <b>{ register.severity }</b> : '' }
-        { register.severity === 'Warning' ? <b className="logs_yellow">{ register.severity }</b> : '' }
-        { register.severity === 'Alert' ? <b className="logs_red">{ register.severity }</b> : '' }
-         - { register.time }<br/>
-        { register.message }
-      </div>
+    const homeware_lan_log_data = this.state.data.slice(
+      0,
+      this.state.page * 10
     );
+    const homeware_lan_log = homeware_lan_log_data.map((register, i) => (
+      <div className="logs_line" key={i}>
+        {register.severity === "Log" ? <b>{register.severity}</b> : ""}
+        {register.severity === "Warning" ? (
+          <b className="logs_yellow">{register.severity}</b>
+        ) : (
+          ""
+        )}
+        {register.severity === "Alert" ? (
+          <b className="logs_red">{register.severity}</b>
+        ) : (
+          ""
+        )}
+        - {register.time}
+        <br />
+        {register.message}
+      </div>
+    ));
 
     return (
       <div>
         <div className="page_block_container">
           <h2>Homeware-LAN log</h2>
-          <hr/>
-          <div>
-            { homeware_lan_log }
-          </div>
+          <hr />
+          <div>{homeware_lan_log}</div>
           <div className="page_block_buttons_container">
-            <button type="button" onClick={ this.nextPage }>Load more</button>
-            <button type="button" onClick={ this.downloadLog }>Download</button>
+            <button type="button" onClick={this.nextPage}>
+              Load more
+            </button>
+            <button type="button" onClick={this.downloadLog}>
+              Download
+            </button>
           </div>
         </div>
+        <ToastsContainer store={ToastsStore} />
       </div>
     );
   }
 }
 
-export default Logs
+export default Logs;

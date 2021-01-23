@@ -1,33 +1,33 @@
-import React from 'react';
-import Triggers from '../manager/Triggers.js'
-import AddTrigger from '../manager/AddTrigger.js'
-import Target from '../manager/Target.js'
-import AddTarget from '../manager/AddTarget.js'
-import getCookieValue from '../../functions'
-import { root } from '../../constants'
+import React from "react";
+import { ToastsContainer, ToastsStore } from "react-toasts";
+import Triggers from "../manager/Triggers.js";
+import AddTrigger from "../manager/AddTrigger.js";
+import Target from "../manager/Target.js";
+import AddTarget from "../manager/AddTarget.js";
+import getCookieValue from "../../functions";
+import { root } from "../../constants";
 
-import './Manager.css';
+import "./Manager.css";
 
 class Manager extends React.Component {
   constructor(props) {
     super(props);
-    const id = window.location.pathname.split('/')[3];
+    const id = window.location.pathname.split("/")[3];
     var create = false;
     if (id === "") create = true;
     this.state = {
       id: id,
       create: create,
-      save_status: "",
       trigger_assistant_parent: 0,
       task: {
-        title: '',
-        description: '',
+        title: "",
+        description: "",
         triggers: {},
-        target: []
+        target: [],
       },
       devices: [],
-      status: {}
-    }
+      status: {},
+    };
     this.update = this.update.bind(this);
     this.save = this.save.bind(this);
     this.delete = this.delete.bind(this);
@@ -47,119 +47,113 @@ class Manager extends React.Component {
       if (dev.readyState === 4) {
         if (dev.status === 200) {
           var data = JSON.parse(dev.responseText);
-          var devices_names = {}
+          var devices_names = {};
           data.devices.forEach((device) => {
-            devices_names[device.id] = device.name.name
-          })
+            devices_names[device.id] = device.name.name;
+          });
           this.setState({
-             devices: devices_names,
-             status:  data.status
-           });
+            devices: devices_names,
+            status: data.status,
+          });
         } else {
           console.error(dev.statusText);
         }
       }
     }.bind(this);
     dev.open("GET", root + "api/global/get/");
-    dev.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    dev.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
     dev.send();
 
     // Load task if neeeded
-    if (!this.state.create){
+    if (!this.state.create) {
       var tas = new XMLHttpRequest();
       tas.onload = function (e) {
         if (tas.readyState === 4) {
           if (tas.status === 200) {
             var data = JSON.parse(tas.responseText);
             this.setState({
-               task: data
-             });
+              task: data,
+            });
           } else {
             console.error(tas.statusText);
           }
         }
       }.bind(this);
       tas.open("GET", root + "api/tasks/get/" + this.state.id + "/");
-      tas.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+      tas.setRequestHeader(
+        "authorization",
+        "baerer " + getCookieValue("token")
+      );
       tas.send();
     }
   }
 
-  update(event){
+  update(event) {
     var task = this.state.task;
-    task[event.target.id] = event.target.value
+    task[event.target.id] = event.target.value;
     this.setState({
-      task: task
-    })
+      task: task,
+    });
   }
 
-  save(){
+  save() {
+    ToastsStore.warning("Saving");
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       if (http.readyState === 4) {
         if (http.status === 200) {
-          JSON.parse(http.responseText);
-           if (this.state.create){
-             window.location.href = "/tasks"
-           } else {
-             this.setState({
-                save_status: "Saved correctly."
-              });
-           }
+          if (this.state.create) {
+            window.location.href = "/tasks";
+          } else {
+            ToastsStore.success("Saved correctly");
+          }
         } else {
           console.error(http.statusText);
-          this.setState({
-             save_status: "Error, the changes haven't been saved."
-           });
+          ToastsStore.error("Error, the changes haven't been saved");
         }
-        setTimeout(function(){
-          this.setState({
-             save_status: ""
-           });
-        }.bind(this), 5000)
+      } else {
+        ToastsStore.error("Error, the changes haven't been saved");
       }
     }.bind(this);
     var payload = {
-      "task": this.state.task
-    }
-    if (this.state.create){
+      task: this.state.task,
+    };
+    if (this.state.create) {
       http.open("POST", root + "api/tasks/create/");
     } else {
       http.open("POST", root + "api/tasks/update/");
-      payload['id'] = this.state.id;
+      payload["id"] = this.state.id;
     }
     http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
     http.send(JSON.stringify(payload));
   }
 
-  delete(){
-    if(window.confirm('Do you want to delete the task?')){
+  delete() {
+    ToastsStore.warning("Deleting");
+    if (window.confirm("Do you want to delete the task?")) {
       var http = new XMLHttpRequest();
       http.onload = function (e) {
         if (http.readyState === 4) {
           if (http.status === 200) {
-            window.location.href = "/tasks/"
+            ToastsStore.success("Deleted");
+            window.location.href = "/tasks/";
           } else {
             console.error(http.statusText);
-            this.setState({
-               save_status: "Error, the device hasn't been deleted."
-             });
+            ToastsStore.error("Error, the device hasn't been deleted");
           }
-          setTimeout(function(){
-            this.setState({
-               save_status: ""
-             });
-          }.bind(this), 5000)
+        } else {
+          ToastsStore.error("Error, the device hasn't been deleted");
         }
-      }.bind(this);
+      };
       http.open("GET", root + "api/tasks/delete/" + this.state.id + "/");
-      http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+      http.setRequestHeader(
+        "authorization",
+        "baerer " + getCookieValue("token")
+      );
       http.send();
     } else {
-      this.setState({
-         save_status: "Ok. The device is save."
-       });
+      ToastsStore.warning("Ok. The device is save");
     }
   }
 
@@ -168,11 +162,11 @@ class Manager extends React.Component {
     var task = this.state.task;
     var triggers = task.triggers;
     // Get the the parent id
-    const parent = triggers[id].parent
-    if (parent !== 'triggers') {
+    const parent = triggers[id].parent;
+    if (parent !== "triggers") {
       // Delete from the parent
       const index = triggers[parent].operation.indexOf(id);
-      triggers[parent].operation.splice(index,1)
+      triggers[parent].operation.splice(index, 1);
       // Delete the trigger
       delete triggers[id];
       task.triggers = triggers;
@@ -180,40 +174,40 @@ class Manager extends React.Component {
       task.triggers = {};
     }
     this.setState({
-      task: task
+      task: task,
     });
   }
 
   addTriggerLogic(type, parent) {
     // Get the triggers
     var task = this.state.task;
-    if (parent !== 'triggers') {
+    if (parent !== "triggers") {
       // Get the timestamp
       const ts = Date.now();
       // Compose and create the logic trigger
       task.triggers[ts] = {
         operation: [],
         parent: parent,
-        type: type
+        type: type,
       };
       // Register the trigger in the parent
       task.triggers[parent].operation.push(ts);
     } else {
-      task.triggers['trigger'] = {
+      task.triggers["trigger"] = {
         operation: [],
-        parent: 'triggers',
-        type: type
+        parent: "triggers",
+        type: type,
       };
     }
     // Update the component state
     this.setState({
-      task: task
+      task: task,
     });
   }
 
   openTriggerAssistant(parent) {
     this.setState({
-      trigger_assistant_parent: parent
+      trigger_assistant_parent: parent,
     });
   }
 
@@ -221,33 +215,33 @@ class Manager extends React.Component {
     // Get the triggers
     var task = this.state.task;
     const parent = this.state.trigger_assistant_parent;
-    if (parent !== 'triggers') {
+    if (parent !== "triggers") {
       // Get the timestamp
       const ts = Date.now();
       // Compose and create the logic trigger
       task.triggers[ts] = {
         operation: operation,
         parent: parent,
-        type: type
+        type: type,
       };
       // Register the trigger in the parent
       task.triggers[parent].operation.push(ts);
     } else {
-      task.triggers['trigger'] = {
+      task.triggers["trigger"] = {
         operation: operation,
-        parent: 'triggers',
-        type: type
+        parent: "triggers",
+        type: type,
       };
     }
     // Update the component state
     this.setState({
-      task: task
+      task: task,
     });
   }
 
   closeTriggerAssistant() {
     this.setState({
-      trigger_assistant_parent: 0
+      trigger_assistant_parent: 0,
     });
   }
 
@@ -255,92 +249,130 @@ class Manager extends React.Component {
     var task = this.state.task;
     task.target.push(target);
     this.setState({
-      task: task
+      task: task,
     });
   }
 
   deleteTarget(id) {
     var task = this.state.task;
-    task.target.splice(id,1)
+    task.target.splice(id, 1);
     this.setState({
-      task: task
+      task: task,
     });
   }
 
   render() {
-
     const button = {
-      width: '200px'
-    }
+      width: "200px",
+    };
 
     const deleteButton = {
-      backgroundColor: 'red'
-    }
+      backgroundColor: "red",
+    };
 
     const deleteButtonDisabled = {
-      backgroundColor: 'red',
-      opacity: '0.2'
-    }
+      backgroundColor: "red",
+      opacity: "0.2",
+    };
 
     const separator = {
-      width: '70%'
-    }
+      width: "70%",
+    };
 
     const targets = this.state.task.target.map((target, i) => {
-      return <Target key={i} id={i} target={target} devices={this.state.devices} delete={this.deleteTarget} />
-    })
+      return (
+        <Target
+          key={i}
+          id={i}
+          target={target}
+          devices={this.state.devices}
+          delete={this.deleteTarget}
+        />
+      );
+    });
 
     return (
       <div className="page_block_container">
         <h2>Task</h2>
-        <hr style={separator}/>
+        <hr style={separator} />
         <div className="page_block_content_container">
           <div className="two_table_row">
+            <div className="two_table_cel">Name*</div>
             <div className="two_table_cel">
-              Name*
-            </div>
-            <div className="two_table_cel">
-              <input type="text" className="two_input" id="title" defaultValue={this.state.task.title} onChange={this.update}/>
+              <input
+                type="text"
+                className="two_input"
+                id="title"
+                defaultValue={this.state.task.title}
+                onChange={this.update}
+              />
             </div>
           </div>
           <div className="two_table_row">
+            <div className="two_table_cel">Description*</div>
             <div className="two_table_cel">
-              Description*
-            </div>
-            <div className="two_table_cel">
-              <input type="text" className="two_input" id="description" defaultValue={this.state.task.description} onChange={this.update}/>
+              <input
+                type="text"
+                className="two_input"
+                id="description"
+                defaultValue={this.state.task.description}
+                onChange={this.update}
+              />
             </div>
           </div>
-          <hr/>
+          <hr />
           <h2>Triggers</h2>
           <div className="advise">
             <span></span>
           </div>
-          <Triggers id="trigger" triggers={this.state.task.triggers} devices={this.state.devices} delete={this.deleteTrigger} addTriggerLogic={this.addTriggerLogic} openTriggerAssistant={this.openTriggerAssistant}/>
-          {
-            this.state.trigger_assistant_parent !== 0
-            ?
-            <AddTrigger devices={this.state.devices} status={this.state.status} closeTriggerAssistant={this.closeTriggerAssistant} addTriggerOperation={this.addTriggerOperation}/>
-            :
-            ''
-          }
-          <hr/>
+          <Triggers
+            id="trigger"
+            triggers={this.state.task.triggers}
+            devices={this.state.devices}
+            delete={this.deleteTrigger}
+            addTriggerLogic={this.addTriggerLogic}
+            openTriggerAssistant={this.openTriggerAssistant}
+          />
+          {this.state.trigger_assistant_parent !== 0 ? (
+            <AddTrigger
+              devices={this.state.devices}
+              status={this.state.status}
+              closeTriggerAssistant={this.closeTriggerAssistant}
+              addTriggerOperation={this.addTriggerOperation}
+            />
+          ) : (
+            ""
+          )}
+          <hr />
           <h2>Targets</h2>
           <div className="advise">
             <span></span>
           </div>
           {targets}
-          <AddTarget devices={this.state.devices} status={this.state.status} addTarget={this.addTarget}/>
-          <hr/>
+          <AddTarget
+            devices={this.state.devices}
+            status={this.state.status}
+            addTarget={this.addTarget}
+          />
+          <hr />
           <div className="two_table_cel">
-            <button type="button" style={ this.state.create ? deleteButtonDisabled : deleteButton } onClick={ this.delete } disabled={ this.state.create ? true : false}>Delete</button>
-            <button type="button" onClick={ this.save }>Save</button>
-            <span>{this.state.save_status}</span>
+            <button
+              type="button"
+              style={this.state.create ? deleteButtonDisabled : deleteButton}
+              onClick={this.delete}
+              disabled={this.state.create ? true : false}
+            >
+              Delete
+            </button>
+            <button type="button" onClick={this.save}>
+              Save
+            </button>
           </div>
         </div>
+        <ToastsContainer store={ToastsStore} />
       </div>
-  );
+    );
   }
 }
 
-export default Manager
+export default Manager;

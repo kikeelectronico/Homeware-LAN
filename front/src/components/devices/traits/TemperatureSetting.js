@@ -1,6 +1,6 @@
-import React from 'react';
-import getCookieValue from '../../../functions'
-import { root } from '../../../constants'
+import React from "react";
+import getCookieValue from "../../../functions";
+import { root } from "../../../constants";
 
 class TemperatureSetting extends React.Component {
   constructor(props) {
@@ -10,17 +10,17 @@ class TemperatureSetting extends React.Component {
     this.update = this.update.bind(this);
   }
 
-  up(){
+  up() {
     var temperature = this.props.status.thermostatTemperatureSetpoint + 1;
-    this.update(temperature)
+    this.update(temperature);
   }
 
-  down(){
+  down() {
     var temperature = this.props.status.thermostatTemperatureSetpoint - 1;
-    this.update(temperature)
+    this.update(temperature);
   }
 
-  update(temperature){
+  update(temperature) {
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       if (http.readyState === 4) {
@@ -30,43 +30,61 @@ class TemperatureSetting extends React.Component {
           console.error(http.statusText);
         }
       }
-    }.bind(this)
+    }.bind(this);
     http.open("POST", root + "api/status/update/");
     http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-    http.send(JSON.stringify({
-      "id": this.props.id,
-      "param": "thermostatTemperatureSetpoint",
-      "value": temperature
-    }));
+    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    http.send(
+      JSON.stringify({
+        id: this.props.id,
+        param: "thermostatTemperatureSetpoint",
+        value: temperature,
+      })
+    );
   }
 
   render() {
-
     const container = {
-      float: 'left',
-      marginLeft: '5px'
-    }
+      float: "left",
+      marginLeft: "5px",
+    };
+
+    const title = {
+      color: "#777",
+    };
 
     const image = {
-      width: '30px'
-    }
+      width: "30px",
+    };
 
     const temperature = {
-      fontSize: '30px',
-      marginLeft: '5px',
-      marginRight: '5px',
-      color: '#777'
-    }
+      fontSize: "30px",
+      marginLeft: "5px",
+      marginRight: "5px",
+      color: "#777",
+    };
 
     return (
       <div style={container}>
-        <img src='/devices/arrow_down.png' onClick={ this.down } alt='Arrow up' style={ image }/>
-        <span style={temperature}>{this.props.status.thermostatTemperatureSetpoint}</span>
-        <img src='/devices/arrow_up.png' onClick={ this.up } alt='Arrow down' style={ image }/>
+        <span style={title}>to</span>
+        <img
+          src="/devices/arrow_down.png"
+          onClick={this.down}
+          alt="Arrow up"
+          style={image}
+        />
+        <span style={temperature}>
+          {this.props.status.thermostatTemperatureSetpoint}
+        </span>
+        <img
+          src="/devices/arrow_up.png"
+          onClick={this.up}
+          alt="Arrow down"
+          style={image}
+        />
       </div>
     );
   }
 }
 
-export default TemperatureSetting
+export default TemperatureSetting;
