@@ -44,12 +44,12 @@
     padding-right: 30px;
     text-align: left;
     vertical-align: middle;
-    background-color: #F03780;
+    background-color: #1c8adb;
     color: white;
     font-size: 1.5em;
-    -webkit-box-shadow: -1px 3px 22px -10px rgba(0,0,0,0.75);
-    -moz-box-shadow: -1px 3px 22px -10px rgba(0,0,0,0.75);
-    box-shadow: -1px 3px 22px -10px rgba(0,0,0,0.75);
+    -webkit-box-shadow: -1px 3px 22px -10px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: -1px 3px 22px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: -1px 3px 22px -10px rgba(0, 0, 0, 0.75);
     display: grid;
     grid-template-columns: 0px auto;
   }
@@ -60,12 +60,12 @@
     grid-template-columns: auto 1000px;
   }
 
-  .uppper_menu_title{
+  .uppper_menu_title {
     margin: 0;
     font-size: 1em;
   }
 
-  .uppper_menua_alert{
+  .uppper_menua_alert {
     margin: 0;
     text-align: right;
     font-size: 20px;
@@ -118,7 +118,7 @@
     margin-top: 20px;
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: 250px 250px auto
+    grid-template-columns: 250px 250px auto;
   }
 
   .three_table_cel {
@@ -170,7 +170,7 @@
     text-align: center;
   }
 
-  .page_block_content_container > h2{
+  .page_block_content_container > h2 {
     text-align: center;
   }
 
@@ -180,15 +180,15 @@
     margin-top: 10px;
   }
 
-  .two_input{
+  .two_input {
     width: 100%;
   }
 
-  .number_input{
+  .number_input {
     width: 80px;
   }
 
-  .two_table_cel label{
+  .two_table_cel label {
     margin-left: 20px;
   }
 }
@@ -211,12 +211,12 @@
     padding-left: 30px;
     text-align: left;
     vertical-align: middle;
-    background-color: #F03780;
+    background-color: #1c8adb;
     color: white;
     font-size: 1.5em;
-    -webkit-box-shadow: -1px 3px 22px -10px rgba(0,0,0,0.75);
-    -moz-box-shadow: -1px 3px 22px -10px rgba(0,0,0,0.75);
-    box-shadow: -1px 3px 22px -10px rgba(0,0,0,0.75);
+    -webkit-box-shadow: -1px 3px 22px -10px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: -1px 3px 22px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: -1px 3px 22px -10px rgba(0, 0, 0, 0.75);
     display: grid;
     grid-template-columns: 60px auto;
   }
@@ -227,7 +227,7 @@
     grid-template-columns: 100% 0;
   }
 
-  .uppper_menu_title{
+  .uppper_menu_title {
     margin: 0;
     font-size: 1em;
   }
@@ -238,7 +238,9 @@
     cursor: pointer;
   }
 
-  .menu_icon_bar_1, .menu_icon_bar_2, .menu_icon_bar_3 {
+  .menu_icon_bar_1,
+  .menu_icon_bar_2,
+  .menu_icon_bar_3 {
     width: 35px;
     height: 5px;
     background-color: white;
@@ -251,7 +253,9 @@
     transform: rotate(-45deg) translate(-9px, 6px);
   }
 
-  .change_menu_icon .menu_icon_bar_2 {opacity: 0;}
+  .change_menu_icon .menu_icon_bar_2 {
+    opacity: 0;
+  }
 
   .change_menu_icon .menu_icon_bar_3 {
     -webkit-transform: rotate(45deg) translate(-8px, -8px);
@@ -265,7 +269,7 @@
     text-align: left;
     background-color: white;
     position: absolute;
-    z-index:100;
+    z-index: 100;
     -webkit-transform: translate(-100%);
     transform: translate(-100%);
     transition: transform 0.3s linear;
@@ -366,7 +370,7 @@
     text-align: center;
   }
 
-  .page_block_content_container > h2{
+  .page_block_content_container > h2 {
     text-align: center;
   }
 
@@ -376,15 +380,15 @@
     margin-top: 10px;
   }
 
-  .two_input{
+  .two_input {
     width: 100%;
   }
 
-  .number_input{
+  .number_input {
     width: 90%;
   }
 
-  .two_table_cel label{
+  .two_table_cel label {
     margin-left: 20px;
   }
 }
@@ -409,7 +413,7 @@
 .menu_data_alert {
   padding: 10px;
   border-radius: 5px;
-  background-color: #F03780;
+  background-color: #1c8adb;
   color: white;
   cursor: pointer;
 }
@@ -419,7 +423,7 @@
   margin-left: 30%;
   margin-bottom: 20px;
   padding: 20px;
-  background-color: rgba(255,255,0,0.5);
+  background-color: rgba(255, 255, 0, 0.5);
   color: black;
   border-radius: 20px;
 }
