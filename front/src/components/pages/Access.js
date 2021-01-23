@@ -34,7 +34,7 @@ class Access extends React.Component {
   }
 
   generateAPIKey() {
-    ToastsStore.info("Generating API key");
+    ToastsStore.warning("Generating API key");
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       if (http.readyState === 4) {
@@ -69,7 +69,7 @@ class Access extends React.Component {
   };
 
   changePassword = () => {
-    ToastsStore.info("Changing");
+    ToastsStore.warning("Changing");
     let new_pass = this.state.new_pass;
     if (
       new_pass.new_pass === new_pass.new_pass_2 &&

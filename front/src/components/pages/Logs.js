@@ -45,7 +45,7 @@ class Logs extends React.Component {
   }
 
   downloadLog() {
-    ToastsStore.info("Downloading");
+    ToastsStore.warning("Downloading");
     window.location = root + "files/download/log/" + getCookieValue("token");
   }
 

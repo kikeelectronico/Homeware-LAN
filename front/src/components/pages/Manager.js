@@ -97,7 +97,7 @@ class Manager extends React.Component {
   }
 
   save() {
-    ToastsStore.info("Saving");
+    ToastsStore.warning("Saving");
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       if (http.readyState === 4) {
@@ -130,7 +130,7 @@ class Manager extends React.Component {
   }
 
   delete() {
-    ToastsStore.info("Deleting");
+    ToastsStore.warning("Deleting");
     if (window.confirm("Do you want to delete the task?")) {
       var http = new XMLHttpRequest();
       http.onload = function (e) {

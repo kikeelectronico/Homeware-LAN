@@ -82,7 +82,7 @@ class Settings extends React.Component {
   }
 
   save() {
-    ToastsStore.info("Saving");
+    ToastsStore.warning("Saving");
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       if (http.readyState === 4) {

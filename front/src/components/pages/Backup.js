@@ -18,7 +18,7 @@ class Backup extends React.Component {
   }
 
   backup() {
-    ToastsStore.info("Downloading");
+    ToastsStore.warning("Downloading");
     window.location =
       root +
       "files/buckup/homeware/" +
