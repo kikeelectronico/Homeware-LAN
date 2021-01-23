@@ -2,6 +2,9 @@
 
 echo "The upgrader has started.\r\n"
 
+# Delete the build to generate a 500 error
+sudo rm -r ../front/build
+
 # Download the last version
 LOCATION=$(curl -s https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest \
 | grep "tag_name" \
@@ -23,9 +26,9 @@ mv Homeware-LAN-*/front/* ../front/
 pip3 install -r requirements.txt
 
 #Build the UI
-# cd web
-# npm install
-# npm run build
+cd ../front
+sudo npm install
+sudo npm run build
 
 #Start services
 sudo systemctl restart homewareMQTT

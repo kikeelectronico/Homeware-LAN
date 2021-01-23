@@ -34,7 +34,7 @@ case "$response" in
         sudo apt install curl -y
         sudo apt install mosquitto mosquitto-clients -y
         sudo apt install redis-server -y
-        # sudo apt install npm -y
+        sudo apt install npm -y
         echo "Install the new services."
         echo "---------------------------------------------"
         sudo cp configuration_templates/homeware.service /lib/systemd/system/
@@ -50,15 +50,15 @@ case "$response" in
         sudo systemctl start homeware
         sudo systemctl start homewareMQTT
         sudo systemctl start homewareTasks
-        # echo
-        # read -r -p "Press enter to continue." e
-        # clear
-        # echo "Build UI."
-        # echo "---------------------------------------------"
-        # cd web
-        # npm install
-        # npm run build
-        # cd ../
+        echo
+        read -r -p "Press enter to continue." e
+        clear
+        echo "Build UI."
+        echo "---------------------------------------------"
+        cd front
+        sudo npm install
+        sudo npm run build
+        cd ../
         echo
         read -r -p "Press enter to continue." e
         clear
