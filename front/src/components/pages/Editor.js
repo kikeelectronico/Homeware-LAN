@@ -249,7 +249,7 @@ class Editor extends React.Component {
         } else {
           ToastsStore.error("Error, the device hasn't been deleted");
         }
-      }.bind(this);
+      };
       http.open(
         "GET",
         root + "api/devices/delete/" + this.state.device.id + "/"

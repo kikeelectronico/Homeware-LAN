@@ -102,7 +102,6 @@ class Manager extends React.Component {
     http.onload = function (e) {
       if (http.readyState === 4) {
         if (http.status === 200) {
-          JSON.parse(http.responseText);
           if (this.state.create) {
             window.location.href = "/tasks";
           } else {
@@ -146,7 +145,7 @@ class Manager extends React.Component {
         } else {
           ToastsStore.error("Error, the device hasn't been deleted");
         }
-      }.bind(this);
+      };
       http.open("GET", root + "api/tasks/delete/" + this.state.id + "/");
       http.setRequestHeader(
         "authorization",

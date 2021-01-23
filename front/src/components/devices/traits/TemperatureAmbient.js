@@ -1,12 +1,6 @@
 import React from "react";
-import getCookieValue from "../../../functions";
-import { root } from "../../../constants";
 
 class TemperatureAmbient extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const container = {
       float: "left",

@@ -95,7 +95,7 @@ class Settings extends React.Component {
       } else {
         ToastsStore.error("Error, the changes haven't been saved");
       }
-    }.bind(this);
+    };
     http.open("POST", root + "api/settings/update/");
     http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));

@@ -86,7 +86,7 @@ class Access extends React.Component {
         } else {
           ToastsStore.success("Error, the changes haven't been saved.");
         }
-      }.bind(this);
+      };
       http.open("POST", root + "api/user/password/");
       http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       http.setRequestHeader(
