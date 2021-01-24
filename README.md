@@ -6,20 +6,23 @@ Homeware containts a backend that does the integration and a web forntend that a
 
 ## Homeware has been tested on
 
-| Operating System | Version |
-|-------|-------|
-| Ubuntu | 20.04 |
-| Raspbian Pi OS (32-bit) Lite| August 2020 |
+| Operating System             | Version     |
+| ---------------------------- | ----------- |
+| Ubuntu                       | 20.04       |
+| Raspbian Pi OS (32-bit) Lite | August 2020 |
 
 # Install
 
 1. Open a terminal window in your Raspberry Pi and run:
+
 ```
 wget https://raw.githubusercontent.com/kikeelectronico/Homeware-LAN/master/bash/install.sh
 ```
+
 ```
 sudo sh install.sh
 ```
+
 2. Follow the instructions that appear in the screen.
 
 # Stay up to date
@@ -28,7 +31,7 @@ Spanish Telegram channel: [https://t.me/homeware_up_to_date](https://t.me/homewa
 
 # Contribute
 
-Read [CONTRIBUTING.md](http://localhost:3000/Homeware-LAN/docs/contributing/) and [CODE_OF_CONDUCT.md](http://localhost:3000/Homeware-LAN/docs/code-of-conduct/).
+Read [CONTRIBUTING.md](https://kikeelectronico.github.io/Homeware-LAN/docs/contributing/) and [CODE_OF_CONDUCT.md](https://kikeelectronico.github.io/Homeware-LAN/docs/code-of-conduct/).
 
 # Documentation
 
