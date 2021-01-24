@@ -20,7 +20,7 @@ Homeware can inform Google automatically when a change is made in a device. For 
 
 3. Type a name and an id. For example: Homeware-account-key.
 
-4. Give the account the proper permisions: _Service Accounts_ > _Service Account Token Creator_.
+4. Give the account the proper _Role_: _Service Accounts_ > _Service Account Token Creator_.
 
 5. Select _JSON_ for the key type.
 
