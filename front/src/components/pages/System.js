@@ -74,7 +74,7 @@ class System extends React.Component {
           );
           upg.send();
         }.bind(this),
-        120000
+        180000
       );
     }
   }
