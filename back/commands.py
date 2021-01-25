@@ -33,15 +33,41 @@ class Commands:
                                false_command, hostname="localhost")
 
     def ArmDisarm(self):
-        # alreadyArmed
-        # alreadyDisarmed
         # armFailure
         # cancelArmingRestricted
-        # cancelTooLate
         # disarmFailure
-        self.sendDobleCommand('arm', 'arm', 'disarm')
-        self.sendCommand('cancel', 'disarm')
-        self.saveAndSend('armLevel', 'currentArmLevel')
+
+        # Error checker
+        status = self.data_conector.getStatus()
+        if 'armLevel' in self.params.keys():
+            if status[self.device]['currentArmLevel'] == self.params['armLevel']:
+                if self.params['arm']:
+                    return "alreadyArmed"
+                else:
+                    return "alreadyDisarmed"
+            else:
+                self.data_conector.updateParamStatus(self.device,
+                                                     'currentArmLevel',
+                                                     self.params['armLevel'])
+                publish.single("device/" + self.device + "/command",
+                               "arm",
+                               hostname="localhost")
+
+        if 'arm' in self.params.keys():
+            if not self.params['arm']:
+                publish.single("device/" + self.device + "/command",
+                               "disarm",
+                               hostname="localhost")
+
+        if 'cancel' in self.params.keys():
+            if self.params['cancel'] and not status[self.device]['isArmed']:
+                publish.single("device/" + self.device + "/command",
+                               "disarm",
+                               hostname="localhost")
+            else:
+                return "cancelTooLate"
+
+        return ""
 
     def BrightnessAbsolute(self):
         self.saveAndSend('brightness', 'brightness')
