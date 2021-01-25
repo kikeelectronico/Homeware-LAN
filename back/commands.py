@@ -71,6 +71,7 @@ class Commands:
 
     def BrightnessAbsolute(self):
         self.saveAndSend('brightness', 'brightness')
+        return ""
 
     def ColorAbsolute(self):
         if 'color' in self.params.keys():
@@ -85,6 +86,7 @@ class Commands:
                 color['spectrumHSV'] = self.params['color']['spectrumHSV']
                 color['spectrumHsv'] = self.params['color']['spectrumHSV']
             self.data_conector.updateParamStatus(self.device, 'color', color)
+        return ""
 
     def OnOff(self):
         # alreadyOff
@@ -140,6 +142,7 @@ class Commands:
 
     def ActivateScene(self):
         self.saveAndSend('deactivate', 'deactivate')
+        return ""
 
     def Cook(self):
         # actionUnavailableWhileRunning
@@ -177,10 +180,12 @@ class Commands:
     def Reverse(self):
         publish.single("device/" + self.device + "/command",
                        'reverse', hostname="localhost")
+        return ""
 
     def Fill(self):
         self.saveAndSend('fillLevel', 'currentFillLevel')
         self.sendDobleCommand('fill', 'fill', 'drain')
+        return ""
 
     def SetHumidity(self):
         # maxSettingReached
@@ -233,6 +238,7 @@ class Commands:
     def RotateAbsolute(self):
         self.saveAndSend('rotationPercent', 'rotationPercent')
         self.saveAndSend('rotationDegrees', 'rotationDegrees')
+        return ""
 
     def StartStop(self):
         # alreadyStarted
@@ -255,13 +261,16 @@ class Commands:
 
     def TimerPause(self):
         self.data_conector.updateParamStatus(self.device, 'timerPaused', True)
+        return ""
 
     def TimerResume(self):
         self.data_conector.updateParamStatus(self.device, 'timerPaused', False)
+        return ""
 
     def TimerCancel(self):
         self.data_conector.updateParamStatus(
             self.device, 'timerRemainingSec', 0)
+        return ""
 
     def SetToggles(self):
         if 'updateToggleSettings' in self.params.keys():
@@ -272,6 +281,7 @@ class Commands:
                 state[toggle] = self.params['updateToggleSettings'][toggle]
             self.data_conector.updateParamStatus(
                 self.device, 'currentToggleSettings', state)
+        return ""
 
     def SetModes(self):
         # notSupported
