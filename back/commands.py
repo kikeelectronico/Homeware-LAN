@@ -89,9 +89,17 @@ class Commands:
         return ""
 
     def OnOff(self):
-        # alreadyOff
-        # alreadyOn
-        self.saveAndSend('on', 'on')
+        status = self.data_conector.getStatus()
+        if 'on' in self.params.keys():
+            if status[self.device]['on'] == self.params['on']:
+                if self.params['on']:
+                    return "alreadyOn"
+                else:
+                    return "alreadyOff"
+            else:
+                self.data_conector.updateParamStatus(
+                    self.device, 'on', self.params['on'])
+        return ""
 
     def ThermostatTemperatureSetpoint(self):
         # alreadyAtMax
