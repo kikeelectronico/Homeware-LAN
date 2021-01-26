@@ -191,14 +191,16 @@ class Commands:
 
     def Cook(self):
         # actionUnavailableWhileRunning
-        # alreadyStarted
-        # alreadyStopped
         # unknownFoodPreset
         self.saveAndSend('cookingMode', 'currentCookingMode')
         self.saveAndSend('foodPreset', 'currentFoodPreset')
         self.saveAndSend('quantity', 'currentFoodQuantity')
         self.saveAndSend('unit', 'currentFoodUnit')
         self.sendDobleCommand('start', 'start', 'stop')
+
+        status = self.data_conector.getStatus()
+        if 'thermostatTemperatureRelativeDegree' in self.params.keys():
+            mode = status[self.device]['thermostatMode']
 
     def SetFanSpeed(self):
         # maxSpeedReached
@@ -258,12 +260,25 @@ class Commands:
         self.sendCommand('silence', 'silence')
 
     def LockUnlock(self):
-        # alreadyLocked
-        # alreadyUnlocked
         # lockFailure
         # lockedState
         # unlockFailure
-        self.sendDobleCommand('lock', 'lock', 'unlock')
+
+        status = self.data_conector.getStatus()
+        if 'lock' in self.params.keys():
+            if status[self.device]['isLocked'] == self.params['lock']:
+                if self.params['lock']:
+                    return "alreadyLocked"
+                else:
+                    return "alreadyUnlocked"
+            else:
+                if self.params['lock']:
+                    publish.single("device/" + self.device + "/command",
+                                   'lock', hostname="localhost")
+                else:
+                    publish.single("device/" + self.device + "/command",
+                                   'unlock', hostname="localhost")
+        return ""
 
     def OpenClose(self):
         # alreadyOpen
