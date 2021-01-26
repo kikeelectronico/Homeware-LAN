@@ -302,14 +302,43 @@ class Commands:
         return ""
 
     def StartStop(self):
-        # alreadyStarted
-        # alreadyStopped
-        self.sendDobleCommand('start', 'start', 'stop')
+        status = self.data_conector.getStatus()
+        if 'start' in self.params.keys():
+            if status[self.device]['isRunning'] == self.params['start']:
+                if self.params['start']:
+                    return "alreadyStarted"
+                else:
+                    return "alreadyStopped"
+            else:
+                if self.params['start']:
+                    publish.single("device/" + self.device + "/command",
+                                   'start',
+                                   hostname="localhost")
+                else:
+                    publish.single("device/" + self.device + "/command",
+                                   'stop',
+                                   hostname="localhost")
+        return ""
 
     def PauseUnpause(self):
-        # alreadyPaused
         # unpausableState
-        self.sendDobleCommand('pause', 'pause', 'unpause')
+
+        status = self.data_conector.getStatus()
+        if 'pause' in self.params.keys():
+            if status[self.device]['isPaused'] == self.params['pause']:
+                if self.params['pause']:
+                    return "alreadyPaused"
+                else:
+                    return ""
+            else:
+                if self.params['pause']:
+                    publish.single("device/" + self.device + "/command",
+                                   'pause',
+                                   hostname="localhost")
+                else:
+                    publish.single("device/" + self.device + "/command",
+                                   'unpause',
+                                   hostname="localhost")
 
     def SetTemperature(self):
         # alreadyAtMax
