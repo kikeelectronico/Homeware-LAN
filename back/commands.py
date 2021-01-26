@@ -104,22 +104,48 @@ class Commands:
     def ThermostatTemperatureSetpoint(self):
         # alreadyAtMax
         # alreadyAtMin
-        # inAutoMode
-        # inDryMode
-        # inEcoMode
-        # inFanOnlyMode
-        # inHeatOrCool
-        # inHumidifierMode
-        # inOffMode
-        # inPurifierMode
         # valueOutOfRange
-        self.saveAndSend('thermostatTemperatureSetpoint',
-                         'thermostatTemperatureSetpoint')
+
+        status = self.data_conector.getStatus()
+        if 'thermostatTemperatureSetpoint' in self.params.keys():
+            mode = status[self.device]['thermostatMode']
+            if mode == "auto":
+                return "inAutoMode"
+            elif mode == "dry":
+                return "inDryMode"
+            elif mode == "eco":
+                return "inEcoMode"
+            elif mode == "fan-only":
+                return "inFanOnlyMode"
+            elif mode == "heatcool":
+                return "inHeatOrCool"
+            elif mode == "off":
+                return "inOffMode"
+            elif mode == "purifier":
+                return "inPurifierMode"
+            else:
+                self.data_conector.updateParamStatus(
+                    self.device,
+                    "thermostatTemperatureSetpoint",
+                    self.params["thermostatTemperatureSetpoint"])
 
     def ThermostatSetMode(self):
-        # notSupported
-        self.saveAndSend('thermostatMode', 'activeThermostatMode')
-        self.saveAndSend('thermostatMode', 'thermostatMode')
+        list = ['off', 'heat', 'cool', 'on', 'heatcool',
+                'auto', 'fan-only', 'purifier', 'eco', 'drt']
+        if 'thermostatMode' in self.params.keys():
+            if self.params['thermostatMode'] in list:
+                self.data_conector.updateParamStatus(
+                    self.device,
+                    "activeThermostatMode",
+                    self.params["thermostatMode"])
+                self.data_conector.updateParamStatus(
+                    self.device,
+                    "thermostatMode",
+                    self.params["thermostatMode"])
+            else:
+                return "notSupported"
+
+        return ""
 
     def ThermostatTemperatureSetRange(self):
         # rangeTooClose
@@ -131,22 +157,33 @@ class Commands:
     def TemperatureRelative(self):
         # alreadyAtMax
         # alreadyAtMin
-        # inAutoMode
-        # inDryMode
-        # inEcoMode
-        # inFanOnlyMode
-        # inHeatOrCool
-        # inHumidifierMode
-        # inOffMode
-        # inPurifierMode
         # valueOutOfRange
+        status = self.data_conector.getStatus()
         if 'thermostatTemperatureRelativeDegree' in self.params.keys():
-            status = self.data_conector.getStatus()
-            set_point = status[self.device]['thermostatTemperatureSetpoint']
-            new_set_point = set_point + \
-                self.params['thermostatTemperatureRelativeDegree']
-            self.data_conector.updateParamStatus(
-                self.device, 'thermostatTemperatureSetpoint', new_set_point)
+            mode = status[self.device]['thermostatMode']
+            if mode == "auto":
+                return "inAutoMode"
+            elif mode == "dry":
+                return "inDryMode"
+            elif mode == "eco":
+                return "inEcoMode"
+            elif mode == "fan-only":
+                return "inFanOnlyMode"
+            elif mode == "heatcool":
+                return "inHeatOrCool"
+            elif mode == "off":
+                return "inOffMode"
+            elif mode == "purifier":
+                return "inPurifierMode"
+            else:
+                set_point = status[self.device]['thermostatTemperatureSetpoint']
+                new_set_point = set_point + \
+                    self.params['thermostatTemperatureRelativeDegree']
+                self.data_conector.updateParamStatus(
+                    self.device,
+                    'thermostatTemperatureSetpoint',
+                    new_set_point)
+        return ""
 
     def ActivateScene(self):
         self.saveAndSend('deactivate', 'deactivate')
