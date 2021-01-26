@@ -263,7 +263,6 @@ class Commands:
         # lockFailure
         # lockedState
         # unlockFailure
-
         status = self.data_conector.getStatus()
         if 'lock' in self.params.keys():
             if status[self.device]['isLocked'] == self.params['lock']:
@@ -281,19 +280,21 @@ class Commands:
         return ""
 
     def OpenClose(self):
-        # alreadyOpen
         # discreteOnlyOpenClose
         self.saveAndSend('openPercent', 'openPercent')
 
     def OpenCloseRelative(self):
-        # alreadyOpen
         # discreteOnlyOpenClose
+        status = self.data_conector.getStatus()
         if 'openRelativePercent' in self.params.keys():
-            status = self.data_conector.getStatus()
             open = status[self.device]['openPercent']
             new_open = open + self.params['openRelativePercent']
-            self.data_conector.updateParamStatus(
-                self.device, 'openPercent', new_open)
+            if status[self.device]['openPercent'] == 100 and new_open == 100:
+                return "alreadyOpen"
+            else:
+                self.data_conector.updateParamStatus(
+                    self.device, 'openPercent', new_open)
+        return ""
 
     def RotateAbsolute(self):
         self.saveAndSend('rotationPercent', 'rotationPercent')
