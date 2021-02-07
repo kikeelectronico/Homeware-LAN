@@ -1,12 +1,5 @@
 name: Build master frontend
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - master
-    paths:
-      - "front/**"
-
+on: workflow_dispatch
 
 env:
   working-directory: ./front
@@ -32,14 +25,13 @@ jobs:
     - name: Build React JS
       run: npm run build
       working-directory: ${{env.working-directory}}
-    - name: Commit files
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add .
-        git commit -m "Build frontend" -a
-    - name: Push changes
-      uses: ad-m/github-push-action@master
+    - name: Zip release
+      uses: thedoctor0/zip-release@master
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: master
+        filename: 'build.zip'
+        path: '../Homeware-LAN'
+    - name: Upload Release
+      uses: ncipollo/release-action@v1
+      with:
+          artifacts: "build.zip"
+          token: ${{ secrets.GITHUB_TOKEN }}
