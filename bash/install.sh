@@ -53,15 +53,6 @@ case "$response" in
         echo
         read -r -p "Press enter to continue." e
         clear
-        echo "Build UI."
-        echo "---------------------------------------------"
-        cd front
-        sudo npm install
-        sudo npm run build
-        cd ../
-        echo
-        read -r -p "Press enter to continue." e
-        clear
         echo "User configuration."
         echo "---------------------------------------------"
         read -r -p "Admin user: " user

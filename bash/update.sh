@@ -25,11 +25,6 @@ sudo rm -r ../front/build
 #Update Python modules
 pip3 install -r requirements.txt
 
-#Build the UI
-cd ../front
-sudo npm install
-sudo npm run build
-
 #Start services
 sudo systemctl restart homewareMQTT
 sudo systemctl restart homewareTasks
