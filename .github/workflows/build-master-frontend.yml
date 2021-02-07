@@ -29,7 +29,7 @@ jobs:
       uses: thedoctor0/zip-release@master
       with:
         filename: 'build.zip'
-        path: '../Homeware-LAN'
+        path: '../'
     - name: Upload Release
       uses: ncipollo/release-action@v1
       with:
