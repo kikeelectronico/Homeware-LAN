@@ -1,5 +1,5 @@
 name: Build master frontend
-on: workflow_dispatch
+on: release
 
 env:
   working-directory: ./front
