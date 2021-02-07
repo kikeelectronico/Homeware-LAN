@@ -1,5 +1,8 @@
 name: Build master frontend
-on: [release]
+on:
+  release:
+    tags:
+    - '*'
 
 env:
   working-directory: ./front
@@ -29,7 +32,7 @@ jobs:
       uses: thedoctor0/zip-release@master
       with:
         filename: 'build.zip'
-        path: '../'
+        path: '../workspace'
     - name: Upload Release
       uses: ncipollo/release-action@v1
       with:
