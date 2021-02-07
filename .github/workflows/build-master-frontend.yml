@@ -1,5 +1,5 @@
 name: Build master frontend
-on: [release, prereleased]
+on: [release]
 
 env:
   working-directory: ./front
