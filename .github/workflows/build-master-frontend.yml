@@ -1,5 +1,8 @@
 name: Build master frontend
-on: release
+on:
+  release:
+    tags:
+    - 'v*'
 
 env:
   working-directory: ./front
