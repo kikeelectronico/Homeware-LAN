@@ -25,7 +25,7 @@ jobs:
     - name: Build React JS
       run: npm run build
       working-directory: ${{env.working-directory}}
-    - name: Create the directory
+    - name: Prepare the release content
       run: |
         mkdir Homeware-LAN
         cp -r ./back ./Homeware-LAN
@@ -34,13 +34,13 @@ jobs:
         cp -r ./front ./Homeware-LAN
         cp  ./LICENSE ./Homeware-LAN
         cp  ./README.md ./Homeware-LAN
-    - name: Zip release
+    - name: Zip the release
       uses: thedoctor0/zip-release@master
       with:
         filename: 'build.zip'
         path: './Homeware-LAN'
         exclusions: '*.git* /*node_modules/*'
-    - name: Get latest release
+    - name: Get latest release tag
       uses: octokit/request-action@v2.x
       id: get_latest_release
       with:
