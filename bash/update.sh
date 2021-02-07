@@ -31,7 +31,7 @@ sudo systemctl restart homewareTasks
 sudo systemctl restart homeware
 
 cd ../back
-sudo rm -r Homeware-LAN-*
+sudo rm -r Homeware-LAN
 sudo rm Homeware-LAN.zip
 
 echo "\r\The upgrader has finished.\r\n"
