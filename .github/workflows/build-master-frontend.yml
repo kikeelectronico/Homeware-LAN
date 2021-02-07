@@ -19,8 +19,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Remove last version
-      run: rm -rf ${{env.working-directory}}/build
     - name: Install Packages
       run: npm install
       working-directory: ${{env.working-directory}}
@@ -31,7 +29,8 @@ jobs:
       uses: thedoctor0/zip-release@master
       with:
         filename: 'build.zip'
-        path: '../workspace'
+        path: './'
+        exclusions: '*.git* /*node_modules/*'
     - name: Get latest release
       uses: octokit/request-action@v2.x
       id: get_latest_release
@@ -47,7 +46,6 @@ jobs:
         echo "::set-output name=url::$url"
       env: 
         response:  ${{ steps.get_latest_release.outputs.data }}
-     
     - name: Upload a Release Asset
       uses: actions/upload-release-asset@v1.0.2
       env:
