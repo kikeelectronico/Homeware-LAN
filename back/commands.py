@@ -37,7 +37,6 @@ class Commands:
         # cancelArmingRestricted
         # disarmFailure
 
-        # Error checker
         status = self.data_conector.getStatus()
         if 'armLevel' in self.params.keys():
             if status[self.device]['currentArmLevel'] == self.params['armLevel']:
@@ -70,7 +69,9 @@ class Commands:
         return ""
 
     def BrightnessAbsolute(self):
-        self.saveAndSend('brightness', 'brightness')
+        if 'brightness' in self.params.keys():
+            self.data_conector.updateParamStatus(
+                self.device, 'brightness', self.params['brightness'])
         return ""
 
     def ColorAbsolute(self):
@@ -102,13 +103,10 @@ class Commands:
         return ""
 
     def ThermostatTemperatureSetpoint(self):
-        # alreadyAtMax
-        # alreadyAtMin
         # valueOutOfRange
-
-        status = self.data_conector.getStatus()
         if 'thermostatTemperatureSetpoint' in self.params.keys():
-            mode = status[self.device]['thermostatMode']
+            status = self.data_conector.getStatus()[self.device]
+            mode = status['thermostatMode']
             if mode == "auto":
                 return "inAutoMode"
             elif mode == "dry":
@@ -124,10 +122,22 @@ class Commands:
             elif mode == "purifier":
                 return "inPurifierMode"
             else:
+                device = self.data_conector.getDevices()[self.device]
+                attributes = device['attributes']
+                set_point = self.params["thermostatTemperatureSetpoint"]
+                if set_point > attributes['thermostatTemperatureRange']['maxThresholdCelsius']:
+                    set_point = attributes['thermostatTemperatureRange']['maxThresholdCelsius']
+                elif set_point < attributes['thermostatTemperatureRange']['minThresholdCelsius']:
+                    set_point = attributes['thermostatTemperatureRange']['minThresholdCelsius']
                 self.data_conector.updateParamStatus(
                     self.device,
                     "thermostatTemperatureSetpoint",
-                    self.params["thermostatTemperatureSetpoint"])
+                    set_point)
+                if set_point > attributes['minThresholdCelsius']:
+                    return "alreadyAtMin"
+                elif set_point < attributes['maxThresholdCelsius']:
+                    return "alreadyAtMax"
+        return ""
 
     def ThermostatSetMode(self):
         list = ['off', 'heat', 'cool', 'on', 'heatcool',
@@ -148,11 +158,22 @@ class Commands:
         return ""
 
     def ThermostatTemperatureSetRange(self):
-        # rangeTooClose
-        self.saveAndSend('thermostatTemperatureSetpointHigh',
-                         'thermostatTemperatureSetpointHigh')
-        self.saveAndSend('thermostatTemperatureSetpointLow',
-                         'thermostatTemperatureSetpointLow')
+        if 'thermostatTemperatureSetpointHigh' in self.params.keys():
+            device = self.data_conector.getDevices()[self.device]
+            attributes = device['attributes']
+            delta = self.params['thermostatTemperatureSetpointHigh'] - \
+                self.params['thermostatTemperatureSetpointLow']
+            if delta > attributes['bufferRangeCelsius']:
+                self.data_conector.updateParamStatus(
+                    self.device, 'thermostatTemperatureSetpointHigh',
+                    self.params['thermostatTemperatureSetpointHigh'])
+                self.data_conector.updateParamStatus(
+                    self.device, 'thermostatTemperatureSetpointLow',
+                    self.params['thermostatTemperatureSetpointLow'])
+            else:
+                return "rangeTooClose"
+        else:
+            return ""
 
     def TemperatureRelative(self):
         # alreadyAtMax
