@@ -31,8 +31,8 @@ jobs:
         filename: 'build.zip'
         path: '../workspace'
     - name: Upload to release
-        uses: JasonEtco/upload-to-release@master
-        with:
-          args: 'build.zip'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: JasonEtco/upload-to-release@master
+      with:
+        args: 'build.zip'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
