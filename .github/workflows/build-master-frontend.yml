@@ -1,8 +1,5 @@
 name: Build master frontend
-on:
-  release:
-    tags:
-    - '*'
+on: release
 
 env:
   working-directory: ./front
@@ -33,8 +30,9 @@ jobs:
       with:
         filename: 'build.zip'
         path: '../workspace'
-    - name: Upload Release
-      uses: ncipollo/release-action@v1
-      with:
-          artifacts: "build.zip"
-          token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload to release
+        uses: JasonEtco/upload-to-release@master
+        with:
+          args: 'build.zip'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
