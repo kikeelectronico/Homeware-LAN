@@ -1,12 +1,7 @@
 name: Build master frontend
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - master
-    paths:
-      - "front/**"
-
+  release:
+    types: [published]
 
 env:
   working-directory: ./front
@@ -24,22 +19,48 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Remove last version
-      run: rm -rf ${{env.working-directory}}/build
     - name: Install Packages
       run: npm install
       working-directory: ${{env.working-directory}}
     - name: Build React JS
       run: npm run build
       working-directory: ${{env.working-directory}}
-    - name: Commit files
+    - name: Prepare the release content
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add .
-        git commit -m "Build frontend" -a
-    - name: Push changes
-      uses: ad-m/github-push-action@master
+        mkdir Homeware-LAN
+        cp -r ./back ./Homeware-LAN
+        cp -r ./bash ./Homeware-LAN
+        cp -r ./configuration_templates ./Homeware-LAN
+        cp -r ./front ./Homeware-LAN
+        cp  ./LICENSE ./Homeware-LAN
+        cp  ./README.md ./Homeware-LAN
+    - name: Zip the release
+      uses: thedoctor0/zip-release@master
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: master
+        filename: 'build.zip'
+        path: './Homeware-LAN'
+        exclusions: '*.git* /*node_modules/*'
+    - name: Get latest release tag
+      uses: octokit/request-action@v2.x
+      id: get_latest_release
+      with:
+          route: GET /repos/:repository/releases/latest
+          repository: ${{ github.repository }}
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Get upload url
+      id: get_upload_url
+      run: |
+        url=$(echo "$response" | jq -r '.upload_url')
+        echo "::set-output name=url::$url"
+      env: 
+        response:  ${{ steps.get_latest_release.outputs.data }}
+    - name: Upload a Release Asset
+      uses: actions/upload-release-asset@v1.0.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url:  ${{steps.get_upload_url.outputs.url}}
+        asset_path: ./build.zip
+        asset_name: build.zip
+        asset_content_type: application/zip
