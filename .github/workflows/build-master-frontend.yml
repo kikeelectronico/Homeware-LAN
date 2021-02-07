@@ -1,8 +1,7 @@
 name: Build master frontend
 on:
   release:
-    tags:
-    - 'v*'
+    types: [published]
 
 env:
   working-directory: ./front
@@ -33,9 +32,28 @@ jobs:
       with:
         filename: 'build.zip'
         path: '../workspace'
-    - name: Upload to release
-      uses: JasonEtco/upload-to-release@master
+    - name: Get latest release
+      uses: octokit/request-action@v2.x
+      id: get_latest_release
       with:
-        args: 'build.zip'
+          route: GET /repos/:repository/releases/latest
+          repository: ${{ github.repository }}
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Get upload url
+      id: get_upload_url
+      run: |
+        url=$(echo "$response" | jq -r '.upload_url')
+        echo "::set-output name=url::$url"
+      env: 
+        response:  ${{ steps.get_latest_release.outputs.data }}
+     
+    - name: Upload a Release Asset
+      uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url:  ${{steps.get_upload_url.outputs.url}}
+        asset_path: ./build.zip
+        asset_name: build.zip
+        asset_content_type: application/zip
