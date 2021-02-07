@@ -27,8 +27,13 @@ jobs:
       working-directory: ${{env.working-directory}}
     - name: Create the directory
       run: |
-        cp -r ../workspace ../Homeware-LAN
-        mv -r ../Homeware-LAN ./Homeware-LAN
+        mkdir Homeware-LAN
+        cp -r ./back ./Homeware-LAN
+        cp -r ./bash ./Homeware-LAN
+        cp -r ./configuration_templates ./Homeware-LAN
+        cp -r ./front ./Homeware-LAN
+        cp  ./LICENSE ./Homeware-LAN
+        cp  ./README.md ./Homeware-LAN
     - name: Zip release
       uses: thedoctor0/zip-release@master
       with:
