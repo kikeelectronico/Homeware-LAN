@@ -1,0 +1,33 @@
+server {
+        listen 80;
+        server_name localhost;
+        location / {
+                root /html/;
+                try_files $uri /index.html;
+        }
+
+        location /api {
+                proxy_pass http://homeware-lan-back-api:5001;
+        }
+
+        location /test {
+                proxy_pass http://homeware-lan-back-api:5001;
+        }
+
+        location /files {
+                proxy_pass http://homeware-lan-back-api:5001;
+        }
+
+        location /auth {
+                proxy_pass http://homeware-lan-back-api:5001;
+        }
+
+        location /token {
+                proxy_pass http://homeware-lan-back-api:5001;
+        }
+
+        location /smarthome {
+                proxy_pass http://homeware-lan-back-api:5001;
+        }
+
+}
