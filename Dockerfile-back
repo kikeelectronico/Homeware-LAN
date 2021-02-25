@@ -27,6 +27,6 @@ COPY configuration_templates/ /usr/share/Homeware-LAN/configuration_templates/
 
 RUN chmod +x homeware.sh
 
-RUN export PATH=$PATH:~/.local/bin
+ENV PATH="~/.local/bin:${PATH}"
 
 CMD ["./homeware.sh"]
