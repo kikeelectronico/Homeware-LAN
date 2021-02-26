@@ -5,5 +5,5 @@ redis==3.5.3
 requests==2.25.0
 flask_cors==3.0.9
 cryptography==3.2.1
-bcrypt==3.2.0
+bcrypt==3.3.2
 google-auth==1.24.0
