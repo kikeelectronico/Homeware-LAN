@@ -1,0 +1,19 @@
+FROM node:lts-alpine AS base
+
+RUN mkdir -p /usr/share/Homeware-LAN/front
+
+WORKDIR /usr/share/Homeware-LAN/front
+
+COPY front ./
+
+RUN npm install --no-package-lock
+
+RUN npm run build
+
+FROM nginx
+
+RUN mkdir /html
+
+COPY --from=base /usr/share/Homeware-LAN/front/build /html
+
+COPY configuration_templates/nginx_docker /etc/nginx/conf.d/default.conf

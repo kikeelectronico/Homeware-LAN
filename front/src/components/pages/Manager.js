@@ -27,6 +27,9 @@ class Manager extends React.Component {
       },
       devices: [],
       status: {},
+      mandatory_target: false,
+      mandatory_name: false,
+      mandatory_description: false,
     };
     this.update = this.update.bind(this);
     this.save = this.save.bind(this);
@@ -97,36 +100,40 @@ class Manager extends React.Component {
   }
 
   save() {
-    ToastsStore.warning("Saving");
-    var http = new XMLHttpRequest();
-    http.onload = function (e) {
-      if (http.readyState === 4) {
-        if (http.status === 200) {
-          if (this.state.create) {
-            window.location.href = "/tasks";
+    if(this.state.mandatory_description && this.state.mandatory_name && this.state.mandatory_target) {
+      ToastsStore.warning("Saving");
+      var http = new XMLHttpRequest();
+      http.onload = function (e) {
+        if (http.readyState === 4) {
+          if (http.status === 200) {
+            if (this.state.create) {
+              window.location.href = "/tasks";
+            } else {
+              ToastsStore.success("Saved correctly");
+            }
           } else {
-            ToastsStore.success("Saved correctly");
+            console.error(http.statusText);
+            ToastsStore.error("Error, the changes haven't been saved");
           }
         } else {
-          console.error(http.statusText);
           ToastsStore.error("Error, the changes haven't been saved");
         }
+      }.bind(this);
+      var payload = {
+        task: this.state.task,
+      };
+      if (this.state.create) {
+        http.open("POST", root + "api/tasks/create/");
       } else {
-        ToastsStore.error("Error, the changes haven't been saved");
+        http.open("POST", root + "api/tasks/update/");
+        payload["id"] = this.state.id;
       }
-    }.bind(this);
-    var payload = {
-      task: this.state.task,
-    };
-    if (this.state.create) {
-      http.open("POST", root + "api/tasks/create/");
+      http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+      http.send(JSON.stringify(payload));
     } else {
-      http.open("POST", root + "api/tasks/update/");
-      payload["id"] = this.state.id;
+      ToastsStore.error("Verify the mandatory data");
     }
-    http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
-    http.send(JSON.stringify(payload));
   }
 
   delete() {
@@ -250,6 +257,7 @@ class Manager extends React.Component {
     task.target.push(target);
     this.setState({
       task: task,
+      mandatory_target: task.target.length > 0,
     });
   }
 
@@ -304,7 +312,10 @@ class Manager extends React.Component {
                 className="two_input"
                 id="title"
                 defaultValue={this.state.task.title}
-                onChange={this.update}
+                onChange={(event) => {
+                  this.setState({mandatory_name: event.target.value.length > 0})
+                  this.update(event)
+                }}
               />
             </div>
           </div>
@@ -316,7 +327,10 @@ class Manager extends React.Component {
                 className="two_input"
                 id="description"
                 defaultValue={this.state.task.description}
-                onChange={this.update}
+                onChange={(event) => {
+                  this.setState({mandatory_description: event.target.value.length > 0})
+                  this.update(event)
+                }}
               />
             </div>
           </div>

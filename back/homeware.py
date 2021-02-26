@@ -12,6 +12,7 @@ import subprocess
 
 from data import Data
 from commands import Commands
+import hostname
 
 # Constants
 UPLOAD_FOLDER = '../'
@@ -449,7 +450,6 @@ def apiSystem(operation="", value=''):
         mimetype='application/json'
     )
     return response
-
 
 @app.route("/api/log/<operation>", methods=['GET', 'POST'])
 @app.route("/api/log/<operation>/", methods=['GET', 'POST'])

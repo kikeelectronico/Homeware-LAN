@@ -15,9 +15,9 @@ sudo rm -r ../configuration_templates
 sudo rm -r ../ESP8266example
 sudo rm -r ../docs
 sudo rm -r ../front
-sudo mv Homeware-LAN-*/* ../
-sudo mv Homeware-LAN-*/bash/* ../bash/
-sudo mv Homeware-LAN-*/back/* ../back/
+sudo mv Homeware-LAN/* ../
+sudo mv Homeware-LAN/bash/* ../bash/
+sudo mv Homeware-LAN/back/* ../back/
 
 # Delete the build to generate a 500 error
 sudo rm -r ../front/build
@@ -25,18 +25,13 @@ sudo rm -r ../front/build
 #Update Python modules
 pip3 install -r requirements.txt
 
-#Build the UI
-cd ../front
-sudo npm install
-sudo npm run build
-
 #Start services
 sudo systemctl restart homewareMQTT
 sudo systemctl restart homewareTasks
 sudo systemctl restart homeware
 
 cd ../back
-sudo rm -r Homeware-LAN-*
+sudo rm -r Homeware-LAN
 sudo rm Homeware-LAN.zip
 
 echo "\r\The upgrader has finished.\r\n"

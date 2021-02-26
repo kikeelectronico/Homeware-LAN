@@ -14,11 +14,11 @@ case "$response" in
         sudo apt install unzip -y
         # Download the last version
         LOCATION=$(curl -s https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest \
-          | grep "tag_name" \
-          | awk '{print "https://github.com/kikeelectronico/Homeware-LAN/archive/" substr($2, 2, length($2)-3) ".zip"}') \
-          ; sudo curl -L -o Homeware-LAN.zip $LOCATION
+        | grep "tag_name" \
+        | awk '{print "https://github.com/kikeelectronico/Homeware-LAN/archive/" substr($2, 2, length($2)-3) ".zip"}') \
+        ; sudo curl -L -o Homeware-LAN.zip $LOCATION
         sudo unzip Homeware-LAN.zip
-        sudo mv Homeware-LAN-*/ /usr/share/Homeware-LAN
+        sudo mv Homeware-LAN/ /usr/share/Homeware-LAN
         cd /usr/share
         sudo chmod -R 777 Homeware-LAN
         cd Homeware-LAN
@@ -50,15 +50,6 @@ case "$response" in
         sudo systemctl start homeware
         sudo systemctl start homewareMQTT
         sudo systemctl start homewareTasks
-        echo
-        read -r -p "Press enter to continue." e
-        clear
-        echo "Build UI."
-        echo "---------------------------------------------"
-        cd front
-        sudo npm install
-        sudo npm run build
-        cd ../
         echo
         read -r -p "Press enter to continue." e
         clear

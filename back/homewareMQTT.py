@@ -3,6 +3,7 @@ import json
 import paho.mqtt.publish as publish
 import paho.mqtt.client as mqtt
 from data import Data
+import hostname
 
 #Init the data managment object
 data_conector = Data()
@@ -42,7 +43,7 @@ def mqttReader():
 	except:
 		print('MQTT credentials free')
 
-	client.connect("localhost", 1883, 60)
+	client.connect(hostname.MQTT_HOST, hostname.MQTT_PORT, 60)
 	client.loop_forever()
 
 def control(payload):
@@ -58,9 +59,9 @@ def control(payload):
 		data_conector.updateParamStatus(id,param,value)
 	elif intent == 'request':
 		status = data_conector.getStatus()[id]
-		publish.single("device/"+id, json.dumps(status), hostname="localhost")
+		publish.single("device/"+id, json.dumps(status), hostname=hostname.MQTT_HOST)
 		for param in status.keys():
-			publish.single("device/"+id+'/'+param, str(status[param]), hostname="localhost")
+			publish.single("device/"+id+'/'+param, str(status[param]), hostname=hostname.MQTT_HOST)
 
 if __name__ == "__main__":
 	data_conector.log('Log', 'Starting HomewareMQTT core')

@@ -25,6 +25,31 @@ sudo sh install.sh
 
 2. Follow the instructions that appear in the screen.
 
+# Install using Docker Compose
+
+1. Clone the repo and cd into it  
+```bash
+git clone git@github.com:kikeelectronico/Homeware-LAN.git
+cd Homeware-LAN
+```
+2. Create your own `.env` file from `.env.template`. Data will be used to generate certs on letsencrypt.  
+3. Start the project  
+```bash
+docker-compose up -d
+```
+4. Configure the server
+```bash
+curl -d '{"user":"YOURUSER", "pass":"YOURPASSWORD"}' -H "Content-Type: application/json" -X POST https://YOURDOMAIN/api/user/set/
+curl -X GET https://YOURDOMAIN/api/settings/domain/YOURDOMAIN/
+curl -X GET https://YOURDOMAIN/api/settings/setAssistantDone/
+```
+5. Configure MQTT credentials at https://YOURDOMAIN/settings with the defaults:  
+```
+user: mosquitto
+pass: homewarelan123
+```
+You may create a different `mosquitto_passwd` file following [these steps](https://mosquitto.org/man/mosquitto_passwd-1.html)  
+
 # Stay up to date
 
 Spanish Telegram channel: [https://t.me/homeware_up_to_date](https://t.me/homeware_up_to_date)

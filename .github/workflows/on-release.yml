@@ -1,0 +1,146 @@
+name: On release
+on:
+  release:
+    types: [published]
+
+env:
+  working-directory: ./front
+
+jobs:
+  build:
+    name: Build frontend and publish as asset
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install Packages
+      run: npm install
+      working-directory: ${{env.working-directory}}
+    - name: Build React JS
+      run: npm run build
+      working-directory: ${{env.working-directory}}
+    - name: Prepare the release content
+      run: |
+        mkdir Homeware-LAN
+        cp -r ./back ./Homeware-LAN
+        cp -r ./bash ./Homeware-LAN
+        cp -r ./configuration_templates ./Homeware-LAN
+        cp -r ./front ./Homeware-LAN
+        cp  ./LICENSE ./Homeware-LAN
+        cp  ./README.md ./Homeware-LAN
+    - name: Zip the release
+      uses: thedoctor0/zip-release@master
+      with:
+        filename: 'build.zip'
+        path: './Homeware-LAN'
+        exclusions: '*.git* /*node_modules/*'
+    - name: Get latest release tag
+      uses: octokit/request-action@v2.x
+      id: get_latest_release
+      with:
+          route: GET /repos/:repository/releases/latest
+          repository: ${{ github.repository }}
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Get upload url
+      id: get_upload_url
+      run: |
+        url=$(echo "$response" | jq -r '.upload_url')
+        echo "::set-output name=url::$url"
+      env: 
+        response:  ${{ steps.get_latest_release.outputs.data }}
+    - name: Upload a Release Asset
+      uses: actions/upload-release-asset@v1.0.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url:  ${{steps.get_upload_url.outputs.url}}
+        asset_path: ./build.zip
+        asset_name: build.zip
+        asset_content_type: application/zip
+  build-push-be-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.PACKAGES_TOKEN }}
+      - 
+        name: Get latest release tag
+        uses: octokit/request-action@v2.x
+        id: get_latest_release
+        with:
+            route: GET /repos/:repository/releases/latest
+            repository: ${{ github.repository }}
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      -
+        name: Build and push BE
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile-back
+          platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/homewarelan-back:latest
+            ghcr.io/${{ github.repository_owner }}/homewarelan-back:${{ github.sha }}
+            ghcr.io/${{ github.repository_owner }}/homewarelan-back:${{ steps.get_latest_release.outputs.data }}
+  build-push-fe-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.PACKAGES_TOKEN }}
+      - 
+        name: Get latest release tag
+        uses: octokit/request-action@v2.x
+        id: get_latest_release
+        with:
+            route: GET /repos/:repository/releases/latest
+            repository: ${{ github.repository }}
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      -
+        name: Build and push FE
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile-nginx
+          platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/homewarelan-nginx:latest
+            ghcr.io/${{ github.repository_owner }}/homewarelan-nginx:${{ github.sha }}
+            ghcr.io/${{ github.repository_owner }}/homewarelan-nginx:${{ steps.get_latest_release.outputs.data }}
