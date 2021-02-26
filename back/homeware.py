@@ -753,11 +753,11 @@ def smarthome():
                         params = executions[0]['params']
                         command = executions[0]['command'].split('.')[3]
                         # evaluate the command
-						commands.setParams(deviceId, params)
-						if(command in dir(Commands)):
-							errorCode = eval('commands.' + command + '()')
-						else:
-							data_conector.log('Log', 'Incorrect command')
+                        commands.setParams(deviceId, params)
+                        if(command in dir(Commands)):
+                            errorCode = eval('commands.' + command + '()')
+                        else:
+                            data_conector.log('Log', 'Incorrect command')
 
                     command_response = {}
                     if errorCode.length > 0:
