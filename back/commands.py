@@ -1,6 +1,9 @@
 import paho.mqtt.publish as publish
 import json
 
+import hostname
+
+
 class Commands:
 
 	def __init__(self, data):
@@ -18,14 +21,14 @@ class Commands:
 	def sendCommand(self,param,command):
 		if param in self.params.keys():
 			if self.params[param]:
-				publish.single("device/"+self.device+"/command", command, hostname="localhost")
+				publish.single("device/"+self.device+"/command", command, hostname=hostname.MQTT_HOST)
 
 	def sendDobleCommand(self,param,true_command,false_command):
 		if param in self.params.keys():
 			if self.params[param]:
-				publish.single("device/"+self.device+"/command", true_command, hostname="localhost")
+				publish.single("device/"+self.device+"/command", true_command, hostname=hostname.MQTT_HOST)
 			else:
-				publish.single("device/"+self.device+"/command", false_command, hostname="localhost")
+				publish.single("device/"+self.device+"/command", false_command, hostname=hostname.MQTT_HOST)
 
 	def ArmDisarm(self):
 		self.sendDobleCommand('arm','arm','disarm')
@@ -91,7 +94,7 @@ class Commands:
 			self.data_conector.updateParamStatus(self.device, 'currentFanSpeedPercent', speed + self.params['fanSpeedRelativePercent'])
 
 	def Reverse(self):
-		publish.single("device/"+self.device+"/command", 'reverse', hostname="localhost")
+		publish.single("device/"+self.device+"/command", 'reverse', hostname=hostname.MQTT_HOST)
 
 	def Fill(self):
 		self.saveAndSend('fillLevel','currentFillLevel')

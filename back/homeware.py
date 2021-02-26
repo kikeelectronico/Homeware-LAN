@@ -12,6 +12,7 @@ import subprocess
 
 from data import Data
 from commands import Commands
+import hostname
 
 # Constants
 UPLOAD_FOLDER = '../'
@@ -366,12 +367,11 @@ def apiSystem(operation = "", value = ''):
 			try:
 				mqttData = data_conector.getMQTT()
 				if not mqttData['user'] == "":
-					client.username_pw_set(mqttData['user'], mqttData['password'])
-					publish.single("homeware/alive", "all", hostname="localhost", auth={'username':mqttData['user'], 'password': mqttData['password']})
+					publish.single("homeware/alive", "all", hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
 				else:
-					publish.single("homeware/alive", "all", hostname="localhost")
+					publish.single("homeware/alive", "all", hostname=hostname.MQTT_HOST)
 			except:
-				publish.single("homeware/alive", "all", hostname="localhost")
+				publish.single("homeware/alive", "all", hostname=hostname.MQTT_HOST)
 
 			responseData = {
 				'api': {
