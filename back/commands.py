@@ -219,10 +219,6 @@ class Commands:
         self.saveAndSend('unit', 'currentFoodUnit')
         self.sendDobleCommand('start', 'start', 'stop')
 
-        status = self.data_conector.getStatus()
-        if 'thermostatTemperatureRelativeDegree' in self.params.keys():
-            mode = status[self.device]['thermostatMode']
-
     def SetFanSpeed(self):
         # maxSpeedReached
         # minSpeedReached
