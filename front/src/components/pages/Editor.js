@@ -25,6 +25,8 @@ import { root, deviceReference } from "../../constants";
 
 import "./Editor.css";
 
+let MANDATORY_CONTENT_LINES = 3
+
 class Editor extends React.Component {
   constructor(props) {
     super(props);
@@ -51,6 +53,7 @@ class Editor extends React.Component {
       },
       device_tratis: [],
       not_recomended_traits: false,
+      mandatory_content: 0,
     };
     this.updateNames = this.updateNames.bind(this);
     this.update = this.update.bind(this);
@@ -115,6 +118,10 @@ class Editor extends React.Component {
   }
 
   updateNames(dumy_key, value) {
+    if(value.length > 0)
+      this.setState({mandatory_content: this.state.mandatory_content + 1})
+    else
+      this.setState({mandatory_content: this.state.mandatory_content - 1})
     var names = value.split(",");
     var temp_device = this.state.device;
     temp_device.name = {
@@ -139,10 +146,18 @@ class Editor extends React.Component {
   }
 
   updateId(event) {
+    if(event.target.value.length > 0)
+      this.setState({mandatory_content: this.state.mandatory_content + 1})
+    else
+      this.setState({mandatory_content: this.state.mandatory_content - 1})
     this.update("id", event.target.value);
   }
 
   updateType(event) {
+    if(event.target.value !== 'default')
+      this.setState({mandatory_content: this.state.mandatory_content + 1})
+    else
+      this.setState({mandatory_content: this.state.mandatory_content - 1})
     this.update("type", event.target.value);
     this.setState({
       device_tratis: deviceReference.devices[event.target.value].traits,
@@ -204,34 +219,38 @@ class Editor extends React.Component {
   }
 
   save() {
-    ToastsStore.warning("Saving");
-    var http = new XMLHttpRequest();
-    http.onload = function (e) {
-      if (http.readyState === 4) {
-        if (http.status === 200) {
-          JSON.parse(http.responseText);
-          ToastsStore.success("Saved correctly");
-          if (this.state.create) {
-            window.location.href = "/devices";
+    if(this.state.mandatory_content >= MANDATORY_CONTENT_LINES) {
+      ToastsStore.warning("Saving");
+      var http = new XMLHttpRequest();
+      http.onload = function (e) {
+        if (http.readyState === 4) {
+          if (http.status === 200) {
+            JSON.parse(http.responseText);
+            ToastsStore.success("Saved correctly");
+            if (this.state.create) {
+              window.location.href = "/devices";
+            }
+          } else {
+            console.error(http.statusText);
+            ToastsStore.error("Error, the changes haven't been saved");
           }
-        } else {
-          console.error(http.statusText);
-          ToastsStore.error("Error, the changes haven't been saved");
         }
+      }.bind(this);
+      var payload = {
+        device: this.state.device,
+        status: this.state.status,
+      };
+      if (this.state.create) {
+        http.open("POST", root + "api/devices/create/");
+      } else {
+        http.open("POST", root + "api/devices/update/");
       }
-    }.bind(this);
-    var payload = {
-      device: this.state.device,
-      status: this.state.status,
-    };
-    if (this.state.create) {
-      http.open("POST", root + "api/devices/create/");
+      http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+      http.send(JSON.stringify(payload));
     } else {
-      http.open("POST", root + "api/devices/update/");
+      ToastsStore.error("Verify the mandatory data");
     }
-    http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
-    http.send(JSON.stringify(payload));
   }
 
   delete() {
