@@ -103,7 +103,6 @@ class Commands:
         return ""
 
     def ThermostatTemperatureSetpoint(self):
-        # valueOutOfRange
         if 'thermostatTemperatureSetpoint' in self.params.keys():
             status = self.data_conector.getStatus()[self.device]
             mode = status['thermostatMode']
@@ -176,12 +175,13 @@ class Commands:
             return ""
 
     def TemperatureRelative(self):
-        # alreadyAtMax
-        # alreadyAtMin
         # valueOutOfRange
         status = self.data_conector.getStatus()
+        device = self.data_conector.getDevices()[self.device]
+        attributes = device['attributes']
         if 'thermostatTemperatureRelativeDegree' in self.params.keys():
             mode = status[self.device]['thermostatMode']
+            set_point = status[self.device]['thermostatTemperatureSetpoint']
             if mode == "auto":
                 return "inAutoMode"
             elif mode == "dry":
@@ -196,8 +196,11 @@ class Commands:
                 return "inOffMode"
             elif mode == "purifier":
                 return "inPurifierMode"
-            else:
-                set_point = status[self.device]['thermostatTemperatureSetpoint']
+            elif self.params['thermostatTemperatureRelativeDegree'] > 0 and set_point == attributes['thermostatTemperatureRange']['maxThresholdCelsius']:
+                return "alreadyAtMax"
+            elif self.params['thermostatTemperatureRelativeDegree'] < 0 and set_point == attributes['thermostatTemperatureRange']['minThresholdCelsius']:
+                return "alreadyAtMin"
+            else:                
                 new_set_point = set_point + \
                     self.params['thermostatTemperatureRelativeDegree']
                 self.data_conector.updateParamStatus(
@@ -219,11 +222,17 @@ class Commands:
         self.saveAndSend('unit', 'currentFoodUnit')
         self.sendDobleCommand('start', 'start', 'stop')
 
-    def SetFanSpeed(self):
-        # maxSpeedReached
-        # minSpeedReached
+    def SetFanSpeed(self):        
         self.saveAndSend('fanSpeed', 'currentFanSpeedSetting')
-        self.saveAndSend('fanSpeedPercent', 'currentFanSpeedPercent')
+        if 'fanSpeedPercent' in self.params.keys():
+            status = self.data_conector.getStatus()
+            if status['currentFanSpeedPercent'] == 100 and self.params['fanSpeedPercent'] == 100:
+                return "maxSpeedReached"
+            elif status['currentFanSpeedPercent'] == 0 and self.params['fanSpeedPercent'] == 0:
+                return "minSpeedReached"
+            else:
+                self.saveAndSend('fanSpeedPercent', 'currentFanSpeedPercent')
+            
 
     def SetFanSpeedRelativeSpeed(self):
         # maxSpeedReached
