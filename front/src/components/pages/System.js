@@ -208,7 +208,7 @@ class System extends React.Component {
                         <h2>
                           System update available - {this.props.git.version}
                         </h2>
-                        <p>If you have installed Homeware using docker, please run 'docker-compose pull' in your host machine. <br/> Do not use the <i>Download and install button</i></p>
+                        <p>If you have installed Homeware using docker, please run 'docker-compose pull' in your host machine, <br/> do not use the <i>Download and install button</i>.</p>
                         <div style={git_description}>
                           <ReactMarkdown source={this.props.git.description} />
                           <button
