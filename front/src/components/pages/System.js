@@ -143,7 +143,7 @@ class System extends React.Component {
 
   render() {
     const upgrade_button = {
-      width: "400px",
+      width: "500px",
     };
 
     const git_description = {
@@ -216,7 +216,7 @@ class System extends React.Component {
                             style={upgrade_button}
                             onClick={this.upgrade}
                           >
-                            Download and install - Only for direct install
+                            Download and install - If installed without docker
                           </button>
                         </div>
                       </div>
