@@ -9,15 +9,10 @@ sudo unzip Homeware-LAN.zip
 
 # Move files
 sudo rm -r ../configuration_templates
-sudo rm -r ../ESP8266example
-sudo rm -r ../docs
 sudo rm -r ../front
 sudo mv Homeware-LAN/* ../
 sudo mv Homeware-LAN/bash/* ../bash/
 sudo mv Homeware-LAN/back/* ../back/
-
-# Delete the build to generate a 500 error
-sudo rm -r ../front/build
 
 #Update Python modules
 pip3 install -r requirements.txt
