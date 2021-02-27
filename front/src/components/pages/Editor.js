@@ -81,6 +81,7 @@ class Editor extends React.Component {
             this.setState({
               device: data,
               device_tratis: device_tratis,
+              mandatory_content: 3,
             });
           } else {
             console.error(http.statusText);
