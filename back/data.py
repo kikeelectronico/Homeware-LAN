@@ -10,12 +10,13 @@ import paho.mqtt.publish as publish
 import os.path
 
 from homeGraph import HomeGraph
+import hostname
 homegraph = HomeGraph()
 
 class Data:
 
 
-	version = 'v1.2.3'
+	version = 'v1.3'
 	homewareFile = 'homeware.json'
 	apikey = ''
 	userToken = ''
@@ -25,7 +26,7 @@ class Data:
 
 
 	def __init__(self):
-		self.redis = redis.Redis("localhost")
+		self.redis = redis.Redis(hostname.REDIS_HOST, hostname.REDIS_PORT)
 		self.verbose = False
 
 		if not self.redis.get('transfer'):
@@ -170,13 +171,12 @@ class Data:
 			try:
 				mqttData = self.getMQTT()
 				if not mqttData['user'] == "":
-					client.username_pw_set(mqttData['user'], mqttData['password'])
-					publish.multiple(msgs, hostname="localhost", auth={'username':mqttData['user'], 'password': mqttData['password']})
+					publish.multiple(msgs, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
 				else:
-					publish.multiple(msgs, hostname="localhost")
+					publish.multiple(msgs, hostname=hostname.MQTT_HOST)
 
 			except:
-				publish.multiple(msgs, hostname="localhost")
+				publish.multiple(msgs, hostname=hostname.MQTT_HOST)
 
 			# Inform Google Home Graph
 			if os.path.exists("../google.json") and self.linked:

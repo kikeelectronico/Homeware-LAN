@@ -1,167 +1,412 @@
 import paho.mqtt.publish as publish
 import json
 
+import hostname
+
 class Commands:
 
-	def __init__(self, data):
-		self.data_conector = data
-		self.data_conector.log('Log', 'Starting commands executor')
+    def __init__(self, data):
+        self.data_conector = data
+        self.data_conector.log('Log', 'Starting commands executor')
 
-	def setParams(self, device, params):
-		self.device = device
-		self.params = params
+    def setParams(self, device, params):
+        self.device = device
+        self.params = params
 
-	def saveAndSend(self, input, output):
-		if input in self.params.keys():
-			self.data_conector.updateParamStatus(self.device, output, self.params[input])
+    def saveAndSend(self, input, output):
+        if input in self.params.keys():
+            self.data_conector.updateParamStatus(
+                self.device, output, self.params[input])
 
-	def sendCommand(self,param,command):
-		if param in self.params.keys():
-			if self.params[param]:
-				publish.single("device/"+self.device+"/command", command, hostname="localhost")
+    def sendCommand(self, param, command):
+        if param in self.params.keys():
+            if self.params[param]:
+                publish.single("device/" + self.device +
+                               "/command", command, hostname="localhost")
 
-	def sendDobleCommand(self,param,true_command,false_command):
-		if param in self.params.keys():
-			if self.params[param]:
-				publish.single("device/"+self.device+"/command", true_command, hostname="localhost")
-			else:
-				publish.single("device/"+self.device+"/command", false_command, hostname="localhost")
+    def sendDobleCommand(self, param, true_command, false_command):
+        if param in self.params.keys():
+            if self.params[param]:
+                publish.single("device/" + self.device + "/command",
+                               true_command, hostname="localhost")
+            else:
+                publish.single("device/" + self.device + "/command",
+                               false_command, hostname="localhost")
 
-	def ArmDisarm(self):
-		self.sendDobleCommand('arm','arm','disarm')
-		self.sendCommand('cancel','disarm')
-		self.saveAndSend('armLevel','currentArmLevel')
+    def ArmDisarm(self):
+        # armFailure
+        # cancelArmingRestricted
+        # disarmFailure
 
-	def BrightnessAbsolute(self):
-		self.saveAndSend('brightness','brightness')
+        status = self.data_conector.getStatus()
+        if 'armLevel' in self.params.keys():
+            if status[self.device]['currentArmLevel'] == self.params['armLevel']:
+                if self.params['arm']:
+                    return "alreadyArmed"
+                else:
+                    return "alreadyDisarmed"
+            else:
+                self.data_conector.updateParamStatus(self.device,
+                                                     'currentArmLevel',
+                                                     self.params['armLevel'])
+                publish.single("device/" + self.device + "/command",
+                               "arm",
+                               hostname="localhost")
 
-	def ColorAbsolute(self):
-		if 'color' in self.params.keys():
-			color = {}
-			if 'temperature' in self.params['color'].keys():
-				color['temperature'] = self.params['color']['temperature']
-				color['temperatureK'] = self.params['color']['temperature']
-			if 'spectrumRGB' in self.params['color'].keys():
-				color['spectrumRGB'] = self.params['color']['spectrumRGB']
-				color['spectrumRgb'] = self.params['color']['spectrumRGB']
-			if 'spectrumHSV' in self.params['color'].keys():
-				color['spectrumHSV'] = self.params['color']['spectrumHSV']
-				color['spectrumHsv'] = self.params['color']['spectrumHSV']
-			self.data_conector.updateParamStatus(self.device, 'color', color)
+        if 'arm' in self.params.keys():
+            if not self.params['arm']:
+                publish.single("device/" + self.device + "/command",
+                               "disarm",
+                               hostname="localhost")
 
-	def OnOff(self):
-		self.saveAndSend('on','on')
+        if 'cancel' in self.params.keys():
+            if self.params['cancel'] and not status[self.device]['isArmed']:
+                publish.single("device/" + self.device + "/command",
+                               "disarm",
+                               hostname="localhost")
+            else:
+                return "cancelTooLate"
 
-	def ThermostatTemperatureSetpoint(self):
-		self.saveAndSend('thermostatTemperatureSetpoint','thermostatTemperatureSetpoint')
+        return ""
 
-	def ThermostatSetMode(self):
-		self.saveAndSend('thermostatMode','activeThermostatMode')
-		self.saveAndSend('thermostatMode','thermostatMode')
+    def BrightnessAbsolute(self):
+        if 'brightness' in self.params.keys():
+            self.data_conector.updateParamStatus(
+                self.device, 'brightness', self.params['brightness'])
+        return ""
 
-	def ThermostatTemperatureSetRange(self):
-		self.saveAndSend('thermostatTemperatureSetpointHigh','thermostatTemperatureSetpointHigh')
-		self.saveAndSend('thermostatTemperatureSetpointLow','thermostatTemperatureSetpointLow')
+    def ColorAbsolute(self):
+        if 'color' in self.params.keys():
+            color = {}
+            if 'temperature' in self.params['color'].keys():
+                color['temperature'] = self.params['color']['temperature']
+                color['temperatureK'] = self.params['color']['temperature']
+            if 'spectrumRGB' in self.params['color'].keys():
+                color['spectrumRGB'] = self.params['color']['spectrumRGB']
+                color['spectrumRgb'] = self.params['color']['spectrumRGB']
+            if 'spectrumHSV' in self.params['color'].keys():
+                color['spectrumHSV'] = self.params['color']['spectrumHSV']
+                color['spectrumHsv'] = self.params['color']['spectrumHSV']
+            self.data_conector.updateParamStatus(self.device, 'color', color)
+        return ""
 
-	def TemperatureRelative(self):
-		if 'thermostatTemperatureRelativeDegree' in self.params.keys():
-			set_point = self.data_conector.getStatus()[self.device]['thermostatTemperatureSetpoint']
-			self.data_conector.updateParamStatus(self.device, 'thermostatTemperatureSetpoint', set_point + self.params['thermostatTemperatureRelativeDegree'])
+    def OnOff(self):
+        status = self.data_conector.getStatus()
+        if 'on' in self.params.keys():
+            if status[self.device]['on'] == self.params['on']:
+                if self.params['on']:
+                    return "alreadyOn"
+                else:
+                    return "alreadyOff"
+            else:
+                self.data_conector.updateParamStatus(
+                    self.device, 'on', self.params['on'])
+        return ""
 
-	def ActivateScene(self):
-		self.saveAndSend('deactivate','deactivate')
+    def ThermostatTemperatureSetpoint(self):
+        if 'thermostatTemperatureSetpoint' in self.params.keys():
+            status = self.data_conector.getStatus()[self.device]
+            mode = status['thermostatMode']
+            if mode == "auto":
+                return "inAutoMode"
+            elif mode == "dry":
+                return "inDryMode"
+            elif mode == "eco":
+                return "inEcoMode"
+            elif mode == "fan-only":
+                return "inFanOnlyMode"
+            elif mode == "heatcool":
+                return "inHeatOrCool"
+            elif mode == "off":
+                return "inOffMode"
+            elif mode == "purifier":
+                return "inPurifierMode"
+            else:
+                device = self.data_conector.getDevices()[self.device]
+                attributes = device['attributes']
+                set_point = self.params["thermostatTemperatureSetpoint"]
+                if set_point > attributes['thermostatTemperatureRange']['maxThresholdCelsius']:
+                    set_point = attributes['thermostatTemperatureRange']['maxThresholdCelsius']
+                elif set_point < attributes['thermostatTemperatureRange']['minThresholdCelsius']:
+                    set_point = attributes['thermostatTemperatureRange']['minThresholdCelsius']
+                self.data_conector.updateParamStatus(
+                    self.device,
+                    "thermostatTemperatureSetpoint",
+                    set_point)
+                if set_point > attributes['minThresholdCelsius']:
+                    return "alreadyAtMin"
+                elif set_point < attributes['maxThresholdCelsius']:
+                    return "alreadyAtMax"
+        return ""
 
-	def Cook(self):
-		self.saveAndSend('cookingMode','currentCookingMode')
-		self.saveAndSend('foodPreset','currentFoodPreset')
-		self.saveAndSend('quantity','currentFoodQuantity')
-		self.saveAndSend('unit','currentFoodUnit')
-		self.sendDobleCommand('start','start','stop')
+    def ThermostatSetMode(self):
+        list = ['off', 'heat', 'cool', 'on', 'heatcool',
+                'auto', 'fan-only', 'purifier', 'eco', 'drt']
+        if 'thermostatMode' in self.params.keys():
+            if self.params['thermostatMode'] in list:
+                self.data_conector.updateParamStatus(
+                    self.device,
+                    "activeThermostatMode",
+                    self.params["thermostatMode"])
+                self.data_conector.updateParamStatus(
+                    self.device,
+                    "thermostatMode",
+                    self.params["thermostatMode"])
+            else:
+                return "notSupported"
 
-	def SetFanSpeed(self):
-		self.saveAndSend('fanSpeed','currentFanSpeedSetting')
-		self.saveAndSend('fanSpeedPercent','currentFanSpeedPercent')
+        return ""
 
-	def SetFanSpeedRelativeSpeed(self):
-		if 'fanSpeedRelativeWeight' in self.params.keys():
-			speed = self.data_conector.getStatus()[self.device]['currentFanSpeedPercent']
-			self.data_conector.updateParamStatus(self.device, 'currentFanSpeedPercent', speed + self.params['fanSpeedRelativeWeight'])
-		if 'fanSpeedRelativePercent' in self.params.keys():
-			speed = self.data_conector.getStatus()[self.device]['currentFanSpeedPercent']
-			self.data_conector.updateParamStatus(self.device, 'currentFanSpeedPercent', speed + self.params['fanSpeedRelativePercent'])
+    def ThermostatTemperatureSetRange(self):
+        if 'thermostatTemperatureSetpointHigh' in self.params.keys():
+            device = self.data_conector.getDevices()[self.device]
+            attributes = device['attributes']
+            delta = self.params['thermostatTemperatureSetpointHigh'] - \
+                self.params['thermostatTemperatureSetpointLow']
+            if delta > attributes['bufferRangeCelsius']:
+                self.data_conector.updateParamStatus(
+                    self.device, 'thermostatTemperatureSetpointHigh',
+                    self.params['thermostatTemperatureSetpointHigh'])
+                self.data_conector.updateParamStatus(
+                    self.device, 'thermostatTemperatureSetpointLow',
+                    self.params['thermostatTemperatureSetpointLow'])
+            else:
+                return "rangeTooClose"
+        else:
+            return ""
 
-	def Reverse(self):
-		publish.single("device/"+self.device+"/command", 'reverse', hostname="localhost")
+    def TemperatureRelative(self):
+        # valueOutOfRange
+        status = self.data_conector.getStatus()
+        device = self.data_conector.getDevices()[self.device]
+        attributes = device['attributes']
+        if 'thermostatTemperatureRelativeDegree' in self.params.keys():
+            mode = status[self.device]['thermostatMode']
+            set_point = status[self.device]['thermostatTemperatureSetpoint']
+            if mode == "auto":
+                return "inAutoMode"
+            elif mode == "dry":
+                return "inDryMode"
+            elif mode == "eco":
+                return "inEcoMode"
+            elif mode == "fan-only":
+                return "inFanOnlyMode"
+            elif mode == "heatcool":
+                return "inHeatOrCool"
+            elif mode == "off":
+                return "inOffMode"
+            elif mode == "purifier":
+                return "inPurifierMode"
+            elif self.params['thermostatTemperatureRelativeDegree'] > 0 and set_point == attributes['thermostatTemperatureRange']['maxThresholdCelsius']:
+                return "alreadyAtMax"
+            elif self.params['thermostatTemperatureRelativeDegree'] < 0 and set_point == attributes['thermostatTemperatureRange']['minThresholdCelsius']:
+                return "alreadyAtMin"
+            else:                
+                new_set_point = set_point + \
+                    self.params['thermostatTemperatureRelativeDegree']
+                self.data_conector.updateParamStatus(
+                    self.device,
+                    'thermostatTemperatureSetpoint',
+                    new_set_point)
+        return ""
 
-	def Fill(self):
-		self.saveAndSend('fillLevel','currentFillLevel')
-		self.sendDobleCommand('fill','fill','drain')
+    def ActivateScene(self):
+        self.saveAndSend('deactivate', 'deactivate')
+        return ""
 
-	def SetHumidity(self):
-		self.saveAndSend('humidity','humiditySetpointPercent')
+    def Cook(self):
+        # actionUnavailableWhileRunning
+        # unknownFoodPreset
+        self.saveAndSend('cookingMode', 'currentCookingMode')
+        self.saveAndSend('foodPreset', 'currentFoodPreset')
+        self.saveAndSend('quantity', 'currentFoodQuantity')
+        self.saveAndSend('unit', 'currentFoodUnit')
+        self.sendDobleCommand('start', 'start', 'stop')
 
-	def HumidityRelative(self):
-		if 'humidityRelativePercent' in self.params.keys():
-			humidity = self.data_conector.getStatus()[self.device]['humiditySetpointPercent']
-			self.data_conector.updateParamStatus(self.device, 'humiditySetpointPercent', humidity + self.params['humidityRelativePercent'])
-		if 'humidityRelativeWeight' in self.params.keys():
-			humidity = self.data_conector.getStatus()[self.device]['humiditySetpointPercent']
-			self.data_conector.updateParamStatus(self.device, 'humiditySetpointPercent', humidity + self.params['humidityRelativeWeight'])
+    def SetFanSpeed(self):        
+        self.saveAndSend('fanSpeed', 'currentFanSpeedSetting')
+        if 'fanSpeedPercent' in self.params.keys():
+            status = self.data_conector.getStatus()
+            if status['currentFanSpeedPercent'] == 100 and self.params['fanSpeedPercent'] == 100:
+                return "maxSpeedReached"
+            elif status['currentFanSpeedPercent'] == 0 and self.params['fanSpeedPercent'] == 0:
+                return "minSpeedReached"
+            else:
+                self.saveAndSend('fanSpeedPercent', 'currentFanSpeedPercent')
+            
 
+    def SetFanSpeedRelativeSpeed(self):
+        # maxSpeedReached
+        # minSpeedReached
+        if 'fanSpeedRelativeWeight' in self.params.keys():
+            status = self.data_conector.getStatus()
+            speed = status[self.device]['currentFanSpeedPercent']
+            new_speed = speed + self.params['fanSpeedRelativeWeight']
+            self.data_conector.updateParamStatus(
+                self.device, 'currentFanSpeedPercent', new_speed)
+        if 'fanSpeedRelativePercent' in self.params.keys():
+            status = self.data_conector.getStatus()
+            speed = status[self.device]['currentFanSpeedPercent']
+            new_speed = speed + self.params['fanSpeedRelativePercent']
+            self.data_conector.updateParamStatus(
+                self.device, 'currentFanSpeedPercent', new_speed)
 
-	def Locate(self):
-		self.sendCommand('silence','silence')
+    def Reverse(self):
+        publish.single("device/" + self.device + "/command",
+                       'reverse', hostname="localhost")
+        return ""
 
-	def LockUnlock(self):
-		self.sendDobleCommand('lock','lock','unlock')
+    def Fill(self):
+        self.saveAndSend('fillLevel', 'currentFillLevel')
+        self.sendDobleCommand('fill', 'fill', 'drain')
+        return ""
 
-	def OpenClose(self):
-		self.saveAndSend('openPercent','openPercent')
+    def SetHumidity(self):
+        # maxSettingReached
+        # minSettingReached
+        self.saveAndSend('humidity', 'humiditySetpointPercent')
 
-	def OpenCloseRelative(self):
-		if 'openRelativePercent' in self.params.keys():
-			open = self.data_conector.getStatus()[self.device]['openPercent']
-			self.data_conector.updateParamStatus(self.device, 'openPercent', open + self.params['openRelativePercent'])
+    def HumidityRelative(self):
+        # maxSettingReached
+        # minSettingReached
+        if 'humidityRelativePercent' in self.params.keys():
+            status = self.data_conector.getStatus()
+            humidity = status[self.device]['humiditySetpointPercent']
+            new_humidity = humidity + self.params['humidityRelativePercent']
+            self.data_conector.updateParamStatus(
+                self.device, 'humiditySetpointPercent', new_humidity)
+        if 'humidityRelativeWeight' in self.params.keys():
+            status = self.data_conector.getStatus()
+            humidity = status[self.device]['humiditySetpointPercent']
+            new_humidity = humidity + self.params['humidityRelativeWeight']
+            self.data_conector.updateParamStatus(
+                self.device, 'humiditySetpointPercent', new_humidity)
 
-	def RotateAbsolute(self):
-		self.saveAndSend('rotationPercent','rotationPercent')
-		self.saveAndSend('rotationDegrees','rotationDegrees')
+    def Locate(self):
+        # unableToLocateDevice
+        self.sendCommand('silence', 'silence')
 
-	def StartStop(self):
-		self.sendDobleCommand('start','start','stop')
+    def LockUnlock(self):
+        # lockFailure
+        # lockedState
+        # unlockFailure
+        status = self.data_conector.getStatus()
+        if 'lock' in self.params.keys():
+            if status[self.device]['isLocked'] == self.params['lock']:
+                if self.params['lock']:
+                    return "alreadyLocked"
+                else:
+                    return "alreadyUnlocked"
+            else:
+                if self.params['lock']:
+                    publish.single("device/" + self.device + "/command",
+                                   'lock', hostname="localhost")
+                else:
+                    publish.single("device/" + self.device + "/command",
+                                   'unlock', hostname="localhost")
+        return ""
 
-	def PauseUnpause(self):
-		self.sendDobleCommand('pause','pause','unpause')
+    def OpenClose(self):
+        # discreteOnlyOpenClose
+        self.saveAndSend('openPercent', 'openPercent')
 
-	def SetTemperature(self):
-		self.saveAndSend('temperature','temperatureSetpointCelsius')
+    def OpenCloseRelative(self):
+        # discreteOnlyOpenClose
+        status = self.data_conector.getStatus()
+        if 'openRelativePercent' in self.params.keys():
+            open = status[self.device]['openPercent']
+            new_open = open + self.params['openRelativePercent']
+            if status[self.device]['openPercent'] == 100 and new_open == 100:
+                return "alreadyOpen"
+            else:
+                self.data_conector.updateParamStatus(
+                    self.device, 'openPercent', new_open)
+        return ""
 
-	def TimerStart(self):
-		self.saveAndSend('timerTimeSec','timerRemainingSec')
+    def RotateAbsolute(self):
+        self.saveAndSend('rotationPercent', 'rotationPercent')
+        self.saveAndSend('rotationDegrees', 'rotationDegrees')
+        return ""
 
-	def TimerPause(self):
-		self.data_conector.updateParamStatus(self.device, 'timerPaused', True)
+    def StartStop(self):
+        status = self.data_conector.getStatus()
+        if 'start' in self.params.keys():
+            if status[self.device]['isRunning'] == self.params['start']:
+                if self.params['start']:
+                    return "alreadyStarted"
+                else:
+                    return "alreadyStopped"
+            else:
+                if self.params['start']:
+                    publish.single("device/" + self.device + "/command",
+                                   'start',
+                                   hostname="localhost")
+                else:
+                    publish.single("device/" + self.device + "/command",
+                                   'stop',
+                                   hostname="localhost")
+        return ""
 
-	def TimerResume(self):
-		self.data_conector.updateParamStatus(self.device, 'timerPaused', False)
+    def PauseUnpause(self):
+        # unpausableState
 
-	def TimerCancel(self):
-		self.data_conector.updateParamStatus(self.device, 'timerRemainingSec', 0)
+        status = self.data_conector.getStatus()
+        if 'pause' in self.params.keys():
+            if status[self.device]['isPaused'] == self.params['pause']:
+                if self.params['pause']:
+                    return "alreadyPaused"
+                else:
+                    return ""
+            else:
+                if self.params['pause']:
+                    publish.single("device/" + self.device + "/command",
+                                   'pause',
+                                   hostname="localhost")
+                else:
+                    publish.single("device/" + self.device + "/command",
+                                   'unpause',
+                                   hostname="localhost")
 
+    def SetTemperature(self):
+        # alreadyAtMax
+        # alreadyAtMin
+        self.saveAndSend('temperature', 'temperatureSetpointCelsius')
 
-	def SetToggles(self):
-		if 'updateToggleSettings' in self.params.keys():
-			toggles = self.params['updateToggleSettings'].keys()
-			state = self.data_conector.getStatus()[self.device]['currentToggleSettings']
-			for toggle in toggles:
-				state[toggle] = self.params['updateToggleSettings'][toggle]
-			self.data_conector.updateParamStatus(self.device, 'currentToggleSettings', state)
+    def TimerStart(self):
+        # startRequiresTime
+        self.saveAndSend('timerTimeSec', 'timerRemainingSec')
 
+    def TimerPause(self):
+        self.data_conector.updateParamStatus(self.device, 'timerPaused', True)
+        return ""
 
-	def SetModes(self):
-		if 'updateModeSettings' in self.params.keys():
-			modes = self.params['updateModeSettings'].keys()
-			state = self.data_conector.getStatus()[self.device]['currentModeSettings']
-			for mode in modes:
-				state[mode] = self.params['updateModeSettings'][mode]
-			self.data_conector.updateParamStatus(self.device, 'currentModeSettings', state)
+    def TimerResume(self):
+        self.data_conector.updateParamStatus(self.device, 'timerPaused', False)
+        return ""
+
+    def TimerCancel(self):
+        self.data_conector.updateParamStatus(
+            self.device, 'timerRemainingSec', 0)
+        return ""
+
+    def SetToggles(self):
+        if 'updateToggleSettings' in self.params.keys():
+            toggles = self.params['updateToggleSettings'].keys()
+            state = self.data_conector.getStatus(
+            )[self.device]['currentToggleSettings']
+            for toggle in toggles:
+                state[toggle] = self.params['updateToggleSettings'][toggle]
+            self.data_conector.updateParamStatus(
+                self.device, 'currentToggleSettings', state)
+        return ""
+
+    def SetModes(self):
+        # notSupported
+        if 'updateModeSettings' in self.params.keys():
+            modes = self.params['updateModeSettings'].keys()
+            state = self.data_conector.getStatus(
+            )[self.device]['currentModeSettings']
+            for mode in modes:
+                state[mode] = self.params['updateModeSettings'][mode]
+            self.data_conector.updateParamStatus(
+                self.device, 'currentModeSettings', state)

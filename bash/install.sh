@@ -13,10 +13,7 @@ case "$response" in
         sudo apt-get update
         sudo apt install unzip -y
         # Download the last version
-        LOCATION=$(curl -s https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest \
-        | grep "tag_name" \
-        | awk '{print "https://github.com/kikeelectronico/Homeware-LAN/archive/" substr($2, 2, length($2)-3) ".zip"}') \
-        ; sudo curl -L -o Homeware-LAN.zip $LOCATION
+        LOCATION=$(curl -s https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest | grep "tag_name" | awk '{print "https://github.com/kikeelectronico/Homeware-LAN/releases/download/" substr($2, 2, length($2)-3) "/build.zip"}') ; sudo curl -L -o Homeware-LAN.zip $LOCATION
         sudo unzip Homeware-LAN.zip
         sudo mv Homeware-LAN/ /usr/share/Homeware-LAN
         cd /usr/share
