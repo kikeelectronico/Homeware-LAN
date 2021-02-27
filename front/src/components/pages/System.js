@@ -143,7 +143,7 @@ class System extends React.Component {
 
   render() {
     const upgrade_button = {
-      width: "200px",
+      width: "400px",
     };
 
     const git_description = {
@@ -208,6 +208,7 @@ class System extends React.Component {
                         <h2>
                           System update available - {this.props.git.version}
                         </h2>
+                        <p>If you have installed Homeware using docker, please run 'docker-compose pull' in your host machine. <br/> Do not use the <i>Download and install button</i></p>
                         <div style={git_description}>
                           <ReactMarkdown source={this.props.git.description} />
                           <button
@@ -215,7 +216,7 @@ class System extends React.Component {
                             style={upgrade_button}
                             onClick={this.upgrade}
                           >
-                            Download and install
+                            Download and install - Only for direct install
                           </button>
                         </div>
                       </div>
@@ -250,7 +251,7 @@ class System extends React.Component {
               </div>
               <div className="advise">
                 <span>
-                  Control the device and restart the Homeware-LAN installation.
+                  Control the device and restart the Homeware-LAN installation. Only for direct install.
                 </span>
               </div>
             </div>
