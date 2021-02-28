@@ -4,14 +4,9 @@ Homeware is a _Google Home Provider Cloud Service_, a complete ecosystem that al
 
 Homeware containts a backend that does the integration and a web forntend that allows you to manage your devices and program tasks.
 
-## Homeware has been tested on
-
-| Operating System             | Version     |
-| ---------------------------- | ----------- |
-| Ubuntu                       | 20.04       |
-| Raspbian Pi OS (32-bit) Lite | August 2020 |
-
 # Install without docker compose
+
+Homeware can be installed in directly on Debian, Ubuntu or Raspbian. Once you got your platform ready follow these instructions.
 
 1. Open a terminal window in your Raspberry Pi and run:
 
