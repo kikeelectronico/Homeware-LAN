@@ -760,7 +760,7 @@ def smarthome():
                             data_conector.log('Log', 'Incorrect command')
 
                     command_response = {}
-                    if errorCode.length > 0:
+                    if len(errorCode) > 0:
                         command_response = {
                             'ids': ids,
                             'errorCode': errorCode,
