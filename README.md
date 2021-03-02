@@ -4,14 +4,9 @@ Homeware is a _Google Home Provider Cloud Service_, a complete ecosystem that al
 
 Homeware containts a backend that does the integration and a web forntend that allows you to manage your devices and program tasks.
 
-## Homeware has been tested on
+# Install without docker compose
 
-| Operating System             | Version     |
-| ---------------------------- | ----------- |
-| Ubuntu                       | 20.04       |
-| Raspbian Pi OS (32-bit) Lite | August 2020 |
-
-# Install
+Homeware can be installed in directly on Debian, Ubuntu or Raspbian. Once you got your platform ready follow these instructions.
 
 1. Open a terminal window in your Raspberry Pi and run:
 
@@ -25,7 +20,7 @@ sudo sh install.sh
 
 2. Follow the instructions that appear in the screen.
 
-# Install using Docker Compose
+# Install with Docker Compose
 
 1. Clone the repo and cd into it  
 ```bash
@@ -49,6 +44,8 @@ user: mosquitto
 pass: homewarelan123
 ```
 You may create a different `mosquitto_passwd` file following [these steps](https://mosquitto.org/man/mosquitto_passwd-1.html)  
+
+6. Follow this steps to link Homeware with Google Home: https://kikeelectronico.github.io/Homeware-LAN/docs/connect-with-google
 
 # Stay up to date
 

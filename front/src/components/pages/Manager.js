@@ -76,6 +76,9 @@ class Manager extends React.Component {
             var data = JSON.parse(tas.responseText);
             this.setState({
               task: data,
+              mandatory_target: true,
+              mandatory_name: true,
+              mandatory_description: true,
             });
           } else {
             console.error(tas.statusText);

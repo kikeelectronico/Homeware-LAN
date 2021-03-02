@@ -84,14 +84,8 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.PACKAGES_TOKEN }}
       - 
-        name: Get latest release tag
-        uses: octokit/request-action@v2.x
-        id: get_latest_release
-        with:
-            route: GET /repos/:repository/releases/latest
-            repository: ${{ github.repository }}
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        name: Set release version env var
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       -
         name: Build and push BE
         uses: docker/build-push-action@v2
@@ -103,7 +97,7 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/homewarelan-back:latest
             ghcr.io/${{ github.repository_owner }}/homewarelan-back:${{ github.sha }}
-            ghcr.io/${{ github.repository_owner }}/homewarelan-back:${{ steps.get_latest_release.outputs.data }}
+            ghcr.io/${{ github.repository_owner }}/homewarelan-back:${{ env.RELEASE_VERSION }}
   build-push-fe-docker-image:
     runs-on: ubuntu-latest
     steps:
@@ -124,14 +118,8 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.PACKAGES_TOKEN }}
       - 
-        name: Get latest release tag
-        uses: octokit/request-action@v2.x
-        id: get_latest_release
-        with:
-            route: GET /repos/:repository/releases/latest
-            repository: ${{ github.repository }}
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        name: Set release version env var
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       -
         name: Build and push FE
         uses: docker/build-push-action@v2
@@ -143,4 +131,4 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/homewarelan-nginx:latest
             ghcr.io/${{ github.repository_owner }}/homewarelan-nginx:${{ github.sha }}
-            ghcr.io/${{ github.repository_owner }}/homewarelan-nginx:${{ steps.get_latest_release.outputs.data }}
+            ghcr.io/${{ github.repository_owner }}/homewarelan-nginx:${{ env.RELEASE_VERSION }}
