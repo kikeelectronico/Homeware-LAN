@@ -6,6 +6,19 @@ sidebar_label: Installation
 
 You can install Homeware using one of the following methods.
 
+## Install without docker compose
+
+Homeware can be installed in directly on Debian, Ubuntu or Raspbian. Once you got your platform ready follow these instructions.
+
+1. Open a terminal window in your Raspberry Pi and run:
+```
+wget https://raw.githubusercontent.com/kikeelectronico/Homeware-LAN/master/bash/install.sh
+```
+```
+sudo sh install.sh
+```
+2. Follow the instructions that appear in the screen.
+
 ## Install with Docker Compose
 
 1. Open the ports 80 and 443 on your router/firewall if needed.
@@ -37,15 +50,3 @@ You may create a different `mosquitto_passwd` file following [these steps](https
 
 Thanks to <a href="https://github.com/ajpl" tarjet="blanck">@ajpl</a> for the PR.
 
-## Install without docker compose
-
-Homeware can be installed in directly on Debian, Ubuntu or Raspbian. Once you got your platform ready follow these instructions.
-
-1. Open a terminal window in your Raspberry Pi and run:
-```
-wget https://raw.githubusercontent.com/kikeelectronico/Homeware-LAN/master/bash/install.sh
-```
-```
-sudo sh install.sh
-```
-2. Follow the instructions that appear in the screen.
