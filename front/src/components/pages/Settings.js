@@ -296,33 +296,64 @@ class Settings extends React.Component {
                   onChange={this.update}
                 >
                   <option value="noip">Noip</option>
+                  <option value="duckdns">Duck DNS</option>
                 </select>
               </div>
             </div>
-            <div className="two_table_row">
-              <div className="two_table_cel">Username</div>
-              <div className="two_table_cel">
-                <input
-                  type="text"
-                  className="two_input"
-                  id="ddns/username"
-                  defaultValue={this.state.settings.ddns.username}
-                  onChange={this.update}
-                />
+            {
+              this.state.settings.ddns.provider === "noip"
+              ?
+              <div>
+                <div className="two_table_row">
+                  <div className="two_table_cel">Username</div>
+                  <div className="two_table_cel">
+                    <input
+                      type="text"
+                      className="two_input"
+                      id="ddns/username"
+                      defaultValue={this.state.settings.ddns.username}
+                      onChange={this.update}
+                    />
+                  </div>
+                </div>
+                <div className="two_table_row">
+                  <div className="two_table_cel">Password</div>
+                  <div className="two_table_cel">
+                    <input
+                      type="text"
+                      className="two_input"
+                      id="ddns/password"
+                      defaultValue={this.state.settings.ddns.password}
+                      onChange={this.update}
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="two_table_row">
-              <div className="two_table_cel">Password</div>
-              <div className="two_table_cel">
-                <input
-                  type="text"
-                  className="two_input"
-                  id="ddns/password"
-                  defaultValue={this.state.settings.ddns.password}
-                  onChange={this.update}
-                />
+              :
+              <div></div>
+            }
+            {
+              this.state.settings.ddns.provider === "duckdns"
+              ?
+              <div>
+                <div className="two_table_row">
+                  <div className="two_table_cel">Token</div>
+                  <div className="two_table_cel">
+                    <input
+                      type="text"
+                      className="two_input"
+                      id="ddns/password"
+                      defaultValue={this.state.settings.ddns.password}
+                      onChange={this.update}
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
+              :
+              <div></div>
+            }
+            
+
             <div className="two_table_row">
               <div className="two_table_cel">Hostname</div>
               <div className="two_table_cel">

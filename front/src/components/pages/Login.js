@@ -1,5 +1,6 @@
 import React from 'react';
 import { root } from '../../constants'
+import Form from "react-bootstrap/Form";
 
 import './Login.css'
 
@@ -18,6 +19,7 @@ class Login extends React.Component {
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       var response = JSON.parse(http.responseText);
+      console.log(response);
       if(response['status'] === 'in'){
         document.cookie = "user=" + response['user'] + "; path=/";
         document.cookie = "token=" + response['token'] + "; path=/";
@@ -63,6 +65,15 @@ class Login extends React.Component {
     http.send();
   }
 
+  submit = (e) => {
+    e.preventDefault()
+    if(!window.location.href.includes('google')) {
+      this.login()
+    } else {
+      this.grantAccess()
+    }
+  }
+
   render() {
 
     var message = '';
@@ -74,11 +85,13 @@ class Login extends React.Component {
       <div className="login_form_container">
         { window.location.href.includes('google') ? <p>Google request access to Homeware-Lan</p> : '' }
         <br/>
-        <span className="login_element">Username</span>
-        <input type="text" name="user" id="user"/>
-        <span className="login_element">Password</span>
-        <input type="password" name="password" id="password"/>
-        <button type="button" className="login_element" onClick={ !window.location.href.includes('google') ? this.login : this.grantAccess }>{ !window.location.href.includes('google') ? <span>Login</span> : <span>Grant access</span> }</button>
+        <Form onSubmit={this.submit.bind(this)}>
+          <span className="login_element">Username</span>
+          <input type="text" name="user" id="user"/>
+          <span className="login_element">Password</span>
+          <input type="password" name="password" id="password"/>
+          <button type="submit" className="login_element">{ !window.location.href.includes('google') ? <span>Login</span> : <span>Grant access</span> }</button>
+        </Form>
         <br/>
         { message }
       </div>
