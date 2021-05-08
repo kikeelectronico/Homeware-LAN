@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^12.2.0",
     "link": "^0.1.5",
     "react": "^16.13.1",
+    "react-bootstrap": "^1.5.2",
     "react-dom": "^16.13.1",
     "react-json-view": "^1.19.1",
     "react-markdown": "^4.3.1",
