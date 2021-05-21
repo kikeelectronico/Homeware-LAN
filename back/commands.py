@@ -136,9 +136,9 @@ class Commands:
                     elif set_point < attributes['thermostatTemperatureRange']['minThresholdCelsius']:
                         set_point = attributes['thermostatTemperatureRange']['minThresholdCelsius']
 
-                    if set_point > attributes['thermostatTemperatureRange']['minThresholdCelsius']:
+                    if set_point < attributes['thermostatTemperatureRange']['minThresholdCelsius']:
                         return "alreadyAtMin"
-                    elif set_point < attributes['thermostatTemperatureRange']['maxThresholdCelsius']:
+                    elif set_point > attributes['thermostatTemperatureRange']['maxThresholdCelsius']:
                         return "alreadyAtMax"
                 except:
                     self.data_conector.log('Log','thermostatTemperatureSetpoint is not set up')

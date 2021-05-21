@@ -5,11 +5,16 @@ class TemperatureControl extends React.Component {
   constructor(props) {
     super(props);
     this.update = this.update.bind(this);
+    this.updateNumber = this.updateNumber.bind(this);
     this.updateCheckbox = this.updateCheckbox.bind(this);
   }
 
   update(event){
     this.props.update('attributes/' + event.target.id,event.target.value);
+  }
+
+  updateNumber(event){
+    this.props.update('attributes/' + event.target.id,parseInt(event.target.value));
   }
 
   updateCheckbox(checked, attribute){
@@ -51,7 +56,7 @@ class TemperatureControl extends React.Component {
             Minimum temperature
           </div>
           <div className="three_table_cel">
-            <input type="number" id="temperatureRange/minThresholdCelsius" defaultValue={ this.props.attributes.temperatureRange ? this.props.attributes.temperatureRange.minThresholdCelsius : 0} min="0" max="400" onChange={this.update} className="int_input"/>
+            <input type="number" id="temperatureRange/minThresholdCelsius" defaultValue={ this.props.attributes.temperatureRange ? this.props.attributes.temperatureRange.minThresholdCelsius : 0} min="0" max="400" onChange={this.updateNumber} className="int_input"/>
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Minimum temperature (in Celsius) supported by the device.</span>
@@ -63,7 +68,7 @@ class TemperatureControl extends React.Component {
             Maximum temperature
           </div>
           <div className="three_table_cel">
-            <input type="number" id="temperatureRange/maxThresholdCelsius" defaultValue={this.props.attributes.temperatureRange ? this.props.attributes.temperatureRange.maxThresholdCelsius : 0} min="0" max="400" onChange={this.update} className="int_input"/>
+            <input type="number" id="temperatureRange/maxThresholdCelsius" defaultValue={this.props.attributes.temperatureRange ? this.props.attributes.temperatureRange.maxThresholdCelsius : 0} min="0" max="400" onChange={this.updateNumber} className="int_input"/>
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Maximum temperature (in Celsius) supported by the device.</span>
@@ -75,7 +80,7 @@ class TemperatureControl extends React.Component {
             Step
           </div>
           <div className="three_table_cel">
-            <input type="number" id="temperatureStepCelsius" defaultValue={this.props.attributes.temperatureStepCelsius} min="0" max="400" onChange={this.update} className="int_input"/>
+            <input type="number" id="temperatureStepCelsius" defaultValue={this.props.attributes.temperatureStepCelsius} min="0" max="400" onChange={this.updateNumber} className="int_input"/>
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Specifies the relative temperature step.</span>
