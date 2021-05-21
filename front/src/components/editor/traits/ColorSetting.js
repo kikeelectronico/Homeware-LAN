@@ -5,11 +5,16 @@ class ColorSetting extends React.Component {
   constructor(props) {
     super(props);
     this.update = this.update.bind(this);
+    this.updateNumber = this.updateNumber.bind(this);
     this.updateCheckbox = this.updateCheckbox.bind(this);
   }
 
   update(event){
     this.props.update('attributes/' + event.target.id,event.target.value);
+  }
+
+  updateNumber(event){
+    this.props.update('attributes/' + event.target.id,parseInt(event.target.value));
   }
 
   updateCheckbox(checked, attribute){
@@ -40,7 +45,7 @@ class ColorSetting extends React.Component {
             Minimum temperature
           </div>
           <div className="three_table_cel">
-            <input type="number" id="colorTemperatureRange/temperatureMinK" defaultValue={ this.props.attributes.colorTemperatureRange ? this.props.attributes.colorTemperatureRange.temperatureMinK : 0} min="0" max="10000" onChange={this.update} className="int_input"/>
+            <input type="number" id="colorTemperatureRange/temperatureMinK" defaultValue={ this.props.attributes.colorTemperatureRange ? this.props.attributes.colorTemperatureRange.temperatureMinK : 0} min="0" max="10000" onChange={this.updateNumber} className="int_input"/>
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Minimum color temperature (in Kelvin) supported by the device.</span>
@@ -51,7 +56,7 @@ class ColorSetting extends React.Component {
             Maximum temperature
           </div>
           <div className="three_table_cel">
-            <input type="number" id="colorTemperatureRange/temperatureMaxK" defaultValue={this.props.attributes.colorTemperatureRange ? this.props.attributes.colorTemperatureRange.temperatureMaxK : 0} min="0" max="10000" onChange={this.update} className="int_input"/>
+            <input type="number" id="colorTemperatureRange/temperatureMaxK" defaultValue={this.props.attributes.colorTemperatureRange ? this.props.attributes.colorTemperatureRange.temperatureMaxK : 0} min="0" max="10000" onChange={this.updateNumber} className="int_input"/>
           </div>
           <div className="three_table_cel">
             <span className="attribute_advise">Maximum color temperature (in Kelvin) supported by the device.</span>
