@@ -130,7 +130,6 @@ class Commands:
                 
                 attributes = device['attributes']
                 set_point = self.params["thermostatTemperatureSetpoint"]
-                print(set_point)
                 try:
                     if set_point > attributes['thermostatTemperatureRange']['maxThresholdCelsius']:
                         set_point = attributes['thermostatTemperatureRange']['maxThresholdCelsius']
@@ -143,7 +142,6 @@ class Commands:
                         return "alreadyAtMax"
                 except:
                     self.data_conector.log('Log','thermostatTemperatureSetpoint is not set up')
-                    print("error")
                 self.data_conector.updateParamStatus(
                     self.device,
                     "thermostatTemperatureSetpoint",
