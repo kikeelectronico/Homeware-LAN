@@ -4,39 +4,33 @@ title: Install Homeware
 sidebar_label: Installation
 ---
 
-You can install Homeware using one of the following methods.
-
-## Install without docker compose
-
-Homeware can be installed in directly on Debian, Ubuntu or Raspbian. Once you got your platform ready follow these instructions.
-
-1. Open a terminal window in your Raspberry Pi and run:
-```
-wget https://raw.githubusercontent.com/kikeelectronico/Homeware-LAN/master/bash/install.sh
-```
-```
-sudo sh install.sh
-```
-2. Follow the instructions that appear in the screen.
-
-## Install with Docker Compose
-
 1. Open the ports 80 and 443 on your router/firewall if needed.
 
 2. Clone the repo and cd into it  
 ```bash
 git clone git@github.com:kikeelectronico/Homeware-LAN.git
+```
+```bash
 cd Homeware-LAN
 ```
 3. Create your own `.env` file from `.env.template`. Data will be used to generate certs on letsencrypt.  
-4. Start the project  
+4. Start the project
+- Debian / Ubuntu
 ```bash
 docker-compose up -d
+```
+- Raspberry Pi
+```bash
+docker-compose up -d -f docker-compose-raspberry.yaml
 ```
 5. Configure the server
 ```bash
 curl -d '{"user":"YOURUSER", "pass":"YOURPASSWORD"}' -H "Content-Type: application/json" -X POST https://YOURDOMAIN/api/user/set/
+```
+```bash
 curl -X GET https://YOURDOMAIN/api/settings/domain/YOURDOMAIN/
+```
+```bash
 curl -X GET https://YOURDOMAIN/api/settings/setAssistantDone/
 ```
 6. Configure MQTT credentials at https://YOURDOMAIN/settings with the defaults:  
