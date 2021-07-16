@@ -23,7 +23,7 @@ docker-compose up -d
 ```bash
 docker-compose up -d -f docker-compose-raspberry.yaml
 ```
-5. Configure the server
+5. Configure the server. Make sure to change the necessary data.
 ```bash
 curl -d '{"user":"YOURUSER", "pass":"YOURPASSWORD"}' -H "Content-Type: application/json" -X POST https://YOURDOMAIN/api/user/set/
 ```
