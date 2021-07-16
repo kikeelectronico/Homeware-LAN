@@ -95,52 +95,6 @@ class System extends React.Component {
     awa.send();
   }
 
-  restart() {
-    this.setState({
-      show_system_message: true,
-      system_message:
-        "Restarting Homeware. It will take a couple of minutes and then you will be redirected to the home page.",
-    });
-    var res = new XMLHttpRequest();
-    res.onload = function (e) {
-      if (res.readyState === 4) {
-        setInterval(this.areYouAwake, 2000);
-      }
-    }.bind(this);
-    res.open("GET", root + "api/system/restart");
-    res.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
-    res.send();
-  }
-
-  reboot() {
-    this.setState({
-      show_system_message: true,
-      system_message:
-        "Rebooting the system. It will take a couple of minutes and then you will be redirected to the home page.",
-    });
-    var reb = new XMLHttpRequest();
-    reb.onload = function (e) {
-      if (reb.readyState === 4) {
-        setInterval(this.areYouAwake, 2000);
-      }
-    }.bind(this);
-    reb.open("GET", root + "api/system/reboot");
-    reb.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
-    reb.send();
-  }
-
-  shutdown() {
-    this.setState({
-      show_system_message: true,
-      system_message:
-        "The system will be shut down, you will lose the connection with Homeware.",
-    });
-    var shu = new XMLHttpRequest();
-    shu.open("GET", root + "api/system/shutdown");
-    shu.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
-    shu.send();
-  }
-
   render() {
     const upgrade_button = {
       width: "500px",
@@ -231,27 +185,6 @@ class System extends React.Component {
               <div className="advise">
                 <span>
                   Verify if there is any code update and upgrade if necessary.
-                </span>
-              </div>
-            </div>
-
-            <div className="page_block_container">
-              <h2>Power</h2>
-              <hr />
-              <div className="page_block_buttons_container">
-                <button type="button" onClick={this.restart}>
-                  Restart Homeware
-                </button>
-                <button type="button" onClick={this.reboot}>
-                  Reboot System
-                </button>
-                <button type="button" onClick={this.shutdown}>
-                  Shutdown System
-                </button>
-              </div>
-              <div className="advise">
-                <span>
-                  Control the device and restart the Homeware-LAN installation. Only for direct install.
                 </span>
               </div>
             </div>
