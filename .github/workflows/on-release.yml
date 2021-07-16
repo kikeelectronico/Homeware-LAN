@@ -1,7 +1,7 @@
 name: On release
 on:
   release:
-    types: [published]
+    types: [released]
 
 env:
   working-directory: ./front
