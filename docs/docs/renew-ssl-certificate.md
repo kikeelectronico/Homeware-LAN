@@ -1,6 +1,6 @@
 ---
 id: renew-ssl-certificate
-title: Renew the SSL certificate
+title: Renew the SSL certificate - bare metal
 sidebar_label: SSL certificate
 ---
 
