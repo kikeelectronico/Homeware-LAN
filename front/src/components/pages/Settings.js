@@ -56,6 +56,8 @@ class Settings extends React.Component {
 
     var url = new URL(window.location);
     var status = url.searchParams.get("status");
+    if(status === "Success")
+      ToastsStore.success("Saved correctly");
     this.setState({ status });
   }
 
@@ -187,7 +189,6 @@ class Settings extends React.Component {
         <div className="page_block_container">
           <h2>Automatic Sync with Google</h2>
           <hr />
-          {this.state.status}
           <div className="page_block_content_container">
             <form
               method="post"
