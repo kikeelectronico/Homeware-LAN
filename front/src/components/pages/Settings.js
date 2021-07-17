@@ -22,8 +22,9 @@ class Settings extends React.Component {
       status: "",
     };
     this.update = this.update.bind(this);
-    this.enableDdnsProvider = this.enableDdnsProvider.bind(this);
+    this.enableSyncGoogle= this.enableSyncGoogle.bind(this);
     this.enableSyncDevices = this.enableSyncDevices.bind(this);
+    this.enableDdnsProvider = this.enableDdnsProvider.bind(this);
     this.save = this.save.bind(this);
   }
 
@@ -74,6 +75,15 @@ class Settings extends React.Component {
     this.setState({
       settings: settings,
     });
+  }
+
+  enableSyncGoogle(checked) {
+    var settings = this.state.settings;
+    settings.sync_google = checked;
+    this.setState({
+      settings: settings,
+    });
+    this.save();
   }
 
   enableSyncDevices(checked) {
@@ -199,6 +209,16 @@ class Settings extends React.Component {
         <div className="page_block_container">
           <h2>Automatic Sync with Google</h2>
           <hr />
+          <div className="two_table_row">
+            <div className="two_table_cel">Enable</div>
+            <div className="two_table_cel">
+              <Switch
+                onChange={this.enableSyncGoogle}
+                checked={this.state.settings.sync_google}
+              />
+            </div>
+          </div>
+          <hr/>
           <div className="page_block_content_container">
             <form
               method="post"
