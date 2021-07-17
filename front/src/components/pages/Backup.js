@@ -14,6 +14,8 @@ class Backup extends React.Component {
   componentDidMount() {
     var url = new URL(window.location);
     var status = url.searchParams.get("status");
+    if(status === "Success")
+      ToastsStore.success("Uploaded correctly");
     this.setState({ status });
   }
 
@@ -48,7 +50,6 @@ class Backup extends React.Component {
         <div className="page_block_container">
           <h2>Restore</h2>
           <hr />
-          {this.state.status}
           <div className="page_block_content_container">
             <form
               method="post"
