@@ -218,14 +218,28 @@ def timeExecutor(operation):
 		return False
 
 def syncDevicesStatus():
-	data_conector.log('Alert', 'Sync')
 	if data_conector.getSyncDevices():
-		data_conector.log('Alert', 'Syncing')
-		# devices = data_conector.getStatus()
-		# for device in devices.keys():
-		# 	publish.single("device/" + device, json.dumps(devices[device]), hostname=hostname.MQTT_HOST)
-		# 	for param in devices[device].keys():
-		# 		publish.single("device/" + device + "/" + param, json.dumps(devices[device][param]), hostname=hostname.MQTT_HOST)
+		devices = data_conector.getStatus()
+		for device in devices.keys():
+			try:
+				mqttData = data_conector.getMQTT()
+				if not mqttData['user'] == "":
+					publish.single("device/" + device, json.dumps(devices[device]), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
+				else:
+					publish.single("device/" + device, json.dumps(devices[device]), hostname=hostname.MQTT_HOST)
+
+			except:
+				publish.multiple("device/" + device, json.dumps(devices[device]), hostname=hostname.MQTT_HOST)
+			for param in devices[device].keys():
+				try:
+					mqttData = data_conector.getMQTT()
+					if not mqttData['user'] == "":
+						publish.single("device/" + device + '/'+param, str(devices[device][param]), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
+					else:
+						publish.single("device/" + device + '/'+param, str(devices[device][param]), hostname=hostname.MQTT_HOST)
+
+				except:
+					publish.multiple("device/" + device + '/'+param, str(devices[device][param]), hostname=hostname.MQTT_HOST)
 
 
 if __name__ == "__main__":
