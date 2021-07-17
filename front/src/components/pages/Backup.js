@@ -21,7 +21,7 @@ class Backup extends React.Component {
 
   backup() {
     ToastsStore.warning("Downloading");
-    url =
+    const url =
       root +
       "files/buckup/homeware/" +
       getCookieValue("token") +
