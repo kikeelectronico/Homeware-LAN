@@ -1,4 +1,4 @@
-FROM python:3.8-slim
+FROM python:3.10.0b2-buster AS base
 
 COPY ./back /app/back
 
@@ -6,4 +6,4 @@ COPY ./configuration_templates /app/configuration_templates
 
 WORKDIR /app/back
 
-RUN pip install --user -r requirements.txt
+RUN pip install -r requirements.txt
