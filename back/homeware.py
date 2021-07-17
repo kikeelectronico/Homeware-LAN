@@ -552,7 +552,7 @@ def files(operation='', file='', token=''):
                             ["mv", '../' + file.filename, "../google.json"],  stdout=subprocess.PIPE)
                         data_conector.log(
                             'Info', 'A google auth file has been uploaded')
-                        data_conector.updateLinked(True)
+                        data_conector.updateSyncGoogle(True)
                         return redirect('/settings/?status=Success')
         else:
             return 'Operation unknown'
@@ -717,7 +717,7 @@ def smarthome():
                 )
                 data_conector.log('Log', 'Sync request by ' + agent + ' with ' +
                                   obj['payload']['agentUserId'] + ' as agent user id')
-                data_conector.updateLinked(True)
+                data_conector.updateSyncGoogle(True)
                 return response
             elif input['intent'] == 'action.devices.QUERY':
                 obj = {

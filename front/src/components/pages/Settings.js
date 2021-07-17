@@ -10,9 +10,13 @@ class Settings extends React.Component {
     this.state = {
       settings: {
         google: {},
-        ddns: {},
+        ddns: {
+          enabled: false,
+        },
         mqtt: {},
         apikey: "",
+        sync_google: false,
+        sync_devices: false,
       },
       url: {
         auth: "",
@@ -22,6 +26,8 @@ class Settings extends React.Component {
       status: "",
     };
     this.update = this.update.bind(this);
+    this.enableSyncGoogle= this.enableSyncGoogle.bind(this);
+    this.enableSyncDevices = this.enableSyncDevices.bind(this);
     this.enableDdnsProvider = this.enableDdnsProvider.bind(this);
     this.save = this.save.bind(this);
   }
@@ -56,6 +62,8 @@ class Settings extends React.Component {
 
     var url = new URL(window.location);
     var status = url.searchParams.get("status");
+    if(status === "Success")
+      ToastsStore.success("Saved correctly");
     this.setState({ status });
   }
 
@@ -71,6 +79,24 @@ class Settings extends React.Component {
     this.setState({
       settings: settings,
     });
+  }
+
+  enableSyncGoogle(checked) {
+    var settings = this.state.settings;
+    settings.sync_google = checked;
+    this.setState({
+      settings: settings,
+    });
+    this.save();
+  }
+
+  enableSyncDevices(checked) {
+    var settings = this.state.settings;
+    settings.sync_devices = checked;
+    this.setState({
+      settings: settings,
+    });
+    this.save();
   }
 
   enableDdnsProvider(checked) {
@@ -125,7 +151,7 @@ class Settings extends React.Component {
               </div>
             </div>
             <div className="two_table_row">
-              <div className="two_table_cel">Client Secret</div>
+              <div className="two_tathis.state.settings.sync_devicesble_cel">Client Secret</div>
               <div className="two_table_cel">
                 <input
                   type="text"
@@ -187,7 +213,16 @@ class Settings extends React.Component {
         <div className="page_block_container">
           <h2>Automatic Sync with Google</h2>
           <hr />
-          {this.state.status}
+          <div className="two_table_row">
+            <div className="two_table_cel">Enable</div>
+            <div className="two_table_cel">
+              <Switch
+                onChange={this.enableSyncGoogle}
+                checked={this.state.settings.sync_google}
+              />
+            </div>
+          </div>
+          <hr/>
           <div className="page_block_content_container">
             <form
               method="post"
@@ -251,6 +286,32 @@ class Settings extends React.Component {
               Important. You must configure the username and password into
               Mosquitto manually from a terminal. This is only for telling
               Homeware its credentials. Clear both if you don't use credentials.
+            </span>
+          </div>
+        </div>
+
+        <div className="page_block_container">
+          <h2>Global settings for devices</h2>
+          <hr/>
+          <div className="page_block_content_container">
+            <div className="three_table_row">
+              <div className="three_table_cel align_right">
+                Automatic status sync
+              </div>
+              <div className="three_table_cel">
+                <Switch
+                  onChange={this.enableSyncDevices}
+                  checked={this.state.settings.sync_devices}
+                />
+              </div>
+              <div className="three_table_cel">
+                <span className="attribute_advise">Send the status to the devices proactively.</span>
+              </div>
+            </div>
+          </div>
+          <div className="advise">
+            <span>
+              
             </span>
           </div>
         </div>

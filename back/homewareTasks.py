@@ -1,6 +1,8 @@
 import time
 from datetime import datetime
 import json
+import hostname
+import paho.mqtt.publish as publish
 import requests
 from base64 import b64encode
 from data import Data
@@ -87,7 +89,6 @@ def ddnsUpdater():
 					data_conector.updateDDNS(newIP, code, code, True, last)
 				else:
 					data_conector.updateDDNS(newIP, code, code, False, last)
-
 
 def operationExecutor(id, triggers, status):
 	operation = triggers[str(id)]
@@ -216,11 +217,20 @@ def timeExecutor(operation):
 	else:
 		return False
 
+def syncDevicesStatus():
+	if data_conector.getSyncDevices():
+		devices = data_conector.getStatus()
+		for device in devices.keys():
+			publish.single("device/" + device, json.dumps(devices[device]), hostname=hostname.MQTT_HOST)
+			for param in devices[device].keys():
+				publish.single("device/" + device + "/" + param, json.dumps(devices[device][param]), hostname=hostname.MQTT_HOST)
+
 
 if __name__ == "__main__":
 	data_conector.log('Log', 'Starting HomewareTask core')
 	while(True):
 		ddnsUpdater()
 		verifyTasks()
+		syncDevicesStatus()
 		data_conector.updateAlive('tasks')
 		time.sleep(1)

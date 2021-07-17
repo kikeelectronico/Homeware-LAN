@@ -16,13 +16,14 @@ homegraph = HomeGraph()
 class Data:
 
 
-	version = 'v1.4.1'
+	version = 'v1.5'
 	homewareFile = 'homeware.json'
 	apikey = ''
 	userToken = ''
 	userName = ''
 	domain = ''
-	linked = False
+	sync_google = False
+	sync_devices = False
 
 
 	def __init__(self):
@@ -49,10 +50,16 @@ class Data:
 
 		secure = json.loads(self.redis.get('secure'))
 		try:
-			self.linked = secure['linked']
+			self.sync_google = secure['sync_google']
 		except:
-			secure['linked'] = False
-			self.linked = False
+			secure['sync_google'] = False
+			self.sync_google = False
+			self.redis.set('secure',json.dumps(secure))
+		try:
+			self.sync_devices = secure['sync_devices']
+		except:
+			secure['sync_devices'] = False
+			self.sync_devices = False
 			self.redis.set('secure',json.dumps(secure))
 
 		# Load some data into memory
@@ -112,7 +119,7 @@ class Data:
 				temp_devices.append(device)
 		self.redis.set('devices',json.dumps(temp_devices))
 		# Inform Google Home Graph
-		if os.path.exists("../google.json") and self.linked:
+		if os.path.exists("../google.json") and self.sync_google:
 			homegraph.requestSync(self.domain)
 
 		return found
@@ -129,11 +136,11 @@ class Data:
 		self.redis.set('status',json.dumps(status))
 
 		# Inform Google Home Graph
-		if os.path.exists("../google.json") and self.linked:
+		if os.path.exists("../google.json") and self.sync_google:
 			homegraph.requestSync(self.domain)
 
 	def deleteDevice(self, value):
-		temp_devices = [];
+		temp_devices = []
 		found = False
 		for device in json.loads(self.redis.get('devices')):
 			if device['id'] != value:
@@ -148,7 +155,7 @@ class Data:
 			self.redis.set('status',json.dumps(status))
 
 		# Inform Google Home Graph
-		if os.path.exists("../google.json") and self.linked:
+		if os.path.exists("../google.json") and self.sync_google:
 			homegraph.requestSync(self.domain)
 
 		return found
@@ -179,7 +186,7 @@ class Data:
 				publish.multiple(msgs, hostname=hostname.MQTT_HOST)
 
 			# Inform Google Home Graph
-			if os.path.exists("../google.json") and self.linked:
+			if os.path.exists("../google.json") and self.sync_google:
 				states = {}
 				states[device] = {}
 				states[device][param] = value
@@ -376,7 +383,9 @@ class Data:
 				"client_id": secure['token']["google"]["client_id"],
 				"client_secret": secure['token']["google"]["client_secret"],
 			},
-			"ddns": secure['ddns']
+			"ddns": secure['ddns'],
+			"sync_google": secure['sync_google'],
+			"sync_devices": secure['sync_devices']
 		}
 		try:
 			data['mqtt'] = secure['mqtt']
@@ -399,8 +408,13 @@ class Data:
 		secure['mqtt'] = {}
 		secure['mqtt']['user'] = incommingData['mqtt']['user']
 		secure['mqtt']['password'] = incommingData['mqtt']['password']
+		secure['sync_google'] = incommingData['sync_google']
+		secure['sync_devices'] = incommingData['sync_devices']
 
 		self.redis.set('secure',json.dumps(secure))
+
+		self.sync_google = incommingData['sync_google']
+		self.sync_devices = incommingData['sync_devices']
 
 	def getAssistantDone(self):
 		try:
@@ -425,6 +439,15 @@ class Data:
 			return 'Saved correctly!'
 		except:
 			return 'Something goes wrong'
+
+	def setSyncDevices(self, value):
+		secure = json.loads(self.redis.get('secure'))
+		if type(value) == bool:
+			secure['sync_devices'] = value
+		self.redis.set('secure',json.dumps(secure))
+
+	def getSyncDevices(self):
+		return self.sync_devices
 
 # SYSTEM
 
@@ -460,10 +483,10 @@ class Data:
 			}
 		return status
 
-	def updateLinked(self,status):
+	def updateSyncGoogle(self,status):
 		secure = json.loads(self.redis.get('secure'))
-		secure['linked'] = status
-		self.linked = status
+		secure['sync_google'] = status
+		self.sync_google = status
 		self.redis.set('secure',json.dumps(secure))
 
 # LOG
