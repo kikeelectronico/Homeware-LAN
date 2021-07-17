@@ -54,6 +54,11 @@ class Data:
 			secure['linked'] = False
 			self.linked = False
 			self.redis.set('secure',json.dumps(secure))
+		try:
+			self.linked = secure['sync_devices']
+		except:
+			secure['sync_devices'] = False
+			self.redis.set('secure',json.dumps(secure))
 
 		# Load some data into memory
 		self.userName = secure['user']
@@ -425,6 +430,16 @@ class Data:
 			return 'Saved correctly!'
 		except:
 			return 'Something goes wrong'
+
+	def setSyncDevices(self, value):
+		secure = json.loads(self.redis.get('secure'))
+		if type(value) == bool:
+			secure['sync_devices'] = value
+		self.redis.set('secure',json.dumps(secure))
+
+	def getSyncDevices(self):
+		secure = json.loads(self.redis.get('secure'))
+		return secure['sync_devices']
 
 # SYSTEM
 
