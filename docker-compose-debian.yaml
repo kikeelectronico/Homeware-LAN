@@ -6,6 +6,7 @@ services:
     image: ghcr.io/kikeelectronico/homewarelan-back
     restart: always
     hostname: backend
+    command: "python homeware.py"
     environment:
       - REDIS_HOST=redis
       - MQTT_HOST=mosquitto
@@ -28,7 +29,7 @@ services:
       - redis
       - mosquitto
 
-  # MQTT
+  # # MQTT
   homeware-lan-back-mqtt:
     image: ghcr.io/kikeelectronico/homewarelan-back
     restart: always
