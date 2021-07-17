@@ -23,6 +23,7 @@ class Settings extends React.Component {
     };
     this.update = this.update.bind(this);
     this.enableDdnsProvider = this.enableDdnsProvider.bind(this);
+    this.enableSyncDevices = this.enableSyncDevices.bind(this);
     this.save = this.save.bind(this);
   }
 
@@ -73,6 +74,15 @@ class Settings extends React.Component {
     this.setState({
       settings: settings,
     });
+  }
+
+  enableSyncDevices(checked) {
+    var settings = this.state.settings;
+    settings.sync_devices = checked;
+    this.setState({
+      settings: settings,
+    });
+    this.save();
   }
 
   enableDdnsProvider(checked) {
@@ -252,6 +262,32 @@ class Settings extends React.Component {
               Important. You must configure the username and password into
               Mosquitto manually from a terminal. This is only for telling
               Homeware its credentials. Clear both if you don't use credentials.
+            </span>
+          </div>
+        </div>
+
+        <div className="page_block_container">
+          <h2>Global settings for devices</h2>
+          <hr/>
+          <div className="page_block_content_container">
+            <div className="three_table_row">
+              <div className="three_table_cel align_right">
+                Automatic status sync
+              </div>
+              <div className="three_table_cel">
+                <Switch
+                  onChange={this.enableSyncDevices}
+                  checked={this.state.settings.sync_devices}
+                />
+              </div>
+              <div className="three_table_cel">
+                <span className="attribute_advise">Send the status to the devices proactively.</span>
+              </div>
+            </div>
+          </div>
+          <div className="advise">
+            <span>
+              
             </span>
           </div>
         </div>
