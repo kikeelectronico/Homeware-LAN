@@ -381,7 +381,8 @@ class Data:
 				"client_id": secure['token']["google"]["client_id"],
 				"client_secret": secure['token']["google"]["client_secret"],
 			},
-			"ddns": secure['ddns']
+			"ddns": secure['ddns'],
+			"sync_devices": secure['sync_devices']
 		}
 		try:
 			data['mqtt'] = secure['mqtt']
@@ -404,6 +405,7 @@ class Data:
 		secure['mqtt'] = {}
 		secure['mqtt']['user'] = incommingData['mqtt']['user']
 		secure['mqtt']['password'] = incommingData['mqtt']['password']
+		secure['sync_devices'] = incommingData['sync_devices']
 
 		self.redis.set('secure',json.dumps(secure))
 
