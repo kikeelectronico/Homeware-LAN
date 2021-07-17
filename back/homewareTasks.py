@@ -218,9 +218,9 @@ def timeExecutor(operation):
 		return False
 
 def syncDevicesStatus():
-	publish.single("report/", "sync", hostname=hostname.MQTT_HOST)
+	publish.single("report", "sync", hostname=hostname.MQTT_HOST)
 	if data_conector.getSyncDevices():
-		publish.single("report/", "sync enabled", hostname=hostname.MQTT_HOST)
+		publish.single("report", "sync enabled", hostname=hostname.MQTT_HOST)
 		devices = data_conector.getStatus()
 		for device in devices.keys():
 			publish.single("device/" + device, json.dumps(devices[device]), hostname=hostname.MQTT_HOST)
