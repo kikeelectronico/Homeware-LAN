@@ -10,9 +10,13 @@ class Settings extends React.Component {
     this.state = {
       settings: {
         google: {},
-        ddns: {},
+        ddns: {
+          enabled: false,
+        },
         mqtt: {},
         apikey: "",
+        sync_google: false,
+        sync_devices: false,
       },
       url: {
         auth: "",
@@ -147,7 +151,7 @@ class Settings extends React.Component {
               </div>
             </div>
             <div className="two_table_row">
-              <div className="two_table_cel">Client Secret</div>
+              <div className="two_tathis.state.settings.sync_devicesble_cel">Client Secret</div>
               <div className="two_table_cel">
                 <input
                   type="text"
