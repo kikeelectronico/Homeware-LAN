@@ -493,7 +493,7 @@ class Data:
 # LOG
 
 	def log(self, severity, message):
-		log_file = open('../' + "homeware.log", "a")
+		log_file = open('../logs/' + "homeware.log", "a")
 		now = datetime.now()
 		date_time = now.strftime("%d/%m/%Y, %H:%M:%S")
 		log_register = severity + ' - ' + date_time  + ' - ' + message + '\n';
@@ -510,7 +510,7 @@ class Data:
 
 	def getLog(self):
 		log = []
-		log_file = open('../' + "homeware.log","r")
+		log_file = open('../logs/' + "homeware.log","r")
 		registers = log_file.readlines()
 		for register in registers:
 			try:
