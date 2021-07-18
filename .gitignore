@@ -1,6 +1,7 @@
 homeware.json
 google.json
 .eslintcache
+docker-compose.yaml
 
 # Docusaurus generated files
 .docusaurus
