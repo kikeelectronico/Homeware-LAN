@@ -59,9 +59,25 @@ def control(payload):
 		data_conector.updateParamStatus(id,param,value)
 	elif intent == 'request':
 		status = data_conector.getStatus()[id]
-		publish.single("device/"+id, json.dumps(status), hostname=hostname.MQTT_HOST)
+		try:
+			mqttData = data_conector.getMQTT()
+			if not mqttData['user'] == "":
+				publish.single("device/"+id, json.dumps(status), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
+			else:
+				publish.single("device/"+id, json.dumps(status), hostname=hostname.MQTT_HOST)
+
+		except:
+			publish.multiple("device/"+id, json.dumps(status), hostname=hostname.MQTT_HOST)
 		for param in status.keys():
-			publish.single("device/"+id+'/'+param, str(status[param]), hostname=hostname.MQTT_HOST)
+			try:
+				mqttData = data_conector.getMQTT()
+				if not mqttData['user'] == "":
+					publish.single("device/"+id+'/'+param, str(status[param]), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
+				else:
+					publish.single("device/"+id+'/'+param, str(status[param]), hostname=hostname.MQTT_HOST)
+
+			except:
+				publish.multiple("device/"+id+'/'+param, str(status[param]), hostname=hostname.MQTT_HOST)
 
 if __name__ == "__main__":
 	data_conector.log('Log', 'Starting HomewareMQTT core')

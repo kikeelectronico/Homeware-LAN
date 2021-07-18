@@ -447,7 +447,8 @@ class Data:
 		self.redis.set('secure',json.dumps(secure))
 
 	def getSyncDevices(self):
-		return self.sync_devices
+		secure = json.loads(self.redis.get('secure'))
+		return secure['sync_devices']
 
 # SYSTEM
 
