@@ -59,11 +59,7 @@ curl -d '{"user":"YOURUSER", "pass":"YOURPASSWORD"}' -H "Content-Type: applicati
 ```bash
 curl -X GET https://YOURDOMAIN/api/settings/domain/YOURDOMAIN/
 ```
-9. Finish the installation. Make sure to change the necessary data.
-```bash
-curl -X GET https://YOURDOMAIN/api/settings/setAssistantDone/
-```
-10. Follow this steps to link Homeware with Google Home: https://kikeelectronico.github.io/Homeware-LAN/docs/connect-with-google
+9. Follow this steps to link Homeware with Google Home: https://kikeelectronico.github.io/Homeware-LAN/docs/connect-with-google
 
 # Default MQTT user and password
 
