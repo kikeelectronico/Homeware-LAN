@@ -336,27 +336,15 @@ def apiSettings(operation="", value=''):
                 'Alert', 'Request to API > settings endpoint with bad authentication')
             responseData = FOUR_O_O
     elif accessLevel >= 0:
-        if not data_conector.getAssistantDone():
-            if operation == 'domain':
-                if value == '':
-                    responseData = {
-                        'error': 'A domain must be given',
-                        'code': 400,
-                        'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
-                    }
-                else:
-                    return data_conector.setDomain(value)
-            elif operation == 'setAssistantDone':
-                data_conector.setAssistantDone()
-                responseData = TWO_O_O
-        else:
-            data_conector.log(
-                'Alert', 'Request to API > assistant endpoint. The assistant was configured in the past')
-            responseData = {
-                'error': 'The assistant was configured in the past',
-                'code': 401,
-                'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
-            }
+        if operation == 'domain':
+            if value == '':
+                responseData = {
+                    'error': 'A domain must be given',
+                    'code': 400,
+                    'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
+                }
+            else:
+                return data_conector.setDomain(value)
     else:
         data_conector.log(
             'Alert', 'Request to API > assistant endpoint. The assistant was configured in the past')
