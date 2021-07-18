@@ -1,4 +1,4 @@
-FROM python:3.10.0b2-buster AS base
+FROM python:3.9-buster AS base
 
 COPY ./back /app/back
 
