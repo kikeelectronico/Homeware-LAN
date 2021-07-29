@@ -720,6 +720,7 @@ def smarthome():
                 data_conector.log('Log', 'Query request by ' + agent)
                 return response
             elif input['intent'] == 'action.devices.EXECUTE':
+                previus_status = data_conector.getStatus()
                 # Response
                 obj = {
                     'requestId': requestId,
@@ -755,7 +756,7 @@ def smarthome():
                     else:
                         command_response = {
                             'ids': ids,
-                            'states': data_conector.getStatus(),
+                            'states': previus_status,
                             'status': 'SUCCESS',
                         }
                     obj['payload']['commands'].append(command_response)
