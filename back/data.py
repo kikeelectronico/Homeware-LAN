@@ -237,9 +237,9 @@ class Data:
 			secure['user'] = incommingData['user']
 			secure['pass'] = str(bcrypt.hashpw(incommingData['pass'].encode('utf-8'), bcrypt.gensalt()))
 			self.redis.set('secure',json.dumps(secure))
-			return 'Saved correctly!'
+			return '\r\nSaved correctly!\r\n\r\n'
 		else:
-			return 'Your user has been set in the past'
+			return '\r\nYour user has been set in the past\r\n\r\n'
 
 	def updatePassword(self, incommingData):
 		secure = json.loads(self.redis.get('secure'))
@@ -416,29 +416,15 @@ class Data:
 		self.sync_google = incommingData['sync_google']
 		self.sync_devices = incommingData['sync_devices']
 
-	def getAssistantDone(self):
-		try:
-			if not self.redis.get('assistantDone') == None:
-				return True
-			else:
-				return False
-		except:
-			return False
-
-	def setAssistantDone(self):
-		self.redis.set('assistantDone',"True")
-
 	def setDomain(self, value):
-		try:
+		if json.loads(self.redis.get('secure'))['domain'] == '':
 			secure = json.loads(self.redis.get('secure'))
-
 			secure['domain'] = value
 			secure['ddns']['hostname'] = value
-
 			self.redis.set('secure',json.dumps(secure))
-			return 'Saved correctly!'
-		except:
-			return 'Something goes wrong'
+			return '\r\nSaved correctly!\r\n\r\n'
+		else:
+			return '\r\nYour domain has been set in the past\r\n\r\n'
 
 	def setSyncDevices(self, value):
 		secure = json.loads(self.redis.get('secure'))
