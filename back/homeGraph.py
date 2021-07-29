@@ -59,7 +59,7 @@ class HomeGraph:
 			"Authorization": "Bearer " + self.access_token
 		}
 		# Do the request
-		r = requests.post(url, data=json.dumps(data), headers=headers, timeout=100)
+		r = requests.post(url, data=json.dumps(data), headers=headers, timeout=1)
 
 	def reportState(self, agentUserId, states):
 		if int(time.time()) > (self.generated + self.expire):
@@ -78,4 +78,4 @@ class HomeGraph:
 			"Authorization": "Bearer " + self.access_token
 		}
 		# Do the request
-		r = requests.post(url, data=json.dumps(data), headers=headers, timeout=100)
+		r = requests.post(url, data=json.dumps(data), headers=headers, timeout=0.0001)
