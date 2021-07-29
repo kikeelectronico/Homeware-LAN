@@ -502,8 +502,7 @@ def files(operation='', file='', token=''):
                     filename = file.filename
                     file.save(os.path.join(
                         app.config['UPLOAD_FOLDER'], filename))
-                    subprocess.run(
-                        ["mv", '../' + file.filename, "../homeware.json"],  stdout=subprocess.PIPE)
+                    subprocess.run(["mv", '../' + file.filename, "../homeware.json"],  stdout=subprocess.PIPE)
                     data_conector.load()
                     data_conector.log(
                         'Warning', 'A backup file has been restored')
