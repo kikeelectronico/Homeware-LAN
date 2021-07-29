@@ -17,6 +17,7 @@ services:
       - mosquitto
     volumes:
       - homeware-logs:/app/logs
+      - homeware-files:/app/files
 
   # tasks
   homeware-lan-back-tasks:
@@ -32,6 +33,7 @@ services:
       - mosquitto
     volumes:
       - homeware-logs:/app/logs
+      - homeware-files:/app/files
 
   # MQTT
   homeware-lan-back-mqtt:
@@ -47,6 +49,7 @@ services:
       - mosquitto
     volumes:
       - homeware-logs:/app/logs
+      - homeware-files:/app/files
 
   # redis
   redis:
@@ -122,3 +125,4 @@ volumes:
   mosquitto-data:
   redis-data:
   homeware-logs:
+  homeware-files:
