@@ -7,3 +7,4 @@ flask_cors==3.0.9
 cryptography==3.3.2
 bcrypt==3.2.0
 google-auth==1.24.0
+grequests==0.6.0
