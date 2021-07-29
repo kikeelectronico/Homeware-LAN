@@ -3,7 +3,6 @@ import google.auth.jwt
 import time
 import json
 import requests
-import grequests
 
 class HomeGraph:
 	"""Do requests to Google Home Graph."""
@@ -60,7 +59,7 @@ class HomeGraph:
 			"Authorization": "Bearer " + self.access_token
 		}
 		# Do the request
-		r = grequests.post(url, data=json.dumps(data), headers=headers)
+		r = requests.post(url, data=json.dumps(data), headers=headers, timeout=100)
 
 	def reportState(self, agentUserId, states):
 		if int(time.time()) > (self.generated + self.expire):
@@ -79,4 +78,4 @@ class HomeGraph:
 			"Authorization": "Bearer " + self.access_token
 		}
 		# Do the request
-		r = grequests.post(url, data=json.dumps(data), headers=headers)
+		r = requests.post(url, data=json.dumps(data), headers=headers, timeout=100)
