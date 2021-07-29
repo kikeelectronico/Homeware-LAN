@@ -62,6 +62,12 @@ class Data:
 			self.sync_devices = False
 			self.redis.set('secure',json.dumps(secure))
 
+		if not os.path.exists("../files"):
+				os.mkdir("../files")
+
+		if not os.path.exists("../logs"):
+				os.mkdir("../logs")
+
 		# Load some data into memory
 		self.userName = secure['user']
 		self.userToken = secure['token']['front']
@@ -119,7 +125,7 @@ class Data:
 				temp_devices.append(device)
 		self.redis.set('devices',json.dumps(temp_devices))
 		# Inform Google Home Graph
-		if os.path.exists("../google.json") and self.sync_google:
+		if os.path.exists("../files/google.json") and self.sync_google:
 			homegraph.requestSync(self.domain)
 
 		return found
@@ -136,7 +142,7 @@ class Data:
 		self.redis.set('status',json.dumps(status))
 
 		# Inform Google Home Graph
-		if os.path.exists("../google.json") and self.sync_google:
+		if os.path.exists("../files/google.json") and self.sync_google:
 			homegraph.requestSync(self.domain)
 
 	def deleteDevice(self, value):
@@ -155,7 +161,7 @@ class Data:
 			self.redis.set('status',json.dumps(status))
 
 		# Inform Google Home Graph
-		if os.path.exists("../google.json") and self.sync_google:
+		if os.path.exists("../files/google.json") and self.sync_google:
 			homegraph.requestSync(self.domain)
 
 		return found
@@ -185,8 +191,8 @@ class Data:
 			except:
 				publish.multiple(msgs, hostname=hostname.MQTT_HOST)
 
-			# Inform Google Home Graph
-			if os.path.exists("../google.json") and self.sync_google:
+			# Inform Google HomeGraph
+			if os.path.exists("../files/google.json") and self.sync_google:
 				states = {}
 				states[device] = {}
 				states[device][param] = value

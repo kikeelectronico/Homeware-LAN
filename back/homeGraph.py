@@ -12,7 +12,7 @@ class HomeGraph:
 
 	def getJWT(self):
 		self.generated = int(time.time())
-		keyfile = "../google.json"
+		keyfile = "../files/google.json"
 		# Get the service account email
 		f = open(keyfile,'r')
 		email = json.loads(f.read())['client_email']

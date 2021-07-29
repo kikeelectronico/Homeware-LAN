@@ -532,12 +532,9 @@ def files(operation='', file='', token=''):
                         return redirect('/settings/?status=Incorrect file name')
                     if file and allowed_file(file.filename):
                         filename = file.filename
-                        file.save(os.path.join(
-                            app.config['UPLOAD_FOLDER'], filename))
-                        subprocess.run(
-                            ["mv", '../' + file.filename, "../google.json"],  stdout=subprocess.PIPE)
-                        data_conector.log(
-                            'Info', 'A google auth file has been uploaded')
+                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                        subprocess.run(["mv", '../' + file.filename, "../files/google.json"],  stdout=subprocess.PIPE)
+                        data_conector.log('Info', 'A google auth file has been uploaded')
                         data_conector.updateSyncGoogle(True)
                         return redirect('/settings/?status=Success')
         else:
