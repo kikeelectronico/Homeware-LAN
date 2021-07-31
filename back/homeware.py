@@ -512,7 +512,7 @@ def files(operation='', file='', token=''):
                 # Download file
                 now = datetime.now()
                 date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
-                result = send_file('../' + 'homeware.log',
+                result = send_file('../logs/' + 'homeware.log',
                                    mimetype="text/plain",  # use appropriate type based on file
                                    attachment_filename='homeware_' + \
                                    str(date_time) + '.log',
