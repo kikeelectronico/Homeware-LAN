@@ -336,27 +336,15 @@ def apiSettings(operation="", value=''):
                 'Alert', 'Request to API > settings endpoint with bad authentication')
             responseData = FOUR_O_O
     elif accessLevel >= 0:
-        if not data_conector.getAssistantDone():
-            if operation == 'domain':
-                if value == '':
-                    responseData = {
-                        'error': 'A domain must be given',
-                        'code': 400,
-                        'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
-                    }
-                else:
-                    return data_conector.setDomain(value)
-            elif operation == 'setAssistantDone':
-                data_conector.setAssistantDone()
-                responseData = TWO_O_O
-        else:
-            data_conector.log(
-                'Alert', 'Request to API > assistant endpoint. The assistant was configured in the past')
-            responseData = {
-                'error': 'The assistant was configured in the past',
-                'code': 401,
-                'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
-            }
+        if operation == 'domain':
+            if value == '':
+                responseData = {
+                    'error': 'A domain must be given',
+                    'code': 400,
+                    'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
+                }
+            else:
+                return data_conector.setDomain(value)
     else:
         data_conector.log(
             'Alert', 'Request to API > assistant endpoint. The assistant was configured in the past')
@@ -514,8 +502,7 @@ def files(operation='', file='', token=''):
                     filename = file.filename
                     file.save(os.path.join(
                         app.config['UPLOAD_FOLDER'], filename))
-                    subprocess.run(
-                        ["mv", '../' + file.filename, "../homeware.json"],  stdout=subprocess.PIPE)
+                    subprocess.run(["mv", '../' + file.filename, "../homeware.json"],  stdout=subprocess.PIPE)
                     data_conector.load()
                     data_conector.log(
                         'Warning', 'A backup file has been restored')
@@ -525,7 +512,7 @@ def files(operation='', file='', token=''):
                 # Download file
                 now = datetime.now()
                 date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
-                result = send_file('../' + 'homeware.log',
+                result = send_file('../logs/' + 'homeware.log',
                                    mimetype="text/plain",  # use appropriate type based on file
                                    attachment_filename='homeware_' + \
                                    str(date_time) + '.log',
@@ -544,12 +531,9 @@ def files(operation='', file='', token=''):
                         return redirect('/settings/?status=Incorrect file name')
                     if file and allowed_file(file.filename):
                         filename = file.filename
-                        file.save(os.path.join(
-                            app.config['UPLOAD_FOLDER'], filename))
-                        subprocess.run(
-                            ["mv", '../' + file.filename, "../google.json"],  stdout=subprocess.PIPE)
-                        data_conector.log(
-                            'Info', 'A google auth file has been uploaded')
+                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                        subprocess.run(["mv", '../' + file.filename, "../files/google.json"],  stdout=subprocess.PIPE)
+                        data_conector.log('Info', 'A google auth file has been uploaded')
                         data_conector.updateSyncGoogle(True)
                         return redirect('/settings/?status=Success')
         else:
@@ -732,6 +716,7 @@ def smarthome():
                 data_conector.log('Log', 'Query request by ' + agent)
                 return response
             elif input['intent'] == 'action.devices.EXECUTE':
+                previus_status = data_conector.getStatus()
                 # Response
                 obj = {
                     'requestId': requestId,
@@ -767,7 +752,7 @@ def smarthome():
                     else:
                         command_response = {
                             'ids': ids,
-                            'states': data_conector.getStatus(),
+                            'states': previus_status,
                             'status': 'SUCCESS',
                         }
                     obj['payload']['commands'].append(command_response)
@@ -814,4 +799,6 @@ def page_not_found(error):
 
 
 if __name__ == "__main__":
+    from gevent import monkey
+    monkey.patch_all()
     runapp()

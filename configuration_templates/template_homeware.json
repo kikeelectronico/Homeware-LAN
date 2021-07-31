@@ -76,6 +76,10 @@
       "hostname": "",
       "username": "",
       "password": ""
+    },
+    "mqtt": {
+      "user": "mosquitto",
+      "password": "homewarelan123"
     }
   }
 }

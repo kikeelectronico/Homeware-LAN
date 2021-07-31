@@ -151,7 +151,7 @@ class Settings extends React.Component {
               </div>
             </div>
             <div className="two_table_row">
-              <div className="two_tathis.state.settings.sync_devicesble_cel">Client Secret</div>
+              <div className="two_table_cel">Client Secret</div>
               <div className="two_table_cel">
                 <input
                   type="text"
@@ -240,7 +240,7 @@ class Settings extends React.Component {
                 href="https://kikeelectronico.github.io/Homeware-LAN/docs/google-auth"
                 target="_blanck"
               >
-                instructions
+                instructions.
               </a>
               .
             </span>

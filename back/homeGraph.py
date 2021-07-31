@@ -12,7 +12,7 @@ class HomeGraph:
 
 	def getJWT(self):
 		self.generated = int(time.time())
-		keyfile = "../google.json"
+		keyfile = "../files/google.json"
 		# Get the service account email
 		f = open(keyfile,'r')
 		email = json.loads(f.read())['client_email']
@@ -59,7 +59,10 @@ class HomeGraph:
 			"Authorization": "Bearer " + self.access_token
 		}
 		# Do the request
-		r = requests.post(url, data=json.dumps(data), headers=headers)
+		try:
+			r = requests.post(url, data=json.dumps(data), headers=headers, timeout=0.2)
+		except:
+			return
 
 	def reportState(self, agentUserId, states):
 		if int(time.time()) > (self.generated + self.expire):
@@ -78,4 +81,7 @@ class HomeGraph:
 			"Authorization": "Bearer " + self.access_token
 		}
 		# Do the request
-		r = requests.post(url, data=json.dumps(data), headers=headers)
+		try:
+			r = requests.post(url, data=json.dumps(data), headers=headers, timeout=0.0001)
+		except:
+			return
