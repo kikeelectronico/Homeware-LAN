@@ -1,6 +1,5 @@
 import paho.mqtt.publish as publish
 import json
-
 import hostname
 
 class Commands:
@@ -18,20 +17,45 @@ class Commands:
             self.data_conector.updateParamStatus(
                 self.device, output, self.params[input])
 
-    def sendCommand(self, param, command):
-        if param in self.params.keys():
-            if self.params[param]:
-                publish.single("device/" + self.device +
-                               "/command", command, hostname="localhost")
+    def sendCommand(self, command):
+        try:
+            mqttData = self.data_conector.getMQTT()
+            if not mqttData['user'] == "":
+                publish.single("device/" + self.device + "/command",
+                        command, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
+            else:
+                publish.single("device/" + self.device + "/command",
+                        command, hostname=hostname.MQTT_HOST)
+        except:
+            publish.single("device/" + self.device + "/command",
+                        command, hostname=hostname.MQTT_HOST)
 
     def sendDobleCommand(self, param, true_command, false_command):
         if param in self.params.keys():
             if self.params[param]:
-                publish.single("device/" + self.device + "/command",
-                               true_command, hostname="localhost")
+                try:
+                    mqttData = self.data_conector.getMQTT()
+                    if not mqttData['user'] == "":
+                        publish.single("device/" + self.device + "/command",
+                               true_command, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
+                    else:
+                        publish.single("device/" + self.device + "/command",
+                               true_command, hostname=hostname.MQTT_HOST)
+                except:
+                    publish.single("device/" + self.device + "/command",
+                               true_command, hostname=hostname.MQTT_HOST)
             else:
-                publish.single("device/" + self.device + "/command",
-                               false_command, hostname="localhost")
+                try:
+                    mqttData = self.data_conector.getMQTT()
+                    if not mqttData['user'] == "":
+                        publish.single("device/" + self.device + "/command",
+                               false_command, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
+                    else:
+                        publish.single("device/" + self.device + "/command",
+                               false_command, hostname=hostname.MQTT_HOST)
+                except:
+                    publish.single("device/" + self.device + "/command",
+                               false_command, hostname=hostname.MQTT_HOST)
 
     def ArmDisarm(self):
         # armFailure
@@ -49,21 +73,15 @@ class Commands:
                 self.data_conector.updateParamStatus(self.device,
                                                      'currentArmLevel',
                                                      self.params['armLevel'])
-                publish.single("device/" + self.device + "/command",
-                               "arm",
-                               hostname="localhost")
+                self.sendCommand("arm")
 
         if 'arm' in self.params.keys():
             if not self.params['arm']:
-                publish.single("device/" + self.device + "/command",
-                               "disarm",
-                               hostname="localhost")
+                self.sendCommand("disarm")
 
         if 'cancel' in self.params.keys():
             if self.params['cancel'] and not status[self.device]['isArmed']:
-                publish.single("device/" + self.device + "/command",
-                               "disarm",
-                               hostname="localhost")
+                self.sendCommand("disarm")
             else:
                 return "cancelTooLate"
 
@@ -270,8 +288,7 @@ class Commands:
                 self.device, 'currentFanSpeedPercent', new_speed)
 
     def Reverse(self):
-        publish.single("device/" + self.device + "/command",
-                       'reverse', hostname="localhost")
+        self.sendCommand("reverse")
         return ""
 
     def Fill(self):
@@ -302,7 +319,9 @@ class Commands:
 
     def Locate(self):
         # unableToLocateDevice
-        self.sendCommand('silence', 'silence')
+        if 'silence' in self.params.keys():
+            if self.params['silence']:
+                self.sendCommand('silence')
 
     def LockUnlock(self):
         # lockFailure
@@ -317,11 +336,9 @@ class Commands:
                     return "alreadyUnlocked"
             else:
                 if self.params['lock']:
-                    publish.single("device/" + self.device + "/command",
-                                   'lock', hostname="localhost")
+                    self.sendCommand("lock")
                 else:
-                    publish.single("device/" + self.device + "/command",
-                                   'unlock', hostname="localhost")
+                    self.sendCommand("unlock")
         return ""
 
     def OpenClose(self):
@@ -356,13 +373,9 @@ class Commands:
                     return "alreadyStopped"
             else:
                 if self.params['start']:
-                    publish.single("device/" + self.device + "/command",
-                                   'start',
-                                   hostname="localhost")
+                    self.sendCommand("start")
                 else:
-                    publish.single("device/" + self.device + "/command",
-                                   'stop',
-                                   hostname="localhost")
+                    self.sendCommand("stop")
         return ""
 
     def PauseUnpause(self):
@@ -377,13 +390,9 @@ class Commands:
                     return ""
             else:
                 if self.params['pause']:
-                    publish.single("device/" + self.device + "/command",
-                                   'pause',
-                                   hostname="localhost")
+                    self.sendCommand("pause")
                 else:
-                    publish.single("device/" + self.device + "/command",
-                                   'unpause',
-                                   hostname="localhost")
+                    self.sendCommand("unpause")
 
     def SetTemperature(self):
         # alreadyAtMax
