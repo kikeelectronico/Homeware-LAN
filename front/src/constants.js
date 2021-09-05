@@ -353,6 +353,14 @@ const deviceReference = {
         "action.devices.traits.Toggles"
       ]
     },
+    "action.devices.types.PETFEEDER": {
+      name: "Pet Feeder",
+      traits: [
+        "action.devices.traits.Dispense",
+        "action.devices.traits.OnOff",
+        "action.devices.traits.StartStop"
+      ]
+    },
     "action.devices.types.PERGOLA": {
       name: "Pergola",
       traits: [
@@ -577,8 +585,8 @@ const deviceReference = {
           default: "rgb"
         },
         commandOnlyColorSetting: {
-            type: "bool",
-            default: false
+          type: "bool",
+          default: false
         },
         colorTemperatureRange: {
           type: "object",
@@ -1014,7 +1022,22 @@ const deviceReference = {
       },
       params: ['currentSensorStateData'],
       commands: []
-    }
+    },
+    "action.devices.traits.Dispense": {
+      name: 'Dispense',
+      attributes: {
+        supportedDispenseItems: {
+          type: "strigifyedObject",
+          default: []
+        },
+        supportedDispensePresets: {
+          type: "strigifyedObject",
+          default: []
+        },
+      },
+      params: ['dispenseItems'],
+      commands: []
+    },
   },
   params: {
     thermostatTemperatureAmbient: {
@@ -1251,6 +1274,12 @@ const deviceReference = {
       commanded: true,
       default: {}
     },
+    dispenseItems: {
+      type: "object",
+      name: 'Dispense items',
+      commanded: true,
+      default: {}
+    }
   }
 }
 
