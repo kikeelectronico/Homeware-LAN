@@ -5,6 +5,8 @@ class Dispense extends React.Component {
         super(props);
         this.updateItem = this.updateItem.bind(this)
         this.addItem = this.addItem.bind(this)
+        this.updatePreset = this.updatePreset.bind(this);
+        this.addPreset = this.addPreset.bind(this);
     }
 
     updateItem(event){
@@ -15,16 +17,14 @@ class Dispense extends React.Component {
         if(id[0] === 'lang'){
             temp_supportedDispenseItems[item_id].item_name_synonyms[0].lang = event.target.value;
         } else if (id[0] === 'names'){
-            temp_supportedDispenseItems[item_id].item_name_synonyms[0].synonym = event.target.value.split(',');
+            temp_supportedDispenseItems[item_id].item_name_synonyms[0].synonyms = event.target.value.split(',');
             temp_supportedDispenseItems[item_id].item_name = event.target.value.split(',')[0]
-        } else if (id[0] === 'units'){
-            temp_supportedDispenseItems[item_id].supported_units[0] = event.target.value;
         } else if (id[0] === 'amount'){
-            temp_supportedDispenseItems[item_id].default_portion[0] = event.target.value;
+            temp_supportedDispenseItems[item_id].default_portion.amount = event.target.value;
         } else if (id[0] === 'unit'){
-            temp_supportedDispenseItems[item_id].default_portion[0] = event.target.value;
+            temp_supportedDispenseItems[item_id].supported_units[0] = event.target.value;
+            temp_supportedDispenseItems[item_id].default_portion.unit = event.target.value;
         }
-
         this.props.update('attributes/supportedDispenseItems', temp_supportedDispenseItems);
     }
 
@@ -37,12 +37,39 @@ class Dispense extends React.Component {
                 "synonyms": [""],
                 "lang": "en"
             }],
-            "default_portion": [{
+            "default_portion": {
                 "amount": "",
                 "unit": ""
-            }]
+            }
         });
         this.props.update('attributes/supportedDispenseItems', temp_supportedDispenseItems);
+    }
+
+    updatePreset(event){
+        const id = event.target.id.split('_')
+        const preset_id = id[1]
+        let temp_supportedDispensePresets = this.props.attributes.supportedDispensePresets
+
+        if(id[0] === 'lang'){
+            temp_supportedDispensePresets[preset_id].preset_name_synonyms[0].lang = event.target.value;
+        } else if (id[0] === 'names'){
+            temp_supportedDispensePresets[preset_id].preset_name_synonyms[0].synonyms = event.target.value.split(',');
+            temp_supportedDispensePresets[preset_id].preset_name = event.target.value.split(',')[0]
+        }
+
+        this.props.update('attributes/supportedDispensePresets', temp_supportedDispensePresets);
+    }
+
+    addPreset(){
+        let temp_supportedDispensePresets = this.props.attributes.supportedDispensePresets
+        temp_supportedDispensePresets.push({
+            "preset_name": "",
+            "preset_name_synonyms": [{
+                "synonyms": [""],
+                "lan": "en"
+            }]
+        });
+        this.props.update('attributes/supportedDispensePresets', temp_supportedDispensePresets);
     }
 
     render (){
@@ -70,11 +97,11 @@ class Dispense extends React.Component {
                             </label>
                             <label style={names_box}>
                                 <span>Item name: </span>
-                                <input type="text" id={"names_" + i} defaultValue={item.item_name_synonyms[0].synonym} placeholder="Item name" onChange={this.updateItem}/>
+                                <input type="text" id={"names_" + i} defaultValue={item.item_name_synonyms[0].synonyms} placeholder="Item name" onChange={this.updateItem}/>
                             </label>
                             <label>
-                                <span>Units: </span>
-                                <select name="type" id={"units_" + i} value={item.supported_units[0]} onChange={this.updateItem}>
+                                <span>Dispensed unit: </span>
+                                <select name="type" id={"unit_" + i} value={item.default_portion.unit} onChange={this.updateItem}>
                                     <option value="NO_UNITS">No units</option>
                                     <option value="UNKNOWN_UNITS">Unkown</option>
                                     <option value="CENTIMETERS">Centimeters</option>
@@ -103,11 +130,32 @@ class Dispense extends React.Component {
                             </label>
                             <label style={portions_box}>
                                 <span>Dispensed amount: </span>
-                                <input type="text" id={"amount_" + i} defaultValue={item.default_portion[0].amount} placeholder="Amount" onChange={this.updateItem}/>
+                                <input type="text" id={"amount_" + i} defaultValue={item.default_portion.amount} placeholder="Amount" onChange={this.updateItem}/>
                             </label>
-                            <label style={portions_box}>
-                                <span>Dispensed unit: </span>
-                                <input type="text" id={"unit_" + i} defaultValue={item.default_portion[0].unit} placeholder="Unit" onChange={this.updateItem}/>
+                        </div>
+                    </div>
+                </div>
+            )
+        });
+
+        const presets = this.props.attributes.supportedDispensePresets.map((preset, i) => {
+
+            return (
+                <div key={i}>
+                    <div className="two_table_row">
+                        <div className="two_table_cel">
+                        </div>
+                        <div className="two_table_cel">
+                            <label>
+                                <span>Language: </span>
+                                <select name="type" id={"lang_" + i} value={preset.preset_name_synonyms[0].lang} onChange={this.updatePreset}>
+                                    <option value="es">es</option>
+                                    <option value="en">en</option>
+                                </select>
+                            </label>
+                            <label style={names_box}>
+                                <span>Preset name: </span>
+                                <input type="text" id={"names_" + i} defaultValue={preset.preset_name_synonyms[0].synonyms} placeholder="Preset name" onChange={this.updatePreset}/>
                             </label>
                         </div>
                     </div>
@@ -128,6 +176,17 @@ class Dispense extends React.Component {
                 </div>
 
                 {items}
+
+                <div className="three_table_row">
+                    <div className="three_table_cel align_right">
+                        Add a preset
+                    </div>
+                    <div className="three_table_cel">
+                        <button type="button" className="add_attribute_button" onClick={ this.addPreset }>Add</button>
+                    </div>
+                </div>
+
+                {presets}
 
             </div>
         );
