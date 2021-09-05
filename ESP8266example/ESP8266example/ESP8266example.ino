@@ -5,6 +5,8 @@
 const char* ssid = "your-wifi-ssid";
 const char* password = "your-wifi-password";
 const char* mqtt_server = "raspberry-pi-IP";
+const char* mqtt_user = "your-mqtt-user";
+const char* mqtt_user = "your-mqtt-password";
 
 const int led = 2;
 
@@ -74,7 +76,7 @@ void reconnect() {
     String clientId = "ESP8266Client-";
     clientId += String(random(0xffff), HEX);
     // Attempt to connect
-    if (client.connect(clientId.c_str())) {
+    if (client.connect(clientId.c_str(), mqtt_user, mqtt_password)) {
       Serial.println("connected");
       // Once connected, publish an announcement...
       client.publish("hello", "hello world");
