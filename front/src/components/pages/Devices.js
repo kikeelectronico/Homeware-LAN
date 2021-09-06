@@ -32,6 +32,7 @@ import SecuritySystem from "../devices/SecuritySystem";
 import Blender from "../devices/Blender";
 import Global from "../devices/Global";
 import Scene from "../devices/Scene";
+import PetFeeder from "../devices/PetFeeder";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
 
@@ -356,6 +357,15 @@ class Devices extends React.Component {
       else if (device.type === "action.devices.types.SCENE")
         return (
           <Scene
+            key={device.id}
+            device={device}
+            status={this.state.data.status[device.id]}
+            reload={this.loadData}
+          />
+        );
+      else if (device.type === "action.devices.types.PETFEEDER")
+        return (
+          <PetFeeder
             key={device.id}
             device={device}
             status={this.state.data.status[device.id]}
