@@ -8,7 +8,7 @@ Data is a class intended to interact with both the database and disk files. When
 
 ## Method - getVersion
 
-This method return the Homeware version.
+This method returns the Homeware version.
 
 `myData.getVersion()`
 
@@ -17,16 +17,17 @@ This method return the Homeware version.
 None
 
 ### Returns
+The system version object.
 
 ```
 {
-  version: '<version-code>'
+  version: '1.5.1'
 }
 ```
 
 ## Method - getGlobal
 
-The method returns all the devices data and all tasks
+The method returns all the devices data and all tasks.
 
 `myData.getGlobal()`
 
@@ -35,6 +36,7 @@ The method returns all the devices data and all tasks
 None
 
 ### Returns
+An object containing devices, status and tasks.
 
 ```
 {
@@ -103,7 +105,7 @@ Check the device defition and status definition at <a href='https://developers.g
 None
 
 ## Method - deleteDevice
-The method delete a device.
+The method deletes a device.
 
 `myData.deleteDevice(device_id)`
 
@@ -127,7 +129,7 @@ This method returns the status of all the devices.
 None
 
 ### Returns
-A list of devices with its status
+A list of devices with its status as a json object.
 ```
 {
   device1: {...},
@@ -172,12 +174,36 @@ This method returns a list with all the tasks.
 None
 
 ### Returns
-A list of taks
+A list of taks. In example:
 
 ```
 [
-  {...},
-  {...},
+  {
+    title: "A title",
+    description: " A description",
+    triggers: {
+      trigger: {
+        type: "or",
+        parent: "triggers",
+        operation: [
+          1602355786257
+        ]
+      },
+      "1602355786257": {
+        operation: "22:0:1234560",
+        parent: "trigger",
+        type: "time"
+      }
+    },
+    target: [
+      {
+        device: "night_scene",
+        param: "deactivate",
+        value: false
+      }
+    ]
+  },
+  ...
 ]
 ```
 
@@ -195,24 +221,76 @@ Identifies the task that will be returned.
 - Example: 4
 
 ### Returns
-A taks as json
+A task object. In example:
+
+```
+{
+  title: "A title",
+  description: " A description",
+  triggers: {
+    trigger: {
+      type: "or",
+      parent: "triggers",
+      operation: [
+        1602355786257
+      ]
+    },
+    "1602355786257": {
+      operation: "22:0:1234560",
+      parent: "trigger",
+      type: "time"
+    }
+  },
+  target: [
+    {
+      device: "night_scene",
+      param: "deactivate",
+      value: false
+    }
+  ]
+}
+```
 
 ## Method - updateTask
-This method update the definition of a task.
+This method updates the definition of a task.
 
 `myData.updateTask(task)`
 
 ### Arguments
 
 #### task
-The definition of the task
+The definition of the task and its id.
 
 - Type: json
 - Example: 
 ```
 {
-  id: <task-id>,
-  task: {...},
+  id: 5,
+  task: {
+    title: "A title",
+    description: " A description",
+    triggers: {
+      trigger: {
+        type: "or",
+        parent: "triggers",
+        operation: [
+          1602355786257
+        ]
+      },
+      "1602355786257": {
+        operation: "22:0:1234560",
+        parent: "trigger",
+        type: "time"
+      }
+    },
+    target: [
+      {
+        device: "night_scene",
+        param: "deactivate",
+        value: false
+      }
+    ]
+  }
 }
 ```
 
@@ -227,14 +305,38 @@ This method creates a new task with the definition received.
 ### Arguments
 
 #### task
-The definition of the task
+The definition of the task and its id.
 
 - Type: json
 - Example: 
 ```
 {
-  id: <task-id>,
-  task: {...},
+  id: 5,
+  task: {
+    title: "A title",
+    description: " A description",
+    triggers: {
+      trigger: {
+        type: "or",
+        parent: "triggers",
+        operation: [
+          1602355786257
+        ]
+      },
+      "1602355786257": {
+        operation: "22:0:1234560",
+        parent: "trigger",
+        type: "time"
+      }
+    },
+    target: [
+      {
+        device: "night_scene",
+        param: "deactivate",
+        value: false
+      }
+    ]
+  }
 }
 ```
 
@@ -249,7 +351,7 @@ This method deletes a task.
 ### Arguments
 
 #### task_id
-The id of the task that wnat to be deleted
+The id of the task that wnat to be deleted.
 
 - Type: int
 - Example: 3
@@ -258,14 +360,14 @@ The id of the task that wnat to be deleted
 `True` if the task was found and deleted. `False` if the task was not found.
 
 ## Method  - setUser
-This method set the username and password for first time. It only can be call once.
+This method set the username and password for the first time. It only can be call once.
 
 `myData.setUser(incomming_data)`
 
 ### Arguments
 
 #### incomming_data
-The username and password in plain text
+The username and password in plain text.
 
 - Type: json
 - Example: 
@@ -277,17 +379,17 @@ The username and password in plain text
 ```
 
 ### Returns
-A confirmation message.
+`Saved correctly!` if it is the first time. `Your user has been set in the past` if the username was set in the past.
 
 ## Method - updatePassword
-This method updates the user's password
+This method updates the user's password.
 
 `myData.updatePassword(incomming_data)`
 
 ### Arguments
 
 #### incomming_data
-Both the last and new passwords in plain text
+Both the current and new passwords in plain text.
 
 - Type: json
 - Example:
@@ -299,17 +401,17 @@ Both the last and new passwords in plain text
 ```
 
 ### Returns
-A confirmation message.
+`Updated` if the password is set. `Fail, the password hasn't been changed` if the process fails.
 
 ## Method - login
-This method login the user and returns a access token. Only one token can be active, so the last token will be deleted once a new one is created.
+This method login the user and returns an access token. Only one token can be active, so the current token will be deleted once a new one is created.
 
 `myData.login(incomming_data)`
 
 ### Arguments
 
 #### incomming_data
-The username and password in plain text
+The username and password in plain text.
 
 - Type: json
 - Example: 
@@ -321,7 +423,7 @@ The username and password in plain text
 ```
 
 ### Returns
-The login data
+Both the login data and login status object:
 
 ```
 {
@@ -331,7 +433,7 @@ The login data
 }
 ```
 
-or
+or the login status object:
 
 ```
 {
@@ -340,14 +442,14 @@ or
 ```
 
 ## Method - validateUserToken
-This method validate the user's token.
+This method validates the user's token.
 
 `myData.validateUserToken(incomming_data)`
 
 ### Arguments
 
 #### incomming_data
-The username and password in plain text
+The username and password in plain text.
 
 - Type: json
 - Example: 
@@ -359,7 +461,7 @@ The username and password in plain text
 ```
 
 ### Returns
-The the validation status
+The the login success status object :
 
 ```
 {
@@ -367,7 +469,7 @@ The the validation status
 }
 ```
 
-or
+or the login failed status object fail:
 
 ```
 {
@@ -376,7 +478,7 @@ or
 ```
 
 ## Method - getAPIKey
-Get the active apiakey.
+This method returns the active apiakey.
 
 `myData.getAPIKey()`
 
@@ -384,7 +486,7 @@ Get the active apiakey.
 None
 
 ### Returns
-An object containing the api key
+An object containing the apikey.
 
 ```
 {
@@ -393,7 +495,7 @@ An object containing the api key
 ```
 
 ## Method - generateAPIKey
-Generate a new apiakey. Only one apikey can be active. When a new apikey is generated, the older one will be deleted.
+This method generates a new apiakey. Only one apikey can be active. When a new apikey is generated, the older one will be deleted.
 
 `myData.generateAPIKey()`
 
@@ -401,7 +503,7 @@ Generate a new apiakey. Only one apikey can be active. When a new apikey is gene
 None
 
 ### Returns
-An object containing the api key
+An object containing the apikey.
 
 ```
 {
@@ -410,20 +512,20 @@ An object containing the api key
 ```
 
 ## Method - getToken
-Get any active token by its name. Note: This method will be deprecated in the future.
+Get an oauth2 active token's obeject by the service name. Note: This method will be deprecated.
 
 `myData.getToken(agent)`
 
 ### Arguments
 
 #### agent
-The token name (agent).
+The service name (agent). Only Google is supported by now.
 
 - Type: string
-- Example: 'google'
+- Possible values: 'google'
 
 ### Returns
-An string containing the token or a token object
+An string containing the token or a token object.
 
 ```
 {
@@ -445,32 +547,32 @@ An string containing the token or a token object
 ```
 
 ## Method - updateToken
-Update a token's object by its type and agent. Note: This method will be deprecated.
+Update an oauth2 token of a service by type. Note: This method will be deprecated.
 
 `myData.updateToken(agent, type, value, timestamp)`
 
 ### Arguments
 
 #### agent
-The service name (agent).
+The service name (agent). Only Google is supported by now.
 
 - Type: string
-- Example: 'google'
+- Possible values: 'google'
 
 #### type
 The token type.
 
 - Type: string
-- Example: 'access_token'
+- Possible values: 'authorization_code' || 'access_token' || 'refresh_token'
 
 #### value
-The new value for the token.
+The new token.
 
 - Type: string
 - Example: 'my-new-token'
 
 #### timestamp
-When the new token was generated.
+The timestamp when the new token was generated.
 
 - Type: int
 - Example: 1579452777875
@@ -479,7 +581,7 @@ When the new token was generated.
 None
 
 ## Method - getSettings
-Get the settings objext.
+This method returns the read settings object.
 
 `myData.getSettings()`
 
@@ -487,7 +589,7 @@ Get the settings objext.
 None
 
 ### Returns
-A settings object
+The read settings object.
 
 ```
 {
@@ -516,7 +618,7 @@ A settings object
 ```
 
 ## Method - updateSettings
-Get the settings objext.
+This method updates the settings object.
 
 `myData.updateSettings(incomming_data)`
 
@@ -564,20 +666,10 @@ This method sets the domain name. It only can be called once.
 The domain name.
 
 - Type: string
-- Example: 'www.my-domain.com'
+- Example: 'www.mydomain.com'
 
 ### Returns
-A status response.
-
-```
-Saved correctly!
-```
-
-or
-
-```
-Your domain has been set in the past
-```
+`Saved correctly!` if it is the first time. `Your domain has been set in the past` if the domain was set in the past.
 
 ## Method - setSyncDevices
 This method sets the sync_devices setting.
@@ -604,10 +696,10 @@ This method returns the sync_devices setting.
 None
 
 ### Returns
-`True` if sync_devices is enabled or `false`.
+`True` if sync_devices is enabled. `false` if it is not enabled.
 
 ## Method - getMQTT
-This method returns MQTT settings.
+This method returns the MQTT user and password.
 
 `myData.getMQTT()`
 
@@ -615,7 +707,7 @@ This method returns MQTT settings.
 None
 
 ### Returns
-An object.
+An object that contains the username and the password.
 
 ```
 {
@@ -625,7 +717,7 @@ An object.
 ```
 
 ## Method - getDDNS
-This method returns DDNS settings.
+This method returns the both the DDNS settings and the DDNS status.
 
 `myData.getDDNS()`
 
@@ -633,7 +725,7 @@ This method returns DDNS settings.
 None
 
 ### Returns
-An object.
+An object that contains both the DDNS settings and the DDNS status.
 
 ```
 {
@@ -698,7 +790,7 @@ This method returns the status availability of the Redis server.
 None
 
 ### Returns
-A system status object.
+A running system status object.
 
 ```
 {
@@ -708,7 +800,7 @@ A system status object.
 }
 ```
 
-or
+or a stopped system status object:
 
 ```
 {
@@ -745,7 +837,7 @@ This method creates a new register in the systems log and raise the Alert flag i
 The severity.
 
 - Type: string
-- Possibles values: 'Alert' || 'Warning' || 'Log'
+- Possible values: 'Alert' || 'Warning' || 'Log'
 
 #### message
 The message to log.
@@ -812,7 +904,7 @@ An alert flag object
 ```
 
 ## Method - updateAlive
-This method updates the alive timestamp of any homeware's core element.
+This method updates the alive timestamp of some homeware's core element.
 
 `myData.updateAlive(core)`
 
@@ -822,13 +914,13 @@ This method updates the alive timestamp of any homeware's core element.
 The core name.
 
 - Type: string
-- Possibles values: 'tasks' || 'mqtt'
+- Possible values: 'tasks' || 'mqtt'
 
 ### Returns
 None
 
 ## Method - getAlive
-This method returns the alive timestamps of all the homeware's core elements.
+This method returns the alive timestamps of some homeware's core elements.
 
 `myData.getAlive(core)`
 
