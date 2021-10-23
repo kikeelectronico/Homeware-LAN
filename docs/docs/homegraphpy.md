@@ -6,7 +6,7 @@ sidebar_label: Back - homeGraph.py
 
 This file contains a class that do requests to Google HomeGraph when needed.
 
-The methods can be called only from data.py file when something changes in the database in order to keep Google HomeGraph informed about the changes.
+The methods can only be called from data.py file when something changes in the database in order to keep Google HomeGraph informed about the changes.
 
 ## requestSync
 
