@@ -65,7 +65,7 @@ And can have the following traits as optionals:
 
 Each trait has attributes, status and commands. The attributes can be seen in the Homeware's definition object. The status can be seen in the Homeware's status object and is composed by params.
 
-The `on` param in the lamp status indicates the lamp is turned on.
+The _on_ param in the lamp status indicates the lamp is turned on.
 
 When a param must be changed, Google sends to Homeware a request. This request contains the params that must be updated organized in _commands_. In example:
 
@@ -84,7 +84,7 @@ Homeware process commands in different ways. Some times Homeware only updates th
 
 The class _Commands_ contains the methods needed to process this commands. Each command that can be received must have a processor method in the class. The method should process the data in the proper way for the command.
 
-The method name is the termination of the command. In example, the command `action.devices.commands.OnOff` is processed in the method `OnOff`.
+The method name is the termination of the command. In example, the command _action.devices.commands.OnOff_ is processed in the method _OnOff_.
 
 ## Attributes
 
