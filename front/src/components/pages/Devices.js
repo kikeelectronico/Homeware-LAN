@@ -43,8 +43,10 @@ class Devices extends React.Component {
     this.state = {
       data: {},
       devices: [],
+      order_by: "az",
     };
     this.loadData = this.loadData.bind(this);
+    this.orderBy = this.orderBy.bind(this);
   }
 
   componentDidMount() {
@@ -60,8 +62,9 @@ class Devices extends React.Component {
           var data = JSON.parse(http.responseText);
           this.setState({
             data: data,
-            devices: data.devices,
           });
+          this.orderBy(this.state.order_by)
+          
         } else {
           console.error(http.statusText);
         }
@@ -70,6 +73,19 @@ class Devices extends React.Component {
     http.open("GET", root + "api/global/get/");
     http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
     http.send();
+  }
+
+  orderBy(by) {
+    var devices_list = this.state.data.devices;
+    devices_list.sort(function(a, b){
+      if(a.name.name.toLowerCase() < b.name.name.toLowerCase()) { return -1; }
+      if(a.name.name.toLowerCase() > b.name.name.toLowerCase()) { return 1; }
+      return 0;
+    })
+    
+    this.setState({
+      devices: devices_list,
+    })
   }
 
   render() {
