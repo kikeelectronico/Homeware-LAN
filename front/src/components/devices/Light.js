@@ -36,7 +36,12 @@ class Light extends React.Component {
           <h2 className="device_card_title">{ this.props.device.name.name }</h2>
           <hr className="device_card_divider"/>
           <div style={traits_container}>
-            <OnOff id={ this.props.device.id } on={ this.props.status.on } reload={ this.props.reload }/>
+            {
+              Object.keys(this.props.status).includes("on") ?
+                <OnOff id={ this.props.device.id } on={ this.props.status.on } reload={ this.props.reload }/>
+              :
+              <></>
+            }
             {
               Object.keys(this.props.status).includes("brightness") ?
                 <Brightness id={ this.props.device.id } brightness={ this.props.status.brightness }/>
