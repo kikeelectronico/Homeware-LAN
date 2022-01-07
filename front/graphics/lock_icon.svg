@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 30 30"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="keyhole-149772.svg"
+   width="30"
+   height="30"
+   inkscape:export-filename="/home/enrique/repo/Homeware-LAN/front/graphics/lock_alert.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+  <metadata
+     id="metadata10">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1016"
+     id="namedview6"
+     showgrid="false"
+     inkscape:zoom="23.165644"
+     inkscape:cx="10.515028"
+     inkscape:cy="17.237375"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4" />
+  <path
+     d="m 15.452236,3.9131056 c 3.261173,0 5.361469,2.8258771 5.405382,6.3300174 H 10.046856 c 0.0438,-3.5041403 2.144183,-6.3300174 5.40538,-6.3300174 z m 0,-3.49880075 c -5.081284,0 -9.1988996,4.44120485 -9.1988996,9.91916415 l 0.00222,0.137489 c -1.7280917,0.522828 -2.9589311,1.88868 -2.9589311,3.491457 v 8.725082 c 0,3.883995 5.4425601,7.03365 12.1556417,7.03365 6.713084,0 12.155643,-3.149655 12.155643,-7.03365 v -8.725082 c 0,-1.602843 -1.230893,-2.96874 -2.958897,-3.491457 l 0.0022,-0.137489 c 0,-5.4779593 -4.117616,-9.91916415 -9.1989,-9.91916415 z M 12.002749,18.494222 c 0,-1.568463 1.544079,-2.840342 3.449487,-2.840342 1.905409,0 3.449487,1.27179 3.449487,2.840342 0,1.004043 -0.632971,1.886855 -1.587884,2.391503 v 2.614031 H 13.590635 V 20.885725 C 12.63572,20.380988 12.002749,19.498177 12.002749,18.494222 Z"
+     id="path2"
+     inkscape:connector-curvature="0"
+     style="fill:#777777;fill-rule:evenodd;stroke-width:0.24484785;fill-opacity:1" />
+</svg>
