@@ -73,19 +73,3 @@
     text-align: left;
   }
 }
-
-.device_card {
-  width: 100%;
-  height: 120px;
-  border-radius: 20px;
-  background-color: white;
-}
-
-.device_card_title {
-  margin-top: 5px;
-  margin-bottom: 5px
-}
-
-.device_card_divider {
-  width: 80%;
-}
