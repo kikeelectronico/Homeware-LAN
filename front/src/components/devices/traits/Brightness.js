@@ -1,11 +1,6 @@
 import React from 'react';
-import getCookieValue from '../../../functions'
-import { root } from '../../../constants'
 
 class Brightness extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
 

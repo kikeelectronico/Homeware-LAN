@@ -378,7 +378,8 @@ class Devices extends React.Component {
             reload={this.loadData}
           />
         );
-     
+      else
+        return (<></>)
     });
 
     const scenes = this.state.devices.map((device) => {
@@ -391,6 +392,8 @@ class Devices extends React.Component {
             reload={this.loadData}
           />
         );
+      else
+        return (<></>)
     });
 
     return (

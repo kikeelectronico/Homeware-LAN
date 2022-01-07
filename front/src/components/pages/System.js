@@ -112,7 +112,7 @@ class System extends React.Component {
                           Attention to <span style={{color: 'red'}}> non Docker installations</span>
                         </h3>
                         <p>
-                          If your are not using Docker on your Homeware installation, please <a target="_blank" href="https://kikeelectronico.github.io/Homeware-LAN/docs/install">reinstall Homeware</a>.
+                          If your are not using Docker on your Homeware installation, please <a target="_blank" rel="noreferrer" href="https://kikeelectronico.github.io/Homeware-LAN/docs/install">reinstall Homeware</a>.
                         </p>
                         <h3>
                           How to update?
