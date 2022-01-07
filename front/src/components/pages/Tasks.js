@@ -42,15 +42,16 @@ class Tasks extends React.Component {
   render() {
     const tasks = this.state.tasks.map((task, i) => {
       return (
-        <Link key={i} to={"/tasks/manager/" + i} className="task_link">
-          <div className="task_card">
-            <h2 className="task_card_title" id={"task_" + i}>
-              {task.title}
-            </h2>
-            <hr className="task_card_divider" />
-            <p>{task.description}</p>
+        
+          <div key={i} className="task_card">
+            <Link to={"/tasks/manager/" + i} className="task_link"></Link>
+              <h2 className="task_card_title" id={"task_" + i}>
+                {task.title}
+              </h2>
+              <hr className="task_card_divider" />
+              <p>{task.description}</p>
+            <Link/>
           </div>
-        </Link>
       );
     });
 
