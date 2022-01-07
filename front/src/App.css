@@ -87,6 +87,7 @@
     width: 80%;
     margin: auto;
     margin-top: 10px;
+    margin-bottom: 40px;
     display: grid;
     grid-template-columns: repeat(auto-fill, 32%);
     grid-gap: 20px;
@@ -292,6 +293,7 @@
     width: 80%;
     margin-left: 10%;
     margin-top: 10px;
+    margin-bottom: 40px;
     display: grid;
     grid-template-columns: repeat(auto-fill, 100%);
     grid-gap: 20px;

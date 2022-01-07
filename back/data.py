@@ -1,6 +1,5 @@
 import json
 import random
-from cryptography.fernet import Fernet
 import bcrypt
 import redis
 import time
@@ -16,7 +15,7 @@ homegraph = HomeGraph()
 class Data:
 
 
-	version = 'v1.6.1'
+	version = 'v1.6.2-rc'
 	homewareFile = 'homeware.json'
 	apikey = ''
 	userToken = ''

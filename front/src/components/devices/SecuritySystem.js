@@ -1,4 +1,5 @@
 import React from 'react';
+import ArmDisarm from './traits/ArmDisarm'
 import Information from './aux/Information'
 import Connecting from './aux/Connecting'
 import Edit from './aux/Edit'
@@ -25,6 +26,7 @@ class SecuritySystem extends React.Component {
           <h2 className="device_card_title">{ this.props.device.name.name }</h2>
           <hr className="device_card_divider"/>
           <div style={traits_container}>
+            <ArmDisarm id={ this.props.device.id } status={ this.props.status }/>
             <Information id={ this.props.device.id }/>
             <Connecting id={ this.props.device.id }/>
             <Edit id={ this.props.device.id }/>

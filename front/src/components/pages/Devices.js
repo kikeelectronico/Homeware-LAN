@@ -369,7 +369,21 @@ class Devices extends React.Component {
             reload={this.loadData}
           />
         );
-      else if (device.type === "action.devices.types.SCENE")
+      else if (device.type !== "action.devices.types.SCENE")
+        return (
+          <Global
+            key={device.id}
+            device={device}
+            status={this.state.data.status[device.id]}
+            reload={this.loadData}
+          />
+        );
+      else
+        return (<></>)
+    });
+
+    const scenes = this.state.devices.map((device) => {
+      if (device.type === "action.devices.types.SCENE")
         return (
           <Scene
             key={device.id}
@@ -379,23 +393,13 @@ class Devices extends React.Component {
           />
         );
       else
-        return (
-          <Global
-            key={device.id}
-            device={device}
-            status={this.state.data.status[device.id]}
-            reload={this.loadData}
-          />
-        );
+        return (<></>)
     });
 
     return (
       <div>
-        <div className="page_title_container">
-          <h2>Devices and scences</h2>
-        </div>
-
         <div className="page_cards_container">{devices}</div>
+        <div className="page_cards_container">{scenes}</div>
 
         <div className="page_buttons_containter">
           <Link to="/devices/editor/">

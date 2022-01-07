@@ -16,8 +16,6 @@ class System extends React.Component {
     };
 
     this.loadComponents = this.loadComponents.bind(this);
-    this.upgrade = this.upgrade.bind(this);
-    this.areYouAwake = this.areYouAwake.bind(this);
   }
 
   componentDidMount() {
@@ -48,54 +46,7 @@ class System extends React.Component {
     comp.send();
   }
 
-  upgrade() {
-    if (window.confirm("Are you sure?")) {
-      window.open(root + "files/buckup/homeware/" + getCookieValue("token"));
-      this.setState({
-        show_system_message: true,
-        system_message:
-          "Upgrading the system. It will take some time, it depends on your machine. Then you will be redirected to the home page.",
-      });
-      window.setTimeout(
-        function () {
-          var upg = new XMLHttpRequest();
-          upg.onload = function (e) {
-            if (upg.readyState === 4) {
-              setInterval(this.areYouAwake, 2000);
-            }
-          }.bind(this);
-          upg.open("GET", root + "api/system/upgrade/");
-          upg.setRequestHeader(
-            "authorization",
-            "baerer " + getCookieValue("token")
-          );
-          upg.send();
-        }.bind(this),
-        180000
-      );
-    }
-  }
-
-  areYouAwake() {
-    var awa = new XMLHttpRequest();
-    awa.onload = function (e) {
-      if (awa.readyState === 4) {
-        if (awa.status === 200) {
-          window.location.href = "/";
-        } else {
-          console.error(awa.statusText);
-        }
-      }
-    };
-    awa.open("GET", root + "test/");
-    awa.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
-    awa.send();
-  }
-
   render() {
-    const upgrade_button = {
-      width: "500px",
-    };
 
     const git_description = {
       marginTop: "20px",
@@ -156,19 +107,22 @@ class System extends React.Component {
                   <div>
                     {this.props.version !== this.props.git.version ? (
                       <div>
-                        <h2>
-                          System update available - {this.props.git.version}
-                        </h2>
-                        <p>If you have installed Homeware using docker, please run 'docker-compose pull' in your host machine, <br/> do not use the <i>Download and install button</i>.</p>
+                        <b>Available version:</b> {this.props.git.version}
+                        <h3>
+                          Attention to <span style={{color: 'red'}}> non Docker installations</span>
+                        </h3>
+                        <p>
+                          If your are not using Docker on your Homeware installation, please <a target="_blank" rel="noreferrer" href="https://kikeelectronico.github.io/Homeware-LAN/docs/install">reinstall Homeware</a>.
+                        </p>
+                        <h3>
+                          How to update?
+                        </h3>
+                        <p>Run 'docker-compose pull' and then 'docker-compose up -d' in your host machine.</p>
+                        <h3>
+                          What's new?
+                        </h3>
                         <div style={git_description}>
                           <ReactMarkdown source={this.props.git.description} />
-                          <button
-                            type="button"
-                            style={upgrade_button}
-                            onClick={this.upgrade}
-                          >
-                            Download and install - If installed without docker
-                          </button>
                         </div>
                       </div>
                     ) : (
