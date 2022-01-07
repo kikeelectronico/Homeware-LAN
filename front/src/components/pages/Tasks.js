@@ -56,10 +56,6 @@ class Tasks extends React.Component {
 
     return (
       <div>
-        <div className="page_title_container">
-          <h2>Tasks</h2>
-        </div>
-
         <div className="page_cards_container">{tasks}</div>
 
         <div className="page_buttons_containter">

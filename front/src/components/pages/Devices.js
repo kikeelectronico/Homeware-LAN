@@ -391,10 +391,6 @@ class Devices extends React.Component {
 
     return (
       <div>
-        <div className="page_title_container">
-          <h2>Devices and scences</h2>
-        </div>
-
         <div className="page_cards_container">{devices}</div>
 
         <div className="page_buttons_containter">
