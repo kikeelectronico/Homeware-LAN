@@ -12,20 +12,21 @@ class Scene extends React.Component {
       paddingLeft: '50px'
     }
 
-    var color = 'white';
+    var color = 'lightsalmon';
 
     const color_strip = {
       width: '100%',
       height: '20px',
       borderRadius: '20px 20px 0px 0px',
-      backgroundColor: color
+      backgroundColor: color,
+      opacity: !this.props.status.deactivate ? '1' : '0.4'
     }
 
     return (
       <div>
         <div className="device_card">
           <div style={ color_strip }></div>
-          <h2 className="device_card_title">Scene: { this.props.device.name.name }</h2>
+          <h2 className="device_card_title">{ this.props.device.name.name }</h2>
           <hr className="device_card_divider"/>
           <div style={traits_container}>
             <Deactivate id={ this.props.device.id } status={ this.props.status } reload={ this.props.reload }/>
