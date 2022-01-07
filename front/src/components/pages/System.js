@@ -111,7 +111,7 @@ class System extends React.Component {
                           System update available - {this.props.git.version}
                         </h2>
                         <h3>
-                          Attention not <span style={{color: 'red'}}>Docker installations</span>
+                          Attention to not <span style={{color: 'red'}}>Docker installations</span>
                         </h3>
                         <p>
                           If your are not using Docker on your Homeware installation, please reinstall Homeware. https://kikeelectronico.github.io/Homeware-LAN/docs/install
