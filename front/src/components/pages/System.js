@@ -115,7 +115,7 @@ class System extends React.Component {
                           If your are not using Docker on your Homeware installation, please <a target="_blank" href="https://kikeelectronico.github.io/Homeware-LAN/docs/install">reinstall Homeware</a>.
                         </p>
                         <h3>
-                          Update:
+                          How to update?
                         </h3>
                         <p>Run 'docker-compose pull' and then 'docker-compose up -d' in your host machine.</p>
                         <h3>
