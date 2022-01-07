@@ -1,5 +1,6 @@
 import React from 'react';
 import OnOff from './traits/OnOff'
+import Brightness from './traits/Brightness'
 import Information from './aux/Information'
 import Connecting from './aux/Connecting'
 import Edit from './aux/Edit'
@@ -36,6 +37,12 @@ class Light extends React.Component {
           <hr className="device_card_divider"/>
           <div style={traits_container}>
             <OnOff id={ this.props.device.id } on={ this.props.status.on } reload={ this.props.reload }/>
+            {
+              Object.keys(this.props.status).includes("brightness") ?
+                <Brightness id={ this.props.device.id } brightness={ this.props.status.brightness }/>
+              :
+              <></>
+            }
             <Information id={ this.props.device.id }/>
             <Connecting id={ this.props.device.id }/>
             <Edit id={ this.props.device.id }/>
