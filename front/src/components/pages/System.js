@@ -107,9 +107,7 @@ class System extends React.Component {
                   <div>
                     {this.props.version !== this.props.git.version ? (
                       <div>
-                        <h2>
-                          System update available - {this.props.git.version}
-                        </h2>
+                        <b>Available version:</b> {this.props.git.version}
                         <h3>
                           Attention to not <span style={{color: 'red'}}>Docker installations</span>
                         </h3>
