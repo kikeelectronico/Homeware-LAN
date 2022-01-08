@@ -37,7 +37,7 @@ cd Homeware-LAN
 ```
 4. Create your own `.env` file from `.env.template`. Data will be used to generate certs on letsencrypt.
 ```bash
-cp docker/.env.template .env
+cp configuration_templates/.env.template .env
 ```
 5. Replace the default data with your values.
 6. Copy the docker-compose file
