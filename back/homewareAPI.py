@@ -644,8 +644,8 @@ def apiSystemStatus():
     )
     return response
 
-@app.route("/api/log/get", methods=['GET', 'POST'])
-@app.route("/api/log/get/", methods=['GET', 'POST'])
+@app.route("/api/log/get", methods=['GET'])
+@app.route("/api/log/get/", methods=['GET'])
 def apiLogGet():
 
     accessLevel = checkAccessLevel(request.headers)
