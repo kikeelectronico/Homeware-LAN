@@ -515,39 +515,66 @@ def apiAccessGet():
     )
     return response
 
-
-@app.route("/api/settings/<operation>", methods=['GET', 'POST'])
-@app.route("/api/settings/<operation>/", methods=['GET', 'POST'])
-@app.route("/api/settings/<operation>/<value>", methods=['GET', 'POST'])
-@app.route("/api/settings/<operation>/<value>/", methods=['GET', 'POST'])
-def apiSettings(operation="", value=''):
+@app.route("/api/settings/update", methods=['POST'])
+@app.route("/api/settings/update/", methods=['POST'])
+def apiSettingsUpdate():
 
     accessLevel = checkAccessLevel(request.headers)
 
     if accessLevel >= 100:
-        if operation == 'update':
-            incommingData = request.get_json()
-            data_conector.updateSettings(incommingData)
-            responseData = data_conector.getSettings()
-        elif operation == 'get':
-            responseData = data_conector.getSettings()
-        else:
-            data_conector.log(
-                'Alert', 'Request to API > settings endpoint with bad authentication')
-            responseData = FOUR_O_O
-    elif accessLevel >= 0:
-        if operation == 'domain':
-            if value == '':
-                responseData = {
-                    'error': 'A domain must be given',
-                    'code': 400,
-                    'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
-                }
-            else:
-                return data_conector.setDomain(value)
+        incommingData = request.get_json()
+        data_conector.updateSettings(incommingData)
+        responseData = data_conector.getSettings()
     else:
         data_conector.log(
-            'Alert', 'Request to API > assistant endpoint. The assistant was configured in the past')
+            'Alert', 'Request to API > settings > update endpoint.')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/settings/get", methods=['GET'])
+@app.route("/api/settings/get/", methods=['GET'])
+def apiSettingsGet():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 100:
+        responseData = data_conector.getSettings()
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > settings > get endpoint.')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/settings/domain/<value>", methods=['POST'])
+@app.route("/api/settings/domain/<value>/", methods=['POST'])
+def apiSettingsDomain(value=''):
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 0:
+        if value == '':
+            responseData = {
+                'error': 'A domain must be given',
+                'code': 400,
+                'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
+            }
+        else:
+            return data_conector.setDomain(value)            
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > settings > domain endpoint.')
         responseData = FOUR_O_ONE
 
     response = app.response_class(
