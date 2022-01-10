@@ -336,24 +336,17 @@ def apiTasksGet(value=''):
     )
     return response
 
-@app.route("/api/global/<operation>", methods=['GET', 'POST'])
-@app.route("/api/global/<operation>/", methods=['GET', 'POST'])
-@app.route("/api/global/<operation>/<value>", methods=['GET', 'POST'])
-@app.route("/api/global/<operation>/<value>/", methods=['GET', 'POST'])
-def apiGlobal(operation="", value=''):
+@app.route("/api/global/version", methods=['GET'])
+@app.route("/api/global/version/", methods=['GET'])
+def apiGlobalVersion():
 
     accessLevel = checkAccessLevel(request.headers)
 
     if accessLevel >= 10:
-        if operation == 'version':
-            responseData = data_conector.getVersion()
-        elif operation == 'get':
-            responseData = data_conector.getGlobal()
-        else:
-            responseData = FOUR_O_O
+        responseData = data_conector.getVersion()
     else:
         data_conector.log(
-            'Alert', 'Request to API > global endpoint with bad authentication')
+            'Alert', 'Request to API > global > version endpoint with bad authentication')
         responseData = FOUR_O_ONE
 
     response = app.response_class(
@@ -363,6 +356,25 @@ def apiGlobal(operation="", value=''):
     )
     return response
 
+@app.route("/api/global/get", methods=['GET'])
+@app.route("/api/global/get/", methods=['GET'])
+def apiGlobalGet():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        responseData = data_conector.getGlobal()
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > global > get endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
 
 @app.route("/api/user/<operation>", methods=['GET', 'POST'])
 @app.route("/api/user/<operation>/", methods=['GET', 'POST'])
