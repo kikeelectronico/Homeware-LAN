@@ -6,7 +6,7 @@ services:
     image: ghcr.io/kikeelectronico/homewarelan-back
     restart: always
     hostname: backend
-    command: "gunicorn -w 1 -b 0.0.0.0:5001 homeware:app"
+    command: "gunicorn -w 1 -b 0.0.0.0:5001 homewareAPI:app"
     environment:
       - REDIS_HOST=redis
       - MQTT_HOST=mosquitto

@@ -3,6 +3,7 @@ import json
 import hostname
 
 class Commands:
+    """Execute the commands requested by Google Home Graph."""
 
     def __init__(self, data):
         self.data_conector = data
@@ -270,7 +271,6 @@ class Commands:
             else:
                 self.saveAndSend('fanSpeedPercent', 'currentFanSpeedPercent')
             
-
     def SetFanSpeedRelativeSpeed(self):
         # maxSpeedReached
         # minSpeedReached

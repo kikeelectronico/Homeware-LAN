@@ -1,4 +1,5 @@
 import json
+from os import stat
 import random
 import bcrypt
 import redis
@@ -7,15 +8,16 @@ from datetime import datetime
 import subprocess
 import paho.mqtt.publish as publish
 import os.path
+import pickle
 
 from homeGraph import HomeGraph
 import hostname
 homegraph = HomeGraph()
 
 class Data:
+	"""Access to the Homeware database and files."""
 
-
-	version = 'v1.6.3'
+	version = 'v1.7'
 	homewareFile = 'homeware.json'
 	apikey = ''
 	userToken = ''
@@ -67,6 +69,15 @@ class Data:
 		if not os.path.exists("../logs"):
 				os.mkdir("../logs")
 
+		if self.redis.get("fast_status") == None:
+			status = json.loads(self.redis.get('status'))
+			devices = status.keys()
+			for device in devices:
+				params = status[device].keys()
+				for param in params:
+					self.redis.set("status/" + device + "/" + param, pickle.dumps(status[device][param]))
+			self.redis.set("fast_status", "true")
+
 		# Load some data into memory
 		self.userName = secure['user']
 		self.userToken = secure['token']['front']
@@ -80,7 +91,7 @@ class Data:
 	def getGlobal(self):
 		data = {
 			'devices': json.loads(self.redis.get('devices')),
-			'status': json.loads(self.redis.get('status')),
+			'status':self.getStatus(),
 			'tasks': json.loads(self.redis.get('tasks'))
 		}
 		return data
@@ -88,7 +99,7 @@ class Data:
 	def createFile(self,file):
 		data = {
 			'devices': json.loads(self.redis.get('devices')),
-			'status': json.loads(self.redis.get('status')),
+			'status': self.getStatus(),
 			'tasks': json.loads(self.redis.get('tasks')),
 			'secure': json.loads(self.redis.get('secure'))
 		}
@@ -100,9 +111,15 @@ class Data:
 		with open('../' + self.homewareFile, 'r') as f:
 			data = json.load(f)
 			self.redis.set('devices',json.dumps(data['devices']))
-			self.redis.set('status',json.dumps(data['status']))
 			self.redis.set('tasks',json.dumps(data['tasks']))
 			self.redis.set('secure',json.dumps(data['secure']))
+
+			status = data['status']
+			devices = status.keys()
+			for device in devices:
+				params = status[device].keys()
+				for param in params:
+					self.redis.set("status/" + device + "/" + param, pickle.dumps(status[device][param]))
 
 # DEVICES
 
@@ -111,15 +128,16 @@ class Data:
 
 	def updateDevice(self, incommingData):
 		deviceID = incommingData['device']['id']
-		temp_devices = [];
+		temp_devices = []
 		found = False
 		for device in json.loads(self.redis.get('devices')):
 			if device['id'] == deviceID:
 				temp_devices.append(incommingData['device'])
 				found = True
-				status = json.loads(self.redis.get('status'))
-				status[deviceID] = incommingData['status']
-				self.redis.set('status',json.dumps(status))
+				status = incommingData['status']
+				params = status.keys()
+				for param in params:
+					self.redis.set("status/" + deviceID + "/" + param, pickle.dumps(status[param]))
 			else:
 				temp_devices.append(device)
 		self.redis.set('devices',json.dumps(temp_devices))
@@ -136,9 +154,10 @@ class Data:
 		devices.append(incommingData['device'])
 		self.redis.set('devices',json.dumps(devices))
 
-		status = json.loads(self.redis.get('status'))
-		status[deviceID] = incommingData['status']
-		self.redis.set('status',json.dumps(status))
+		status = incommingData['status']
+		params = status.keys()
+		for param in params:
+			self.redis.set("status/" + deviceID + "/" + param, pickle.dumps(status[param]))
 
 		# Inform Google Home Graph
 		if os.path.exists("../files/google.json") and self.sync_google:
@@ -155,9 +174,9 @@ class Data:
 		self.redis.set('devices',json.dumps(temp_devices))
 		# Delete status
 		if found:
-			status = json.loads(self.redis.get('status'))
-			del status[value]
-			self.redis.set('status',json.dumps(status))
+			params = self.redis.keys('status/' + value + '/*')
+			for param in params:
+				self.redis.delete(param)
 
 		# Inform Google Home Graph
 		if os.path.exists("../files/google.json") and self.sync_google:
@@ -168,18 +187,30 @@ class Data:
 # STATUS
 
 	def getStatus(self):
-		return json.loads(self.redis.get('status'))
+		devices_keys = self.redis.keys("status/*")
+		status = {}
+		for param_key_string in devices_keys:
+			param_key = param_key_string.decode().split("/")
+			if not param_key[1] in status.keys():
+				status[param_key[1]] = {}
+			status[param_key[1]][param_key[2]] = pickle.loads(self.redis.get(param_key_string))
+		return status
 
 	def updateParamStatus(self, device, param, value):
-		status = json.loads(self.redis.get('status'))
-		if device in status.keys():
-			status[device][param] = value
-			self.redis.set('status',json.dumps(status))
-			# Try to get username and password
+		if len(self.redis.keys('status/' + device + '/' + param)) == 1:
+			self.redis.set('status/' + device + '/' + param,pickle.dumps(value))
+			# Create the status json
+			params_keys = self.redis.keys('status/' + device + '/*')
+			status = {}
+			for param_key_string in params_keys:
+				param_key = param_key_string.decode().split("/")
+				status[param_key[2]] = pickle.loads(self.redis.get(param_key_string))
+			# Compose the messages
 			msgs = [
 				{'topic': "device/" + device + '/' + param, 'payload': str(value)},
-				{'topic': "device/" + device, 'payload': json.dumps(status[device])}
+				{'topic': "device/" + device, 'payload': json.dumps(status)}
 			]
+			# Try to get username and password
 			try:
 				mqttData = self.getMQTT()
 				if not mqttData['user'] == "":
