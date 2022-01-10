@@ -476,22 +476,36 @@ def apiUserGoogleSync():
     )
     return response
 
-@app.route("/api/access/<operation>", methods=['GET', 'POST'])
-@app.route("/api/access/<operation>/", methods=['GET', 'POST'])
-@app.route("/api/access/<operation>/<value>", methods=['GET', 'POST'])
-@app.route("/api/access/<operation>/<value>/", methods=['GET', 'POST'])
-def apiAccess(operation="", value=''):
+@app.route("/api/access/create", methods=['POST'])
+@app.route("/api/access/create/", methods=['POST'])
+def apiAccessCreate():
 
     accessLevel = checkAccessLevel(request.headers)
 
     if accessLevel >= 100:
-        if operation == 'create':
-            data_conector.log('Warning', 'An API Key has been regenerated')
-            responseData = data_conector.generateAPIKey()
-        elif operation == 'get':
-            responseData = data_conector.getAPIKey()
+        data_conector.log('Warning', 'An API Key has been regenerated')
+        responseData = data_conector.generateAPIKey()
     else:
-        data_conector.log('Alert', 'Request to API > access endpoint.')
+        data_conector.log('Alert', 'Request to API > access > create endpoint.')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/access/get", methods=['GET'])
+@app.route("/api/access/get/", methods=['GET'])
+def apiAccessGet():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 100:
+        responseData = data_conector.getAPIKey()
+    else:
+        data_conector.log('Alert', 'Request to API > access > get endpoint.')
         responseData = FOUR_O_ONE
 
     response = app.response_class(
