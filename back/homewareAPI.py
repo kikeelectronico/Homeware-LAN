@@ -585,73 +585,53 @@ def apiSettingsDomain(value=''):
     return response
 
 
-@app.route("/api/system/<operation>", methods=['GET', 'POST'])
-@app.route("/api/system/<operation>/", methods=['GET', 'POST'])
-@app.route("/api/system/<operation>/<value>", methods=['GET', 'POST'])
-@app.route("/api/system/<operation>/<value>/", methods=['GET', 'POST'])
-def apiSystem(operation="", value=''):
+@app.route("/api/system/status", methods=['GET'])
+@app.route("/api/system/status/", methods=['GET'])
+def apiSystemStatus():
 
     accessLevel = checkAccessLevel(request.headers)
 
     if accessLevel >= 100:
-        if operation == 'upgrade':
-            subprocess.run(["sudo", "sh", "../bash/update.sh"],
-                           stdout=subprocess.PIPE)
-            responseData = TWO_O_O
-        elif operation == 'status':
+        # Try to get username and password
+        try:
+            mqttData = data_conector.getMQTT()
+            if not mqttData['user'] == "":
+                publish.single("homeware/alive", "all", hostname=hostname.MQTT_HOST, auth={
+                                'username': mqttData['user'], 'password': mqttData['password']})
+            else:
+                publish.single("homeware/alive", "all",
+                                hostname=hostname.MQTT_HOST)
+        except:
+            publish.single("homeware/alive", "all", hostname=hostname.MQTT_HOST)
 
-            # Try to get username and password
-            try:
-                mqttData = data_conector.getMQTT()
-                if not mqttData['user'] == "":
-                    publish.single("homeware/alive", "all", hostname=hostname.MQTT_HOST, auth={
-                                   'username': mqttData['user'], 'password': mqttData['password']})
-                else:
-                    publish.single("homeware/alive", "all",
-                                   hostname=hostname.MQTT_HOST)
-            except:
-                publish.single("homeware/alive", "all", hostname=hostname.MQTT_HOST)
+        responseData = {
+            'api': {
+                'enable': True,
+                'status': 'Running',
+                'title': 'Homeware API'
+            },
+            'mqtt': {
+                'enable': True,
+                'status': 'Stopped',
+                'title': 'Homeware MQTT'
+            },
+            'tasks': {
+                'enable': True,
+                'status': 'Stopped',
+                'title': 'Homeware Task'
+            },
+            'redis': data_conector.redisStatus()
+        }
 
-            responseData = {
-                'api': {
-                    'enable': True,
-                    'status': 'Running',
-                    'title': 'Homeware API'
-                },
-                'mqtt': {
-                    'enable': True,
-                    'status': 'Stopped',
-                    'title': 'Homeware MQTT'
-                },
-                'tasks': {
-                    'enable': True,
-                    'status': 'Stopped',
-                    'title': 'Homeware Task'
-                },
-                'redis': data_conector.redisStatus()
-            }
-
-            try:
-                ts = int(time.time())
-                alive = data_conector.getAlive()
-                if (ts - int(alive['mqtt'])) < 10:
-                    responseData['mqtt']['status'] = "Running"
-                if (ts - int(alive['tasks'])) < 10:
-                    responseData['tasks']['status'] = "Running"
-            except:
-                print("homewareMQTT stopped")
-        elif operation == 'restart':
-            subprocess.run(["sudo", "sh", "../bash/restart.sh"],
-                           stdout=subprocess.PIPE)
-            responseData = TWO_O_O
-        elif operation == 'reboot':
-            subprocess.run(["sudo", "reboot"],  stdout=subprocess.PIPE)
-            responseData = TWO_O_O
-        elif operation == 'shutdown':
-            subprocess.run(["sudo", "poweroff"],  stdout=subprocess.PIPE)
-            responseData = TWO_O_O
-        else:
-            responseData = FOUR_O_O
+        try:
+            ts = int(time.time())
+            alive = data_conector.getAlive()
+            if (ts - int(alive['mqtt'])) < 10:
+                responseData['mqtt']['status'] = "Running"
+            if (ts - int(alive['tasks'])) < 10:
+                responseData['tasks']['status'] = "Running"
+        except:
+            print("homewareMQTT stopped")
     else:
         data_conector.log(
             'Alert', 'Request to API > system endpoint with bad authentication')
