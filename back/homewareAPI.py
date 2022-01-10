@@ -376,31 +376,17 @@ def apiGlobalGet():
     )
     return response
 
-@app.route("/api/user/<operation>", methods=['GET', 'POST'])
-@app.route("/api/user/<operation>/", methods=['GET', 'POST'])
-@app.route("/api/user/<operation>/<value>", methods=['GET', 'POST'])
-@app.route("/api/user/<operation>/<value>/", methods=['GET', 'POST'])
-def apiUser(operation="", value=''):
+@app.route("/api/user/password", methods=['POST'])
+@app.route("/api/user/password/", methods=['POST'])
+def apiUserPassword():
 
     accessLevel = checkAccessLevel(request.headers)
 
     if accessLevel >= 10:
-        if operation == 'password':
-            return data_conector.updatePassword(request.get_json())
-    elif accessLevel >= 0:
-        if operation == 'set':
-            return data_conector.setUser(request.get_json())
-        elif operation == 'login':
-            responseData = data_conector.login(request.headers)
-        elif operation == 'validateToken':
-            responseData = data_conector.validateUserToken(request.headers)
-        elif operation == 'googleSync':
-            return data_conector.googleSync(request.headers, responseURL)
-        else:
-            responseData = FOUR_O_O
+        return data_conector.updatePassword(request.get_json())
     else:
         data_conector.log(
-            'Alert', 'Request to API > user endpoint with bad authentication')
+            'Alert', 'Request to API > user > password endpoint with bad authentication')
         responseData = FOUR_O_ONE
 
     response = app.response_class(
@@ -410,6 +396,85 @@ def apiUser(operation="", value=''):
     )
     return response
 
+@app.route("/api/user/set", methods=['POST'])
+@app.route("/api/user/set/", methods=['POST'])
+def apiUserSet():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 0:
+        return data_conector.setUser(request.get_json())
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > user > set endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/user/login", methods=['GET'])
+@app.route("/api/user/login/", methods=['GET'])
+def apiUserLogin():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 0:
+        responseData = data_conector.login(request.headers)
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > user > login endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/user/validateToken", methods=['GET'])
+@app.route("/api/user/validateToken/", methods=['GET'])
+def apiUserValidateToken():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 0:
+        responseData = data_conector.validateUserToken(request.headers)
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > user > validate token endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/user/googleSync", methods=['GET'])
+@app.route("/api/user/googleSync/", methods=['GET'])
+def apiUserGoogleSync():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 0:
+        return data_conector.googleSync(request.headers, responseURL)
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > user > google sync endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
 
 @app.route("/api/access/<operation>", methods=['GET', 'POST'])
 @app.route("/api/access/<operation>/", methods=['GET', 'POST'])
