@@ -184,7 +184,7 @@ def apiDevicesGet(value=''):
 
 @app.route("/api/status/update", methods=['POST'])
 @app.route("/api/status/update/", methods=['POST'])
-def apiStatus():
+def apiStatusUpdate():
 
     accessLevel = checkAccessLevel(request.headers)
 
@@ -206,9 +206,9 @@ def apiStatus():
     )
     return response
 
-@app.route("/api/status/get/<value>", methods=['POST'])
-@app.route("/api/status/get/<value>/", methods=['POST'])
-def apiStatus(value=''):
+@app.route("/api/status/get/<value>", methods=['GET'])
+@app.route("/api/status/get/<value>/", methods=['GET'])
+def apiStatusGet(value=''):
 
     accessLevel = checkAccessLevel(request.headers)
 
@@ -233,49 +233,21 @@ def apiStatus(value=''):
     )
     return response
 
-@app.route("/api/tasks/<operation>", methods=['GET', 'POST'])
-@app.route("/api/tasks/<operation>/", methods=['GET', 'POST'])
-@app.route("/api/tasks/<operation>/<value>", methods=['GET', 'POST'])
-@app.route("/api/tasks/<operation>/<value>/", methods=['GET', 'POST'])
-def apiTasks(operation="", value=''):
+@app.route("/api/tasks/update", methods=['POST'])
+@app.route("/api/tasks/update/", methods=['POST'])
+def apiTasksUpdate():
 
     accessLevel = checkAccessLevel(request.headers)
 
     if accessLevel >= 10:
-        if operation == 'update':
-            incommingData = request.get_json()
-            if data_conector.updateTask(incommingData):
-                responseData = TWO_O_O
-            else:
-                responseData = FOUR_O_FOUR
-        elif operation == 'create':
-            incommingData = request.get_json()
-            data_conector.createTask(incommingData['task'])
+        incommingData = request.get_json()
+        if data_conector.updateTask(incommingData):
             responseData = TWO_O_O
-        elif operation == 'delete':
-            if data_conector.deleteTask(int(value)):
-                responseData = TWO_O_O
-            else:
-                responseData = FOUR_O_FOUR
-        elif operation == 'get':
-            tasks = data_conector.getTasks()
-            try:
-                if not value == '':
-                    if 0 <= int(value) < len(tasks):
-                        responseData = tasks[int(value)]
-                    else:
-                        responseData = FOUR_O_FOUR
-                else:
-                    responseData = tasks
-            except:
-                responseData = {
-                    'error': 'Invalid task ID, it must be a integer',
-                    'code': 400,
-                    'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
-                }
+        else:
+            responseData = FOUR_O_FOUR
     else:
         data_conector.log(
-            'Alert', 'Request to API > task endpoint with bad authentication')
+            'Alert', 'Request to API > task > update endpoint with bad authentication')
         responseData = FOUR_O_ONE
 
     response = app.response_class(
@@ -285,6 +257,84 @@ def apiTasks(operation="", value=''):
     )
     return response
 
+@app.route("/api/tasks/create", methods=['POST'])
+@app.route("/api/tasks/create/", methods=['POST'])
+def apiTasksCreate():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        incommingData = request.get_json()
+        data_conector.createTask(incommingData['task'])
+        responseData = TWO_O_O
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > task > create endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/tasks/delete/<value>", methods=['POST'])
+@app.route("/api/tasks/delete/<value>/", methods=['POST'])
+def apiTasksDelete(value=''):
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        if data_conector.deleteTask(int(value)):
+            responseData = TWO_O_O
+        else:
+            responseData = FOUR_O_FOUR
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > task > delete endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/tasks/get/<value>", methods=['GET'])
+@app.route("/api/tasks/get/<value>/", methods=['GET'])
+def apiTasksGet(value=''):
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        tasks = data_conector.getTasks()
+        try:
+            if not value == '':
+                if 0 <= int(value) < len(tasks):
+                    responseData = tasks[int(value)]
+                else:
+                    responseData = FOUR_O_FOUR
+            else:
+                responseData = tasks
+        except:
+            responseData = {
+                'error': 'Invalid task ID, it must be a integer',
+                'code': 400,
+                'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
+            }
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > task > get endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
 
 @app.route("/api/global/<operation>", methods=['GET', 'POST'])
 @app.route("/api/global/<operation>/", methods=['GET', 'POST'])
