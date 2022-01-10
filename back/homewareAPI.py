@@ -83,48 +83,21 @@ def checkAccessLevel(headers):
 
     return accessLevel
 
-
-@app.route("/api/devices/<operation>", methods=['GET', 'POST'])
-@app.route("/api/devices/<operation>/", methods=['GET', 'POST'])
-@app.route("/api/devices/<operation>/<value>", methods=['GET', 'POST'])
-@app.route("/api/devices/<operation>/<value>/", methods=['GET', 'POST'])
-def apiDevices(operation="", value=''):
+@app.route("/api/devices/update", methods=['POST'])
+@app.route("/api/devices/update/", methods=['POST'])
+def apiDevicesUpdate():
 
     accessLevel = checkAccessLevel(request.headers)
 
     if accessLevel >= 10:
-        if operation == 'update':
-            incommingData = request.get_json()
-            if data_conector.updateDevice(incommingData):
-                responseData = TWO_O_O
-            else:
-                responseData = FOUR_O_FOUR
-        elif operation == 'create':
-            incommingData = request.get_json()
-            data_conector.createDevice(incommingData)
+        incommingData = request.get_json()
+        if data_conector.updateDevice(incommingData):
             responseData = TWO_O_O
-        elif operation == 'delete':
-            if data_conector.deleteDevice(value):
-                responseData = TWO_O_O
-            else:
-                responseData = FOUR_O_FOUR
-        elif operation == 'get':
-            if not value == '':
-                found = False
-                for device in data_conector.getDevices():
-                    if device['id'] == value:
-                        responseData = device
-                        found = True
-                        break
-                if not found:
-                    responseData = FOUR_O_FOUR
-            else:
-                responseData = data_conector.getDevices()
         else:
-            responseData = FOUR_O_ONE
+            responseData = FOUR_O_FOUR
     else:
         data_conector.log(
-            'Alert', 'Request to api/devices with bad authentication')
+            'Alert', 'Request to api > devices > update with bad authentication')
         responseData = FOUR_O_ONE
 
     response = app.response_class(
@@ -134,36 +107,19 @@ def apiDevices(operation="", value=''):
     )
     return response
 
-
-@app.route("/api/status/<operation>", methods=['GET', 'POST'])
-@app.route("/api/status/<operation>/", methods=['GET', 'POST'])
-@app.route("/api/status/<operation>/<value>", methods=['GET', 'POST'])
-@app.route("/api/status/<operation>/<value>/", methods=['GET', 'POST'])
-def apiStatus(operation="", value=''):
+@app.route("/api/devices/create", methods=['POST'])
+@app.route("/api/devices/create/", methods=['POST'])
+def apiDevicesCreate():
 
     accessLevel = checkAccessLevel(request.headers)
 
     if accessLevel >= 10:
-        if operation == 'update':
-            incommingData = request.get_json()
-            if data_conector.updateParamStatus(incommingData['id'], incommingData['param'], incommingData['value']):
-                responseData = TWO_O_O
-            else:
-                responseData = FOUR_O_FOUR
-        elif operation == 'get':
-            status = data_conector.getStatus()
-            if not value == '':
-                if value in status:
-                    responseData = status[value]
-                else:
-                    responseData = FOUR_O_FOUR
-            else:
-                responseData = status
-        else:
-            responseData = FOUR_O_O
+        incommingData = request.get_json()
+        data_conector.createDevice(incommingData)
+        responseData = TWO_O_O
     else:
         data_conector.log(
-            'Alert', 'Request to API > status endpoint with bad authentication')
+            'Alert', 'Request to api > devices > create with bad authentication')
         responseData = FOUR_O_ONE
 
     response = app.response_class(
@@ -173,6 +129,109 @@ def apiStatus(operation="", value=''):
     )
     return response
 
+@app.route("/api/devices/delete/<value>", methods=['POST'])
+@app.route("/api/devices/delete/<value>/", methods=['POST'])
+def apiDevicesDelete(value=''):
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        if data_conector.deleteDevice(value):
+            responseData = TWO_O_O
+        else:
+            responseData = FOUR_O_FOUR
+    else:
+        data_conector.log(
+            'Alert', 'Request to api > devices > delete with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/devices/get/<value>", methods=['GET'])
+@app.route("/api/devices/get/<value>/", methods=['GET'])
+def apiDevicesGet(value=''):
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        if not value == '':
+            found = False
+            for device in data_conector.getDevices():
+                if device['id'] == value:
+                    responseData = device
+                    found = True
+                    break
+            if not found:
+                responseData = FOUR_O_FOUR
+        else:
+            responseData = data_conector.getDevices()
+    else:
+        data_conector.log(
+            'Alert', 'Request to api > devices > get with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/status/update", methods=['POST'])
+@app.route("/api/status/update/", methods=['POST'])
+def apiStatus():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        incommingData = request.get_json()
+        if data_conector.updateParamStatus(incommingData['id'], incommingData['param'], incommingData['value']):
+            responseData = TWO_O_O
+        else:
+            responseData = FOUR_O_FOUR
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > status > update endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/status/get/<value>", methods=['POST'])
+@app.route("/api/status/get/<value>/", methods=['POST'])
+def apiStatus(value=''):
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        status = data_conector.getStatus()
+        if not value == '':
+            if value in status:
+                responseData = status[value]
+            else:
+                responseData = FOUR_O_FOUR
+        else:
+            responseData = status
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > status > get endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
 
 @app.route("/api/tasks/<operation>", methods=['GET', 'POST'])
 @app.route("/api/tasks/<operation>/", methods=['GET', 'POST'])
