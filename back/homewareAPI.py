@@ -1,8 +1,6 @@
 import os
-from flask import Flask, request, render_template, redirect, send_file, url_for, Response
+from flask import Flask, request, redirect, send_file, Response
 from flask_cors import CORS
-import requests
-from base64 import b64encode
 import json
 import time
 from datetime import datetime
