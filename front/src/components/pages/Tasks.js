@@ -44,13 +44,13 @@ class Tasks extends React.Component {
       return (
         
           <div key={i} className="task_card">
-            <Link to={"/tasks/manager/" + i} className="task_link"></Link>
+            <Link to={"/tasks/manager/" + i} className="task_link">
               <h2 className="task_card_title" id={"task_" + i}>
                 {task.title}
               </h2>
               <hr className="task_card_divider" />
               <p>{task.description}</p>
-            <Link/>
+            </Link>
           </div>
       );
     });
