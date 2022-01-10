@@ -644,24 +644,17 @@ def apiSystemStatus():
     )
     return response
 
-@app.route("/api/log/<operation>", methods=['GET', 'POST'])
-@app.route("/api/log/<operation>/", methods=['GET', 'POST'])
-@app.route("/api/log/<operation>/<value>", methods=['GET', 'POST'])
-@app.route("/api/log/<operation>/<value>/", methods=['GET', 'POST'])
-def apiLog(operation="", value=''):
+@app.route("/api/log/get", methods=['GET', 'POST'])
+@app.route("/api/log/get/", methods=['GET', 'POST'])
+def apiLogGet():
 
     accessLevel = checkAccessLevel(request.headers)
 
     if accessLevel >= 100:
-        if operation == 'get':
-            responseData = data_conector.getLog()
-        elif operation == 'alert':
-            responseData = data_conector.isThereAnAlert()
-        else:
-            responseData = FOUR_O_O
+        responseData = data_conector.getLog()
     else:
         data_conector.log(
-            'Alert', 'Request to API > log endpoint with bad authentication')
+            'Alert', 'Request to API > log > get endpoint with bad authentication')
         responseData = FOUR_O_ONE
 
     response = app.response_class(
@@ -671,6 +664,25 @@ def apiLog(operation="", value=''):
     )
     return response
 
+@app.route("/api/log/alert", methods=['GET'])
+@app.route("/api/log/alert/", methods=['GET'])
+def apiLogAlert():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 100:
+        responseData = data_conector.isThereAnAlert()
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > log > alert endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
 
 def allowed_file(filename):
     return '.' in filename and \
