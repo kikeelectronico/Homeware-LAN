@@ -689,8 +689,6 @@ def allowed_file(filename):
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Files operation
-
-
 @app.route("/files/<operation>/<file>/<token>/", methods=['GET', 'POST'])
 def files(operation='', file='', token=''):
     # Get the access_token
@@ -792,8 +790,6 @@ def tokenGenerator(agent, type):
         return 'Something goes wrong'
 
 # Auth endpoint
-
-
 @app.route("/auth")
 @app.route("/auth/")
 def auth():
@@ -817,8 +813,6 @@ def auth():
         return 'Algo ha ido mal en la autorización'
 
 # Token's endpoint
-
-
 @app.route('/token', methods=['GET', 'POST'])
 @app.route('/token/', methods=['GET', 'POST'])
 def token():
@@ -881,8 +875,6 @@ def token():
         return response
 
 # Google's endpoint
-
-
 @app.route("/smarthome", methods=['POST'])
 @app.route("/smarthome/", methods=['POST'])
 def smarthome():
@@ -996,8 +988,6 @@ def smarthome():
         return "A"
 
 # Clock endpoint
-
-
 @app.route("/api/clock")
 @app.route("/api/clock/")
 def clock():
