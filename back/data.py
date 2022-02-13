@@ -11,8 +11,6 @@ import paho.mqtt.publish as publish
 import os.path
 import pickle
 
-from sqlalchemy import null, true
-
 from homeGraph import HomeGraph
 import hostname
 homegraph = HomeGraph()
