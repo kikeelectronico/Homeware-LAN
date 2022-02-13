@@ -273,10 +273,6 @@ class Manager extends React.Component {
   }
 
   render() {
-    const button = {
-      width: "200px",
-    };
-
     const deleteButton = {
       backgroundColor: "red",
     };
