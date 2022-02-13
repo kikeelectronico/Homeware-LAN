@@ -4,11 +4,14 @@ import random
 import bcrypt
 import redis
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
+import dateutil.parser
 import subprocess
 import paho.mqtt.publish as publish
 import os.path
 import pickle
+
+from sqlalchemy import null, true
 
 from homeGraph import HomeGraph
 import hostname
@@ -553,6 +556,34 @@ class Data:
 		self.redis.set('alert','clear')
 
 		return log
+
+	def deleteLog(self, days: int):
+		log = []
+		# Load the log file
+		log_file = open("../logs/homeware.log","r")
+		registers = log_file.readlines()
+		log_file.close()
+		# Process the registers
+		n_days_ago = datetime.today() - timedelta(days)
+		for register in registers:
+			try:
+				timestamp = register.split(' - ')[1]
+				timestamp_date = dateutil.parser.parse(timestamp)
+				if timestamp_date > n_days_ago:
+					log.append(register)
+				
+			except:
+				now = datetime.now()
+				date_time = now.strftime("%d/%m/%Y, %H:%M:%S")
+				log_register = 'Log - ' + date_time  + ' - Unable to process a registry from the log file\n';
+				log.append(log_register)
+
+		# Write the new file in disk
+		log_file = open("../logs/homeware.log","w")
+		for register in log:
+			log_file.write(register)
+		log_file.close()
+
 
 	def isThereAnAlert(self):
 		return {"alert": str(self.redis.get('alert'))[2:-1]}
