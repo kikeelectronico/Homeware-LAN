@@ -1,8 +1,6 @@
 import os
-from flask import Flask, request, render_template, redirect, send_file, url_for, Response
+from flask import Flask, request, redirect, send_file, Response
 from flask_cors import CORS
-import requests
-from base64 import b64encode
 import json
 import time
 from datetime import datetime
@@ -83,348 +81,555 @@ def checkAccessLevel(headers):
 
     return accessLevel
 
-
-@app.route("/api/devices/<operation>", methods=['GET', 'POST'])
-@app.route("/api/devices/<operation>/", methods=['GET', 'POST'])
-@app.route("/api/devices/<operation>/<value>", methods=['GET', 'POST'])
-@app.route("/api/devices/<operation>/<value>/", methods=['GET', 'POST'])
-def apiDevices(operation="", value=''):
+@app.route("/api/devices/update", methods=['POST'])
+@app.route("/api/devices/update/", methods=['POST'])
+def apiDevicesUpdate():
 
     accessLevel = checkAccessLevel(request.headers)
 
     if accessLevel >= 10:
-        if operation == 'update':
-            incommingData = request.get_json()
-            if data_conector.updateDevice(incommingData):
-                responseData = TWO_O_O
-            else:
-                responseData = FOUR_O_FOUR
-        elif operation == 'create':
-            incommingData = request.get_json()
-            data_conector.createDevice(incommingData)
+        incommingData = request.get_json()
+        if data_conector.updateDevice(incommingData):
             responseData = TWO_O_O
-        elif operation == 'delete':
-            if data_conector.deleteDevice(value):
-                responseData = TWO_O_O
+        else:
+            responseData = FOUR_O_FOUR
+    else:
+        data_conector.log(
+            'Alert', 'Request to api > devices > update with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/devices/create", methods=['POST'])
+@app.route("/api/devices/create/", methods=['POST'])
+def apiDevicesCreate():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        incommingData = request.get_json()
+        data_conector.createDevice(incommingData)
+        responseData = TWO_O_O
+    else:
+        data_conector.log(
+            'Alert', 'Request to api > devices > create with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/devices/delete/<value>", methods=['POST'])
+@app.route("/api/devices/delete/<value>/", methods=['POST'])
+def apiDevicesDelete(value=''):
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        if data_conector.deleteDevice(value):
+            responseData = TWO_O_O
+        else:
+            responseData = FOUR_O_FOUR
+    else:
+        data_conector.log(
+            'Alert', 'Request to api > devices > delete with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/devices/get/<value>", methods=['GET'])
+@app.route("/api/devices/get/<value>/", methods=['GET'])
+def apiDevicesGet(value=''):
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        if not value == '':
+            found = False
+            for device in data_conector.getDevices():
+                if device['id'] == value:
+                    responseData = device
+                    found = True
+                    break
+            if not found:
+                responseData = FOUR_O_FOUR
+        else:
+            responseData = data_conector.getDevices()
+    else:
+        data_conector.log(
+            'Alert', 'Request to api > devices > get with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/status/update", methods=['POST'])
+@app.route("/api/status/update/", methods=['POST'])
+def apiStatusUpdate():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        incommingData = request.get_json()
+        if data_conector.updateParamStatus(incommingData['id'], incommingData['param'], incommingData['value']):
+            responseData = TWO_O_O
+        else:
+            responseData = FOUR_O_FOUR
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > status > update endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/status/get/<value>", methods=['GET'])
+@app.route("/api/status/get/<value>/", methods=['GET'])
+def apiStatusGet(value=''):
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        status = data_conector.getStatus()
+        if not value == '':
+            if value in status:
+                responseData = status[value]
             else:
                 responseData = FOUR_O_FOUR
-        elif operation == 'get':
+        else:
+            responseData = status
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > status > get endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/tasks/update", methods=['POST'])
+@app.route("/api/tasks/update/", methods=['POST'])
+def apiTasksUpdate():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        incommingData = request.get_json()
+        if data_conector.updateTask(incommingData):
+            responseData = TWO_O_O
+        else:
+            responseData = FOUR_O_FOUR
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > task > update endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/tasks/create", methods=['POST'])
+@app.route("/api/tasks/create/", methods=['POST'])
+def apiTasksCreate():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        incommingData = request.get_json()
+        data_conector.createTask(incommingData['task'])
+        responseData = TWO_O_O
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > task > create endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/tasks/delete/<value>", methods=['POST'])
+@app.route("/api/tasks/delete/<value>/", methods=['POST'])
+def apiTasksDelete(value=''):
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        if data_conector.deleteTask(int(value)):
+            responseData = TWO_O_O
+        else:
+            responseData = FOUR_O_FOUR
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > task > delete endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/tasks/get/<value>", methods=['GET'])
+@app.route("/api/tasks/get/<value>/", methods=['GET'])
+def apiTasksGet(value=''):
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        tasks = data_conector.getTasks()
+        try:
             if not value == '':
-                found = False
-                for device in data_conector.getDevices():
-                    if device['id'] == value:
-                        responseData = device
-                        found = True
-                        break
-                if not found:
+                if 0 <= int(value) < len(tasks):
+                    responseData = tasks[int(value)]
+                else:
                     responseData = FOUR_O_FOUR
             else:
-                responseData = data_conector.getDevices()
-        else:
-            responseData = FOUR_O_ONE
-    else:
-        data_conector.log(
-            'Alert', 'Request to api/devices with bad authentication')
-        responseData = FOUR_O_ONE
-
-    response = app.response_class(
-        response=json.dumps(responseData),
-        status=200,
-        mimetype='application/json'
-    )
-    return response
-
-
-@app.route("/api/status/<operation>", methods=['GET', 'POST'])
-@app.route("/api/status/<operation>/", methods=['GET', 'POST'])
-@app.route("/api/status/<operation>/<value>", methods=['GET', 'POST'])
-@app.route("/api/status/<operation>/<value>/", methods=['GET', 'POST'])
-def apiStatus(operation="", value=''):
-
-    accessLevel = checkAccessLevel(request.headers)
-
-    if accessLevel >= 10:
-        if operation == 'update':
-            incommingData = request.get_json()
-            if data_conector.updateParamStatus(incommingData['id'], incommingData['param'], incommingData['value']):
-                responseData = TWO_O_O
-            else:
-                responseData = FOUR_O_FOUR
-        elif operation == 'get':
-            status = data_conector.getStatus()
-            if not value == '':
-                if value in status:
-                    responseData = status[value]
-                else:
-                    responseData = FOUR_O_FOUR
-            else:
-                responseData = status
-        else:
-            responseData = FOUR_O_O
-    else:
-        data_conector.log(
-            'Alert', 'Request to API > status endpoint with bad authentication')
-        responseData = FOUR_O_ONE
-
-    response = app.response_class(
-        response=json.dumps(responseData),
-        status=200,
-        mimetype='application/json'
-    )
-    return response
-
-
-@app.route("/api/tasks/<operation>", methods=['GET', 'POST'])
-@app.route("/api/tasks/<operation>/", methods=['GET', 'POST'])
-@app.route("/api/tasks/<operation>/<value>", methods=['GET', 'POST'])
-@app.route("/api/tasks/<operation>/<value>/", methods=['GET', 'POST'])
-def apiTasks(operation="", value=''):
-
-    accessLevel = checkAccessLevel(request.headers)
-
-    if accessLevel >= 10:
-        if operation == 'update':
-            incommingData = request.get_json()
-            if data_conector.updateTask(incommingData):
-                responseData = TWO_O_O
-            else:
-                responseData = FOUR_O_FOUR
-        elif operation == 'create':
-            incommingData = request.get_json()
-            data_conector.createTask(incommingData['task'])
-            responseData = TWO_O_O
-        elif operation == 'delete':
-            if data_conector.deleteTask(int(value)):
-                responseData = TWO_O_O
-            else:
-                responseData = FOUR_O_FOUR
-        elif operation == 'get':
-            tasks = data_conector.getTasks()
-            try:
-                if not value == '':
-                    if 0 <= int(value) < len(tasks):
-                        responseData = tasks[int(value)]
-                    else:
-                        responseData = FOUR_O_FOUR
-                else:
-                    responseData = tasks
-            except:
-                responseData = {
-                    'error': 'Invalid task ID, it must be a integer',
-                    'code': 400,
-                    'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
-                }
-    else:
-        data_conector.log(
-            'Alert', 'Request to API > task endpoint with bad authentication')
-        responseData = FOUR_O_ONE
-
-    response = app.response_class(
-        response=json.dumps(responseData),
-        status=200,
-        mimetype='application/json'
-    )
-    return response
-
-
-@app.route("/api/global/<operation>", methods=['GET', 'POST'])
-@app.route("/api/global/<operation>/", methods=['GET', 'POST'])
-@app.route("/api/global/<operation>/<value>", methods=['GET', 'POST'])
-@app.route("/api/global/<operation>/<value>/", methods=['GET', 'POST'])
-def apiGlobal(operation="", value=''):
-
-    accessLevel = checkAccessLevel(request.headers)
-
-    if accessLevel >= 10:
-        if operation == 'version':
-            responseData = data_conector.getVersion()
-        elif operation == 'get':
-            responseData = data_conector.getGlobal()
-        else:
-            responseData = FOUR_O_O
-    else:
-        data_conector.log(
-            'Alert', 'Request to API > global endpoint with bad authentication')
-        responseData = FOUR_O_ONE
-
-    response = app.response_class(
-        response=json.dumps(responseData),
-        status=200,
-        mimetype='application/json'
-    )
-    return response
-
-
-@app.route("/api/user/<operation>", methods=['GET', 'POST'])
-@app.route("/api/user/<operation>/", methods=['GET', 'POST'])
-@app.route("/api/user/<operation>/<value>", methods=['GET', 'POST'])
-@app.route("/api/user/<operation>/<value>/", methods=['GET', 'POST'])
-def apiUser(operation="", value=''):
-
-    accessLevel = checkAccessLevel(request.headers)
-
-    if accessLevel >= 10:
-        if operation == 'password':
-            return data_conector.updatePassword(request.get_json())
-    elif accessLevel >= 0:
-        if operation == 'set':
-            return data_conector.setUser(request.get_json())
-        elif operation == 'login':
-            responseData = data_conector.login(request.headers)
-        elif operation == 'validateToken':
-            responseData = data_conector.validateUserToken(request.headers)
-        elif operation == 'googleSync':
-            return data_conector.googleSync(request.headers, responseURL)
-        else:
-            responseData = FOUR_O_O
-    else:
-        data_conector.log(
-            'Alert', 'Request to API > user endpoint with bad authentication')
-        responseData = FOUR_O_ONE
-
-    response = app.response_class(
-        response=json.dumps(responseData),
-        status=200,
-        mimetype='application/json'
-    )
-    return response
-
-
-@app.route("/api/access/<operation>", methods=['GET', 'POST'])
-@app.route("/api/access/<operation>/", methods=['GET', 'POST'])
-@app.route("/api/access/<operation>/<value>", methods=['GET', 'POST'])
-@app.route("/api/access/<operation>/<value>/", methods=['GET', 'POST'])
-def apiAccess(operation="", value=''):
-
-    accessLevel = checkAccessLevel(request.headers)
-
-    if accessLevel >= 100:
-        if operation == 'create':
-            data_conector.log('Warning', 'An API Key has been regenerated')
-            responseData = data_conector.generateAPIKey()
-        elif operation == 'get':
-            responseData = data_conector.getAPIKey()
-    else:
-        data_conector.log('Alert', 'Request to API > access endpoint.')
-        responseData = FOUR_O_ONE
-
-    response = app.response_class(
-        response=json.dumps(responseData),
-        status=200,
-        mimetype='application/json'
-    )
-    return response
-
-
-@app.route("/api/settings/<operation>", methods=['GET', 'POST'])
-@app.route("/api/settings/<operation>/", methods=['GET', 'POST'])
-@app.route("/api/settings/<operation>/<value>", methods=['GET', 'POST'])
-@app.route("/api/settings/<operation>/<value>/", methods=['GET', 'POST'])
-def apiSettings(operation="", value=''):
-
-    accessLevel = checkAccessLevel(request.headers)
-
-    if accessLevel >= 100:
-        if operation == 'update':
-            incommingData = request.get_json()
-            data_conector.updateSettings(incommingData)
-            responseData = data_conector.getSettings()
-        elif operation == 'get':
-            responseData = data_conector.getSettings()
-        else:
-            data_conector.log(
-                'Alert', 'Request to API > settings endpoint with bad authentication')
-            responseData = FOUR_O_O
-    elif accessLevel >= 0:
-        if operation == 'domain':
-            if value == '':
-                responseData = {
-                    'error': 'A domain must be given',
-                    'code': 400,
-                    'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
-                }
-            else:
-                return data_conector.setDomain(value)
-    else:
-        data_conector.log(
-            'Alert', 'Request to API > assistant endpoint. The assistant was configured in the past')
-        responseData = FOUR_O_ONE
-
-    response = app.response_class(
-        response=json.dumps(responseData),
-        status=200,
-        mimetype='application/json'
-    )
-    return response
-
-
-@app.route("/api/system/<operation>", methods=['GET', 'POST'])
-@app.route("/api/system/<operation>/", methods=['GET', 'POST'])
-@app.route("/api/system/<operation>/<value>", methods=['GET', 'POST'])
-@app.route("/api/system/<operation>/<value>/", methods=['GET', 'POST'])
-def apiSystem(operation="", value=''):
-
-    accessLevel = checkAccessLevel(request.headers)
-
-    if accessLevel >= 100:
-        if operation == 'upgrade':
-            subprocess.run(["sudo", "sh", "../bash/update.sh"],
-                           stdout=subprocess.PIPE)
-            responseData = TWO_O_O
-        elif operation == 'status':
-
-            # Try to get username and password
-            try:
-                mqttData = data_conector.getMQTT()
-                if not mqttData['user'] == "":
-                    publish.single("homeware/alive", "all", hostname=hostname.MQTT_HOST, auth={
-                                   'username': mqttData['user'], 'password': mqttData['password']})
-                else:
-                    publish.single("homeware/alive", "all",
-                                   hostname=hostname.MQTT_HOST)
-            except:
-                publish.single("homeware/alive", "all", hostname=hostname.MQTT_HOST)
-
+                responseData = tasks
+        except:
             responseData = {
-                'api': {
-                    'enable': True,
-                    'status': 'Running',
-                    'title': 'Homeware API'
-                },
-                'mqtt': {
-                    'enable': True,
-                    'status': 'Stopped',
-                    'title': 'Homeware MQTT'
-                },
-                'tasks': {
-                    'enable': True,
-                    'status': 'Stopped',
-                    'title': 'Homeware Task'
-                },
-                'redis': data_conector.redisStatus()
+                'error': 'Invalid task ID, it must be a integer',
+                'code': 400,
+                'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
             }
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > task > get endpoint with bad authentication')
+        responseData = FOUR_O_ONE
 
-            try:
-                ts = int(time.time())
-                alive = data_conector.getAlive()
-                if (ts - int(alive['mqtt'])) < 10:
-                    responseData['mqtt']['status'] = "Running"
-                if (ts - int(alive['tasks'])) < 10:
-                    responseData['tasks']['status'] = "Running"
-            except:
-                print("homewareMQTT stopped")
-        elif operation == 'restart':
-            subprocess.run(["sudo", "sh", "../bash/restart.sh"],
-                           stdout=subprocess.PIPE)
-            responseData = TWO_O_O
-        elif operation == 'reboot':
-            subprocess.run(["sudo", "reboot"],  stdout=subprocess.PIPE)
-            responseData = TWO_O_O
-        elif operation == 'shutdown':
-            subprocess.run(["sudo", "poweroff"],  stdout=subprocess.PIPE)
-            responseData = TWO_O_O
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/global/version", methods=['GET'])
+@app.route("/api/global/version/", methods=['GET'])
+def apiGlobalVersion():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        responseData = data_conector.getVersion()
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > global > version endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/global/get", methods=['GET'])
+@app.route("/api/global/get/", methods=['GET'])
+def apiGlobalGet():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        responseData = data_conector.getGlobal()
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > global > get endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/user/password", methods=['POST'])
+@app.route("/api/user/password/", methods=['POST'])
+def apiUserPassword():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 10:
+        return data_conector.updatePassword(request.get_json())
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > user > password endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/user/set", methods=['POST'])
+@app.route("/api/user/set/", methods=['POST'])
+def apiUserSet():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 0:
+        return data_conector.setUser(request.get_json())
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > user > set endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/user/login", methods=['GET'])
+@app.route("/api/user/login/", methods=['GET'])
+def apiUserLogin():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 0:
+        responseData = data_conector.login(request.headers)
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > user > login endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/user/validateToken", methods=['GET'])
+@app.route("/api/user/validateToken/", methods=['GET'])
+def apiUserValidateToken():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 0:
+        responseData = data_conector.validateUserToken(request.headers)
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > user > validate token endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/user/googleSync", methods=['GET'])
+@app.route("/api/user/googleSync/", methods=['GET'])
+def apiUserGoogleSync():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 0:
+        return data_conector.googleSync(request.headers, responseURL)
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > user > google sync endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/access/create", methods=['POST'])
+@app.route("/api/access/create/", methods=['POST'])
+def apiAccessCreate():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 100:
+        data_conector.log('Warning', 'An API Key has been regenerated')
+        responseData = data_conector.generateAPIKey()
+    else:
+        data_conector.log('Alert', 'Request to API > access > create endpoint.')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/access/get", methods=['GET'])
+@app.route("/api/access/get/", methods=['GET'])
+def apiAccessGet():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 100:
+        responseData = data_conector.getAPIKey()
+    else:
+        data_conector.log('Alert', 'Request to API > access > get endpoint.')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/settings/update", methods=['POST'])
+@app.route("/api/settings/update/", methods=['POST'])
+def apiSettingsUpdate():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 100:
+        incommingData = request.get_json()
+        data_conector.updateSettings(incommingData)
+        responseData = data_conector.getSettings()
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > settings > update endpoint.')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/settings/get", methods=['GET'])
+@app.route("/api/settings/get/", methods=['GET'])
+def apiSettingsGet():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 100:
+        responseData = data_conector.getSettings()
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > settings > get endpoint.')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route("/api/settings/domain/<value>", methods=['POST'])
+@app.route("/api/settings/domain/<value>/", methods=['POST'])
+def apiSettingsDomain(value=''):
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 0:
+        if value == '':
+            responseData = {
+                'error': 'A domain must be given',
+                'code': 400,
+                'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
+            }
         else:
-            responseData = FOUR_O_O
+            return data_conector.setDomain(value)            
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > settings > domain endpoint.')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+
+@app.route("/api/system/status", methods=['GET'])
+@app.route("/api/system/status/", methods=['GET'])
+def apiSystemStatus():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 100:
+        # Try to get username and password
+        try:
+            mqttData = data_conector.getMQTT()
+            if not mqttData['user'] == "":
+                publish.single("homeware/alive", "all", hostname=hostname.MQTT_HOST, auth={
+                                'username': mqttData['user'], 'password': mqttData['password']})
+            else:
+                publish.single("homeware/alive", "all",
+                                hostname=hostname.MQTT_HOST)
+        except:
+            publish.single("homeware/alive", "all", hostname=hostname.MQTT_HOST)
+
+        responseData = {
+            'api': {
+                'enable': True,
+                'status': 'Running',
+                'title': 'Homeware API'
+            },
+            'mqtt': {
+                'enable': True,
+                'status': 'Stopped',
+                'title': 'Homeware MQTT'
+            },
+            'tasks': {
+                'enable': True,
+                'status': 'Stopped',
+                'title': 'Homeware Task'
+            },
+            'redis': data_conector.redisStatus()
+        }
+
+        try:
+            ts = int(time.time())
+            alive = data_conector.getAlive()
+            if (ts - int(alive['mqtt'])) < 10:
+                responseData['mqtt']['status'] = "Running"
+            if (ts - int(alive['tasks'])) < 10:
+                responseData['tasks']['status'] = "Running"
+        except:
+            print("homewareMQTT stopped")
     else:
         data_conector.log(
             'Alert', 'Request to API > system endpoint with bad authentication')
@@ -437,24 +642,17 @@ def apiSystem(operation="", value=''):
     )
     return response
 
-@app.route("/api/log/<operation>", methods=['GET', 'POST'])
-@app.route("/api/log/<operation>/", methods=['GET', 'POST'])
-@app.route("/api/log/<operation>/<value>", methods=['GET', 'POST'])
-@app.route("/api/log/<operation>/<value>/", methods=['GET', 'POST'])
-def apiLog(operation="", value=''):
+@app.route("/api/log/get", methods=['GET'])
+@app.route("/api/log/get/", methods=['GET'])
+def apiLogGet():
 
     accessLevel = checkAccessLevel(request.headers)
 
     if accessLevel >= 100:
-        if operation == 'get':
-            responseData = data_conector.getLog()
-        elif operation == 'alert':
-            responseData = data_conector.isThereAnAlert()
-        else:
-            responseData = FOUR_O_O
+        responseData = data_conector.getLog()
     else:
         data_conector.log(
-            'Alert', 'Request to API > log endpoint with bad authentication')
+            'Alert', 'Request to API > log > get endpoint with bad authentication')
         responseData = FOUR_O_ONE
 
     response = app.response_class(
@@ -464,14 +662,31 @@ def apiLog(operation="", value=''):
     )
     return response
 
+@app.route("/api/log/alert", methods=['GET'])
+@app.route("/api/log/alert/", methods=['GET'])
+def apiLogAlert():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 100:
+        responseData = data_conector.isThereAnAlert()
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > log > alert endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
 
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Files operation
-
-
 @app.route("/files/<operation>/<file>/<token>/", methods=['GET', 'POST'])
 def files(operation='', file='', token=''):
     # Get the access_token
@@ -573,8 +788,6 @@ def tokenGenerator(agent, type):
         return 'Something goes wrong'
 
 # Auth endpoint
-
-
 @app.route("/auth")
 @app.route("/auth/")
 def auth():
@@ -598,8 +811,6 @@ def auth():
         return 'Algo ha ido mal en la autorización'
 
 # Token's endpoint
-
-
 @app.route('/token', methods=['GET', 'POST'])
 @app.route('/token/', methods=['GET', 'POST'])
 def token():
@@ -662,8 +873,6 @@ def token():
         return response
 
 # Google's endpoint
-
-
 @app.route("/smarthome", methods=['POST'])
 @app.route("/smarthome/", methods=['POST'])
 def smarthome():
@@ -777,8 +986,6 @@ def smarthome():
         return "A"
 
 # Clock endpoint
-
-
 @app.route("/api/clock")
 @app.route("/api/clock/")
 def clock():

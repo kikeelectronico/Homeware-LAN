@@ -109,12 +109,6 @@ class System extends React.Component {
                       <div>
                         <b>Available version:</b> {this.props.git.version}
                         <h3>
-                          Attention to <span style={{color: 'red'}}> non Docker installations</span>
-                        </h3>
-                        <p>
-                          If your are not using Docker on your Homeware installation, please <a target="_blank" rel="noreferrer" href="https://kikeelectronico.github.io/Homeware-LAN/docs/install">reinstall Homeware</a>.
-                        </p>
-                        <h3>
                           How to update?
                         </h3>
                         <p>Run 'docker-compose pull' and then 'docker-compose up -d' in your host machine.</p>
