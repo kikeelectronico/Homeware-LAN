@@ -19,7 +19,7 @@ class Data:
 	"""Access to the Homeware database and files."""
   
 
-	version = 'v1.6.4'
+	version = 'v1.7'
 	homewareFile = 'homeware.json'
 	apikey = ''
 	userToken = ''
