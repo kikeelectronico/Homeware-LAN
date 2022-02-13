@@ -39,10 +39,12 @@ class Data:
 			self.log('Warning','The database must be created')
 			try:
 				self.load()
+				self.redis.set("fast_status", "true")
 				self.log('Warning','Using a provided homeware file')
 			except:
 				subprocess.run(["cp", "../configuration_templates/template_homeware.json", "../homeware.json"],  stdout=subprocess.PIPE)
 				self.load()
+				self.redis.set("fast_status", "true")
 				self.log('Warning','Using a template homeware file')
 
 			self.redis.set("transfer", "true");
