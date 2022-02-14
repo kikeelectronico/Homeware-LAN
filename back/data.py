@@ -31,7 +31,7 @@ class Data:
 
 	def __init__(self):
 		print("test here")
-		# self.redis = redis.Redis(hostname.REDIS_HOST, hostname.REDIS_PORT)
+		self.redis = redis.Redis(hostname.REDIS_HOST, hostname.REDIS_PORT)
 		self.verbose = False
 
 		# if not self.redis.get('transfer'):
