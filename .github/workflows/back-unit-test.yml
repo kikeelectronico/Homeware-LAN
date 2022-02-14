@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         redis-version: [6]
-        python-version: [3.8]
+        python-version: [3.7]
         mosquitto-version: [2.0]
     steps:
       - uses: actions/checkout@v1
