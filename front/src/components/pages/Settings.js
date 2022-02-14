@@ -17,6 +17,7 @@ class Settings extends React.Component {
         apikey: "",
         sync_google: false,
         sync_devices: false,
+        log: {}
       },
       url: {
         auth: "",
@@ -39,6 +40,7 @@ class Settings extends React.Component {
         if (http.readyState === 4) {
           if (http.status === 200) {
             var data = JSON.parse(http.responseText);
+            console.log(data);
             this.setState({
               settings: data,
               url: {
@@ -79,6 +81,7 @@ class Settings extends React.Component {
     this.setState({
       settings: settings,
     });
+    console.log(this.state.settings)
   }
 
   enableSyncGoogle(checked) {
@@ -440,6 +443,37 @@ class Settings extends React.Component {
             </span>
           </div>
         </div>
+
+        <div className="page_block_container">
+          <h2>Log settings</h2>
+          <hr />
+          <div className="page_block_content_container">
+            <div className="two_table_row">
+              <div className="two_table_cel">Days to save</div>
+              <div className="two_table_cel">
+                <input
+                  type="number"
+                  min="0"
+                  className="two_input"
+                  id="log/days"
+                  defaultValue={this.state.settings.log.days}
+                  onChange={this.update}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="page_block_buttons_container">
+            <button type="button" onClick={this.save}>
+              Save
+            </button>
+          </div>
+          <div className="advise">
+            <span>
+              Homeware will save the log for the last {this.state.settings.log.days} days. It is no recommended to use a large number. Set 0 to disable this function.
+            </span>
+          </div>
+        </div>
+
         <ToastsContainer store={ToastsStore} />
       </div>
     );
