@@ -150,6 +150,8 @@ def apiDevicesDelete(value=''):
     )
     return response
 
+@app.route("/api/devices/get", methods=['GET'])
+@app.route("/api/devices/get/", methods=['GET'])
 @app.route("/api/devices/get/<value>", methods=['GET'])
 @app.route("/api/devices/get/<value>/", methods=['GET'])
 def apiDevicesGet(value=''):
@@ -204,6 +206,8 @@ def apiStatusUpdate():
     )
     return response
 
+@app.route("/api/status/get", methods=['GET'])
+@app.route("/api/status/get/", methods=['GET'])
 @app.route("/api/status/get/<value>", methods=['GET'])
 @app.route("/api/status/get/<value>/", methods=['GET'])
 def apiStatusGet(value=''):
@@ -300,6 +304,8 @@ def apiTasksDelete(value=''):
     )
     return response
 
+@app.route("/api/tasks/get", methods=['GET'])
+@app.route("/api/tasks/get/", methods=['GET'])
 @app.route("/api/tasks/get/<value>", methods=['GET'])
 @app.route("/api/tasks/get/<value>/", methods=['GET'])
 def apiTasksGet(value=''):
