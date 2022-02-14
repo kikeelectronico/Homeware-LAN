@@ -75,43 +75,43 @@ class Test_tasks(unittest.TestCase):
 		verifyTasks()
 		self.assertTrue(data.getStatus()['light003']['on'])
 
-	# def test_operationExecutor(self):
-	# 	triggers = {
-	# 	  "trigger": {
-	# 		"type": "or",
-	# 		"parent": "triggers",
-	# 		"operation": [
-	# 		  1594745594679
-	# 		]
-	# 	  },
-	# 	  "1594745594679": {
-	# 		"type": "and",
-	# 		"parent": "trigger",
-	# 		"operation": [
-	# 		  "1594745648295",
-	# 		  "1594746507144"
-	# 		]
-	# 	  },
-	# 	  "1594745648295": {
-	# 		"type": "d2b",
-	# 		"parent": "1594745594679",
-	# 		"operation": "light001:on:=:true"
-	# 	  },
-	# 	  "1594746507144": {
-	# 		"type": "d2b",
-	# 		"parent": "1594745594679",
-	# 		"operation": "light002:on:=:true"
-	# 	  }
-	# 	}
-	# 	status = {
-	# 		"light001": {
-	# 			"on": True
-	# 		},
-	# 		"light002": {
-	# 			"on": True
-	# 		}
-	# 	}
-	# 	self.assertTrue(operationExecutor("trigger",triggers,status))
+	def test_operationExecutor(self):
+		triggers = {
+		  "trigger": {
+			"type": "or",
+			"parent": "triggers",
+			"operation": [
+			  1594745594679
+			]
+		  },
+		  "1594745594679": {
+			"type": "and",
+			"parent": "trigger",
+			"operation": [
+			  "1594745648295",
+			  "1594746507144"
+			]
+		  },
+		  "1594745648295": {
+			"type": "d2b",
+			"parent": "1594745594679",
+			"operation": "light001:on:=:true"
+		  },
+		  "1594746507144": {
+			"type": "d2b",
+			"parent": "1594745594679",
+			"operation": "light002:on:=:true"
+		  }
+		}
+		status = {
+			"light001": {
+				"on": True
+			},
+			"light002": {
+				"on": True
+			}
+		}
+		self.assertTrue(operationExecutor("trigger",triggers,status))
 
 	# def test_orExecutor(self):
 	# 	triggers = {
