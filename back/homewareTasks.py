@@ -229,7 +229,7 @@ def syncDevicesStatus():
 					publish.single("device/" + device, json.dumps(devices[device]), hostname=hostname.MQTT_HOST)
 
 			except:
-				publish.multiple("device/" + device, json.dumps(devices[device]), hostname=hostname.MQTT_HOST)
+				data_conector.log('Warning','Param update not sent through MQTT')
 			for param in devices[device].keys():
 				try:
 					mqttData = data_conector.getMQTT()
@@ -239,7 +239,7 @@ def syncDevicesStatus():
 						publish.single("device/" + device + '/'+param, str(devices[device][param]), hostname=hostname.MQTT_HOST)
 
 				except:
-					publish.multiple("device/" + device + '/'+param, str(devices[device][param]), hostname=hostname.MQTT_HOST)
+					data_conector.log('Warning','Param update not sent through MQTT')
 
 def clearLogFile():
 	# Delete at 00:00

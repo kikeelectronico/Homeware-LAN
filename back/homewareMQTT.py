@@ -67,7 +67,7 @@ def control(payload):
 				publish.single("device/"+id, json.dumps(status), hostname=hostname.MQTT_HOST)
 
 		except:
-			publish.multiple("device/"+id, json.dumps(status), hostname=hostname.MQTT_HOST)
+			data_conector.log('Warning','Param update not sent through MQTT')
 		for param in status.keys():
 			try:
 				mqttData = data_conector.getMQTT()
@@ -77,7 +77,7 @@ def control(payload):
 					publish.single("device/"+id+'/'+param, str(status[param]), hostname=hostname.MQTT_HOST)
 
 			except:
-				publish.multiple("device/"+id+'/'+param, str(status[param]), hostname=hostname.MQTT_HOST)
+				data_conector.log('Warning','Param update not sent through MQTT')
 
 if __name__ == "__main__":
 	data_conector.log('Log', 'Starting HomewareMQTT core')
