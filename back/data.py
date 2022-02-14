@@ -117,6 +117,8 @@ class Data:
 				for param in params:
 					self.redis.set("status/" + device + "/" + param, pickle.dumps(status[device][param]))
 
+			self.redis.set("fast_status", "true")
+
 # DEVICES
 
 	def getDevices(self):
