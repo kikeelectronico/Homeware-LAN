@@ -119,7 +119,7 @@ class Test_data(unittest.TestCase):
 			  "manufacturer": "Homeware",
 			  "model": "Homeware Lamp 2.0"
 			},
-			"id": "light002",
+			"id": "light003",
 			"name": {
 			  "defaultNames": [
 				"Lamp"
@@ -142,15 +142,10 @@ class Test_data(unittest.TestCase):
 		}
 		# Crate a new device
 		self.data.createDevice({"device":device,"status":status})
-		# Update the device info
-		device['name']['name'] = 'Diodi'
-		self.assertTrue(self.data.updateDevice({"device": device,"status":status}))
-		devices = self.data.getDevices()
-		name = ''
-		for device in devices:
-			if device['id'] == 'light002':
-				name = device['name']['name']
-		self.assertEqual('Diodi',name)
+		# Update the device status
+		self.assertFalse(self.data.getStatus()['light003']['on'])
+		# self.data.updateParamStatus('light003',"on",True)
+		# self.assertTrue(self.data.getStatus()['light003']['on'])
 
 	# def test_deleteDevice(self):
 	# 	device = {
