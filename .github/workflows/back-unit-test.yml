@@ -20,7 +20,7 @@ jobs:
       matrix:
         redis-version: [6]
         python-version: [3.8]
-        mosquitto-version: [latest]
+        mosquitto-version: [2.0]
     steps:
       - uses: actions/checkout@v1
       - name: Copy database template
