@@ -5,7 +5,6 @@ class Test_data(unittest.TestCase):
 	def setUp(self):
 		self.data = Data()
 
-
 # GLOBAL
 
 	def test_version(self):
@@ -363,41 +362,41 @@ class Test_data(unittest.TestCase):
 		api_key = self.data.generateAPIKey()
 		self.assertEqual(api_key, self.data.getAPIKey())
 
-# #  SETTINGS
+#  SETTINGS
 
-# 	# def test_settings(self):
-# 	# 	settings = {
-# 	# 		"google": {
-# 	# 			"client_id": "hello_world",
-# 	# 			"client_secret": "bye_world"
-# 	# 		},
-# 	# 		"ddns": {
-# 	# 			"username": "hola@rinconingenieril.es",
-# 	# 			"password": "aPassword?",
-# 	# 			"provider": "ddns",
-# 	# 			"hostname": "localhost",
-# 	# 			"enabled": True
-# 	# 		},
-# 	# 		"mqtt": {
-# 	# 			"user": "mqttUser",
-# 	# 			"password": "mqttPassword"
-# 	# 		}
-# 	# 	}
-# 	# 	self.data.updateSettings(settings)
-# 	# 	settings['ddns']['status'] = 'Unknown'
-# 	# 	settings['ddns']['code'] = 'Unknown'
-# 	# 	settings['ddns']['last'] = 'Unknown'
-# 	# 	settings['ddns']['ip'] = 'Unknown'
-# 	# 	self.assertEqual(settings,self.data.getSettings())
+	# def test_settings(self):
+	# 	settings = {
+	# 		"google": {
+	# 			"client_id": "hello_world",
+	# 			"client_secret": "bye_world"
+	# 		},
+	# 		"ddns": {
+	# 			"username": "hola@rinconingenieril.es",
+	# 			"password": "aPassword?",
+	# 			"provider": "ddns",
+	# 			"hostname": "localhost",
+	# 			"enabled": True
+	# 		},
+	# 		"mqtt": {
+	# 			"user": "mqttUser",
+	# 			"password": "mqttPassword"
+	# 		}
+	# 	}
+	# 	self.data.updateSettings(settings)
+	# 	settings['ddns']['status'] = 'Unknown'
+	# 	settings['ddns']['code'] = 'Unknown'
+	# 	settings['ddns']['last'] = 'Unknown'
+	# 	settings['ddns']['ip'] = 'Unknown'
+	# 	self.assertEqual(settings,self.data.getSettings())
 
-# # LOG
+# LOG
 
-# 	# def test_log(self):
-# 	# 	register = ["WarningDeEso","A message with "]
-# 	# 	self.data.log('d','f')
-# 	# 	self.data.log(register[0],register[1])
-# 	# 	self.assertIn(register[0], self.data.getLog()[-1]['severity'])
-# 	# 	self.assertIn(register[1], self.data.getLog()[-1]['message'])
+	# def test_log(self):
+	# 	register = ["WarningDeEso","A message with "]
+	# 	self.data.log('d','f')
+	# 	self.data.log(register[0],register[1])
+	# 	self.assertIn(register[0], self.data.getLog()[-1]['severity'])
+	# 	self.assertIn(register[1], self.data.getLog()[-1]['message'])
 
 
 
