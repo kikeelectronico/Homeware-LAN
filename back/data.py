@@ -194,8 +194,6 @@ class Data:
 
 	def updateParamStatus(self, device, param, value):
 		if len(self.redis.keys('status/' + device + '/' + param)) == 1:
-
-			return True
 			self.redis.set('status/' + device + '/' + param,pickle.dumps(value))
 			# Create the status json
 			params_keys = self.redis.keys('status/' + device + '/*')
@@ -209,15 +207,15 @@ class Data:
 				{'topic': "device/" + device, 'payload': json.dumps(status)}
 			]
 			# Try to get username and password
-			try:
-				mqttData = self.getMQTT()
-				if not mqttData['user'] == "":
-					publish.multiple(msgs, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
-				else:
-					publish.multiple(msgs, hostname=hostname.MQTT_HOST)
+			# try:
+			# 	mqttData = self.getMQTT()
+			# 	if not mqttData['user'] == "":
+			# 		publish.multiple(msgs, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
+			# 	else:
+			# 		publish.multiple(msgs, hostname=hostname.MQTT_HOST)
 
-			except:
-				publish.multiple(msgs, hostname=hostname.MQTT_HOST)
+			# except:
+			# 	publish.multiple(msgs, hostname=hostname.MQTT_HOST)
 
 			# Inform Google HomeGraph
 			if os.path.exists("../files/google.json") and self.sync_google:
