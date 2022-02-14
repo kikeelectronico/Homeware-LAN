@@ -34,6 +34,7 @@ services:
     depends_on:
       - redis
       - mosquitto
+      - homeware-lan-back-api
     volumes:
       - homeware-logs:/app/logs
       - homeware-files:/app/files
@@ -50,6 +51,7 @@ services:
     depends_on:
       - redis
       - mosquitto
+      - homeware-lan-back-api
     volumes:
       - homeware-logs:/app/logs
       - homeware-files:/app/files
