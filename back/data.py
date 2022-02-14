@@ -193,8 +193,9 @@ class Data:
 		return status
 
 	def updateParamStatus(self, device, param, value):
-		return True
 		if len(self.redis.keys('status/' + device + '/' + param)) == 1:
+
+			return True
 			self.redis.set('status/' + device + '/' + param,pickle.dumps(value))
 			# Create the status json
 			params_keys = self.redis.keys('status/' + device + '/*')
