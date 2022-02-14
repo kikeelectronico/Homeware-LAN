@@ -1,7 +1,6 @@
 import unittest
 from data import Data
 
-
 class Test_data(unittest.TestCase):
 	def setUp(self):
 		print("set up")

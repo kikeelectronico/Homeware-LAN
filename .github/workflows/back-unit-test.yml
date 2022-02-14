@@ -25,6 +25,10 @@ jobs:
       - uses: actions/checkout@v1
       - name: Copy database template
         run: cp configuration_templates/template_homeware.json homeware.json
+      - name: Create directories
+        run: |
+          mkdir logs
+          mkdir files
       - name: Start Redis ${{ matrix.redis-version }}
         uses: supercharge/redis-github-action@1.1.0
         with:
@@ -40,8 +44,6 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
         working-directory: ./back
-      - name: Create directories
-        run: mkdir logs && mkdir files
       - name: Test
         run: python -m unittest discover
         working-directory: ./back
