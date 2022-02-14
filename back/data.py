@@ -64,6 +64,12 @@ class Data:
 			secure['sync_devices'] = False
 			self.sync_devices = False
 			self.redis.set('secure',json.dumps(secure))
+		try:
+			self.sync_devices = secure['log']
+		except:
+			secure['log'] = {}
+			secure['log']['days'] = 30
+			self.redis.set('secure',json.dumps(secure))
 
 		if not os.path.exists("../files"):
 				os.mkdir("../files")
@@ -423,8 +429,10 @@ class Data:
 			},
 			"ddns": secure['ddns'],
 			"sync_google": secure['sync_google'],
-			"sync_devices": secure['sync_devices']
+			"sync_devices": secure['sync_devices'],
+			"log": secure['log']
 		}
+		print(secure['log'])
 		try:
 			data['mqtt'] = secure['mqtt']
 		except:
@@ -448,6 +456,7 @@ class Data:
 		secure['mqtt']['password'] = incommingData['mqtt']['password']
 		secure['sync_google'] = incommingData['sync_google']
 		secure['sync_devices'] = incommingData['sync_devices']
+		secure['log'] = incommingData['log']
 
 		self.redis.set('secure',json.dumps(secure))
 
@@ -555,8 +564,11 @@ class Data:
 
 		return log
 
-	def deleteLog(self, days: int):
+	def deleteLog(self):
 		log = []
+		# Get the days to delete
+		secure = json.loads(self.redis.get('secure'))
+		days = int(secure['log']['days'])
 		# Load the log file
 		log_file = open("../logs/homeware.log","r")
 		registers = log_file.readlines()
