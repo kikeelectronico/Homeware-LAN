@@ -40,7 +40,6 @@ class Settings extends React.Component {
         if (http.readyState === 4) {
           if (http.status === 200) {
             var data = JSON.parse(http.responseText);
-            console.log(data);
             this.setState({
               settings: data,
               url: {
@@ -81,7 +80,6 @@ class Settings extends React.Component {
     this.setState({
       settings: settings,
     });
-    console.log(this.state.settings)
   }
 
   enableSyncGoogle(checked) {

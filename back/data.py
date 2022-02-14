@@ -432,7 +432,6 @@ class Data:
 			"sync_devices": secure['sync_devices'],
 			"log": secure['log']
 		}
-		print(secure['log'])
 		try:
 			data['mqtt'] = secure['mqtt']
 		except:
