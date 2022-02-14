@@ -63,7 +63,7 @@ class Data:
 
 		if not os.path.exists("../logs"):
 				os.mkdir("../logs")
-
+ 
 		# if self.redis.get("fast_status") == None:
 		# 	status = json.loads(self.redis.get('status'))
 		# 	devices = status.keys()
