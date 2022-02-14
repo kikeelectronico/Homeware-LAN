@@ -242,14 +242,12 @@ def syncDevicesStatus():
 					publish.multiple("device/" + device + '/'+param, str(devices[device][param]), hostname=hostname.MQTT_HOST)
 
 def clearLogFile():
-	# Maybe this should be set from the settings page
-	DAYS = 90
 	# Delete at 00:00
 	now = datetime.now()
 	hour = now.hour
 	minute = now.minute
-	if hour == 00 and minute == 00:
-		data_conector.deleteLog(DAYS)
+	if hour == 0 and minute == 0:
+		data_conector.deleteLog()
 
 if __name__ == "__main__":
 	data_conector.log('Log', 'Starting HomewareTask core')
