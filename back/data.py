@@ -207,15 +207,15 @@ class Data:
 				{'topic': "device/" + device, 'payload': json.dumps(status)}
 			]
 			# Try to get username and password
-			# try:
-			# 	mqttData = self.getMQTT()
-			# 	if not mqttData['user'] == "":
-			# 		publish.multiple(msgs, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
-			# 	else:
-			# 		publish.multiple(msgs, hostname=hostname.MQTT_HOST)
+			try:
+				mqttData = self.getMQTT()
+				if not mqttData['user'] == "":
+					publish.multiple(msgs, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
+				else:
+					publish.multiple(msgs, hostname=hostname.MQTT_HOST)
 
-			# except:
-			# 	publish.multiple(msgs, hostname=hostname.MQTT_HOST)
+			except:
+				self.log('Warning','Param update not sent through MQTT')
 
 			# Inform Google HomeGraph
 			if os.path.exists("../files/google.json") and self.sync_google:
