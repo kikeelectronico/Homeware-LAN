@@ -28,10 +28,10 @@ jobs:
         with:
           redis-version: ${{ matrix.redis-version }}
       - name: Start Mosquitto broker
-        uses: Namoshek/mosquitto-github-action@v0.1.0
+        uses: Namoshek/mosquitto-github-action@v1
         with:
           version: ${{ matrix.mosquitto-version }}
-          ports: '1883:1883 8883:8883'
+          ports: '1883:1883'
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
