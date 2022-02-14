@@ -30,7 +30,6 @@ class Data:
 
 
 	def __init__(self):
-		print("test here")
 
 		if not os.path.exists("../files"):
 				os.mkdir("../files")

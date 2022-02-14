@@ -3,11 +3,7 @@ from data import Data
 
 class Test_data(unittest.TestCase):
 	def setUp(self):
-		print("hello Test")
 		self.data = Data()
-
-	def test_boolean(self):
-		self.assertEqual(True, True)
 
 
 # GLOBAL
@@ -15,13 +11,13 @@ class Test_data(unittest.TestCase):
 	def test_version(self):
 		self.assertEqual('v', self.data.getVersion()['version'][0])
 
-	# def test_redisStatus(self):
-	# 	response = {
-	# 		'enable': True,
-	# 		'status': 'Running',
-	# 		'title': 'Redis database'
-	# 	}
-	# 	self.assertEqual(response, self.data.redisStatus())
+	def test_redisStatus(self):
+		response = {
+			'enable': True,
+			'status': 'Running',
+			'title': 'Redis database'
+		}
+		self.assertEqual(response, self.data.redisStatus())
 
 # # DEVICES
 
