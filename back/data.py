@@ -58,11 +58,11 @@ class Data:
 		if self.redis.get("alert") == None:
 			self.redis.set("alert","clear")
 
-		# if not os.path.exists("../files"):
-		# 		os.mkdir("../files")
+		if not os.path.exists("../files"):
+				os.mkdir("../files")
 
-		# if not os.path.exists("../logs"):
-		# 		os.mkdir("../logs")
+		if not os.path.exists("../logs"):
+				os.mkdir("../logs")
 
 		# if self.redis.get("fast_status") == None:
 		# 	status = json.loads(self.redis.get('status'))
