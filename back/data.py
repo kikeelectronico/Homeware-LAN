@@ -31,6 +31,16 @@ class Data:
 
 	def __init__(self):
 		print("test here")
+
+		if self.redis.get("alert") == None:
+			self.redis.set("alert","clear")
+
+		if not os.path.exists("../files"):
+				os.mkdir("../files")
+
+		if not os.path.exists("../logs"):
+				os.mkdir("../logs")
+
 		self.redis = redis.Redis(hostname.REDIS_HOST, hostname.REDIS_PORT)
 		self.verbose = False
 
@@ -54,15 +64,6 @@ class Data:
 				self.redis.set("fast_status", "true")
 
 			self.redis.set("transfer", "true")
-
-		if self.redis.get("alert") == None:
-			self.redis.set("alert","clear")
-
-		if not os.path.exists("../files"):
-				os.mkdir("../files")
-
-		if not os.path.exists("../logs"):
-				os.mkdir("../logs")
  
 		# if self.redis.get("fast_status") == None:
 		# 	status = json.loads(self.redis.get('status'))
