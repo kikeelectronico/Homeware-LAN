@@ -45,5 +45,5 @@ jobs:
         run: pip install -r requirements.txt
         working-directory: ./back
       - name: Test
-        run: python test.py
+        run: python test_data.py
         working-directory: ./back
