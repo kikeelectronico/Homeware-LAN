@@ -25,8 +25,6 @@ class Data:
 	userToken = ''
 	userName = ''
 	domain = ''
-	sync_google = False
-	sync_devices = False
 
 
 	def __init__(self):
@@ -100,9 +98,9 @@ class Data:
 		# Load some data into memory
 		secure = json.loads(self.redis.get('secure'))
 		self.userName = secure['user']
-		self.userToken = self.redis.get("token/front")
-		self.apikey = self.redis.get("token/apikey")
 		self.domain = secure['domain']
+		self.sync_google = False
+		self.sync_devices = False
 
 
 	def getVersion(self):
@@ -361,7 +359,6 @@ class Data:
 			self.log('Log',user + ' has login')
 
 			self.userName = user
-			self.userToken = token
 		else:
 			#Prepare the response
 			responseData = {
@@ -378,7 +375,7 @@ class Data:
 		# secure = json.loads(self.redis.get('secure'))
 
 		responseData = {}
-		if user == self.userName and token == self.userToken:
+		if user == self.userName and token == self.redis.get("token/front"):
 			responseData = {
 				'status': 'in'
 			}
@@ -424,7 +421,6 @@ class Data:
 		#secure['token']['apikey'] = token
 		#self.redis.set('secure',json.dumps(secure))
 		self.redis.set("token/apikey", token)
-		self.apikey = token
 		data = {
 			"apikey": token
 		}
@@ -433,9 +429,9 @@ class Data:
 
 	def getToken(self,agent,type,subtype):
 		if agent == 'front':
-			return self.userToken
+			return self.redis.get("token/front")
 		elif agent == 'apikey':
-			return self.apikey
+			return self.redis.get("token/apikey")
 		elif type == 'client_id':
 			return self.redis.get("token/google/client_id")
 		elif type == 'client_secret':
