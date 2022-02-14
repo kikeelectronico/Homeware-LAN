@@ -398,21 +398,7 @@ def apiUserPassword():
 @app.route("/api/user/set/", methods=['POST'])
 def apiUserSet():
 
-    accessLevel = checkAccessLevel(request.headers)
-
-    if accessLevel >= 0:
-        return data_conector.setUser(request.get_json())
-    else:
-        data_conector.log(
-            'Alert', 'Request to API > user > set endpoint with bad authentication')
-        responseData = FOUR_O_ONE
-
-    response = app.response_class(
-        response=json.dumps(responseData),
-        status=200,
-        mimetype='application/json'
-    )
-    return response
+    return "Deprecated function"
 
 @app.route("/api/user/login", methods=['GET'])
 @app.route("/api/user/login/", methods=['GET'])
@@ -559,29 +545,7 @@ def apiSettingsGet():
 @app.route("/api/settings/domain/<value>/", methods=['POST'])
 def apiSettingsDomain(value=''):
 
-    accessLevel = checkAccessLevel(request.headers)
-
-    if accessLevel >= 0:
-        if value == '':
-            responseData = {
-                'error': 'A domain must be given',
-                'code': 400,
-                'note': 'See the documentation https://kikeelectronico.github.io/Homeware-LAN/api/'
-            }
-        else:
-            return data_conector.setDomain(value)            
-    else:
-        data_conector.log(
-            'Alert', 'Request to API > settings > domain endpoint.')
-        responseData = FOUR_O_ONE
-
-    response = app.response_class(
-        response=json.dumps(responseData),
-        status=200,
-        mimetype='application/json'
-    )
-    return response
-
+    return "Deprecated function"
 
 @app.route("/api/system/status", methods=['GET'])
 @app.route("/api/system/status/", methods=['GET'])

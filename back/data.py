@@ -1,5 +1,6 @@
 import json
 from os import stat
+import os
 import random
 import bcrypt
 import redis
@@ -37,13 +38,21 @@ class Data:
 			self.log('Warning','The database must be created')
 			try:
 				self.load()
-				self.redis.set("fast_status", "true")
 				self.log('Warning','Using a provided homeware file')
 			except:
 				subprocess.run(["cp", "../configuration_templates/template_homeware.json", "../homeware.json"],  stdout=subprocess.PIPE)
 				self.load()
-				self.redis.set("fast_status", "true")
+				self.log('Warning','Copying the template homeware file')
 				self.log('Warning','Using a template homeware file')
+			finally:
+				secure = json.loads(self.redis.get('secure'))
+				secure['domain'] = os.environ.get("DOMAIN", "localhost")
+				secure['ddns']['hostname'] = os.environ.get("DOMAIN", "localhost")
+				secure['user'] = os.environ.get("HOMEWARE_USER", "admin")
+				secure['pass'] = str(bcrypt.hashpw(os.environ.get("HOMEWARE_PASSWORD", "admin").encode('utf-8'), bcrypt.gensalt()))
+				self.redis.set('secure',json.dumps(secure))
+				self.redis.set("fast_status", "true")
+
 
 			self.redis.set("transfer", "true");
 
@@ -276,17 +285,6 @@ class Data:
 
 # USER
 
-	def setUser(self, incommingData):
-		if json.loads(self.redis.get('secure'))['user'] == '':
-			data = {}
-			secure = json.loads(self.redis.get('secure'))
-			secure['user'] = incommingData['user']
-			secure['pass'] = str(bcrypt.hashpw(incommingData['pass'].encode('utf-8'), bcrypt.gensalt()))
-			self.redis.set('secure',json.dumps(secure))
-			return '\r\nSaved correctly!\r\n\r\n'
-		else:
-			return '\r\nYour user has been set in the past\r\n\r\n'
-
 	def updatePassword(self, incommingData):
 		secure = json.loads(self.redis.get('secure'))
 		password = incommingData['pass']
@@ -464,16 +462,6 @@ class Data:
 
 		self.sync_google = incommingData['sync_google']
 		self.sync_devices = incommingData['sync_devices']
-
-	def setDomain(self, value):
-		if json.loads(self.redis.get('secure'))['domain'] == '':
-			secure = json.loads(self.redis.get('secure'))
-			secure['domain'] = value
-			secure['ddns']['hostname'] = value
-			self.redis.set('secure',json.dumps(secure))
-			return '\r\nSaved correctly!\r\n\r\n'
-		else:
-			return '\r\nYour domain has been set in the past\r\n\r\n'
 
 	def setSyncDevices(self, value):
 		secure = json.loads(self.redis.get('secure'))
