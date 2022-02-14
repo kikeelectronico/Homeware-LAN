@@ -89,6 +89,12 @@ class Data:
 			self.redis.set("token/google/authorization_code/value", token['google']['authorization_code']['value'])
 			self.redis.set("token/google/authorization_code/timestamp", token['google']['authorization_code']['timestamp'])
 			self.redis.set("fast_token", "true")
+
+		if self.redis.get("fast_mqtt") == None:
+			mqtt = json.loads(self.redis.get('secure'))['mqtt']
+			self.redis.set("mqtt/user", mqtt['user'])
+			self.redis.set("mqtt/password", mqtt['password'])
+			self.redis.set("fast_mqtt", "true")
 		# End
 
 		# Load some data into memory
@@ -150,6 +156,12 @@ class Data:
 			self.redis.set("token/google/authorization_code/timestamp", token['google']['authorization_code']['timestamp'])
 
 			self.redis.set("fast_token", "true")
+
+			mqtt = data['secure']['mqtt']
+			self.redis.set("mqtt/user", mqtt['user'])
+			self.redis.set("mqtt/password", mqtt['password'])
+			self.redis.set("fast_mqtt", "true")
+		# End
 
 
 
@@ -449,12 +461,12 @@ class Data:
 			"ddns": secure['ddns'],
 			"sync_google": secure['sync_google'],
 			"sync_devices": secure['sync_devices'],
-			"log": secure['log']
+			"log": secure['log'],
+			"mqtt": {
+				"user": self.redis.get('mqtt/user'),
+				"password": self.redis.get('mqtt/password'),
+			}
 		}
-		try:
-			data['mqtt'] = secure['mqtt']
-		except:
-			data['mqtt'] = {"user":"","password":""}
 
 
 		return data
@@ -467,9 +479,6 @@ class Data:
 		secure['ddns']['provider'] = incommingData['ddns']['provider']
 		secure['ddns']['hostname'] = incommingData['ddns']['hostname']
 		secure['ddns']['enabled'] = incommingData['ddns']['enabled']
-		secure['mqtt'] = {}
-		secure['mqtt']['user'] = incommingData['mqtt']['user']
-		secure['mqtt']['password'] = incommingData['mqtt']['password']
 		secure['sync_google'] = incommingData['sync_google']
 		secure['sync_devices'] = incommingData['sync_devices']
 		secure['log'] = incommingData['log']
@@ -477,6 +486,8 @@ class Data:
 		self.redis.set('secure',json.dumps(secure))
 		self.redis.set("token/google/client_id",incommingData['google']['client_id'])
 		self.redis.set("token/google/client_secret",incommingData['google']['client_secret'])
+		self.redis.set("mqtt/user",incommingData['mqtt']['user'])
+		self.redis.set("mqtt/password",incommingData['mqtt']['password'])
 
 		self.sync_google = incommingData['sync_google']
 		self.sync_devices = incommingData['sync_devices']
@@ -494,7 +505,10 @@ class Data:
 # SYSTEM
 
 	def getMQTT(self):
-		return json.loads(self.redis.get('secure'))['mqtt']
+		return {
+				"user": self.redis.get('mqtt/user'),
+				"password": self.redis.get('mqtt/password'),
+			}
 
 	def getDDNS(self):
 		return json.loads(self.redis.get('secure'))['ddns']
