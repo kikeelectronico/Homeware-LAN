@@ -53,33 +53,10 @@ class Data:
 				self.redis.set('secure',json.dumps(secure))
 				self.redis.set("fast_status", "true")
 
-			self.redis.set("transfer", "true");
+			self.redis.set("transfer", "true")
 
-		# if self.redis.get("tasks") == None:
-		# 	self.redis.set("tasks","[]")
-
-		# if self.redis.get("alert") == None:
-		# 	self.redis.set("alert","clear")
-
-		# secure = json.loads(self.redis.get('secure'))
-		# try:
-		# 	self.sync_google = secure['sync_google']
-		# except:
-		# 	secure['sync_google'] = False
-		# 	self.sync_google = False
-		# 	self.redis.set('secure',json.dumps(secure))
-		# try:
-		# 	self.sync_devices = secure['sync_devices']
-		# except:
-		# 	secure['sync_devices'] = False
-		# 	self.sync_devices = False
-		# 	self.redis.set('secure',json.dumps(secure))
-		# try:
-		# 	self.sync_devices = secure['log']
-		# except:
-		# 	secure['log'] = {}
-		# 	secure['log']['days'] = 30
-		# 	self.redis.set('secure',json.dumps(secure))
+		if self.redis.get("alert") == None:
+			self.redis.set("alert","clear")
 
 		# if not os.path.exists("../files"):
 		# 		os.mkdir("../files")
