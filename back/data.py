@@ -53,7 +53,6 @@ class Data:
 				self.redis.set('secure',json.dumps(secure))
 				self.redis.set("fast_status", "true")
 
-
 			self.redis.set("transfer", "true");
 
 		if self.redis.get("tasks") == None:
