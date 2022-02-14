@@ -46,8 +46,8 @@ class Data:
 				self.log('Warning','Using a template homeware file')
 			finally:
 				secure = json.loads(self.redis.get('secure'))
-				secure['domain'] = os.environ.get("DOMAIN", "localhost")
-				secure['ddns']['hostname'] = os.environ.get("DOMAIN", "localhost")
+				secure['domain'] = os.environ.get("HOMEWARE_DOMAIN", "localhost")
+				secure['ddns']['hostname'] = os.environ.get("HOMEWARE_DOMAIN", "localhost")
 				secure['user'] = os.environ.get("HOMEWARE_USER", "admin")
 				secure['pass'] = str(bcrypt.hashpw(os.environ.get("HOMEWARE_PASSWORD", "admin").encode('utf-8'), bcrypt.gensalt()))
 				self.redis.set('secure',json.dumps(secure))

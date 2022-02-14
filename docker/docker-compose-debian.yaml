@@ -12,7 +12,7 @@ services:
       - MQTT_HOST=mosquitto
       - HOMEWARE_USER=${HOMEWARE_USER}
       - HOMEWARE_PASSWORD=${HOMEWARE_PASSWORD}
-      - HOMEWARE_HOST=${DOMAIN}
+      - HOMEWARE_DOMAIN=${DOMAIN}
     expose:
       - "5001"
     depends_on:
