@@ -78,8 +78,8 @@
       "password": ""
     },
     "mqtt": {
-      "user": "mosquitto",
-      "password": "homewarelan123"
+      "user": "",
+      "password": ""
     },
     "sync_google": false,
     "sync_devices": false

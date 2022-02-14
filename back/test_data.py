@@ -144,7 +144,7 @@ class Test_data(unittest.TestCase):
 		# Update the device status
 		self.assertFalse(self.data.getStatus()['light003']['on'])
 		self.assertTrue(self.data.updateParamStatus('light003',"on",True))
-		# self.assertTrue(self.data.getStatus()['light003']['on'])
+		self.assertTrue(self.data.getStatus()['light003']['on'])
 
 	def test_deleteDevice(self):
 		device = {
