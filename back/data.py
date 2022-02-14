@@ -34,26 +34,26 @@ class Data:
 		self.redis = redis.Redis(hostname.REDIS_HOST, hostname.REDIS_PORT)
 		self.verbose = False
 
-		# if not self.redis.get('transfer'):
-		# 	self.log('Warning','The database must be created')
-		# 	try:
-		# 		self.load()
-		# 		self.log('Warning','Using a provided homeware file')
-		# 	except:
-		# 		subprocess.run(["cp", "../configuration_templates/template_homeware.json", "../homeware.json"],  stdout=subprocess.PIPE)
-		# 		self.load()
-		# 		self.log('Warning','Copying the template homeware file')
-		# 		self.log('Warning','Using a template homeware file')
-		# 	finally:
-		# 		secure = json.loads(self.redis.get('secure'))
-		# 		secure['domain'] = os.environ.get("HOMEWARE_DOMAIN", "localhost")
-		# 		secure['ddns']['hostname'] = os.environ.get("HOMEWARE_DOMAIN", "localhost")
-		# 		secure['user'] = os.environ.get("HOMEWARE_USER", "admin")
-		# 		secure['pass'] = str(bcrypt.hashpw(os.environ.get("HOMEWARE_PASSWORD", "admin").encode('utf-8'), bcrypt.gensalt()))
-		# 		self.redis.set('secure',json.dumps(secure))
-		# 		self.redis.set("fast_status", "true")
+		if not self.redis.get('transfer'):
+			self.log('Warning','The database must be created')
+			try:
+				self.load()
+				self.log('Warning','Using a provided homeware file')
+			except:
+				subprocess.run(["cp", "../configuration_templates/template_homeware.json", "../homeware.json"],  stdout=subprocess.PIPE)
+				self.load()
+				self.log('Warning','Copying the template homeware file')
+				self.log('Warning','Using a template homeware file')
+			finally:
+				secure = json.loads(self.redis.get('secure'))
+				secure['domain'] = os.environ.get("HOMEWARE_DOMAIN", "localhost")
+				secure['ddns']['hostname'] = os.environ.get("HOMEWARE_DOMAIN", "localhost")
+				secure['user'] = os.environ.get("HOMEWARE_USER", "admin")
+				secure['pass'] = str(bcrypt.hashpw(os.environ.get("HOMEWARE_PASSWORD", "admin").encode('utf-8'), bcrypt.gensalt()))
+				self.redis.set('secure',json.dumps(secure))
+				self.redis.set("fast_status", "true")
 
-		# 	self.redis.set("transfer", "true");
+			self.redis.set("transfer", "true");
 
 		# if self.redis.get("tasks") == None:
 		# 	self.redis.set("tasks","[]")
