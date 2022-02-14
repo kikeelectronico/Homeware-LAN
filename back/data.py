@@ -65,14 +65,14 @@ class Data:
 		if self.redis.get("alert") == None:
 			self.redis.set("alert","clear")
  
-		# if self.redis.get("fast_status") == None:
-		# 	status = json.loads(self.redis.get('status'))
-		# 	devices = status.keys()
-		# 	for device in devices:
-		# 		params = status[device].keys()
-		# 		for param in params:
-		# 			self.redis.set("status/" + device + "/" + param, pickle.dumps(status[device][param]))
-		# 	self.redis.set("fast_status", "true")
+		if self.redis.get("fast_status") == None:
+			status = json.loads(self.redis.get('status'))
+			devices = status.keys()
+			for device in devices:
+				params = status[device].keys()
+				for param in params:
+					self.redis.set("status/" + device + "/" + param, pickle.dumps(status[device][param]))
+			self.redis.set("fast_status", "true")
 
 		# # Load some data into memory
 		# self.userName = secure['user']
