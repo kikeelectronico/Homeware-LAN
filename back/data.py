@@ -75,6 +75,7 @@ class Data:
 			self.redis.set("fast_status", "true")
 
 		# Load some data into memory
+		secure = json.loads(self.redis.get('secure'))
 		self.userName = secure['user']
 		self.userToken = secure['token']['front']
 		self.apikey = secure['token']['apikey']
