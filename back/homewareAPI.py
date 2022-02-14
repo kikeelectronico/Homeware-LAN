@@ -70,8 +70,8 @@ def checkAccessLevel(headers):
     accessLevel = 0
     try:
         authorization = headers['authorization'].split(' ')[1]
-        savedToken = data_conector.getToken('front')
-        savedAPIKey = data_conector.getToken('apikey')
+        savedToken = data_conector.getToken(agent='front')
+        savedAPIKey = data_conector.getToken(agent='apikey')
         if authorization == savedAPIKey:
             accessLevel = 10
         elif authorization == savedToken:
@@ -660,7 +660,7 @@ def allowed_file(filename):
 @app.route("/files/<operation>/<file>/<token>/", methods=['GET', 'POST'])
 def files(operation='', file='', token=''):
     # Get the access_token
-    frontToken = data_conector.getToken('front')
+    frontToken = data_conector.getToken(agent='front')
     if token == frontToken:
         if operation == 'buckup':
             # Create file
@@ -761,11 +761,10 @@ def tokenGenerator(agent, type):
 @app.route("/auth")
 @app.route("/auth/")
 def auth():
-    token = data_conector.getToken('google')  # Tokens from the DDBB
     clientId = request.args.get('client_id')  # ClientId from the client
     responseURI = request.args.get('redirect_uri')
     state = request.args.get('state')
-    if clientId == token['client_id']:
+    if clientId == data_conector.getToken(agent='google', type="client_id"):
         data_conector.log(
             'Warning', 'A new Google account has been linked from auth endpoint')
         # Create a new authorization_code
@@ -800,12 +799,9 @@ def token():
         code = request.form.get('code')
     else:
         code = request.form.get('refresh_token')
-
-    # Get the tokens and ids from DDBB
-    token = data_conector.getToken(agent)
     obj = {}
     # Verify the code
-    if code == token[grantType]['value']:
+    if code == data_conector.getToken(agent, grantType, 'value'):
         # Tokens lifetime
         secondsInDay = 86400
         # Create a new token
@@ -857,8 +853,7 @@ def smarthome():
         agent = 'google'
     # Get the access_token
     tokenClient = request.headers['authorization'].split(' ')[1]
-    token = data_conector.getToken(agent)
-    if tokenClient == token['access_token']['value']:
+    if tokenClient == data_conector.getToken(agent, 'access_token', 'value'):
         # Anlalyze the inputs
         inputs = body['inputs']
         requestId = body['requestId']

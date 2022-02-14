@@ -64,6 +64,9 @@ class Data:
 		if self.redis.get("alert") == None:
 			self.redis.set("alert","clear")
  
+
+		# Temp, for update from 1.6.4 to 1.7
+		# Beging
 		if self.redis.get("fast_status") == None:
 			status = json.loads(self.redis.get('status'))
 			devices = status.keys()
@@ -73,11 +76,26 @@ class Data:
 					self.redis.set("status/" + device + "/" + param, pickle.dumps(status[device][param]))
 			self.redis.set("fast_status", "true")
 
+		if self.redis.get("fast_token") == None:
+			token = json.loads(self.redis.get('secure'))['token']
+			self.redis.set("token/front", token['front'])
+			self.redis.set("token/apikey", token['apikey'])
+			self.redis.set("token/google/client_id", token['google']['client_id'])
+			self.redis.set("token/google/client_secret", token['google']['client_secret'])
+			self.redis.set("token/google/access_token/value", token['google']['access_token']['value'])
+			self.redis.set("token/google/access_token/timestamp", token['google']['access_token']['timestamp'])
+			self.redis.set("token/google/refresh_token/value", token['google']['refresh_token']['value'])
+			self.redis.set("token/google/refresh_token/timestamp", token['google']['refresh_token']['timestamp'])
+			self.redis.set("token/google/authorization_code/value", token['google']['authorization_code']['value'])
+			self.redis.set("token/google/authorization_code/timestamp", token['google']['authorization_code']['timestamp'])
+			self.redis.set("fast_token", "true")
+		# End
+
 		# Load some data into memory
 		secure = json.loads(self.redis.get('secure'))
 		self.userName = secure['user']
-		self.userToken = secure['token']['front']
-		self.apikey = secure['token']['apikey']
+		self.userToken = self.redis.get("token/front")
+		self.apikey = self.redis.get("token/apikey")
 		self.domain = secure['domain']
 
 
@@ -118,6 +136,22 @@ class Data:
 					self.redis.set("status/" + device + "/" + param, pickle.dumps(status[device][param]))
 
 			self.redis.set("fast_status", "true")
+
+			token = data['secure']['token']
+			self.redis.set("token/front", token['front'])
+			self.redis.set("token/apikey", token['apikey'])
+			self.redis.set("token/google/client_id", token['google']['client_id'])
+			self.redis.set("token/google/client_secret", token['google']['client_secret'])
+			self.redis.set("token/google/access_token/value", token['google']['access_token']['value'])
+			self.redis.set("token/google/access_token/timestamp", token['google']['access_token']['timestamp'])
+			self.redis.set("token/google/refresh_token/value", token['google']['refresh_token']['value'])
+			self.redis.set("token/google/refresh_token/timestamp", token['google']['refresh_token']['timestamp'])
+			self.redis.set("token/google/authorization_code/value", token['google']['authorization_code']['value'])
+			self.redis.set("token/google/authorization_code/timestamp", token['google']['authorization_code']['timestamp'])
+
+			self.redis.set("fast_token", "true")
+
+
 
 # DEVICES
 
@@ -303,8 +337,9 @@ class Data:
 				token += random.choice(chars)
 				i += 1
 			#Saved the new token
-			secure['token']['front'] = token
-			self.redis.set('secure',json.dumps(secure))
+			self.redis.set("token/front", token)
+			#secure['token']['front'] = token
+			#self.redis.set('secure',json.dumps(secure))
 			#Prepare the response
 			responseData = {
 				'status': 'in',
@@ -356,9 +391,10 @@ class Data:
 # ACCESS
 
 	def getAPIKey(self):
-		secure = json.loads(self.redis.get('secure'))
+
+		apikey = self.redis.get("token/apikey")
 		data = {
-			"apikey": secure['token']['apikey']
+			"apikey": apikey
 		}
 
 		return data
@@ -370,9 +406,12 @@ class Data:
 		while i < 40:
 			token += random.choice(chars)
 			i += 1
-		secure = json.loads(self.redis.get('secure'))
-		secure['token']['apikey'] = token
-		self.redis.set('secure',json.dumps(secure))
+
+
+		#secure = json.loads(self.redis.get('secure'))
+		#secure['token']['apikey'] = token
+		#self.redis.set('secure',json.dumps(secure))
+		self.redis.set("token/apikey", token)
 		self.apikey = token
 		data = {
 			"apikey": token
@@ -380,21 +419,22 @@ class Data:
 
 		return data
 
-	def getToken(self,agent):
+	def getToken(self,agent,type,subtype):
 		if agent == 'front':
 			return self.userToken
 		elif agent == 'apikey':
 			return self.apikey
+		elif type == 'client_id':
+			return self.redis.get("token/google/client_id")
+		elif type == 'client_secret':
+			return self.redis.get("token/google/client_secret")
 		else:
-			return json.loads(self.redis.get('secure'))['token'][agent]
+			return self.redis.get("token/" + agent + "/" + type + "/" + subtype)
+			#return json.loads(self.redis.get('secure'))['token'][agent]
 
 	def updateToken(self,agent,type,value,timestamp):
-		secure = json.loads(self.redis.get('secure'))
-
-		secure['token'][agent][type]['value'] = value
-		secure['token'][agent][type]['timestamp'] = timestamp
-
-		self.redis.set('secure',json.dumps(secure))
+		self.redis.set("token/" + agent + "/" + type + "/value",value)
+		self.redis.set("token/" + agent + "/" + type + "/timestamp",timestamp)
 
 # SETTINGS
 
@@ -403,8 +443,8 @@ class Data:
 		secure = json.loads(self.redis.get('secure'))
 		data = {
 			"google": {
-				"client_id": secure['token']["google"]["client_id"],
-				"client_secret": secure['token']["google"]["client_secret"],
+				"client_id": self.redis.get('token/google/client_id'),
+				"client_secret": self.redis.get('token/google/client_secret'),
 			},
 			"ddns": secure['ddns'],
 			"sync_google": secure['sync_google'],
@@ -422,8 +462,6 @@ class Data:
 	def updateSettings(self, incommingData):
 		secure = json.loads(self.redis.get('secure'))
 
-		secure['token']["google"]["client_id"] = incommingData['google']['client_id']
-		secure['token']["google"]["client_secret"] = incommingData['google']['client_secret']
 		secure['ddns']['username'] = incommingData['ddns']['username']
 		secure['ddns']['password'] = incommingData['ddns']['password']
 		secure['ddns']['provider'] = incommingData['ddns']['provider']
@@ -437,6 +475,8 @@ class Data:
 		secure['log'] = incommingData['log']
 
 		self.redis.set('secure',json.dumps(secure))
+		self.redis.set("token/google/client_id",incommingData['google']['client_id'])
+		self.redis.set("token/google/client_secret",incommingData['google']['client_secret'])
 
 		self.sync_google = incommingData['sync_google']
 		self.sync_devices = incommingData['sync_devices']
