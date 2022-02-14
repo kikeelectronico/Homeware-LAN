@@ -21,9 +21,6 @@ class Data:
 
 	version = 'v1.7'
 	homewareFile = 'homeware.json'
-	apikey = ''
-	userToken = ''
-	userName = ''
 	domain = ''
 
 
@@ -93,11 +90,16 @@ class Data:
 			self.redis.set("mqtt/user", mqtt['user'])
 			self.redis.set("mqtt/password", mqtt['password'])
 			self.redis.set("fast_mqtt", "true")
+
+		if self.redis.get("fast_user") == None:
+			secure = json.loads(self.redis.get('secure'))
+			self.redis.set("user/username", secure['user'])
+			self.redis.set("user/password", secure['password'])
+			self.redis.set("fast_user", "true")
 		# End
 
 		# Load some data into memory
 		secure = json.loads(self.redis.get('secure'))
-		self.userName = secure['user']
 		self.domain = secure['domain']
 		self.sync_google = False
 		self.sync_devices = False
@@ -159,6 +161,11 @@ class Data:
 			self.redis.set("mqtt/user", mqtt['user'])
 			self.redis.set("mqtt/password", mqtt['password'])
 			self.redis.set("fast_mqtt", "true")
+
+			secure = data['secure']
+			self.redis.set("user/username", secure['user'])
+			self.redis.set("user/password", secure['password'])
+			self.redis.set("fast_user", "true")
 		# End
 
 
@@ -309,33 +316,24 @@ class Data:
 # USER
 
 	def updatePassword(self, incommingData):
-		secure = json.loads(self.redis.get('secure'))
+		ddbb_password_hash = self.redis.get("user/password")
 		password = incommingData['pass']
-		if bcrypt.checkpw(password.encode('utf-8'),secure['pass'][2:-1].encode('utf-8')):
-			secure['pass'] = str(bcrypt.hashpw(incommingData['new_pass'].encode('utf-8'), bcrypt.gensalt()))
-			self.redis.set('secure',json.dumps(secure))
+		if bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
+			new_hash = str(bcrypt.hashpw(incommingData['new_pass'].encode('utf-8'), bcrypt.gensalt()))
+			self.redis.set("user/password",new_hash)
 			return "Updated"
 		else:
 			return "Fail, the password hasn't been changed"
 
 
 	def login(self, headers):
-		user = headers['user']
+		username = headers['user']
 		password = headers['pass']
-		secure = json.loads(self.redis.get('secure'))
+		ddbb_password_hash = self.redis.get("user/password")
+		ddbb_username = self.redis.get("user/username")
 		auth = False
-		if 'key' in secure.keys():
-			key = secure['key']
-			cipher_suite = Fernet(str.encode(secure['key'][2:len(secure['key'])]))
-			plain_text = cipher_suite.decrypt(str.encode(secure['pass'][2:len(secure['pass'])]))
-			if user == secure['user'] and plain_text == str.encode(password):
-				hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-				secure['pass'] = str(hashed)
-				del secure['key']
-				auth = True
-		else:
-			if bcrypt.checkpw(password.encode('utf-8'),secure['pass'][2:-1].encode('utf-8')):
-				auth = True
+		if username == ddbb_username and bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
+			auth = True
 
 		responseData = {}
 		if auth:
@@ -353,29 +351,27 @@ class Data:
 			#Prepare the response
 			responseData = {
 				'status': 'in',
-				'user': user,
+				'user': username,
 				'token': token
 			}
-			self.log('Log',user + ' has login')
-
-			self.userName = user
+			self.log('Log',username + ' has login')
 		else:
 			#Prepare the response
 			responseData = {
 				'status': 'fail'
 			}
-			self.log('Alert','Login failed, user: ' + user)
+			self.log('Alert','Login failed, user: ' + username)
 
 		return responseData
 
 	def validateUserToken(self, headers):
-		user = headers['user']
+		username = headers['user']
 		token = headers['token']
 
 		# secure = json.loads(self.redis.get('secure'))
 
 		responseData = {}
-		if user == self.userName and token == self.redis.get("token/front"):
+		if username == self.redis.get("user/username") and token == self.redis.get("token/front"):
 			responseData = {
 				'status': 'in'
 			}
@@ -387,12 +383,12 @@ class Data:
 		return responseData
 
 	def googleSync(self, headers, responseURL):
-		user = headers['user']
+		username = headers['user']
 		password = headers['pass']
-
-		secure = json.loads(self.redis.get('secure'))
-
-		if bcrypt.checkpw(password.encode('utf-8'),secure['pass'][2:-1].encode('utf-8')):
+		ddbb_password_hash = self.redis.get("user/password")
+		ddbb_username = self.redis.get("user/username")
+		auth = False
+		if username == ddbb_username and bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
 			return responseURL
 		else:
 			return "fail"
