@@ -74,11 +74,11 @@ class Data:
 					self.redis.set("status/" + device + "/" + param, pickle.dumps(status[device][param]))
 			self.redis.set("fast_status", "true")
 
-		# # Load some data into memory
-		# self.userName = secure['user']
-		# self.userToken = secure['token']['front']
-		# self.apikey = secure['token']['apikey']
-		# self.domain = secure['domain']
+		# Load some data into memory
+		self.userName = secure['user']
+		self.userToken = secure['token']['front']
+		self.apikey = secure['token']['apikey']
+		self.domain = secure['domain']
 
 
 	def getVersion(self):
