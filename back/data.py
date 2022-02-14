@@ -214,7 +214,7 @@ class Data:
 				else:
 					publish.multiple(msgs, hostname=hostname.MQTT_HOST)
 
-			except:
+			except: 
 				self.log('Warning','Param update not sent through MQTT')
 
 			# Inform Google HomeGraph

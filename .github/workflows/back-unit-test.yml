@@ -31,6 +31,7 @@ jobs:
         uses: Namoshek/mosquitto-github-action@v0.1.0
         with:
           version: ${{ matrix.mosquitto-version }}
+          ports: '1883:1883 8883:8883'
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
