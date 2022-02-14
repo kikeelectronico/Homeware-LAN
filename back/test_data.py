@@ -60,51 +60,51 @@ class Test_data(unittest.TestCase):
 		self.assertEqual(device,self.data.getDevices()[1])
 		self.assertEqual(status,self.data.getStatus()[device['id']])
 
-	# def test_updateDevice(self):
-	# 	device = {
-	# 		"attributes": {
-	# 		  "commandOnlyOnOff": True,
-	# 		  "queryOnlyOnOff": True,
-	# 		  "commandOnlyBrightness": True
-	# 		},
-	# 		"deviceInfo": {
-	# 		  "hwVersion": "1.0",
-	# 		  "swVersion": "1.0",
-	# 		  "manufacturer": "Homeware",
-	# 		  "model": "Homeware Lamp 2.0"
-	# 		},
-	# 		"id": "light002",
-	# 		"name": {
-	# 		  "defaultNames": [
-	# 			"Lamp"
-	# 		  ],
-	# 		  "nicknames": [
-	# 			"Lamp"
-	# 		  ],
-	# 		  "name": "Test Lamp"
-	# 		},
-	# 		"traits": [
-	# 		  "action.devices.traits.OnOff",
-	# 		  "action.devices.traits.Brightness"
-	# 		],
-	# 		"type": "action.devices.types.LIGHT"
-	# 	}
-	# 	status = {
-	# 		"online": True,
-	# 		"on": False,
-	# 		"brightness": 80
-	# 	}
-	# 	# Crate a new device
-	# 	self.data.createDevice({"device":device,"status":status})
-	# 	# Update the device info
-	# 	device['name']['name'] = 'Diodi'
-	# 	self.assertTrue(self.data.updateDevice({"device": device,"status":status}))
-	# 	devices = self.data.getDevices()
-	# 	name = ''
-	# 	for device in devices:
-	# 		if device['id'] == 'light002':
-	# 			name = device['name']['name']
-	# 	self.assertEqual('Diodi',name)
+	def test_updateDevice(self):
+		device = {
+			"attributes": {
+			  "commandOnlyOnOff": True,
+			  "queryOnlyOnOff": True,
+			  "commandOnlyBrightness": True
+			},
+			"deviceInfo": {
+			  "hwVersion": "1.0",
+			  "swVersion": "1.0",
+			  "manufacturer": "Homeware",
+			  "model": "Homeware Lamp 2.0"
+			},
+			"id": "light002",
+			"name": {
+			  "defaultNames": [
+				"Lamp"
+			  ],
+			  "nicknames": [
+				"Lamp"
+			  ],
+			  "name": "Test Lamp"
+			},
+			"traits": [
+			  "action.devices.traits.OnOff",
+			  "action.devices.traits.Brightness"
+			],
+			"type": "action.devices.types.LIGHT"
+		}
+		status = {
+			"online": True,
+			"on": False,
+			"brightness": 80
+		}
+		# Crate a new device
+		self.data.createDevice({"device":device,"status":status})
+		# Update the device info
+		device['name']['name'] = 'Diodi'
+		self.assertTrue(self.data.updateDevice({"device": device,"status":status}))
+		devices = self.data.getDevices()
+		name = ''
+		for device in devices:
+			if device['id'] == 'light002':
+				name = device['name']['name']
+		self.assertEqual('Diodi',name)
 
 	# def test_updateStatus(self):
 	# 	device = {
