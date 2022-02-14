@@ -4,7 +4,7 @@ from data import Data
 class Test_data(unittest.TestCase):
 	def setUp(self):
 		print("hello Test")
-		#self.data = Data()
+		self.data = Data()
 
 	def test_boolean(self):
 		self.assertEqual(True, True)

@@ -1,5 +1,4 @@
 import json
-from os import stat
 import os
 import random
 import bcrypt
@@ -32,76 +31,76 @@ class Data:
 
 	def __init__(self):
 		print("test here")
-		self.redis = redis.Redis(hostname.REDIS_HOST, hostname.REDIS_PORT)
-		self.verbose = False
+		# self.redis = redis.Redis(hostname.REDIS_HOST, hostname.REDIS_PORT)
+		# self.verbose = False
 
-		if not self.redis.get('transfer'):
-			self.log('Warning','The database must be created')
-			try:
-				self.load()
-				self.log('Warning','Using a provided homeware file')
-			except:
-				subprocess.run(["cp", "../configuration_templates/template_homeware.json", "../homeware.json"],  stdout=subprocess.PIPE)
-				self.load()
-				self.log('Warning','Copying the template homeware file')
-				self.log('Warning','Using a template homeware file')
-			finally:
-				secure = json.loads(self.redis.get('secure'))
-				secure['domain'] = os.environ.get("HOMEWARE_DOMAIN", "localhost")
-				secure['ddns']['hostname'] = os.environ.get("HOMEWARE_DOMAIN", "localhost")
-				secure['user'] = os.environ.get("HOMEWARE_USER", "admin")
-				secure['pass'] = str(bcrypt.hashpw(os.environ.get("HOMEWARE_PASSWORD", "admin").encode('utf-8'), bcrypt.gensalt()))
-				self.redis.set('secure',json.dumps(secure))
-				self.redis.set("fast_status", "true")
+		# if not self.redis.get('transfer'):
+		# 	self.log('Warning','The database must be created')
+		# 	try:
+		# 		self.load()
+		# 		self.log('Warning','Using a provided homeware file')
+		# 	except:
+		# 		subprocess.run(["cp", "../configuration_templates/template_homeware.json", "../homeware.json"],  stdout=subprocess.PIPE)
+		# 		self.load()
+		# 		self.log('Warning','Copying the template homeware file')
+		# 		self.log('Warning','Using a template homeware file')
+		# 	finally:
+		# 		secure = json.loads(self.redis.get('secure'))
+		# 		secure['domain'] = os.environ.get("HOMEWARE_DOMAIN", "localhost")
+		# 		secure['ddns']['hostname'] = os.environ.get("HOMEWARE_DOMAIN", "localhost")
+		# 		secure['user'] = os.environ.get("HOMEWARE_USER", "admin")
+		# 		secure['pass'] = str(bcrypt.hashpw(os.environ.get("HOMEWARE_PASSWORD", "admin").encode('utf-8'), bcrypt.gensalt()))
+		# 		self.redis.set('secure',json.dumps(secure))
+		# 		self.redis.set("fast_status", "true")
 
-			self.redis.set("transfer", "true");
+		# 	self.redis.set("transfer", "true");
 
-		if self.redis.get("tasks") == None:
-			self.redis.set("tasks","[]")
+		# if self.redis.get("tasks") == None:
+		# 	self.redis.set("tasks","[]")
 
-		if self.redis.get("alert") == None:
-			self.redis.set("alert","clear")
+		# if self.redis.get("alert") == None:
+		# 	self.redis.set("alert","clear")
 
-		secure = json.loads(self.redis.get('secure'))
-		try:
-			self.sync_google = secure['sync_google']
-		except:
-			secure['sync_google'] = False
-			self.sync_google = False
-			self.redis.set('secure',json.dumps(secure))
-		try:
-			self.sync_devices = secure['sync_devices']
-		except:
-			secure['sync_devices'] = False
-			self.sync_devices = False
-			self.redis.set('secure',json.dumps(secure))
-		try:
-			self.sync_devices = secure['log']
-		except:
-			secure['log'] = {}
-			secure['log']['days'] = 30
-			self.redis.set('secure',json.dumps(secure))
+		# secure = json.loads(self.redis.get('secure'))
+		# try:
+		# 	self.sync_google = secure['sync_google']
+		# except:
+		# 	secure['sync_google'] = False
+		# 	self.sync_google = False
+		# 	self.redis.set('secure',json.dumps(secure))
+		# try:
+		# 	self.sync_devices = secure['sync_devices']
+		# except:
+		# 	secure['sync_devices'] = False
+		# 	self.sync_devices = False
+		# 	self.redis.set('secure',json.dumps(secure))
+		# try:
+		# 	self.sync_devices = secure['log']
+		# except:
+		# 	secure['log'] = {}
+		# 	secure['log']['days'] = 30
+		# 	self.redis.set('secure',json.dumps(secure))
 
-		if not os.path.exists("../files"):
-				os.mkdir("../files")
+		# if not os.path.exists("../files"):
+		# 		os.mkdir("../files")
 
-		if not os.path.exists("../logs"):
-				os.mkdir("../logs")
+		# if not os.path.exists("../logs"):
+		# 		os.mkdir("../logs")
 
-		if self.redis.get("fast_status") == None:
-			status = json.loads(self.redis.get('status'))
-			devices = status.keys()
-			for device in devices:
-				params = status[device].keys()
-				for param in params:
-					self.redis.set("status/" + device + "/" + param, pickle.dumps(status[device][param]))
-			self.redis.set("fast_status", "true")
+		# if self.redis.get("fast_status") == None:
+		# 	status = json.loads(self.redis.get('status'))
+		# 	devices = status.keys()
+		# 	for device in devices:
+		# 		params = status[device].keys()
+		# 		for param in params:
+		# 			self.redis.set("status/" + device + "/" + param, pickle.dumps(status[device][param]))
+		# 	self.redis.set("fast_status", "true")
 
-		# Load some data into memory
-		self.userName = secure['user']
-		self.userToken = secure['token']['front']
-		self.apikey = secure['token']['apikey']
-		self.domain = secure['domain']
+		# # Load some data into memory
+		# self.userName = secure['user']
+		# self.userToken = secure['token']['front']
+		# self.apikey = secure['token']['apikey']
+		# self.domain = secure['domain']
 
 
 	def getVersion(self):
