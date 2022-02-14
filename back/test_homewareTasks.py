@@ -113,63 +113,63 @@ class Test_tasks(unittest.TestCase):
 		}
 		self.assertTrue(operationExecutor("trigger",triggers,status))
 
-	# def test_orExecutor(self):
-	# 	triggers = {
-	# 	  "trigger": {
-	# 		"type": "or",
-	# 		"parent": "triggers",
-	# 		"operation": [
-	# 		  "1594745648295",
-	# 		  "1594746507144"
-	# 		]
-	# 	  },
-	# 	  "1594745648295": {
-	# 		"type": "d2b",
-	# 		"parent": "1594745594679",
-	# 		"operation": "light001:on:=:true"
-	# 	  },
-	# 	  "1594746507144": {
-	# 		"type": "d2b",
-	# 		"parent": "1594745594679",
-	# 		"operation": "light002:on:=:true"
-	# 	  }
-	# 	}
-	# 	status = {
-	# 		"light001": {
-	# 			"on": False
-	# 		},
-	# 		"light002": {
-	# 			"on": False
-	# 		}
-	# 	}
-	# 	self.assertFalse(orExecutor(triggers['trigger']['operation'],triggers,status))
-	# 	status = {
-	# 		"light001": {
-	# 			"on": True
-	# 		},
-	# 		"light002": {
-	# 			"on": False
-	# 		}
-	# 	}
-	# 	self.assertTrue(orExecutor(triggers['trigger']['operation'],triggers,status))
-	# 	status = {
-	# 		"light001": {
-	# 			"on": False
-	# 		},
-	# 		"light002": {
-	# 			"on": True
-	# 		}
-	# 	}
-	# 	self.assertTrue(orExecutor(triggers['trigger']['operation'],triggers,status))
-	# 	status = {
-	# 		"light001": {
-	# 			"on": True
-	# 		},
-	# 		"light002": {
-	# 			"on": True
-	# 		}
-	# 	}
-	# 	self.assertTrue(orExecutor(triggers['trigger']['operation'],triggers,status))
+	def test_orExecutor(self):
+		triggers = {
+		  "trigger": {
+			"type": "or",
+			"parent": "triggers",
+			"operation": [
+			  "1594745648295",
+			  "1594746507144"
+			]
+		  },
+		  "1594745648295": {
+			"type": "d2b",
+			"parent": "1594745594679",
+			"operation": "light001:on:=:true"
+		  },
+		  "1594746507144": {
+			"type": "d2b",
+			"parent": "1594745594679",
+			"operation": "light002:on:=:true"
+		  }
+		}
+		status = {
+			"light001": {
+				"on": False
+			},
+			"light002": {
+				"on": False
+			}
+		}
+		self.assertFalse(orExecutor(triggers['trigger']['operation'],triggers,status))
+		status = {
+			"light001": {
+				"on": True
+			},
+			"light002": {
+				"on": False
+			}
+		}
+		self.assertTrue(orExecutor(triggers['trigger']['operation'],triggers,status))
+		status = {
+			"light001": {
+				"on": False
+			},
+			"light002": {
+				"on": True
+			}
+		}
+		self.assertTrue(orExecutor(triggers['trigger']['operation'],triggers,status))
+		status = {
+			"light001": {
+				"on": True
+			},
+			"light002": {
+				"on": True
+			}
+		}
+		self.assertTrue(orExecutor(triggers['trigger']['operation'],triggers,status))
 
 	# def test_andExecutor(self):
 	# 	triggers = {
