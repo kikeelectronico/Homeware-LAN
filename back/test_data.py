@@ -8,7 +8,7 @@ class Test_data(unittest.TestCase):
 		msgs = [
 				{'topic': "device", 'payload': str("value")},
 			]
-		publish.multiple(msgs, hostname="localhost")
+		publish.multiple(msgs, hostname="localhost", keepalive=10)
 
 # GLOBAL
 
