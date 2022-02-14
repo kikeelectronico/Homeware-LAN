@@ -32,9 +32,6 @@ class Data:
 	def __init__(self):
 		print("test here")
 
-		if self.redis.get("alert") == None:
-			self.redis.set("alert","clear")
-
 		if not os.path.exists("../files"):
 				os.mkdir("../files")
 
@@ -64,6 +61,9 @@ class Data:
 				self.redis.set("fast_status", "true")
 
 			self.redis.set("transfer", "true")
+
+		if self.redis.get("alert") == None:
+			self.redis.set("alert","clear")
  
 		# if self.redis.get("fast_status") == None:
 		# 	status = json.loads(self.redis.get('status'))
