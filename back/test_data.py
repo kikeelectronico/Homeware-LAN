@@ -4,7 +4,9 @@ from data import Data
 
 class Test_data(unittest.TestCase):
 	def setUp(self):
+		print("set up")
 		self.data = Data()
+		print("done")
 
 # GLOBAL
 
