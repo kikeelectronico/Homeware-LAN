@@ -44,17 +44,12 @@ class Data:
 				self.log('Warning','Copying the template homeware file')
 				self.log('Warning','Using a template homeware file')
 			finally:
-				secure = json.loads(self.redis.get('secure'))
-				secure['ddns']['hostname'] = os.environ.get("HOMEWARE_DOMAIN", "localhost")
-				self.redis.set('secure',json.dumps(secure))
-
 				self.redis.set("domain", os.environ.get("HOMEWARE_DOMAIN", "localhost"))
+				ddns = pickle.loads(self.redis.get("ddns"))
+				ddns['hostname'] = os.environ.get("HOMEWARE_DOMAIN", "localhost")
+				self.redis.set("ddns", pickle.dumps(ddns))
 				self.redis.set("user/username", os.environ.get("HOMEWARE_USER", "admin"))
 				self.redis.set("user/password", str(bcrypt.hashpw(os.environ.get("HOMEWARE_PASSWORD", "admin").encode('utf-8'), bcrypt.gensalt())))
-				self.redis.set("sync_google", pickle.dumps(False))
-				self.redis.set("sync_devices", pickle.dumps(False))
-				self.redis.set("fast_status", "true")
-				self.redis.set("fast_user", "true")
 
 			self.redis.set("transfer", "true")
 
@@ -102,6 +97,14 @@ class Data:
 			secure = json.loads(self.redis.get('secure'))
 			self.redis.set("domain", secure['domain'])
 
+		if self.redis.get("ddns") == None:
+			ddns = json.loads(self.redis.get('secure'))['ddns']
+			self.redis.set("ddns", pickle.dumps(ddns))
+
+		if self.redis.get("log") == None:
+			log = json.loads(self.redis.get('secure'))['log']
+			self.redis.set("log", pickle.dumps(log))
+
 		if self.redis.get("sync_google") == None:
 			self.redis.set("sync_google", pickle.dumps(False))
 
@@ -140,7 +143,6 @@ class Data:
 			data = json.load(f)
 			self.redis.set('devices',json.dumps(data['devices']))
 			self.redis.set('tasks',json.dumps(data['tasks']))
-			self.redis.set('secure',json.dumps(data['secure']))
 
 			status = data['status']
 			devices = status.keys()
@@ -162,7 +164,6 @@ class Data:
 			self.redis.set("token/google/refresh_token/timestamp", token['google']['refresh_token']['timestamp'])
 			self.redis.set("token/google/authorization_code/value", token['google']['authorization_code']['value'])
 			self.redis.set("token/google/authorization_code/timestamp", token['google']['authorization_code']['timestamp'])
-
 			self.redis.set("fast_token", "true")
 
 			mqtt = data['secure']['mqtt']
@@ -176,6 +177,9 @@ class Data:
 			self.redis.set("fast_user", "true")
 
 			self.redis.set("domain", secure['domain'])
+
+			self.redis.set("ddns", pickle.dumps(secure['ddns']))
+			self.redis.set("log", pickle.dumps(secure['log']))
 
 			self.redis.set("sync_google", pickle.dumps(secure['sync_google']))
 			self.redis.set("sync_devices", pickle.dumps(secure['sync_devices']))
@@ -454,43 +458,41 @@ class Data:
 # SETTINGS
 
 	def getSettings(self):
-
-		secure = json.loads(self.redis.get('secure'))
 		data = {
 			"google": {
 				"client_id": self.redis.get('token/google/client_id'),
 				"client_secret": self.redis.get('token/google/client_secret'),
 			},
-			"ddns": secure['ddns'],
+			"ddns": pickle.loads(self.redis.get('ddns')),
 			"sync_google": pickle.loads(self.redis.get("sync_google")),
 			"sync_devices": pickle.loads(self.redis.get("sync_devices")),
-			"log": secure['log'],
+			"log": pickle.loads(self.redis.get("log")),
 			"mqtt": {
 				"user": self.redis.get('mqtt/user'),
 				"password": self.redis.get('mqtt/password'),
 			}
 		}
 
-
 		return data
 
 	def updateSettings(self, incommingData):
-		secure = json.loads(self.redis.get('secure'))
-
-		secure['ddns']['username'] = incommingData['ddns']['username']
-		secure['ddns']['password'] = incommingData['ddns']['password']
-		secure['ddns']['provider'] = incommingData['ddns']['provider']
-		secure['ddns']['hostname'] = incommingData['ddns']['hostname']
-		secure['ddns']['enabled'] = incommingData['ddns']['enabled']
-		secure['log'] = incommingData['log']
-
-		self.redis.set('secure',json.dumps(secure))
 		self.redis.set("token/google/client_id",incommingData['google']['client_id'])
 		self.redis.set("token/google/client_secret",incommingData['google']['client_secret'])
 		self.redis.set("mqtt/user",incommingData['mqtt']['user'])
 		self.redis.set("mqtt/password",incommingData['mqtt']['password'])
 		self.redis.set("sync_google",pickle.dumps(incommingData['sync_google']))
 		self.redis.set("sync_devices",pickle.dumps(incommingData['sync_devices']))
+
+		ddns = {
+			"username": incommingData['ddns']['username'],
+			"password": incommingData['ddns']['password'],
+			"provider": incommingData['ddns']['provider'],
+			"hostname": incommingData['ddns']['hostname'],
+			"enalbled": incommingData['ddns']['enabled']
+		}
+
+		self.redis.set("ddns",pickle.dumps(ddns))
+		self.redis.set("log",pickle.dumps(incommingData['log']))
 
 	def setSyncDevices(self, value):
 		self.redis.set("sync_devices",pickle.dumps(value))
@@ -507,16 +509,16 @@ class Data:
 			}
 
 	def getDDNS(self):
-		return json.loads(self.redis.get('secure'))['ddns']
+		return pickle.loads(self.redis.get('ddns'))
 
 	def updateDDNS(self, ip, status, code, enabled, last):
-		secure = json.loads(self.redis.get('secure'))
-		secure['ddns']['ip'] = ip
-		secure['ddns']['status'] = status
-		secure['ddns']['code'] = code
-		secure['ddns']['enabled'] = enabled
-		secure['ddns']['last'] = last
-		self.redis.set('secure',json.dumps(secure))
+		ddns = pickle.loads(self.redis.get('ddns'))
+		ddns['ip'] = ip
+		ddns['status'] = status
+		ddns['code'] = code
+		ddns['enabled'] = enabled
+		ddns['last'] = last
+		self.redis.set('ddns',pickle.dumps(ddns))
 
 	def redisStatus(self):
 		status = {}
