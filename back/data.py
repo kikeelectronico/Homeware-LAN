@@ -165,20 +165,21 @@ class Data:
 		file.close()
 
 	def load(self):
-		with open('../' + self.homewareFile, 'r') as f:
-			data = json.load(f)
+
+		with open('../' + self.homewareFile, 'r') as file:
+			data = json.load(file)
+			file.close()
+			# Save the jsons
 			self.redis.set('devices',json.dumps(data['devices']))
 			self.redis.set('tasks',json.dumps(data['tasks']))
-
+			# Load the status in the database
 			status = data['status']
 			devices = status.keys()
 			for device in devices:
 				params = status[device].keys()
 				for param in params:
 					self.redis.set("status/" + device + "/" + param, pickle.dumps(status[device][param]))
-
-			self.redis.set("fast_status", "true")
-
+			# Load tokens
 			token = data['secure']['token']
 			self.redis.set("token/front", token['front'])
 			self.redis.set("token/apikey", token['apikey'])
@@ -190,23 +191,26 @@ class Data:
 			self.redis.set("token/google/refresh_token/timestamp", token['google']['refresh_token']['timestamp'])
 			self.redis.set("token/google/authorization_code/value", token['google']['authorization_code']['value'])
 			self.redis.set("token/google/authorization_code/timestamp", token['google']['authorization_code']['timestamp'])
-			self.redis.set("fast_token", "true")
-
+			# Load MQTT credentials
 			mqtt = data['secure']['mqtt']
 			self.redis.set("mqtt/user", mqtt['user'])
 			self.redis.set("mqtt/password", mqtt['password'])
-			self.redis.set("fast_mqtt", "true")
-
+			# Load Admin user credentials
 			secure = data['secure']
 			self.redis.set("user/username", secure['user'])
 			self.redis.set("user/password", secure['pass'])
-			self.redis.set("fast_user", "true")
-
+			# Load generla config
 			self.redis.set("domain", secure['domain'])
 			self.redis.set("ddns", pickle.dumps(secure['ddns']))
 			self.redis.set("log", pickle.dumps(secure['log']))
 			self.redis.set("sync_google", pickle.dumps(secure['sync_google']))
 			self.redis.set("sync_devices", pickle.dumps(secure['sync_devices']))
+
+			# Temp flags
+			self.redis.set("fast_status", "true")
+			self.redis.set("fast_token", "true")
+			self.redis.set("fast_mqtt", "true")
+			self.redis.set("fast_user", "true")
 
 
 # DEVICES
@@ -370,44 +374,35 @@ class Data:
 		password = headers['pass']
 		ddbb_password_hash = self.redis.get("user/password").decode('UTF-8')
 		ddbb_username = self.redis.get("user/username").decode('UTF-8')
-		auth = False
 		if username == ddbb_username and bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
-			auth = True
-
-		responseData = {}
-		if auth:
-			#Generate the token
+			# Generate the token
 			chars = 'abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 			token = ''
 			i = 0
 			while i < 40:
 				token += random.choice(chars)
 				i += 1
-			#Saved the new token
+			# Saved the new token
 			self.redis.set("token/front", token)
-			#secure['token']['front'] = token
-			#self.redis.set('secure',json.dumps(secure))
-			#Prepare the response
+			# Prepare the response
 			responseData = {
 				'status': 'in',
 				'user': username,
 				'token': token
 			}
 			self.log('Log',username + ' has login')
+			return responseData	
 		else:
-			#Prepare the response
+			# Prepare the response
 			responseData = {
 				'status': 'fail'
 			}
 			self.log('Alert','Login failed, user: ' + username)
-
-		return responseData
+			return responseData
 
 	def validateUserToken(self, headers):
 		username = headers['user']
 		token = headers['token']
-
-		# secure = json.loads(self.redis.get('secure'))
 
 		responseData = {}
 		if username == self.redis.get("user/username").decode('UTF-8') and token == self.redis.get("token/front").decode('UTF-8'):
@@ -435,7 +430,6 @@ class Data:
 # ACCESS
 
 	def getAPIKey(self):
-
 		apikey = self.redis.get("token/apikey").decode('UTF-8')
 		data = {
 			"apikey": apikey
@@ -444,22 +438,19 @@ class Data:
 		return data
 
 	def generateAPIKey(self):
+		# Generate the token
 		chars = 'abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 		token = ''
 		i = 0
 		while i < 40:
 			token += random.choice(chars)
 			i += 1
-
-
-		#secure = json.loads(self.redis.get('secure'))
-		#secure['token']['apikey'] = token
-		#self.redis.set('secure',json.dumps(secure))
+		# Save the new token
 		self.redis.set("token/apikey", token)
+		# Prepare the response
 		data = {
 			"apikey": token
 		}
-
 		return data
 
 	def getToken(self,agent="",type="",subtype=""):
@@ -473,7 +464,6 @@ class Data:
 			return self.redis.get("token/google/client_secret").decode('UTF-8')
 		else:
 			return self.redis.get("token/" + agent + "/" + type + "/" + subtype).decode('UTF-8')
-			#return json.loads(self.redis.get('secure'))['token'][agent]
 
 	def updateToken(self,agent,type,value,timestamp):
 		self.redis.set("token/" + agent + "/" + type + "/value",value)
