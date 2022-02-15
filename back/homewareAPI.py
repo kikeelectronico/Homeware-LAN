@@ -466,8 +466,8 @@ def apiUserGoogleSync():
     )
     return response
 
-@app.route("/api/access/create", methods=['POST'])
-@app.route("/api/access/create/", methods=['POST'])
+@app.route("/api/access/create", methods=['GET'])
+@app.route("/api/access/create/", methods=['GET'])
 def apiAccessCreate():
 
     accessLevel = checkAccessLevel(request.headers)
