@@ -1277,8 +1277,8 @@
         "tags": [
           "User"
         ],
-        "summary": "Set the admin username and password.",
-        "description": "Set the admin username and password.",
+        "summary": "DEPRECATED - Set the admin username and password.",
+        "description": "DEPRECATED - Set the admin username and password.",
         "produces": [
           "text/plain"
         ],
@@ -1695,8 +1695,8 @@
         "tags": [
           "Settings"
         ],
-        "summary": "Set the DDNS domain up",
-        "description": "Set the DDNS domain up.",
+        "summary": "DEPRECATED - Set the DDNS domain up",
+        "description": "DEPRECATED - Set the DDNS domain up.",
         "produces": [
           "application/json"
         ],

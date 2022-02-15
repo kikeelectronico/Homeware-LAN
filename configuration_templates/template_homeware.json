@@ -80,6 +80,11 @@
     "mqtt": {
       "user": "mosquitto",
       "password": "homewarelan123"
+    },
+    "sync_google": false,
+    "sync_devices": false,
+    "log": {
+      "days": 30
     }
   }
 }

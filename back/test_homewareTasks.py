@@ -4,76 +4,76 @@ from data import Data
 
 class Test_tasks(unittest.TestCase):
 
-	def test_verifyTasks(self):
-		data = Data()
-		task = {
-			"title": "",
-			"description": "",
-			"triggers": {
-			  "trigger": {
-				"type": "or",
-				"parent": "triggers",
-				"operation": [
-				  "1594745648295",
-				  "1594746507144"
-				]
-			  },
-			  "1594745648295": {
-				"type": "d2b",
-				"parent": "1594745594679",
-				"operation": "light001:on:=:true"
-			  },
-			  "1594746507144": {
-				"type": "d2b",
-				"parent": "1594745594679",
-				"operation": "light002:on:=:true"
-			  }
-			},
-			"target": [
-				{
-					"device": "light003",
-					"param": "on",
-					"value": True
-				}
-			]
-		}
-		data.createTask(task)
-		device = {
-			"attributes": {
-			  "commandOnlyOnOff": True,
-			  "queryOnlyOnOff": True,
-			  "commandOnlyBrightness": True
-			},
-			"deviceInfo": {
-			  "hwVersion": "1.0",
-			  "swVersion": "1.0",
-			  "manufacturer": "Homeware",
-			  "model": "Homeware Lamp 2.0"
-			},
-			"id": "light001",
-			"name": {
-			  "defaultNames": [
-				"Lamp"
-			  ],
-			  "nicknames": [
-				"Lamp"
-			  ],
-			  "name": "Test Lamp"
-			},
-			"traits": [
-			  "action.devices.traits.OnOff",
-			  "action.devices.traits.Brightness"
-			],
-			"type": "action.devices.types.LIGHT"
-		}
-		data.createDevice({"device":device,"status":{ "on": True }})
-		device['id'] = "light002"
-		data.createDevice({"device":device,"status":{ "on": True }})
-		device['id'] = "light003"
-		data.createDevice({"device":device,"status":{ "on": False }})
-		self.assertFalse(data.getStatus()['light003']['on'])
-		verifyTasks()
-		self.assertTrue(data.getStatus()['light003']['on'])
+	# def test_verifyTasks(self):
+	# 	data = Data()
+	# 	task = {
+	# 		"title": "",
+	# 		"description": "",
+	# 		"triggers": {
+	# 		  "trigger": {
+	# 			"type": "or",
+	# 			"parent": "triggers",
+	# 			"operation": [
+	# 			  "1594745648295",
+	# 			  "1594746507144"
+	# 			]
+	# 		  },
+	# 		  "1594745648295": {
+	# 			"type": "d2b",
+	# 			"parent": "1594745594679",
+	# 			"operation": "light001:on:=:true"
+	# 		  },
+	# 		  "1594746507144": {
+	# 			"type": "d2b",
+	# 			"parent": "1594745594679",
+	# 			"operation": "light002:on:=:true"
+	# 		  }
+	# 		},
+	# 		"target": [
+	# 			{
+	# 				"device": "light003",
+	# 				"param": "on",
+	# 				"value": True
+	# 			}
+	# 		]
+	# 	}
+	# 	data.createTask(task)
+	# 	device = {
+	# 		"attributes": {
+	# 		  "commandOnlyOnOff": True,
+	# 		  "queryOnlyOnOff": True,
+	# 		  "commandOnlyBrightness": True
+	# 		},
+	# 		"deviceInfo": {
+	# 		  "hwVersion": "1.0",
+	# 		  "swVersion": "1.0",
+	# 		  "manufacturer": "Homeware",
+	# 		  "model": "Homeware Lamp 2.0"
+	# 		},
+	# 		"id": "light001",
+	# 		"name": {
+	# 		  "defaultNames": [
+	# 			"Lamp"
+	# 		  ],
+	# 		  "nicknames": [
+	# 			"Lamp"
+	# 		  ],
+	# 		  "name": "Test Lamp"
+	# 		},
+	# 		"traits": [
+	# 		  "action.devices.traits.OnOff",
+	# 		  "action.devices.traits.Brightness"
+	# 		],
+	# 		"type": "action.devices.types.LIGHT"
+	# 	}
+	# 	data.createDevice({"device":device,"status":{ "on": True }})
+	# 	device['id'] = "light002"
+	# 	data.createDevice({"device":device,"status":{ "on": True }})
+	# 	device['id'] = "light003"
+	# 	data.createDevice({"device":device,"status":{ "on": False }})
+	# 	self.assertFalse(data.getStatus()['light003']['on'])
+	# 	verifyTasks()
+	# 	self.assertTrue(data.getStatus()['light003']['on'])
 
 	def test_operationExecutor(self):
 		triggers = {

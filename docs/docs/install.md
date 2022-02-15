@@ -8,7 +8,7 @@ sidebar_label: Installation
 
 1. Install docker and docker-compose
 ```bash
-sudo apt install -y docker && apt install -y docker-compose
+sudo apt install -y docker docker-compose
 ```
 2. Install CURL
 ```bash
@@ -40,6 +40,10 @@ cd Homeware-LAN
 cp configuration_templates/.env.template .env
 ```
 5. Replace the default data with your values.
+- DOMAIN: your domain name from step 2.
+- EMAIL: your email. It is used for getting the SSL certificate from Let's Encrypt.
+- HOMEWARE_USER: the admin username that you will use to log in.
+- HOMEWARE_PASSWORD: the admin password that you will use to log in.
 6. Copy the docker-compose file
 - Debian / Ubuntu
 ```bash
@@ -53,17 +57,9 @@ cp docker/docker-compose-raspberry.yaml docker-compose.yaml
 ```bash
 docker-compose up -d
 ```
-8. Set the admin user and password. Make sure to change the necessary data.
-```bash
-curl -d '{"user":"YOURUSER", "pass":"YOURPASSWORD"}' -H "Content-Type: application/json" -X POST https://YOURDOMAIN/api/user/set/
-```
-9. Set the default domain. Make sure to change the necessary data.
-```bash
-curl -X GET https://YOURDOMAIN/api/settings/domain/YOURDOMAIN/
-```
-10. Follow this steps to link Homeware with Google Home: https://kikeelectronico.github.io/Homeware-LAN/docs/connect-with-google
+8. Follow this steps to link Homeware with Google Home: https://kikeelectronico.github.io/Homeware-LAN/docs/connect-with-google
 
-11. Finally, set up the necessary data using the Homeware's _Settings_ page.
+9. Finally, set up the necessary data using the Homeware's _Settings_ page.
 
 # Default MQTT user and password
 

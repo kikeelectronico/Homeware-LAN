@@ -1,4 +1,5 @@
 import React from "react";
+import { ToastsContainer, ToastsStore } from "react-toasts";
 import { Link } from "react-router-dom";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
@@ -31,6 +32,7 @@ class Tasks extends React.Component {
           });
         } else {
           console.error(http.statusText);
+          ToastsStore.error("Something went wrong");
         }
       }
     }.bind(this);
@@ -64,6 +66,7 @@ class Tasks extends React.Component {
             <button type="button">New</button>
           </Link>
         </div>
+        <ToastsContainer store={ToastsStore} />
       </div>
     );
   }
