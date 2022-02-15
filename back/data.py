@@ -21,8 +21,6 @@ class Data:
 
 	version = 'v1.7'
 	homewareFile = 'homeware.json'
-	domain = ''
-
 
 	def __init__(self):
 
@@ -47,18 +45,21 @@ class Data:
 				self.log('Warning','Using a template homeware file')
 			finally:
 				secure = json.loads(self.redis.get('secure'))
-				secure['domain'] = os.environ.get("HOMEWARE_DOMAIN", "localhost")
 				secure['ddns']['hostname'] = os.environ.get("HOMEWARE_DOMAIN", "localhost")
-				secure['user'] = os.environ.get("HOMEWARE_USER", "admin")
-				secure['pass'] = str(bcrypt.hashpw(os.environ.get("HOMEWARE_PASSWORD", "admin").encode('utf-8'), bcrypt.gensalt()))
 				self.redis.set('secure',json.dumps(secure))
+
+				self.redis.set("domain", os.environ.get("HOMEWARE_DOMAIN", "localhost"))
+				self.redis.set("user/username", os.environ.get("HOMEWARE_USER", "admin"))
+				self.redis.set("user/password", str(bcrypt.hashpw(os.environ.get("HOMEWARE_PASSWORD", "admin").encode('utf-8'), bcrypt.gensalt())))
+				self.redis.set("sync_google", pickle.dumps(False))
+				self.redis.set("sync_devices", pickle.dumps(False))
 				self.redis.set("fast_status", "true")
+				self.redis.set("fast_user", "true")
 
 			self.redis.set("transfer", "true")
 
 		if self.redis.get("alert") == None:
 			self.redis.set("alert","clear")
- 
 
 		# Temp, for update from 1.6.4 to 1.7
 		# Beging
@@ -96,13 +97,20 @@ class Data:
 			self.redis.set("user/username", secure['user'])
 			self.redis.set("user/password", secure['password'])
 			self.redis.set("fast_user", "true")
+
+		if self.redis.get("domain") == None:
+			secure = json.loads(self.redis.get('secure'))
+			self.redis.set("domain", secure['domain'])
+
+		if self.redis.get("sync_google") == None:
+			self.redis.set("sync_google", pickle.dumps(False))
+
+		if self.redis.get("sync_devices") == None:
+			self.redis.set("sync_devices", pickle.dumps(False))
 		# End
 
 		# Load some data into memory
 		secure = json.loads(self.redis.get('secure'))
-		self.domain = secure['domain']
-		self.sync_google = False
-		self.sync_devices = False
 
 
 	def getVersion(self):
@@ -166,8 +174,11 @@ class Data:
 			self.redis.set("user/username", secure['user'])
 			self.redis.set("user/password", secure['password'])
 			self.redis.set("fast_user", "true")
-		# End
 
+			self.redis.set("domain", secure['domain'])
+
+			self.redis.set("sync_google", pickle.dumps(secure['sync_google']))
+			self.redis.set("sync_devices", pickle.dumps(secure['sync_devices']))
 
 
 # DEVICES
@@ -191,8 +202,8 @@ class Data:
 				temp_devices.append(device)
 		self.redis.set('devices',json.dumps(temp_devices))
 		# Inform Google Home Graph
-		if os.path.exists("../files/google.json") and self.sync_google:
-			homegraph.requestSync(self.domain)
+		if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
+			homegraph.requestSync(self.redis.get("domain"))
 
 		return found
 
@@ -209,8 +220,8 @@ class Data:
 			self.redis.set("status/" + deviceID + "/" + param, pickle.dumps(status[param]))
 
 		# Inform Google Home Graph
-		if os.path.exists("../files/google.json") and self.sync_google:
-			homegraph.requestSync(self.domain)
+		if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
+			homegraph.requestSync(self.redis.get("domain"))
 
 	def deleteDevice(self, value):
 		temp_devices = []
@@ -228,8 +239,8 @@ class Data:
 				self.redis.delete(param)
 
 		# Inform Google Home Graph
-		if os.path.exists("../files/google.json") and self.sync_google:
-			homegraph.requestSync(self.domain)
+		if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
+			homegraph.requestSync(self.redis.get("domain"))
 
 		return found
 
@@ -271,11 +282,11 @@ class Data:
 				self.log('Warning','Param update not sent through MQTT')
 
 			# Inform Google HomeGraph
-			if os.path.exists("../files/google.json") and self.sync_google:
+			if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
 				states = {}
 				states[device] = {}
 				states[device][param] = value
-				homegraph.reportState(self.domain,states)
+				homegraph.reportState(self.redis.get("domain"),states)
 
 			return True
 		else:
@@ -451,8 +462,8 @@ class Data:
 				"client_secret": self.redis.get('token/google/client_secret'),
 			},
 			"ddns": secure['ddns'],
-			"sync_google": secure['sync_google'],
-			"sync_devices": secure['sync_devices'],
+			"sync_google": pickle.loads(self.redis.get("sync_google")),
+			"sync_devices": pickle.loads(self.redis.get("sync_devices")),
 			"log": secure['log'],
 			"mqtt": {
 				"user": self.redis.get('mqtt/user'),
@@ -471,8 +482,6 @@ class Data:
 		secure['ddns']['provider'] = incommingData['ddns']['provider']
 		secure['ddns']['hostname'] = incommingData['ddns']['hostname']
 		secure['ddns']['enabled'] = incommingData['ddns']['enabled']
-		secure['sync_google'] = incommingData['sync_google']
-		secure['sync_devices'] = incommingData['sync_devices']
 		secure['log'] = incommingData['log']
 
 		self.redis.set('secure',json.dumps(secure))
@@ -480,19 +489,14 @@ class Data:
 		self.redis.set("token/google/client_secret",incommingData['google']['client_secret'])
 		self.redis.set("mqtt/user",incommingData['mqtt']['user'])
 		self.redis.set("mqtt/password",incommingData['mqtt']['password'])
-
-		self.sync_google = incommingData['sync_google']
-		self.sync_devices = incommingData['sync_devices']
+		self.redis.set("sync_google",pickle.dumps(incommingData['sync_google']))
+		self.redis.set("sync_devices",pickle.dumps(incommingData['sync_devices']))
 
 	def setSyncDevices(self, value):
-		secure = json.loads(self.redis.get('secure'))
-		if type(value) == bool:
-			secure['sync_devices'] = value
-		self.redis.set('secure',json.dumps(secure))
+		self.redis.set("sync_devices",pickle.dumps(value))
 
 	def getSyncDevices(self):
-		secure = json.loads(self.redis.get('secure'))
-		return secure['sync_devices']
+		return pickle.loads(self.redis.get('sync_devices'))
 
 # SYSTEM
 
@@ -532,10 +536,7 @@ class Data:
 		return status
 
 	def updateSyncGoogle(self,status):
-		secure = json.loads(self.redis.get('secure'))
-		secure['sync_google'] = status
-		self.sync_google = status
-		self.redis.set('secure',json.dumps(secure))
+		self.redis.set("sync_google", pickle.dumps(status))
 
 # LOG
 
