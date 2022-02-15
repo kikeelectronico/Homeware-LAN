@@ -177,10 +177,8 @@ class Data:
 			self.redis.set("fast_user", "true")
 
 			self.redis.set("domain", secure['domain'])
-
 			self.redis.set("ddns", pickle.dumps(secure['ddns']))
 			self.redis.set("log", pickle.dumps(secure['log']))
-
 			self.redis.set("sync_google", pickle.dumps(secure['sync_google']))
 			self.redis.set("sync_devices", pickle.dumps(secure['sync_devices']))
 
