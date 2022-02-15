@@ -492,6 +492,7 @@ class Data:
 		}
 
 		self.redis.set("ddns",pickle.dumps(ddns))
+		self.redis.set("domain",incommingData['ddns']['hostname'])
 		self.redis.set("log",pickle.dumps(incommingData['log']))
 
 	def setSyncDevices(self, value):
