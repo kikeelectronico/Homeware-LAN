@@ -90,7 +90,7 @@ class Data:
 		if self.redis.get("fast_user") == None:
 			secure = json.loads(self.redis.get('secure'))
 			self.redis.set("user/username", secure['user'])
-			self.redis.set("user/password", secure['password'])
+			self.redis.set("user/password", secure['pass'])
 			self.redis.set("fast_user", "true")
 
 		if self.redis.get("domain") == None:
@@ -173,7 +173,7 @@ class Data:
 
 			secure = data['secure']
 			self.redis.set("user/username", secure['user'])
-			self.redis.set("user/password", secure['password'])
+			self.redis.set("user/password", secure['pass'])
 			self.redis.set("fast_user", "true")
 
 			self.redis.set("domain", secure['domain'])
