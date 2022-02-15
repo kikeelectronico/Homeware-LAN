@@ -165,52 +165,51 @@ class Data:
 		file.close()
 
 	def load(self):
+		file = open('../' + self.homewareFile, 'r')
+		data = json.load(file)
+		file.close()
+		# Save the jsons
+		self.redis.set('devices',json.dumps(data['devices']))
+		self.redis.set('tasks',json.dumps(data['tasks']))
+		# Load the status in the database
+		status = data['status']
+		devices = status.keys()
+		for device in devices:
+			params = status[device].keys()
+			for param in params:
+				self.redis.set("status/" + device + "/" + param, pickle.dumps(status[device][param]))
+		# Load tokens
+		token = data['secure']['token']
+		self.redis.set("token/front", token['front'])
+		self.redis.set("token/apikey", token['apikey'])
+		self.redis.set("token/google/client_id", token['google']['client_id'])
+		self.redis.set("token/google/client_secret", token['google']['client_secret'])
+		self.redis.set("token/google/access_token/value", token['google']['access_token']['value'])
+		self.redis.set("token/google/access_token/timestamp", token['google']['access_token']['timestamp'])
+		self.redis.set("token/google/refresh_token/value", token['google']['refresh_token']['value'])
+		self.redis.set("token/google/refresh_token/timestamp", token['google']['refresh_token']['timestamp'])
+		self.redis.set("token/google/authorization_code/value", token['google']['authorization_code']['value'])
+		self.redis.set("token/google/authorization_code/timestamp", token['google']['authorization_code']['timestamp'])
+		# Load MQTT credentials
+		mqtt = data['secure']['mqtt']
+		self.redis.set("mqtt/username", mqtt['user'])
+		self.redis.set("mqtt/password", mqtt['password'])
+		# Load Admin user credentials
+		secure = data['secure']
+		self.redis.set("user/username", secure['user'])
+		self.redis.set("user/password", secure['pass'])
+		# Load generla config
+		self.redis.set("domain", secure['domain'])
+		self.redis.set("ddns", pickle.dumps(secure['ddns']))
+		self.redis.set("log", pickle.dumps(secure['log']))
+		self.redis.set("sync_google", pickle.dumps(secure['sync_google']))
+		self.redis.set("sync_devices", pickle.dumps(secure['sync_devices']))
 
-		with open('../' + self.homewareFile, 'r') as file:
-			data = json.load(file)
-			file.close()
-			# Save the jsons
-			self.redis.set('devices',json.dumps(data['devices']))
-			self.redis.set('tasks',json.dumps(data['tasks']))
-			# Load the status in the database
-			status = data['status']
-			devices = status.keys()
-			for device in devices:
-				params = status[device].keys()
-				for param in params:
-					self.redis.set("status/" + device + "/" + param, pickle.dumps(status[device][param]))
-			# Load tokens
-			token = data['secure']['token']
-			self.redis.set("token/front", token['front'])
-			self.redis.set("token/apikey", token['apikey'])
-			self.redis.set("token/google/client_id", token['google']['client_id'])
-			self.redis.set("token/google/client_secret", token['google']['client_secret'])
-			self.redis.set("token/google/access_token/value", token['google']['access_token']['value'])
-			self.redis.set("token/google/access_token/timestamp", token['google']['access_token']['timestamp'])
-			self.redis.set("token/google/refresh_token/value", token['google']['refresh_token']['value'])
-			self.redis.set("token/google/refresh_token/timestamp", token['google']['refresh_token']['timestamp'])
-			self.redis.set("token/google/authorization_code/value", token['google']['authorization_code']['value'])
-			self.redis.set("token/google/authorization_code/timestamp", token['google']['authorization_code']['timestamp'])
-			# Load MQTT credentials
-			mqtt = data['secure']['mqtt']
-			self.redis.set("mqtt/username", mqtt['user'])
-			self.redis.set("mqtt/password", mqtt['password'])
-			# Load Admin user credentials
-			secure = data['secure']
-			self.redis.set("user/username", secure['user'])
-			self.redis.set("user/password", secure['pass'])
-			# Load generla config
-			self.redis.set("domain", secure['domain'])
-			self.redis.set("ddns", pickle.dumps(secure['ddns']))
-			self.redis.set("log", pickle.dumps(secure['log']))
-			self.redis.set("sync_google", pickle.dumps(secure['sync_google']))
-			self.redis.set("sync_devices", pickle.dumps(secure['sync_devices']))
-
-			# Temp flags
-			self.redis.set("fast_status", "true")
-			self.redis.set("fast_token", "true")
-			self.redis.set("fast_mqtt", "true")
-			self.redis.set("fast_user", "true")
+		# Temp flags
+		self.redis.set("fast_status", "true")
+		self.redis.set("fast_token", "true")
+		self.redis.set("fast_mqtt", "true")
+		self.redis.set("fast_user", "true")
 
 
 # DEVICES
