@@ -596,7 +596,7 @@ class Data:
 		return log
 
 	def deleteLog(self):
-		log = []
+		new_log = []
 		# Get the days to delete
 		log = pickle.loads(self.redis.get('log'))
 		days = int(log['days'])
@@ -613,17 +613,17 @@ class Data:
 					timestamp = register.split(' - ')[1]
 					timestamp_date = dateutil.parser.parse(timestamp)
 					if timestamp_date > n_days_ago:
-						log.append(register)
+						new_log.append(register)
 					
 				except:
 					now = datetime.now()
 					date_time = now.strftime("%d/%m/%Y, %H:%M:%S")
 					log_register = 'Log - ' + date_time  + ' - Unable to process a registry from the log file\n';
-					log.append(log_register)
+					new_log.append(log_register)
 
 			# Write the new file in disk
 			log_file = open("../logs/homeware.log","w")
-			for register in log:
+			for register in new_log:
 				log_file.write(register)
 			log_file.close()
 
