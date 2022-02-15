@@ -35,22 +35,20 @@ class Data:
 
 		if not self.redis.get('transfer'):
 			self.log('Warning','The database must be created')
-			try:
-				self.load()
-				self.log('Warning','Using a provided homeware file')
-			except:
+			if not os.path.exists("../homeware.json"):
 				subprocess.run(["cp", "../configuration_templates/template_homeware.json", "../homeware.json"],  stdout=subprocess.PIPE)
-				self.load()
 				self.log('Warning','Copying the template homeware file')
-				self.log('Warning','Using a template homeware file')
-			finally:
-				self.redis.set("domain", os.environ.get("HOMEWARE_DOMAIN", "localhost"))
-				ddns = pickle.loads(self.redis.get("ddns"))
-				ddns['hostname'] = os.environ.get("HOMEWARE_DOMAIN", "localhost")
-				self.redis.set("ddns", pickle.dumps(ddns))
-				self.redis.set("user/username", os.environ.get("HOMEWARE_USER", "admin"))
-				self.redis.set("user/password", str(bcrypt.hashpw(os.environ.get("HOMEWARE_PASSWORD", "admin").encode('utf-8'), bcrypt.gensalt())))
-
+			# Load the database using the template
+			self.load()
+			self.log('Warning','Using a template homeware file')
+			# Overwrite the settings given by the user
+			self.redis.set("domain", os.environ.get("HOMEWARE_DOMAIN", "localhost"))
+			ddns = pickle.loads(self.redis.get("ddns"))
+			ddns['hostname'] = os.environ.get("HOMEWARE_DOMAIN", "localhost")
+			self.redis.set("ddns", pickle.dumps(ddns))
+			self.redis.set("user/username", os.environ.get("HOMEWARE_USER", "admin"))
+			self.redis.set("user/password", str(bcrypt.hashpw(os.environ.get("HOMEWARE_PASSWORD", "admin").encode('utf-8'), bcrypt.gensalt())))
+			# Set the flag
 			self.redis.set("transfer", "true")
 
 		if self.redis.get("alert") == None:
