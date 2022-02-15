@@ -28,6 +28,7 @@ class Logs extends React.Component {
           this.setState({ data: data.reverse() });
         } else {
           console.error(http.statusText);
+          ToastsStore.error("Something went wrong");
         }
       }
     }.bind(this);

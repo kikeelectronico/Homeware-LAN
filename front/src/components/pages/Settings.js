@@ -50,6 +50,7 @@ class Settings extends React.Component {
             });
           } else {
             console.error(http.statusText);
+            ToastsStore.error("Something went wrong");
           }
         }
       }.bind(this);
