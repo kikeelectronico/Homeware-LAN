@@ -201,7 +201,7 @@ class Data:
 		self.redis.set('devices',json.dumps(temp_devices))
 		# Inform Google Home Graph
 		if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
-			homegraph.requestSync(self.redis.get("domain"))
+			homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
 
 		return found
 
@@ -219,7 +219,7 @@ class Data:
 
 		# Inform Google Home Graph
 		if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
-			homegraph.requestSync(self.redis.get("domain"))
+			homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
 
 	def deleteDevice(self, value):
 		temp_devices = []
@@ -238,7 +238,7 @@ class Data:
 
 		# Inform Google Home Graph
 		if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
-			homegraph.requestSync(self.redis.get("domain"))
+			homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
 
 		return found
 
@@ -284,7 +284,7 @@ class Data:
 				states = {}
 				states[device] = {}
 				states[device][param] = value
-				homegraph.reportState(self.redis.get("domain"),states)
+				homegraph.reportState(self.redis.get("domain").decode('UTF-8'),states)
 
 			return True
 		else:
@@ -325,7 +325,7 @@ class Data:
 # USER
 
 	def updatePassword(self, incommingData):
-		ddbb_password_hash = self.redis.get("user/password")
+		ddbb_password_hash = self.redis.get("user/password").decode('UTF-8')
 		password = incommingData['pass']
 		if bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
 			new_hash = str(bcrypt.hashpw(incommingData['new_pass'].encode('utf-8'), bcrypt.gensalt()))
@@ -338,8 +338,8 @@ class Data:
 	def login(self, headers):
 		username = headers['user']
 		password = headers['pass']
-		ddbb_password_hash = self.redis.get("user/password")
-		ddbb_username = self.redis.get("user/username")
+		ddbb_password_hash = self.redis.get("user/password").decode('UTF-8')
+		ddbb_username = self.redis.get("user/username").decode('UTF-8')
 		auth = False
 		if username == ddbb_username and bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
 			auth = True
@@ -380,7 +380,7 @@ class Data:
 		# secure = json.loads(self.redis.get('secure'))
 
 		responseData = {}
-		if username == self.redis.get("user/username") and token == self.redis.get("token/front"):
+		if username == self.redis.get("user/username").decode('UTF-8') and token == self.redis.get("token/front").decode('UTF-8'):
 			responseData = {
 				'status': 'in'
 			}
@@ -394,8 +394,8 @@ class Data:
 	def googleSync(self, headers, responseURL):
 		username = headers['user']
 		password = headers['pass']
-		ddbb_password_hash = self.redis.get("user/password")
-		ddbb_username = self.redis.get("user/username")
+		ddbb_password_hash = self.redis.get("user/password").decode('UTF-8')
+		ddbb_username = self.redis.get("user/username").decode('UTF-8')
 		auth = False
 		if username == ddbb_username and bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
 			return responseURL
@@ -406,7 +406,7 @@ class Data:
 
 	def getAPIKey(self):
 
-		apikey = self.redis.get("token/apikey")
+		apikey = self.redis.get("token/apikey").decode('UTF-8')
 		data = {
 			"apikey": apikey
 		}
@@ -432,17 +432,17 @@ class Data:
 
 		return data
 
-	def getToken(self,agent,type,subtype):
+	def getToken(self,agent="",type="",subtype=""):
 		if agent == 'front':
-			return self.redis.get("token/front")
+			return self.redis.get("token/front").decode('UTF-8')
 		elif agent == 'apikey':
-			return self.redis.get("token/apikey")
+			return self.redis.get("token/apikey").decode('UTF-8')
 		elif type == 'client_id':
-			return self.redis.get("token/google/client_id")
+			return self.redis.get("token/google/client_id").decode('UTF-8')
 		elif type == 'client_secret':
-			return self.redis.get("token/google/client_secret")
+			return self.redis.get("token/google/client_secret").decode('UTF-8')
 		else:
-			return self.redis.get("token/" + agent + "/" + type + "/" + subtype)
+			return self.redis.get("token/" + agent + "/" + type + "/" + subtype).decode('UTF-8')
 			#return json.loads(self.redis.get('secure'))['token'][agent]
 
 	def updateToken(self,agent,type,value,timestamp):
@@ -454,16 +454,16 @@ class Data:
 	def getSettings(self):
 		data = {
 			"google": {
-				"client_id": self.redis.get('token/google/client_id'),
-				"client_secret": self.redis.get('token/google/client_secret'),
+				"client_id": self.redis.get('token/google/client_id').decode('UTF-8'),
+				"client_secret": self.redis.get('token/google/client_secret').decode('UTF-8'),
 			},
 			"ddns": pickle.loads(self.redis.get('ddns')),
 			"sync_google": pickle.loads(self.redis.get("sync_google")),
 			"sync_devices": pickle.loads(self.redis.get("sync_devices")),
 			"log": pickle.loads(self.redis.get("log")),
 			"mqtt": {
-				"user": self.redis.get('mqtt/user'),
-				"password": self.redis.get('mqtt/password'),
+				"user": self.redis.get('mqtt/user').decode('UTF-8'),
+				"password": self.redis.get('mqtt/password').decode('UTF-8'),
 			}
 		}
 
@@ -499,8 +499,8 @@ class Data:
 
 	def getMQTT(self):
 		return {
-				"user": self.redis.get('mqtt/user'),
-				"password": self.redis.get('mqtt/password'),
+				"user": self.redis.get('mqtt/user').decode('UTF-8'),
+				"password": self.redis.get('mqtt/password').decode('UTF-8'),
 			}
 
 	def getDDNS(self):
@@ -608,7 +608,7 @@ class Data:
 
 
 	def isThereAnAlert(self):
-		return {"alert": str(self.redis.get('alert'))[2:-1]}
+		return {"alert": self.redis.get('alert').decode('UTF-8')}
 
 # ALIVE
 
