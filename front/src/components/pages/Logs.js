@@ -58,7 +58,7 @@ class Logs extends React.Component {
         if (http.status === 200) {
           ToastsStore.success("Deleted");
         } else {
-          
+          ToastsStore.error("Something went wrong");
         }
       }
     }.bind(this);
