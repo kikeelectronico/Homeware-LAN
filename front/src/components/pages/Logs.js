@@ -16,6 +16,7 @@ class Logs extends React.Component {
     this.previousPage = this.previousPage.bind(this);
     this.nextPage = this.nextPage.bind(this);
     this.downloadLog = this.downloadLog.bind(this);
+    this.deleteLog = this.deleteLog.bind(this);
   }
 
   componentDidMount() {
@@ -48,6 +49,22 @@ class Logs extends React.Component {
     ToastsStore.warning("Downloading");
     const url = root + "files/download/log/" + getCookieValue("token");
     window.open(url, '_blank')
+  }
+
+  deleteLog() {
+    var http = new XMLHttpRequest();
+    http.onload = function (e) {
+      if (http.readyState === 4) {
+        if (http.status === 200) {
+          ToastsStore.success("Deleted");
+        } else {
+          
+        }
+      }
+    }.bind(this);
+    http.open("GET", root + "api/log/delete/");
+    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    http.send();
   }
 
   render() {
@@ -86,6 +103,9 @@ class Logs extends React.Component {
             </button>
             <button type="button" onClick={this.downloadLog}>
               Download
+            </button>
+            <button type="button" onClick={this.deleteLog}>
+              Delete
             </button>
           </div>
         </div>

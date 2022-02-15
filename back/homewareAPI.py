@@ -632,6 +632,26 @@ def apiLogGet():
     )
     return response
 
+@app.route("/api/log/delete", methods=['GET'])
+@app.route("/api/log/delete/", methods=['GET'])
+def apiLogDelete():
+
+    accessLevel = checkAccessLevel(request.headers)
+
+    if accessLevel >= 100:
+        responseData = data_conector.deleteLog()
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > log > delete endpoint with bad authentication')
+        responseData = FOUR_O_ONE
+
+    response = app.response_class(
+        response=json.dumps(responseData),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
 @app.route("/api/log/alert", methods=['GET'])
 @app.route("/api/log/alert/", methods=['GET'])
 def apiLogAlert():
