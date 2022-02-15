@@ -81,7 +81,7 @@ class Data:
 
 		if self.redis.get("fast_mqtt") == None:
 			mqtt = json.loads(self.redis.get('secure'))['mqtt']
-			self.redis.set("mqtt/user", mqtt['user'])
+			self.redis.set("mqtt/username", mqtt['user'])
 			self.redis.set("mqtt/password", mqtt['password'])
 			self.redis.set("fast_mqtt", "true")
 
@@ -152,7 +152,7 @@ class Data:
 				},
 				"ddns": pickle.loads(self.redis.get("ddns")),
 				"mqtt": {
-					"user": self.redis.get("mqtt/user").decode('UTF-8'),
+					"user": self.redis.get("mqtt/username").decode('UTF-8'),
 					"password": self.redis.get("mqtt/password").decode('UTF-8'),
 				},
 				"sync_google": pickle.loads(self.redis.get("sync_google")),
@@ -193,7 +193,7 @@ class Data:
 			self.redis.set("token/google/authorization_code/timestamp", token['google']['authorization_code']['timestamp'])
 			# Load MQTT credentials
 			mqtt = data['secure']['mqtt']
-			self.redis.set("mqtt/user", mqtt['user'])
+			self.redis.set("mqtt/username", mqtt['user'])
 			self.redis.set("mqtt/password", mqtt['password'])
 			# Load Admin user credentials
 			secure = data['secure']
@@ -482,7 +482,7 @@ class Data:
 			"sync_devices": pickle.loads(self.redis.get("sync_devices")),
 			"log": pickle.loads(self.redis.get("log")),
 			"mqtt": {
-				"user": self.redis.get('mqtt/user').decode('UTF-8'),
+				"user": self.redis.get('mqtt/username').decode('UTF-8'),
 				"password": self.redis.get('mqtt/password').decode('UTF-8'),
 			}
 		}
@@ -492,7 +492,7 @@ class Data:
 	def updateSettings(self, incommingData):
 		self.redis.set("token/google/client_id",incommingData['google']['client_id'])
 		self.redis.set("token/google/client_secret",incommingData['google']['client_secret'])
-		self.redis.set("mqtt/user",incommingData['mqtt']['user'])
+		self.redis.set("mqtt/username",incommingData['mqtt']['user'])
 		self.redis.set("mqtt/password",incommingData['mqtt']['password'])
 		self.redis.set("sync_google",pickle.dumps(incommingData['sync_google']))
 		self.redis.set("sync_devices",pickle.dumps(incommingData['sync_devices']))
@@ -519,7 +519,7 @@ class Data:
 
 	def getMQTT(self):
 		return {
-				"user": self.redis.get('mqtt/user').decode('UTF-8'),
+				"user": self.redis.get('mqtt/username').decode('UTF-8'),
 				"password": self.redis.get('mqtt/password').decode('UTF-8'),
 			}
 
