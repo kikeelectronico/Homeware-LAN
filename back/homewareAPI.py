@@ -462,7 +462,11 @@ def apiUserPassword():
     accessLevel = checkAccessLevel(request.headers)
 
     if accessLevel >= 10:
-        return data_conector.updatePassword(request.get_json())
+        response = app.response_class(
+            response=json.dumps(data_conector.updatePassword(request.get_json())),
+            status=200,
+            mimetype='application/json'
+        )
     else:
         data_conector.log(
             'Alert', 'Request to API > user > password endpoint with bad authentication')

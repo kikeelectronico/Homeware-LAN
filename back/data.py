@@ -363,9 +363,9 @@ class Data:
 		if bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
 			new_hash = str(bcrypt.hashpw(incommingData['new_pass'].encode('utf-8'), bcrypt.gensalt()))
 			self.redis.set("user/password",new_hash)
-			return "Updated"
+			return { "message": "Updated" }
 		else:
-			return "Fail, the password hasn't been changed"
+			return { "message": "Fail, the password hasn't been changed" }
 
 
 	def login(self, headers):
