@@ -61,7 +61,7 @@ class Logs extends React.Component {
           ToastsStore.error("Something went wrong");
         }
       }
-    }.bind(this);
+    }
     http.open("GET", root + "api/log/delete/");
     http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
     http.send();
