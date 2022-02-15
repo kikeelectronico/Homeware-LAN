@@ -112,10 +112,6 @@ class Data:
 			self.redis.set("sync_devices", pickle.dumps(False))
 		# End
 
-		# Load some data into memory
-		secure = json.loads(self.redis.get('secure'))
-
-
 	def getVersion(self):
 		return {'version': self.version}
 
