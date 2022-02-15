@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { ToastsContainer, ToastsStore } from "react-toasts";
 import Light from "../devices/Light";
 import Outlet from "../devices/Outlet";
 import AcUnit from "../devices/AcUnit";
@@ -407,6 +408,7 @@ class Devices extends React.Component {
             <button type="button">New</button>
           </Link>
         </div>
+        <ToastsContainer store={ToastsStore} />
       </div>
     );
   }
