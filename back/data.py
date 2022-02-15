@@ -482,7 +482,7 @@ class Data:
 			"password": incommingData['ddns']['password'],
 			"provider": incommingData['ddns']['provider'],
 			"hostname": incommingData['ddns']['hostname'],
-			"enalbled": incommingData['ddns']['enabled']
+			"enabled": incommingData['ddns']['enabled']
 		}
 
 		self.redis.set("ddns",pickle.dumps(ddns))
