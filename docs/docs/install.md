@@ -10,15 +10,11 @@ sidebar_label: Installation
 ```bash
 sudo apt install -y docker docker-compose
 ```
-2. Install CURL
-```bash
-sudo apt install -y curl
-```
-3. Install git
+2. Install git
 ```bash
 sudo apt install -y git
 ```
-4. Install your favourite text editor. For example, nano.
+3. Install your favourite text editor. For example, nano.
 ```bash
 sudo apt install -y nano
 ```
