@@ -100,8 +100,14 @@ class Data:
 			self.redis.set("ddns", pickle.dumps(ddns))
 
 		if self.redis.get("log") == None:
-			log = json.loads(self.redis.get('secure'))['log']
-			self.redis.set("log", pickle.dumps(log))
+			try:
+				log = json.loads(self.redis.get('secure'))['log']
+				self.redis.set("log", pickle.dumps(log))
+			except:
+				log = {
+					"days": 30
+				}
+				self.redis.set("log", pickle.dumps(log))
 
 		if self.redis.get("sync_google") == None:
 			self.redis.set("sync_google", pickle.dumps(False))
@@ -201,7 +207,14 @@ class Data:
 		# Load generla config
 		self.redis.set("domain", secure['domain'])
 		self.redis.set("ddns", pickle.dumps(secure['ddns']))
-		self.redis.set("log", pickle.dumps(secure['log']))
+		try:
+			self.redis.set("log", pickle.dumps(secure['log']))
+		except:
+			log = {
+				"days": 30
+			}
+			self.redis.set("log", pickle.dumps(log))
+		
 		self.redis.set("sync_google", pickle.dumps(secure['sync_google']))
 		self.redis.set("sync_devices", pickle.dumps(secure['sync_devices']))
 
