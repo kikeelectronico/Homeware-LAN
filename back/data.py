@@ -208,7 +208,7 @@ class Data:
 		# Temp flags
 		self.redis.set("fast_status", "true")
 		self.redis.set("fast_token", "true")
-		self.redis.set("fast_mqtt", "true")
+		self.redis.set("fast_mqtt_b", "true")
 		self.redis.set("fast_user", "true")
 
 
