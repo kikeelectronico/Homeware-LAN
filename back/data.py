@@ -509,15 +509,14 @@ class Data:
 		self.redis.set("sync_google",pickle.dumps(incommingData['sync_google']))
 		self.redis.set("sync_devices",pickle.dumps(incommingData['sync_devices']))
 
-		ddns = {
-			"username": incommingData['ddns']['username'],
-			"password": incommingData['ddns']['password'],
-			"provider": incommingData['ddns']['provider'],
-			"hostname": incommingData['ddns']['hostname'],
-			"enabled": incommingData['ddns']['enabled']
-		}
-
+		ddns = pickle.loads(self.redis.get("ddns"))
+		ddns["username"] = incommingData['ddns']['username']
+		ddns["password"] = incommingData['ddns']['password']
+		ddns["provider"] = incommingData['ddns']['provider']
+		ddns["hostname"] = incommingData['ddns']['hostname']
+		ddns["enabled"] = incommingData['ddns']['enabled']
 		self.redis.set("ddns",pickle.dumps(ddns))
+		
 		self.redis.set("domain",incommingData['ddns']['hostname'])
 		self.redis.set("log",pickle.dumps(incommingData['log']))
 
