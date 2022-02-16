@@ -79,11 +79,11 @@ class Data:
 			self.redis.set("token/google/authorization_code/timestamp", token['google']['authorization_code']['timestamp'])
 			self.redis.set("fast_token", "true")
 
-		if self.redis.get("fast_mqtt") == None:
+		if self.redis.get("fast_mqtt_b") == None:
 			mqtt = json.loads(self.redis.get('secure'))['mqtt']
 			self.redis.set("mqtt/username", mqtt['user'])
 			self.redis.set("mqtt/password", mqtt['password'])
-			self.redis.set("fast_mqtt", "true")
+			self.redis.set("fast_mqtt_B", "true")
 
 		if self.redis.get("fast_user") == None:
 			secure = json.loads(self.redis.get('secure'))
