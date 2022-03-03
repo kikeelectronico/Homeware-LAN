@@ -10,6 +10,9 @@ services:
     environment:
       - REDIS_HOST=redis
       - MQTT_HOST=mosquitto
+      - HOMEWARE_USER=${HOMEWARE_USER}
+      - HOMEWARE_PASSWORD=${HOMEWARE_PASSWORD}
+      - HOMEWARE_DOMAIN=${DOMAIN}
     expose:
       - "5001"
     depends_on:
@@ -31,6 +34,7 @@ services:
     depends_on:
       - redis
       - mosquitto
+      - homeware-lan-back-api
     volumes:
       - homeware-logs:/app/logs
       - homeware-files:/app/files
@@ -47,6 +51,7 @@ services:
     depends_on:
       - redis
       - mosquitto
+      - homeware-lan-back-api
     volumes:
       - homeware-logs:/app/logs
       - homeware-files:/app/files

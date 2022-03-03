@@ -25,6 +25,7 @@ class Access extends React.Component {
           this.setState({ data: data });
         } else {
           console.error(http.statusText);
+          ToastsStore.error("Something went wrong. Unable to load the data.");
         }
       }
     }.bind(this);
@@ -44,10 +45,10 @@ class Access extends React.Component {
           ToastsStore.success("Generated");
         } else {
           console.error(http.statusText);
-          ToastsStore.error("Something goes wrong");
+          ToastsStore.error("Something went wrong.");
         }
       } else {
-        ToastsStore.error("Something goes wrong");
+        ToastsStore.error("Something went wrong");
       }
     };
     http.open("GET", root + "api/access/create/");

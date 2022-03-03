@@ -1,10 +1,11 @@
 import json
-from os import stat
+import os
 import random
 import bcrypt
 import redis
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
+import dateutil.parser
 import subprocess
 import paho.mqtt.publish as publish
 import os.path
@@ -18,51 +19,10 @@ class Data:
 	"""Access to the Homeware database and files."""
   
 
-	version = 'v1.6.4'
+	version = 'v1.7'
 	homewareFile = 'homeware.json'
-	apikey = ''
-	userToken = ''
-	userName = ''
-	domain = ''
-	sync_google = False
-	sync_devices = False
-
 
 	def __init__(self):
-		self.redis = redis.Redis(hostname.REDIS_HOST, hostname.REDIS_PORT)
-		self.verbose = False
-
-		if not self.redis.get('transfer'):
-			self.log('Warning','The database must be created')
-			try:
-				self.load()
-				self.log('Warning','Using a provided homeware file')
-			except:
-				subprocess.run(["cp", "../configuration_templates/template_homeware.json", "../homeware.json"],  stdout=subprocess.PIPE)
-				self.load()
-				self.log('Warning','Using a template homeware file')
-
-			self.redis.set("transfer", "true");
-
-		if self.redis.get("tasks") == None:
-			self.redis.set("tasks","[]")
-
-		if self.redis.get("alert") == None:
-			self.redis.set("alert","clear")
-
-		secure = json.loads(self.redis.get('secure'))
-		try:
-			self.sync_google = secure['sync_google']
-		except:
-			secure['sync_google'] = False
-			self.sync_google = False
-			self.redis.set('secure',json.dumps(secure))
-		try:
-			self.sync_devices = secure['sync_devices']
-		except:
-			secure['sync_devices'] = False
-			self.sync_devices = False
-			self.redis.set('secure',json.dumps(secure))
 
 		if not os.path.exists("../files"):
 				os.mkdir("../files")
@@ -70,6 +30,32 @@ class Data:
 		if not os.path.exists("../logs"):
 				os.mkdir("../logs")
 
+		self.redis = redis.Redis(hostname.REDIS_HOST, hostname.REDIS_PORT)
+		self.verbose = False
+
+		if not self.redis.get('transfer'):
+			self.log('Warning','The database must be created')
+			if not os.path.exists("../homeware.json"):
+				subprocess.run(["cp", "../configuration_templates/template_homeware.json", "../homeware.json"],  stdout=subprocess.PIPE)
+				self.log('Warning','Copying the template homeware file')
+			# Load the database using the template
+			self.load()
+			self.log('Warning','Using a template homeware file')
+			# Overwrite the settings given by the user
+			self.redis.set("domain", os.environ.get("HOMEWARE_DOMAIN", "localhost"))
+			ddns = pickle.loads(self.redis.get("ddns"))
+			ddns['hostname'] = os.environ.get("HOMEWARE_DOMAIN", "localhost")
+			self.redis.set("ddns", pickle.dumps(ddns))
+			self.redis.set("user/username", os.environ.get("HOMEWARE_USER", "admin"))
+			self.redis.set("user/password", str(bcrypt.hashpw(os.environ.get("HOMEWARE_PASSWORD", "admin").encode('utf-8'), bcrypt.gensalt())))
+			# Set the flag
+			self.redis.set("transfer", "true")
+
+		if self.redis.get("alert") == None:
+			self.redis.set("alert","clear")
+
+		# Temp, for update from 1.6.4 to 1.7
+		# Beging
 		if self.redis.get("fast_status") == None:
 			status = json.loads(self.redis.get('status'))
 			devices = status.keys()
@@ -79,12 +65,56 @@ class Data:
 					self.redis.set("status/" + device + "/" + param, pickle.dumps(status[device][param]))
 			self.redis.set("fast_status", "true")
 
-		# Load some data into memory
-		self.userName = secure['user']
-		self.userToken = secure['token']['front']
-		self.apikey = secure['token']['apikey']
-		self.domain = secure['domain']
+		if self.redis.get("fast_token") == None:
+			token = json.loads(self.redis.get('secure'))['token']
+			self.redis.set("token/front", token['front'])
+			self.redis.set("token/apikey", token['apikey'])
+			self.redis.set("token/google/client_id", token['google']['client_id'])
+			self.redis.set("token/google/client_secret", token['google']['client_secret'])
+			self.redis.set("token/google/access_token/value", token['google']['access_token']['value'])
+			self.redis.set("token/google/access_token/timestamp", token['google']['access_token']['timestamp'])
+			self.redis.set("token/google/refresh_token/value", token['google']['refresh_token']['value'])
+			self.redis.set("token/google/refresh_token/timestamp", token['google']['refresh_token']['timestamp'])
+			self.redis.set("token/google/authorization_code/value", token['google']['authorization_code']['value'])
+			self.redis.set("token/google/authorization_code/timestamp", token['google']['authorization_code']['timestamp'])
+			self.redis.set("fast_token", "true")
 
+		if self.redis.get("fast_mqtt_b") == None:
+			mqtt = json.loads(self.redis.get('secure'))['mqtt']
+			self.redis.set("mqtt/username", mqtt['user'])
+			self.redis.set("mqtt/password", mqtt['password'])
+			self.redis.set("fast_mqtt_B", "true")
+
+		if self.redis.get("fast_user") == None:
+			secure = json.loads(self.redis.get('secure'))
+			self.redis.set("user/username", secure['user'])
+			self.redis.set("user/password", secure['pass'])
+			self.redis.set("fast_user", "true")
+
+		if self.redis.get("domain") == None:
+			secure = json.loads(self.redis.get('secure'))
+			self.redis.set("domain", secure['domain'])
+
+		if self.redis.get("ddns") == None:
+			ddns = json.loads(self.redis.get('secure'))['ddns']
+			self.redis.set("ddns", pickle.dumps(ddns))
+
+		if self.redis.get("log") == None:
+			try:
+				log = json.loads(self.redis.get('secure'))['log']
+				self.redis.set("log", pickle.dumps(log))
+			except:
+				log = {
+					"days": 30
+				}
+				self.redis.set("log", pickle.dumps(log))
+
+		if self.redis.get("sync_google") == None:
+			self.redis.set("sync_google", pickle.dumps(False))
+
+		if self.redis.get("sync_devices") == None:
+			self.redis.set("sync_devices", pickle.dumps(False))
+		# End
 
 	def getVersion(self):
 		return {'version': self.version}
@@ -102,25 +132,98 @@ class Data:
 			'devices': json.loads(self.redis.get('devices')),
 			'status': self.getStatus(),
 			'tasks': json.loads(self.redis.get('tasks')),
-			'secure': json.loads(self.redis.get('secure'))
+			'secure': {
+				"domain": self.redis.get("domain").decode('UTF-8'),
+				"user": self.redis.get("user/username").decode('UTF-8'),
+				"pass": self.redis.get("user/password").decode('UTF-8'),
+				"token": {
+					"front": self.redis.get("token/front").decode('UTF-8'),
+					"google": {
+						"access_token": {
+							"timestamp": self.redis.get("token/google/access_token/timestamp").decode('UTF-8'),
+							"value": self.redis.get("token/google/access_token/value").decode('UTF-8'),
+						},
+						"authorization_code": {
+							"timestamp": self.redis.get("token/google/authorization_code/timestamp").decode('UTF-8'),
+							"value": self.redis.get("token/google/authorization_code/value").decode('UTF-8'),
+						},
+						"client_id": self.redis.get("token/google/client_id").decode('UTF-8'),
+						"client_secret": self.redis.get("token/google/client_secret").decode('UTF-8'),
+						"refresh_token": {
+							"timestamp": self.redis.get("token/google/refresh_token/timestamp").decode('UTF-8'),
+							"value": self.redis.get("token/google/refresh_token/value").decode('UTF-8'),
+						}
+					},
+					"apikey": self.redis.get("token/apikey").decode('UTF-8')
+				},
+				"ddns": pickle.loads(self.redis.get("ddns")),
+				"mqtt": {
+					"user": self.redis.get("mqtt/username").decode('UTF-8'),
+					"password": self.redis.get("mqtt/password").decode('UTF-8'),
+				},
+				"sync_google": pickle.loads(self.redis.get("sync_google")),
+				"sync_devices": pickle.loads(self.redis.get("sync_devices")),
+				"log": pickle.loads(self.redis.get("log")),
+			}
 		}
 		file = open('../' + self.homewareFile, 'w')
 		file.write(json.dumps(data))
 		file.close()
 
 	def load(self):
-		with open('../' + self.homewareFile, 'r') as f:
-			data = json.load(f)
-			self.redis.set('devices',json.dumps(data['devices']))
-			self.redis.set('tasks',json.dumps(data['tasks']))
-			self.redis.set('secure',json.dumps(data['secure']))
+		file = open('../' + self.homewareFile, 'r')
+		data = json.load(file)
+		file.close()
+		# Save the jsons
+		self.redis.set('devices',json.dumps(data['devices']))
+		self.redis.set('tasks',json.dumps(data['tasks']))
+		# Load the status in the database
+		status = data['status']
+		devices = status.keys()
+		for device in devices:
+			params = status[device].keys()
+			for param in params:
+				self.redis.set("status/" + device + "/" + param, pickle.dumps(status[device][param]))
+		# Load tokens
+		token = data['secure']['token']
+		self.redis.set("token/front", token['front'])
+		self.redis.set("token/apikey", token['apikey'])
+		self.redis.set("token/google/client_id", token['google']['client_id'])
+		self.redis.set("token/google/client_secret", token['google']['client_secret'])
+		self.redis.set("token/google/access_token/value", token['google']['access_token']['value'])
+		self.redis.set("token/google/access_token/timestamp", token['google']['access_token']['timestamp'])
+		self.redis.set("token/google/refresh_token/value", token['google']['refresh_token']['value'])
+		self.redis.set("token/google/refresh_token/timestamp", token['google']['refresh_token']['timestamp'])
+		self.redis.set("token/google/authorization_code/value", token['google']['authorization_code']['value'])
+		self.redis.set("token/google/authorization_code/timestamp", token['google']['authorization_code']['timestamp'])
+		# Load MQTT credentials
+		mqtt = data['secure']['mqtt']
+		self.redis.set("mqtt/username", mqtt['user'])
+		self.redis.set("mqtt/password", mqtt['password'])
+		# Load Admin user credentials
+		secure = data['secure']
+		self.redis.set("user/username", secure['user'])
+		self.redis.set("user/password", secure['pass'])
+		# Load generla config
+		self.redis.set("domain", secure['domain'])
+		self.redis.set("ddns", pickle.dumps(secure['ddns']))
+		try:
+			self.redis.set("log", pickle.dumps(secure['log']))
+		except:
+			log = {
+				"days": 30
+			}
+			self.redis.set("log", pickle.dumps(log))
+		
+		self.redis.set("sync_google", pickle.dumps(secure['sync_google']))
+		self.redis.set("sync_devices", pickle.dumps(secure['sync_devices']))
 
-			status = data['status']
-			devices = status.keys()
-			for device in devices:
-				params = status[device].keys()
-				for param in params:
-					self.redis.set("status/" + device + "/" + param, pickle.dumps(status[device][param]))
+		# Temp flags
+		self.redis.set("fast_status", "true")
+		self.redis.set("fast_token", "true")
+		self.redis.set("fast_mqtt_b", "true")
+		self.redis.set("fast_user", "true")
+
 
 # DEVICES
 
@@ -143,8 +246,8 @@ class Data:
 				temp_devices.append(device)
 		self.redis.set('devices',json.dumps(temp_devices))
 		# Inform Google Home Graph
-		if os.path.exists("../files/google.json") and self.sync_google:
-			homegraph.requestSync(self.domain)
+		if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
+			homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
 
 		return found
 
@@ -161,8 +264,8 @@ class Data:
 			self.redis.set("status/" + deviceID + "/" + param, pickle.dumps(status[param]))
 
 		# Inform Google Home Graph
-		if os.path.exists("../files/google.json") and self.sync_google:
-			homegraph.requestSync(self.domain)
+		if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
+			homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
 
 	def deleteDevice(self, value):
 		temp_devices = []
@@ -180,8 +283,8 @@ class Data:
 				self.redis.delete(param)
 
 		# Inform Google Home Graph
-		if os.path.exists("../files/google.json") and self.sync_google:
-			homegraph.requestSync(self.domain)
+		if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
+			homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
 
 		return found
 
@@ -220,14 +323,14 @@ class Data:
 					publish.multiple(msgs, hostname=hostname.MQTT_HOST)
 
 			except:
-				publish.multiple(msgs, hostname=hostname.MQTT_HOST)
+				self.log('Warning','Param update not sent through MQTT')
 
 			# Inform Google HomeGraph
-			if os.path.exists("../files/google.json") and self.sync_google:
+			if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
 				states = {}
 				states[device] = {}
 				states[device][param] = value
-				homegraph.reportState(self.domain,states)
+				homegraph.reportState(self.redis.get("domain").decode('UTF-8'),states)
 
 			return True
 		else:
@@ -267,85 +370,54 @@ class Data:
 
 # USER
 
-	def setUser(self, incommingData):
-		if json.loads(self.redis.get('secure'))['user'] == '':
-			data = {}
-			secure = json.loads(self.redis.get('secure'))
-			secure['user'] = incommingData['user']
-			secure['pass'] = str(bcrypt.hashpw(incommingData['pass'].encode('utf-8'), bcrypt.gensalt()))
-			self.redis.set('secure',json.dumps(secure))
-			return '\r\nSaved correctly!\r\n\r\n'
-		else:
-			return '\r\nYour user has been set in the past\r\n\r\n'
-
 	def updatePassword(self, incommingData):
-		secure = json.loads(self.redis.get('secure'))
+		ddbb_password_hash = self.redis.get("user/password").decode('UTF-8')
 		password = incommingData['pass']
-		if bcrypt.checkpw(password.encode('utf-8'),secure['pass'][2:-1].encode('utf-8')):
-			secure['pass'] = str(bcrypt.hashpw(incommingData['new_pass'].encode('utf-8'), bcrypt.gensalt()))
-			self.redis.set('secure',json.dumps(secure))
-			return "Updated"
+		if bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
+			new_hash = str(bcrypt.hashpw(incommingData['new_pass'].encode('utf-8'), bcrypt.gensalt()))
+			self.redis.set("user/password",new_hash)
+			return { "message": "Updated" }
 		else:
-			return "Fail, the password hasn't been changed"
+			return { "message": "Fail, the password hasn't been changed" }
 
 
 	def login(self, headers):
-		user = headers['user']
+		username = headers['user']
 		password = headers['pass']
-		secure = json.loads(self.redis.get('secure'))
-		auth = False
-		if 'key' in secure.keys():
-			key = secure['key']
-			cipher_suite = Fernet(str.encode(secure['key'][2:len(secure['key'])]))
-			plain_text = cipher_suite.decrypt(str.encode(secure['pass'][2:len(secure['pass'])]))
-			if user == secure['user'] and plain_text == str.encode(password):
-				hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-				secure['pass'] = str(hashed)
-				del secure['key']
-				auth = True
-		else:
-			if bcrypt.checkpw(password.encode('utf-8'),secure['pass'][2:-1].encode('utf-8')):
-				auth = True
-
-		responseData = {}
-		if auth:
-			#Generate the token
+		ddbb_password_hash = self.redis.get("user/password").decode('UTF-8')
+		ddbb_username = self.redis.get("user/username").decode('UTF-8')
+		if username == ddbb_username and bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
+			# Generate the token
 			chars = 'abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 			token = ''
 			i = 0
 			while i < 40:
 				token += random.choice(chars)
 				i += 1
-			#Saved the new token
-			secure['token']['front'] = token
-			self.redis.set('secure',json.dumps(secure))
-			#Prepare the response
+			# Saved the new token
+			self.redis.set("token/front", token)
+			# Prepare the response
 			responseData = {
 				'status': 'in',
-				'user': user,
+				'user': username,
 				'token': token
 			}
-			self.log('Log',user + ' has login')
-
-			self.userName = user
-			self.userToken = token
+			self.log('Log',username + ' has login')
+			return responseData	
 		else:
-			#Prepare the response
+			# Prepare the response
 			responseData = {
 				'status': 'fail'
 			}
-			self.log('Alert','Login failed, user: ' + user)
-
-		return responseData
+			self.log('Alert','Login failed, user: ' + username)
+			return responseData
 
 	def validateUserToken(self, headers):
-		user = headers['user']
+		username = headers['user']
 		token = headers['token']
 
-		# secure = json.loads(self.redis.get('secure'))
-
 		responseData = {}
-		if user == self.userName and token == self.userToken:
+		if username == self.redis.get("user/username").decode('UTF-8') and token == self.redis.get("token/front").decode('UTF-8'):
 			responseData = {
 				'status': 'in'
 			}
@@ -357,12 +429,12 @@ class Data:
 		return responseData
 
 	def googleSync(self, headers, responseURL):
-		user = headers['user']
+		username = headers['user']
 		password = headers['pass']
-
-		secure = json.loads(self.redis.get('secure'))
-
-		if bcrypt.checkpw(password.encode('utf-8'),secure['pass'][2:-1].encode('utf-8')):
+		ddbb_password_hash = self.redis.get("user/password").decode('UTF-8')
+		ddbb_username = self.redis.get("user/username").decode('UTF-8')
+		auth = False
+		if username == ddbb_username and bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
 			return responseURL
 		else:
 			return "fail"
@@ -370,125 +442,109 @@ class Data:
 # ACCESS
 
 	def getAPIKey(self):
-		secure = json.loads(self.redis.get('secure'))
+		apikey = self.redis.get("token/apikey").decode('UTF-8')
 		data = {
-			"apikey": secure['token']['apikey']
+			"apikey": apikey
 		}
 
 		return data
 
 	def generateAPIKey(self):
+		# Generate the token
 		chars = 'abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 		token = ''
 		i = 0
 		while i < 40:
 			token += random.choice(chars)
 			i += 1
-		secure = json.loads(self.redis.get('secure'))
-		secure['token']['apikey'] = token
-		self.redis.set('secure',json.dumps(secure))
-		self.apikey = token
+		# Save the new token
+		self.redis.set("token/apikey", token)
+		# Prepare the response
 		data = {
 			"apikey": token
 		}
-
 		return data
 
-	def getToken(self,agent):
+	def getToken(self,agent="",type="",subtype=""):
 		if agent == 'front':
-			return self.userToken
+			return self.redis.get("token/front").decode('UTF-8')
 		elif agent == 'apikey':
-			return self.apikey
+			return self.redis.get("token/apikey").decode('UTF-8')
+		elif type == 'client_id':
+			return self.redis.get("token/google/client_id").decode('UTF-8')
+		elif type == 'client_secret':
+			return self.redis.get("token/google/client_secret").decode('UTF-8')
 		else:
-			return json.loads(self.redis.get('secure'))['token'][agent]
+			return self.redis.get("token/" + agent + "/" + type + "/" + subtype).decode('UTF-8')
 
 	def updateToken(self,agent,type,value,timestamp):
-		secure = json.loads(self.redis.get('secure'))
-
-		secure['token'][agent][type]['value'] = value
-		secure['token'][agent][type]['timestamp'] = timestamp
-
-		self.redis.set('secure',json.dumps(secure))
+		self.redis.set("token/" + agent + "/" + type + "/value",value)
+		self.redis.set("token/" + agent + "/" + type + "/timestamp",timestamp)
 
 # SETTINGS
 
 	def getSettings(self):
-
-		secure = json.loads(self.redis.get('secure'))
 		data = {
 			"google": {
-				"client_id": secure['token']["google"]["client_id"],
-				"client_secret": secure['token']["google"]["client_secret"],
+				"client_id": self.redis.get('token/google/client_id').decode('UTF-8'),
+				"client_secret": self.redis.get('token/google/client_secret').decode('UTF-8'),
 			},
-			"ddns": secure['ddns'],
-			"sync_google": secure['sync_google'],
-			"sync_devices": secure['sync_devices']
+			"ddns": pickle.loads(self.redis.get('ddns')),
+			"sync_google": pickle.loads(self.redis.get("sync_google")),
+			"sync_devices": pickle.loads(self.redis.get("sync_devices")),
+			"log": pickle.loads(self.redis.get("log")),
+			"mqtt": {
+				"user": self.redis.get('mqtt/username').decode('UTF-8'),
+				"password": self.redis.get('mqtt/password').decode('UTF-8'),
+			}
 		}
-		try:
-			data['mqtt'] = secure['mqtt']
-		except:
-			data['mqtt'] = {"user":"","password":""}
-
 
 		return data
 
 	def updateSettings(self, incommingData):
-		secure = json.loads(self.redis.get('secure'))
+		self.redis.set("token/google/client_id",incommingData['google']['client_id'])
+		self.redis.set("token/google/client_secret",incommingData['google']['client_secret'])
+		self.redis.set("mqtt/username",incommingData['mqtt']['user'])
+		self.redis.set("mqtt/password",incommingData['mqtt']['password'])
+		self.redis.set("sync_google",pickle.dumps(incommingData['sync_google']))
+		self.redis.set("sync_devices",pickle.dumps(incommingData['sync_devices']))
 
-		secure['token']["google"]["client_id"] = incommingData['google']['client_id']
-		secure['token']["google"]["client_secret"] = incommingData['google']['client_secret']
-		secure['ddns']['username'] = incommingData['ddns']['username']
-		secure['ddns']['password'] = incommingData['ddns']['password']
-		secure['ddns']['provider'] = incommingData['ddns']['provider']
-		secure['ddns']['hostname'] = incommingData['ddns']['hostname']
-		secure['ddns']['enabled'] = incommingData['ddns']['enabled']
-		secure['mqtt'] = {}
-		secure['mqtt']['user'] = incommingData['mqtt']['user']
-		secure['mqtt']['password'] = incommingData['mqtt']['password']
-		secure['sync_google'] = incommingData['sync_google']
-		secure['sync_devices'] = incommingData['sync_devices']
-
-		self.redis.set('secure',json.dumps(secure))
-
-		self.sync_google = incommingData['sync_google']
-		self.sync_devices = incommingData['sync_devices']
-
-	def setDomain(self, value):
-		if json.loads(self.redis.get('secure'))['domain'] == '':
-			secure = json.loads(self.redis.get('secure'))
-			secure['domain'] = value
-			secure['ddns']['hostname'] = value
-			self.redis.set('secure',json.dumps(secure))
-			return '\r\nSaved correctly!\r\n\r\n'
-		else:
-			return '\r\nYour domain has been set in the past\r\n\r\n'
+		ddns = pickle.loads(self.redis.get("ddns"))
+		ddns["username"] = incommingData['ddns']['username']
+		ddns["password"] = incommingData['ddns']['password']
+		ddns["provider"] = incommingData['ddns']['provider']
+		ddns["hostname"] = incommingData['ddns']['hostname']
+		ddns["enabled"] = incommingData['ddns']['enabled']
+		self.redis.set("ddns",pickle.dumps(ddns))
+		
+		self.redis.set("domain",incommingData['ddns']['hostname'])
+		self.redis.set("log",pickle.dumps(incommingData['log']))
 
 	def setSyncDevices(self, value):
-		secure = json.loads(self.redis.get('secure'))
-		if type(value) == bool:
-			secure['sync_devices'] = value
-		self.redis.set('secure',json.dumps(secure))
+		self.redis.set("sync_devices",pickle.dumps(value))
 
 	def getSyncDevices(self):
-		secure = json.loads(self.redis.get('secure'))
-		return secure['sync_devices']
+		return pickle.loads(self.redis.get('sync_devices'))
 
 # SYSTEM
 
 	def getMQTT(self):
-		return json.loads(self.redis.get('secure'))['mqtt']
+		return {
+				"user": self.redis.get('mqtt/username').decode('UTF-8'),
+				"password": self.redis.get('mqtt/password').decode('UTF-8'),
+			}
 
 	def getDDNS(self):
-		return json.loads(self.redis.get('secure'))['ddns']
+		return pickle.loads(self.redis.get('ddns'))
 
 	def updateDDNS(self, ip, status, code, enabled, last):
-		secure = json.loads(self.redis.get('secure'))
-		secure['ddns']['ip'] = ip
-		secure['ddns']['status'] = status
-		secure['ddns']['code'] = code
-		secure['ddns']['enabled'] = enabled
-		secure['ddns']['last'] = last
-		self.redis.set('secure',json.dumps(secure))
+		ddns = pickle.loads(self.redis.get('ddns'))
+		ddns['ip'] = ip
+		ddns['status'] = status
+		ddns['code'] = code
+		ddns['enabled'] = enabled
+		ddns['last'] = last
+		self.redis.set('ddns',pickle.dumps(ddns))
 
 	def redisStatus(self):
 		status = {}
@@ -508,10 +564,7 @@ class Data:
 		return status
 
 	def updateSyncGoogle(self,status):
-		secure = json.loads(self.redis.get('secure'))
-		secure['sync_google'] = status
-		self.sync_google = status
-		self.redis.set('secure',json.dumps(secure))
+		self.redis.set("sync_google", pickle.dumps(status))
 
 # LOG
 
@@ -554,8 +607,41 @@ class Data:
 
 		return log
 
+	def deleteLog(self):
+		new_log = []
+		# Get the days to delete
+		log = pickle.loads(self.redis.get('log'))
+		days = int(log['days'])
+
+		if not days == 0:
+			# Load the log file
+			log_file = open("../logs/homeware.log","r")
+			registers = log_file.readlines()
+			log_file.close()
+			# Process the registers
+			n_days_ago = datetime.today() - timedelta(days)
+			for register in registers:
+				try:
+					timestamp = register.split(' - ')[1]
+					timestamp_date = dateutil.parser.parse(timestamp)
+					if timestamp_date > n_days_ago:
+						new_log.append(register)
+					
+				except:
+					now = datetime.now()
+					date_time = now.strftime("%d/%m/%Y, %H:%M:%S")
+					log_register = 'Log - ' + date_time  + ' - Unable to process a registry from the log file\n';
+					new_log.append(log_register)
+
+			# Write the new file in disk
+			log_file = open("../logs/homeware.log","w")
+			for register in new_log:
+				log_file.write(register)
+			log_file.close()
+
+
 	def isThereAnAlert(self):
-		return {"alert": str(self.redis.get('alert'))[2:-1]}
+		return {"alert": self.redis.get('alert').decode('UTF-8')}
 
 # ALIVE
 

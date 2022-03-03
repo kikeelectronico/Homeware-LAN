@@ -18,21 +18,20 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        redis-version: [5, 6]
-        python-version: [3.7, 3.8, 3.9]
-        mosquitto-version: [latest]
+        redis-version: [6]
+        python-version: [3.7]
+        mosquitto-version: [2.0]
     steps:
       - uses: actions/checkout@v1
-      - name: Copy database template
-        run: cp configuration_templates/template_homeware.json homeware.json
       - name: Start Redis ${{ matrix.redis-version }}
         uses: supercharge/redis-github-action@1.1.0
         with:
           redis-version: ${{ matrix.redis-version }}
       - name: Start Mosquitto broker
-        uses: Namoshek/mosquitto-github-action@v0.1.0
+        uses: Namoshek/mosquitto-github-action@v1
         with:
           version: ${{ matrix.mosquitto-version }}
+          ports: '1883:1883'
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:

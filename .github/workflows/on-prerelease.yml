@@ -3,34 +3,25 @@ on:
   release:
     types: [prereleased]
 
-env:
-  working-directory: ./front
-
 jobs:
   build-push-be-docker-image:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      -
-        name: Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.PACKAGES_TOKEN }}
-      - 
-        name: Set release version env var
+      - name: Set release version env var
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      -
-        name: Build and push BE
+      - name: Build and push BE
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -42,27 +33,21 @@ jobs:
   build-push-fe-docker-image:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      -
-        name: Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.PACKAGES_TOKEN }}
-      - 
-        name: Set release version env var
+      - name: Set release version env var
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      -
-        name: Build and push FE
+      - name: Build and push FE
         uses: docker/build-push-action@v2
         with:
           context: .
