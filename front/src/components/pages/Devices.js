@@ -45,6 +45,7 @@ class Devices extends React.Component {
       data: {},
       processed_devices: [],
       order_by: "az",
+      search_phrase: "",
     };
     this.loadData = this.loadData.bind(this);
     this.orderBy = this.orderBy.bind(this);
@@ -66,7 +67,9 @@ class Devices extends React.Component {
             data: data,
           });
           this.orderBy(this.state.order_by)
-          
+          if (this.state.search_phrase !== "") {
+            this.search(this.state.search_phrase)
+          }
         } else {
           console.error(http.statusText);
           ToastsStore.error("Something went wrong");
@@ -92,6 +95,7 @@ class Devices extends React.Component {
   }
 
   search(search_phrase) {
+    this.setState({search_phrase})
     if (search_phrase === "") {
       this.orderBy(this.state.order_by)
     } else {
