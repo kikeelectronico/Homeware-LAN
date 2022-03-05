@@ -181,6 +181,40 @@
     margin-top: 10px;
   }
 
+  .page_search_containter {
+    width: 60%;
+    margin-left: 20%;
+    margin-top: 10px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .page_search_bar {
+    width: calc(100% - 40px);
+    height: 20px;
+    border: none;
+  }
+
+  .page_search_x {
+    width: 40px;
+    height: 40px;
+    display: table;
+    cursor: pointer;
+  }
+
+  .page_search_x span {
+    display:table-cell;
+    vertical-align:middle;
+    font-size: 30px;
+    color: #aaa;
+  }
+
+  .page_search_bar:focus {
+    border: none;
+    border-color: #aaa;
+  }
+
   .two_input {
     width: 100%;
   }

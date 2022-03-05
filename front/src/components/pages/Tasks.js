@@ -11,10 +11,13 @@ class Tasks extends React.Component {
     super(props);
     this.state = {
       tasks: [],
+      processed_tasks: [],
       order_by: "az",
+      search_phrase: "",
     };
     this.loadData = this.loadData.bind(this);
     this.orderBy = this.orderBy.bind(this);
+    this.search = this.search.bind(this);
   }
 
   componentDidMount() {
@@ -51,12 +54,31 @@ class Tasks extends React.Component {
     })
     
     this.setState({
-      tasks: tasks_list,
+      processed_tasks: tasks_list,
     })
   }
 
+  search(search_phrase) {
+    this.setState({search_phrase})
+    if (search_phrase === "") {
+      this.orderBy(this.state.order_by)
+    } else {
+      var filtered_tasks = []
+      this.state.processed_tasks.forEach(task => {
+        if (task.title.toLowerCase().includes(search_phrase)) {
+          if (!filtered_tasks.includes(task)) {
+            filtered_tasks.push(task)
+          }
+        }
+      })
+      this.setState({
+        processed_tasks: filtered_tasks,
+      })
+    }
+  }
+
   render() {
-    const tasks = this.state.tasks.map((task, i) => {
+    const tasks = this.state.processed_tasks.map((task, i) => {
       return (
         
           <div key={i} className="task_card">
@@ -73,6 +95,30 @@ class Tasks extends React.Component {
 
     return (
       <div>
+        <div className="page_search_containter">
+          <input
+            type="text"
+            className="page_search_bar"
+            placeholder="Type to search"
+            id="search_bar"
+            value={this.state.search_phrase}
+            onChange={(event) => {
+              this.search(event.target.value.toLowerCase());
+            }}
+          />
+          <div
+            className="page_search_x"
+            onClick={
+              () => {
+                this.setState({search_phrase: ""});
+                this.orderBy(this.state.order_by);
+              }
+            }
+          >
+            <span>X</span>
+          </div>
+        </div>
+        
         <div className="page_cards_container">{tasks}</div>
 
         <div className="page_buttons_containter">
