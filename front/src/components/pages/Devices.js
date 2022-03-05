@@ -43,11 +43,12 @@ class Devices extends React.Component {
     super(props);
     this.state = {
       data: {},
-      devices: [],
+      processed_devices: [],
       order_by: "az",
     };
     this.loadData = this.loadData.bind(this);
     this.orderBy = this.orderBy.bind(this);
+    this.search = this.search.bind(this);
   }
 
   componentDidMount() {
@@ -86,12 +87,30 @@ class Devices extends React.Component {
     })
     
     this.setState({
-      devices: devices_list,
+      processed_devices: devices_list,
     })
   }
 
+  search(search_phrase) {
+    if (search_phrase === "") {
+      this.orderBy(this.state.order_by)
+    } else {
+      var filtered_devices = []
+      this.state.processed_devices.forEach(device => {
+        if (device.name.name.toLowerCase().includes(search_phrase)) {
+          if (!filtered_devices.includes(device)) {
+            filtered_devices.push(device)
+          }
+        }
+      })
+      this.setState({
+        processed_devices: filtered_devices,
+      })
+    }
+  }
+
   render() {
-    const devices = this.state.devices.map((device) => {
+    const devices = this.state.processed_devices.map((device) => {
       if (device.type === "action.devices.types.LIGHT")
         return (
           <Light
@@ -384,7 +403,7 @@ class Devices extends React.Component {
         return (<></>)
     });
 
-    const scenes = this.state.devices.map((device) => {
+    const scenes = this.state.processed_devices.map((device) => {
       if (device.type === "action.devices.types.SCENE")
         return (
           <Scene
@@ -400,6 +419,18 @@ class Devices extends React.Component {
 
     return (
       <div>
+        <div className="page_search_containter">
+          <input
+            type="text"
+            className="page_search_bar"
+            placeholder="Type to search"
+            id="search_bar"
+            onChange={(event) => {
+              this.search(event.target.value.toLowerCase());
+            }}
+          />
+        </div>
+
         <div className="page_cards_container">{devices}</div>
         <div className="page_cards_container">{scenes}</div>
 
