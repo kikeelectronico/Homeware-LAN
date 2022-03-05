@@ -1,4 +1,4 @@
-name: On release
+name: Build on release
 on:
   release:
     types: [released]
@@ -6,6 +6,7 @@ on:
 jobs:
 
   build-push-be-docker-image:
+    name: Build backend
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,6 +34,7 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/homewarelan-back:latest
             ghcr.io/${{ github.repository_owner }}/homewarelan-back:${{ env.RELEASE_VERSION }}
   build-push-fe-docker-image:
+    name: Build frontend
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
