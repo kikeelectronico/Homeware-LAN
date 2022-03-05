@@ -11,6 +11,7 @@ class Tasks extends React.Component {
     super(props);
     this.state = {
       tasks: [],
+      ordered_tasks: [],
       processed_tasks: [],
       order_by: "az",
       search_phrase: "",
@@ -34,6 +35,7 @@ class Tasks extends React.Component {
             tasks: data.tasks,
           });
           this.orderBy(this.state.order_by)
+          this.search(this.state.search_phrase)
         } else {
           console.error(http.statusText);
           ToastsStore.error("Something went wrong");
@@ -54,17 +56,19 @@ class Tasks extends React.Component {
     })
     
     this.setState({
-      processed_tasks: tasks_list,
+      ordered_tasks: tasks_list,
     })
   }
 
   search(search_phrase) {
     this.setState({search_phrase})
     if (search_phrase === "") {
-      this.orderBy(this.state.order_by)
+      this.setState({
+        processed_tasks: this.state.ordered_tasks,
+      })
     } else {
       var filtered_tasks = []
-      this.state.processed_tasks.forEach(task => {
+      this.state.ordered_tasks.forEach(task => {
         if (task.title.toLowerCase().includes(search_phrase)) {
           if (!filtered_tasks.includes(task)) {
             filtered_tasks.push(task)
