@@ -12,8 +12,10 @@ class Tasks extends React.Component {
     this.state = {
       devices: [],
       tasks: [],
+      order_by: "az",
     };
     this.loadData = this.loadData.bind(this);
+    this.orderBy = this.orderBy.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +32,7 @@ class Tasks extends React.Component {
             devices: data.devices,
             tasks: data.tasks,
           });
+          this.orderBy(this.state.order_by)
         } else {
           console.error(http.statusText);
           ToastsStore.error("Something went wrong");
@@ -39,6 +42,19 @@ class Tasks extends React.Component {
     http.open("GET", root + "api/global/get/");
     http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
     http.send();
+  }
+
+  orderBy(by) {
+    var tasks_list = this.state.tasks;
+    tasks_list.sort(function(a, b){
+      if(a.title.toLowerCase() < b.title.toLowerCase()) { return -1; }
+      if(a.title.toLowerCase() > b.title.toLowerCase()) { return 1; }
+      return 0;
+    })
+    
+    this.setState({
+      tasks: tasks_list,
+    })
   }
 
   render() {
