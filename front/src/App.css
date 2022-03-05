@@ -181,6 +181,23 @@
     margin-top: 10px;
   }
 
+  .page_search_containter {
+    width: 80%;
+    margin-left: 9%;
+    margin-top: 10px;
+    margin-bottom: 40px;
+  }
+
+  .page_search_bar {
+    width: 100%;
+    border: none;
+  }
+
+  .page_search_bar:focus {
+    border: none;
+    border-color: #aaa;
+  }
+
   .two_input {
     width: 100%;
   }

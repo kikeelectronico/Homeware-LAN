@@ -96,13 +96,13 @@ class Tasks extends React.Component {
 
     return (
       <div>
-        <div className="page_buttons_containter">
+        <div className="page_search_containter">
           <input
             type="text"
-            className="two_input"
+            className="page_search_bar"
+            placeholder="Type to search"
             id="search_bar"
             onChange={(event) => {
-              console.log(event.target.value);
               this.search(event.target.value);
             }}
           />
