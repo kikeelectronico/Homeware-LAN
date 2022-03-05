@@ -11,10 +11,13 @@ class Tasks extends React.Component {
     super(props);
     this.state = {
       tasks: [],
+      processed_tasks: [],
       order_by: "az",
+      filter: false,
     };
     this.loadData = this.loadData.bind(this);
     this.orderBy = this.orderBy.bind(this);
+    this.search = this.search.bind(this);
   }
 
   componentDidMount() {
@@ -51,12 +54,32 @@ class Tasks extends React.Component {
     })
     
     this.setState({
-      tasks: tasks_list,
+      processed_tasks: tasks_list,
     })
   }
 
+  search(search_phrase) {
+    var search_words = search_phrase.split(' ')
+    console.log(search_words.length)
+    if (search_phrase === "") {
+      this.orderBy(this.state.order_by)
+    } else {
+      var filtered_tasks = []
+      this.state.processed_tasks.forEach(task => {
+        if (task.title.includes(search_phrase)) {
+          if (!filtered_tasks.includes(task)) {
+            filtered_tasks.push(task)
+          }
+        }
+      })
+      this.setState({
+        processed_tasks: filtered_tasks,
+      })
+    }
+  }
+
   render() {
-    const tasks = this.state.tasks.map((task, i) => {
+    const tasks = this.state.processed_tasks.map((task, i) => {
       return (
         
           <div key={i} className="task_card">
@@ -73,6 +96,18 @@ class Tasks extends React.Component {
 
     return (
       <div>
+        <div className="page_buttons_containter">
+          <input
+            type="text"
+            className="two_input"
+            id="search_bar"
+            onChange={(event) => {
+              console.log(event.target.value);
+              this.search(event.target.value);
+            }}
+          />
+        </div>
+        
         <div className="page_cards_container">{tasks}</div>
 
         <div className="page_buttons_containter">
