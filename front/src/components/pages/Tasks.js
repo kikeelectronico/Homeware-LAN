@@ -63,7 +63,7 @@ class Tasks extends React.Component {
     } else {
       var filtered_tasks = []
       this.state.processed_tasks.forEach(task => {
-        if (task.title.includes(search_phrase)) {
+        if (task.title.toLowerCase().includes(search_phrase)) {
           if (!filtered_tasks.includes(task)) {
             filtered_tasks.push(task)
           }
@@ -100,7 +100,7 @@ class Tasks extends React.Component {
             placeholder="Type to search"
             id="search_bar"
             onChange={(event) => {
-              this.search(event.target.value);
+              this.search(event.target.value.toLowerCase());
             }}
           />
         </div>
