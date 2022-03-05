@@ -58,8 +58,6 @@ class Tasks extends React.Component {
   }
 
   search(search_phrase) {
-    var search_words = search_phrase.split(' ')
-    console.log(search_words.length)
     if (search_phrase === "") {
       this.orderBy(this.state.order_by)
     } else {
