@@ -2,7 +2,8 @@ name: Build on prerelease
 on:
   workflow_dispatch:
   release:
-    types: [prereleased]
+    types: 
+      - prereleased
     
 concurrency: 
   group: ${{ github.ref }}
