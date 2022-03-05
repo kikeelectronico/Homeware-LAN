@@ -26,7 +26,7 @@ class ArmDisarm extends React.Component {
 
     var icon = 'lock_close';
     var lock_title = 'Armed'
-    if (!this.props.status.arm) {
+    if (!this.props.status.isArmed) {
       icon = 'lock_open';
       lock_title = 'Disarmed';
     }
