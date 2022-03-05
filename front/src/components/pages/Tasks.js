@@ -10,7 +10,6 @@ class Tasks extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      devices: [],
       tasks: [],
       order_by: "az",
     };
@@ -29,7 +28,6 @@ class Tasks extends React.Component {
         if (http.status === 200) {
           var data = JSON.parse(http.responseText);
           this.setState({
-            devices: data.devices,
             tasks: data.tasks,
           });
           this.orderBy(this.state.order_by)
