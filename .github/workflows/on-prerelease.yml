@@ -1,5 +1,9 @@
 name: On prerelease
 on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
   release:
     types: [prereleased]
 

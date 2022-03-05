@@ -1021,7 +1021,7 @@ def smarthome():
                     else:
                         command_response = {
                             'ids': ids,
-                            'states': previus_status,
+                            'states': previus_status[ids[0]],
                             'status': 'SUCCESS',
                         }
                     obj['payload']['commands'].append(command_response)
