@@ -186,11 +186,28 @@
     margin-left: 9%;
     margin-top: 10px;
     margin-bottom: 40px;
+    display: flex;
+    flex-direction: row;
   }
 
   .page_search_bar {
-    width: 100%;
+    width: calc(100% - 40px);
+    height: 20px;
     border: none;
+  }
+
+  .page_search_x {
+    width: 40px;
+    height: 40px;
+    display: table;
+    cursor: pointer;
+  }
+
+  .page_search_x span {
+    display:table-cell;
+    vertical-align:middle;
+    font-size: 30px;
+    color: #aaa;
   }
 
   .page_search_bar:focus {

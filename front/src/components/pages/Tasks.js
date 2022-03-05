@@ -13,6 +13,7 @@ class Tasks extends React.Component {
       tasks: [],
       processed_tasks: [],
       order_by: "az",
+      search_phrase: "",
     };
     this.loadData = this.loadData.bind(this);
     this.orderBy = this.orderBy.bind(this);
@@ -58,6 +59,7 @@ class Tasks extends React.Component {
   }
 
   search(search_phrase) {
+    this.setState({search_phrase})
     if (search_phrase === "") {
       this.orderBy(this.state.order_by)
     } else {
@@ -99,10 +101,22 @@ class Tasks extends React.Component {
             className="page_search_bar"
             placeholder="Type to search"
             id="search_bar"
+            value={this.state.search_phrase}
             onChange={(event) => {
               this.search(event.target.value.toLowerCase());
             }}
           />
+          <div
+            className="page_search_x"
+            onClick={
+              () => {
+                this.setState({search_phrase: ""});
+                this.orderBy(this.state.order_by);
+              }
+            }
+          >
+            <span>X</span>
+          </div>
         </div>
         
         <div className="page_cards_container">{tasks}</div>

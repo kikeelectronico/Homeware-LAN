@@ -429,10 +429,22 @@ class Devices extends React.Component {
             className="page_search_bar"
             placeholder="Type to search"
             id="search_bar"
+            value={this.state.search_phrase}
             onChange={(event) => {
               this.search(event.target.value.toLowerCase());
             }}
           />
+          <div
+            className="page_search_x"
+            onClick={
+              () => {
+                this.setState({search_phrase: ""});
+                this.orderBy(this.state.order_by);
+              }
+            }
+          >
+            <span>X</span>
+          </div>
         </div>
 
         <div className="page_cards_container">{devices}</div>
