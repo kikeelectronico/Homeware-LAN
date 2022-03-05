@@ -13,7 +13,6 @@ class Tasks extends React.Component {
       tasks: [],
       processed_tasks: [],
       order_by: "az",
-      filter: false,
     };
     this.loadData = this.loadData.bind(this);
     this.orderBy = this.orderBy.bind(this);
