@@ -116,7 +116,7 @@ class System extends React.Component {
                           What's new?
                         </h3>
                         <div style={git_description}>
-                          <ReactMarkdown source={this.props.git.description} />
+                        {this.props.git.description}
                         </div>
                       </div>
                     ) : (
