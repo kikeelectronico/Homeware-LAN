@@ -31,8 +31,9 @@ class App extends React.Component {
       alert: "clear",
       version: "",
       git: {
-        code: "",
-        version: 0
+        version: "",
+        description: "",
+        code: 0
       }
     }
     this.checkoutVersion = this.checkoutVersion.bind(this);
@@ -101,6 +102,7 @@ class App extends React.Component {
         this.setState({
           git: {
             code: "",
+            description: "",
             version: 403
           }
         });
