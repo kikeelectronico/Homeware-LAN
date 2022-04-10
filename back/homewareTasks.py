@@ -40,7 +40,6 @@ def ddnsUpdater():
 		if not newIP == ddns['ip']:
 
 			if ddns['provider'] == 'noip':
-
 				noipServer = 'https://dynupdate.no-ip.com/nic/update'
 				params = {
 					'hostname': ddns['hostname'],
@@ -74,12 +73,13 @@ def ddnsUpdater():
 				else:
 					data_conector.updateDDNS(newIP, status[code], code, True, last)
 			elif ddns['provider'] == 'duckdns':
-				noipServer = 'https://www.duckdns.org/update'
+				duckdnsServer = 'https://www.duckdns.org/update'
 				params = {
-					'domains': ddns['hostname'],
+					'domains': ddns['hostname'].split('.')[0],
+					'ip': newIP,
 					'token': ddns['password']
 				}
-				duckDnsRequest = requests.get(url= noipServer, params=params)
+				duckDnsRequest = requests.get(url= duckdnsServer, params=params)
 				#Analyze the response
 				code = duckDnsRequest.text
 				data_conector.log('Log', 'IP update request sended to Duck DNS. Response: ' + code)
