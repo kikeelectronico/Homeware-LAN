@@ -31,8 +31,13 @@ class Tasks extends React.Component {
       if (http.readyState === 4) {
         if (http.status === 200) {
           var data = JSON.parse(http.responseText);
+          var tasks = data.tasks
+          // Put the id in the object
+          for (var i = 0; i < tasks.length; i++) {
+            tasks[i]["id"] = i
+          }
           this.setState({
-            tasks: data.tasks,
+            tasks: tasks,
           });
           this.orderBy(this.state.order_by)
           this.search(this.state.search_phrase)
@@ -85,9 +90,9 @@ class Tasks extends React.Component {
     const tasks = this.state.processed_tasks.map((task, i) => {
       return (
         
-          <div key={i} className="task_card">
-            <Link to={"/tasks/manager/" + i} className="task_link">
-              <h2 className="task_card_title" id={"task_" + i}>
+          <div key={task["id"]} className="task_card">
+            <Link to={"/tasks/manager/" + task["id"]} className="task_link">
+              <h2 className="task_card_title" id={"task_" + task["id"]}>
                 {task.title}
               </h2>
               <hr className="task_card_divider" />
