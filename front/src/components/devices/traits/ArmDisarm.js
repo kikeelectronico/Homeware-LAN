@@ -20,8 +20,25 @@ class ArmDisarm extends React.Component {
     var currentArmLevel = this.props.status.currentArmLevel
     if (currentArmLevel.length > 15) currentArmLevel = this.props.status.currentArmLevel.substring(0,15) + '...'
 
+    const image = {
+      width: '30px'
+    }
+
+    var icon = 'lock_close';
+    var lock_title = 'Armed'
+    if (!this.props.status.isArmed) {
+      icon = 'lock_open';
+      lock_title = 'Disarmed';
+    }
+
     return (
       <div style={container}>
+        <img
+          src={ '/devices/' + icon + '.png' }
+          title={ lock_title }
+          alt={ this.props.image }
+          style={ image }
+        />
         <span style={title}>{currentArmLevel}</span>
       </div>
     );

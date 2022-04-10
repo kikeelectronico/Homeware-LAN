@@ -2,7 +2,7 @@ import React from "react";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
 import Component from "../system/Component.js";
-const ReactMarkdown = require("react-markdown");
+import ReactMarkdown from 'react-markdown'
 
 const COMPONENTS_CHECK_INTERVAL = 3;
 
@@ -109,14 +109,10 @@ class System extends React.Component {
                       <div>
                         <b>Available version:</b> {this.props.git.version}
                         <h3>
-                          How to update?
-                        </h3>
-                        <p>Run 'docker-compose pull' and then 'docker-compose up -d' in your host machine.</p>
-                        <h3>
                           What's new?
                         </h3>
                         <div style={git_description}>
-                          <ReactMarkdown source={this.props.git.description} />
+                          <ReactMarkdown>{this.props.git.description}</ReactMarkdown>
                         </div>
                       </div>
                     ) : (

@@ -10,10 +10,15 @@ class Tasks extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      devices: [],
       tasks: [],
+      ordered_tasks: [],
+      processed_tasks: [],
+      order_by: "az",
+      search_phrase: "",
     };
     this.loadData = this.loadData.bind(this);
+    this.orderBy = this.orderBy.bind(this);
+    this.search = this.search.bind(this);
   }
 
   componentDidMount() {
@@ -26,10 +31,16 @@ class Tasks extends React.Component {
       if (http.readyState === 4) {
         if (http.status === 200) {
           var data = JSON.parse(http.responseText);
+          var tasks = data.tasks
+          // Put the id in the object
+          for (var i = 0; i < tasks.length; i++) {
+            tasks[i]["id"] = i
+          }
           this.setState({
-            devices: data.devices,
-            tasks: data.tasks,
+            tasks: tasks,
           });
+          this.orderBy(this.state.order_by)
+          this.search(this.state.search_phrase)
         } else {
           console.error(http.statusText);
           ToastsStore.error("Something went wrong");
@@ -41,13 +52,47 @@ class Tasks extends React.Component {
     http.send();
   }
 
+  orderBy(by) {
+    var tasks_list = this.state.tasks;
+    tasks_list.sort(function(a, b){
+      if(a.title.toLowerCase() < b.title.toLowerCase()) { return -1; }
+      if(a.title.toLowerCase() > b.title.toLowerCase()) { return 1; }
+      return 0;
+    })
+    
+    this.setState({
+      ordered_tasks: tasks_list,
+    })
+  }
+
+  search(search_phrase) {
+    this.setState({search_phrase})
+    if (search_phrase === "") {
+      this.setState({
+        processed_tasks: this.state.ordered_tasks,
+      })
+    } else {
+      var filtered_tasks = []
+      this.state.ordered_tasks.forEach(task => {
+        if (task.title.toLowerCase().includes(search_phrase)) {
+          if (!filtered_tasks.includes(task)) {
+            filtered_tasks.push(task)
+          }
+        }
+      })
+      this.setState({
+        processed_tasks: filtered_tasks,
+      })
+    }
+  }
+
   render() {
-    const tasks = this.state.tasks.map((task, i) => {
+    const tasks = this.state.processed_tasks.map((task, i) => {
       return (
         
-          <div key={i} className="task_card">
-            <Link to={"/tasks/manager/" + i} className="task_link">
-              <h2 className="task_card_title" id={"task_" + i}>
+          <div key={task["id"]} className="task_card">
+            <Link to={"/tasks/manager/" + task["id"]} className="task_link">
+              <h2 className="task_card_title" id={"task_" + task["id"]}>
                 {task.title}
               </h2>
               <hr className="task_card_divider" />
@@ -59,6 +104,30 @@ class Tasks extends React.Component {
 
     return (
       <div>
+        <div className="page_search_containter">
+          <input
+            type="text"
+            className="page_search_bar"
+            placeholder="Type to search"
+            id="search_bar"
+            value={this.state.search_phrase}
+            onChange={(event) => {
+              this.search(event.target.value.toLowerCase());
+            }}
+          />
+          <div
+            className="page_search_x"
+            onClick={
+              () => {
+                this.setState({search_phrase: ""});
+                this.orderBy(this.state.order_by);
+              }
+            }
+          >
+            <span>X</span>
+          </div>
+        </div>
+        
         <div className="page_cards_container">{tasks}</div>
 
         <div className="page_buttons_containter">

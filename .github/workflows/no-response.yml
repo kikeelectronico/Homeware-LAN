@@ -1,7 +1,8 @@
-name: No Response
+name: Questions not answered
 on:
   issue_comment:
-    types: [created]
+    types:
+      - created
   schedule:
     - cron: '0 0 * * 1'
 

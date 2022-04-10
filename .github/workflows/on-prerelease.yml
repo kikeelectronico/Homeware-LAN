@@ -1,10 +1,17 @@
-name: On prerelease
+name: Build on prerelease
 on:
+  workflow_dispatch:
   release:
-    types: [prereleased]
+    types: 
+      - prereleased
+    
+concurrency: 
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-push-be-docker-image:
+    name: Build backend
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -31,6 +38,7 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/homewarelan-back:prerelease
   build-push-fe-docker-image:
+    name: Build frontend
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
