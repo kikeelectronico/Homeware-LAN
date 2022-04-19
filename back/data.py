@@ -24,6 +24,9 @@ class Data:
 
 	def __init__(self):
 
+		self.verbose = False
+		self.deep_logging =  os.environ.get("DEEP_LOGGING", False)
+
 		if not os.path.exists("../files"):
 				os.mkdir("../files")
 
@@ -31,7 +34,6 @@ class Data:
 				os.mkdir("../logs")
 
 		self.redis = redis.Redis(hostname.REDIS_HOST, hostname.REDIS_PORT)
-		self.verbose = False
 
 		if not self.redis.get('transfer'):
 			self.log('Warning','The database must be created')
