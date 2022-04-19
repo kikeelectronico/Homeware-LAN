@@ -25,7 +25,7 @@ class Data:
 	def __init__(self):
 
 		self.verbose = False
-		self.deep_logging =  os.environ.get("DEEP_LOGGING", False)
+		self.deep_logging = os.environ.get("DEEP_LOGGING", False) == "True"
 
 		if not os.path.exists("../files"):
 				os.mkdir("../files")
