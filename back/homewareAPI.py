@@ -1025,9 +1025,10 @@ def smarthome():
                             'status': 'ERROR',
                         }
                     else:
+                        new_status = data_conector.getStatus()
                         command_response = {
                             'ids': ids,
-                            'states': previus_status[ids[0]],
+                            'states': new_status[ids[0]],
                             'status': 'SUCCESS',
                         }
                     obj['payload']['commands'].append(command_response)
