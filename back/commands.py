@@ -87,7 +87,7 @@ class Commands:
             else:
                 return "cancelTooLate"
 
-        time.sleep(0.5)
+        time.sleep(1)
         return ""
 
     def BrightnessAbsolute(self):
