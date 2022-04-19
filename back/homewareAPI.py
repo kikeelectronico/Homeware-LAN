@@ -939,6 +939,8 @@ def token():
 def smarthome():
     # Get all data
     body = request.json
+    if data_conector.deep_logging:
+        data_conector.log('Log', 'Request: ' + json.dumps(body))
     # Get the agent
     agent = request.headers['User-Agent']
     # Verify special agents
@@ -969,6 +971,8 @@ def smarthome():
                 data_conector.log('Log', 'Sync request by ' + agent + ' with ' +
                                   obj['payload']['agentUserId'] + ' as agent user id')
                 data_conector.updateSyncGoogle(True)
+                if data_conector.deep_logging:
+                    data_conector.log('Log', 'Response: ' + json.dumps(obj))
                 return response
             elif input['intent'] == 'action.devices.QUERY':
                 obj = {
@@ -983,6 +987,8 @@ def smarthome():
                     mimetype='application/json'
                 )
                 data_conector.log('Log', 'Query request by ' + agent)
+                if data_conector.deep_logging:
+                    data_conector.log('Log', 'Response: ' + json.dumps(obj))
                 return response
             elif input['intent'] == 'action.devices.EXECUTE':
                 previus_status = data_conector.getStatus()
@@ -1032,6 +1038,9 @@ def smarthome():
                     mimetype='application/json'
                 )
                 # data_conector.log('Log', 'Execute request by ' + agent)
+                if data_conector.deep_logging:
+                    data_conector.log('Log', 'Execute request by ' + agent)
+                    data_conector.log('Log', 'Response: ' + json.dumps(obj))
                 return response
             elif input['intent'] == 'action.devices.DISCONNECT':
                 data_conector.log('Log', 'Disconnect request by ' + agent)
