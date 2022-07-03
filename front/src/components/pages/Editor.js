@@ -272,7 +272,7 @@ class Editor extends React.Component {
         }
       };
       http.open(
-        "GET",
+        "POST",
         root + "api/devices/delete/" + this.state.device.id + "/"
       );
       http.setRequestHeader(

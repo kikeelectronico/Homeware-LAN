@@ -156,7 +156,7 @@ class Manager extends React.Component {
           ToastsStore.error("Error, the device hasn't been deleted");
         }
       };
-      http.open("GET", root + "api/tasks/delete/" + this.state.id + "/");
+      http.open("POST", root + "api/tasks/delete/" + this.state.id + "/");
       http.setRequestHeader(
         "authorization",
         "baerer " + getCookieValue("token")

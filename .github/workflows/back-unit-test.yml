@@ -12,6 +12,10 @@ on:
     paths:
       - "back/**"
 
+concurrency: 
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
   back:
     name: Test (red, py, moss)

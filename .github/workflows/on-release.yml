@@ -4,8 +4,11 @@ on:
     types:
       - released
 
-jobs:
+concurrency: 
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 
+jobs:
   build-push-be-docker-image:
     name: Build backend
     runs-on: ubuntu-latest

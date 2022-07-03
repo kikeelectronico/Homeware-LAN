@@ -1,6 +1,7 @@
 import paho.mqtt.publish as publish
 import json
 import hostname
+import time
 
 class Commands:
     """Execute the commands requested by Google Home Graph."""
@@ -86,6 +87,7 @@ class Commands:
             else:
                 return "cancelTooLate"
 
+        time.sleep(1)
         return ""
 
     def BrightnessAbsolute(self):
