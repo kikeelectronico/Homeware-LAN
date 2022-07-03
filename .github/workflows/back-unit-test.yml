@@ -13,7 +13,7 @@ on:
       - "back/**"
 
 concurrency: 
-  group: ${{ github.ref }}
+  group: ${{ github.workflow }}
   cancel-in-progress: true
 
 jobs:
