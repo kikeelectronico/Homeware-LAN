@@ -12,6 +12,10 @@ on:
     paths:
       - "back/**"
 
+concurrency: 
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   back:
     name: Test (red, py, moss)
