@@ -19,7 +19,7 @@ class Data:
 	"""Access to the Homeware database and files."""
   
 
-	version = 'v1.8'
+	version = 'v1.8.1'
 	homewareFile = 'homeware.json'
 
 	def __init__(self):
