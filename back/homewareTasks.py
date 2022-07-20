@@ -34,15 +34,15 @@ def verifyTasks():
 def ddnsUpdater():
 	ddns = data_conector.getDDNS()
 	ipServer = 'http://ip1.dynupdate.no-ip.com/'
-	ip_bytes = ipServer.split(".")
-	if len(ip_bytes) == 4 \
-		and int(ip_bytes[0]) > 0 and int(ip_bytes[0]) < 255 \
-		and int(ip_bytes[1]) > 0 and int(ip_bytes[1]) < 255 \
-		and int(ip_bytes[2]) > 0 and int(ip_bytes[2]) < 255 \
-		and int(ip_bytes[3]) > 0 and int(ip_bytes[3]) < 255:
-		if ddns['enabled']:
-			ipRequest = requests.get(url=ipServer)
-			newIP = ipRequest.text
+	if ddns['enabled']:
+		ipRequest = requests.get(url=ipServer)
+		newIP = ipRequest.text
+		ip_bytes = newIP.split(".")
+		if len(ip_bytes) == 4 \
+			and int(ip_bytes[0]) > 0 and int(ip_bytes[0]) < 255 \
+			and int(ip_bytes[1]) > 0 and int(ip_bytes[1]) < 255 \
+			and int(ip_bytes[2]) > 0 and int(ip_bytes[2]) < 255 \
+			and int(ip_bytes[3]) > 0 and int(ip_bytes[3]) < 255:
 			if not newIP == ddns['ip']:
 
 				if ddns['provider'] == 'noip':
