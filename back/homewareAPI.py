@@ -7,6 +7,7 @@ from datetime import datetime
 import random
 import paho.mqtt.publish as publish
 import subprocess
+from gevent import monkey
 
 from data import Data
 from commands import Commands
@@ -1076,6 +1077,5 @@ def page_not_found(error):
 
 
 if __name__ == "__main__":
-    from gevent import monkey
     monkey.patch_all()
     runapp()
