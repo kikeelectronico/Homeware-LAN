@@ -824,6 +824,27 @@ def files(operation='', file='', token=''):
             'Alert', 'Unauthorized access try to the backup and restore endpoint')
         return 'Bad token'
 
+# Backup file
+@app.route("/api/backup/get/", methods=['GET'])
+def backupGet():
+    accessLevel = checkAccessLevel(request.headers)
+    if accessLevel >= 10:
+        backup_data = data_conector.getBackup()
+        response = app.response_class(
+            response=json.dumps(backup_data),
+            status=200,
+            mimetype='application/json'
+        )
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > backup > get endpoint with bad authentication')
+        response = app.response_class(
+            response=json.dumps(FOUR_O_ONE),
+            status=401,
+            mimetype='application/json'
+        )
+    return response
+
 
 def tokenGenerator(agent, type):
     # Generate the token
