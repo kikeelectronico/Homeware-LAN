@@ -764,7 +764,7 @@ def files(operation='', file='', token=''):
             # Download file
             now = datetime.now()
             date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
-            result = send_file('../' + file + '.json',
+            result = send_file('../homeware.json',
                                mimetype="application/json",  # use appropriate type based on file
                                attachment_filename=file + '_' + \
                                str(date_time) + '.json',
@@ -782,8 +782,7 @@ def files(operation='', file='', token=''):
                 if file and allowed_file(file.filename):
                     filename = file.filename
                     file.save(os.path.join(
-                        app.config['UPLOAD_FOLDER'], filename))
-                    subprocess.run(["mv", '../' + file.filename, "../homeware.json"],  stdout=subprocess.PIPE)
+                        app.config['UPLOAD_FOLDER'], "homeware.json"))
                     data_conector.load()
                     data_conector.log(
                         'Warning', 'A backup file has been restored')
@@ -812,8 +811,7 @@ def files(operation='', file='', token=''):
                         return redirect('/settings/?status=Incorrect file name')
                     if file and allowed_file(file.filename):
                         filename = file.filename
-                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                        subprocess.run(["mv", '../' + file.filename, "../files/google.json"],  stdout=subprocess.PIPE)
+                        file.save(os.path.join(app.config['UPLOAD_FOLDER'] + "files/", "google.json"))
                         data_conector.log('Info', 'A google auth file has been uploaded')
                         data_conector.updateSyncGoogle(True)
                         return redirect('/settings/?status=Success')
