@@ -753,7 +753,6 @@ def allowed_file(filename):
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Files operation
-# TO BE DELETED backup and restore
 @app.route("/files/<operation>/<file>/<token>/", methods=['GET', 'POST'])
 def files(operation='', file='', token=''):
     # Get the access_token
@@ -825,7 +824,7 @@ def files(operation='', file='', token=''):
             'Alert', 'Unauthorized access try to the backup and restore endpoint')
         return 'Bad token'
 
-# Backup file
+# Backup json
 @app.route("/api/backup/get/", methods=['GET'])
 def backupGet():
     accessLevel = checkAccessLevel(request.headers)
@@ -839,35 +838,6 @@ def backupGet():
     else:
         data_conector.log(
             'Alert', 'Request to API > backup > get endpoint with bad authentication')
-        response = app.response_class(
-            response=json.dumps(FOUR_O_ONE),
-            status=401,
-            mimetype='application/json'
-        )
-    return response
-
-# Restore backup
-@app.route("/api/backup/restore/", methods=['POST'])
-def backupRestore():
-    accessLevel = checkAccessLevel(request.headers)
-    if accessLevel >= 10:
-        if 'file' not in request.files:
-            return redirect('/backup/?status=No file selected')
-        file = request.files['file']
-        if file.filename == '':
-            return redirect('/backup/?status=Incorrect file name')
-        if file and allowed_file(file.filename):
-            filename = file.filename
-            file.save(os.path.join(
-                app.config['UPLOAD_FOLDER'], filename))
-            subprocess.run(["mv", '../' + file.filename, "../homeware.json"],  stdout=subprocess.PIPE)
-            data_conector.load()
-            data_conector.log(
-                'Warning', 'A backup file has been restored')
-            return redirect('/backup/?status=Success')
-    else:
-        data_conector.log(
-            'Alert', 'Request to API > backup > restore endpoint with bad authentication')
         response = app.response_class(
             response=json.dumps(FOUR_O_ONE),
             status=401,
