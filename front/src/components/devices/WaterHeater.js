@@ -16,7 +16,7 @@ class WaterHeater extends React.Component {
       width: '100%',
       height: '20px',
       borderRadius: '20px 20px 0px 0px',
-      backgroundColor: 'yellow',
+      backgroundColor: '#8A2BE2',
       opacity: this.props.status.on ? '1' : '0.4'
     }
 
