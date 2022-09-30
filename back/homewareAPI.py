@@ -7,6 +7,7 @@ from datetime import datetime
 import random
 import paho.mqtt.publish as publish
 import subprocess
+from gevent import monkey
 
 from data import Data
 from commands import Commands
@@ -763,7 +764,7 @@ def files(operation='', file='', token=''):
             # Download file
             now = datetime.now()
             date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
-            result = send_file('../' + file + '.json',
+            result = send_file('../homeware.json',
                                mimetype="application/json",  # use appropriate type based on file
                                attachment_filename=file + '_' + \
                                str(date_time) + '.json',
@@ -781,8 +782,7 @@ def files(operation='', file='', token=''):
                 if file and allowed_file(file.filename):
                     filename = file.filename
                     file.save(os.path.join(
-                        app.config['UPLOAD_FOLDER'], filename))
-                    subprocess.run(["mv", '../' + file.filename, "../homeware.json"],  stdout=subprocess.PIPE)
+                        app.config['UPLOAD_FOLDER'], "homeware.json"))
                     data_conector.load()
                     data_conector.log(
                         'Warning', 'A backup file has been restored')
@@ -792,7 +792,7 @@ def files(operation='', file='', token=''):
                 # Download file
                 now = datetime.now()
                 date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
-                result = send_file('../logs/' + 'homeware.log',
+                result = send_file('../logs/homeware.log',
                                    mimetype="text/plain",  # use appropriate type based on file
                                    attachment_filename='homeware_' + \
                                    str(date_time) + '.log',
@@ -811,8 +811,7 @@ def files(operation='', file='', token=''):
                         return redirect('/settings/?status=Incorrect file name')
                     if file and allowed_file(file.filename):
                         filename = file.filename
-                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                        subprocess.run(["mv", '../' + file.filename, "../files/google.json"],  stdout=subprocess.PIPE)
+                        file.save(os.path.join(app.config['UPLOAD_FOLDER'] + "files/", "google.json"))
                         data_conector.log('Info', 'A google auth file has been uploaded')
                         data_conector.updateSyncGoogle(True)
                         return redirect('/settings/?status=Success')
@@ -822,6 +821,27 @@ def files(operation='', file='', token=''):
         data_conector.log(
             'Alert', 'Unauthorized access try to the backup and restore endpoint')
         return 'Bad token'
+
+# Backup json
+@app.route("/api/backup/get/", methods=['GET'])
+def backupGet():
+    accessLevel = checkAccessLevel(request.headers)
+    if accessLevel >= 10:
+        backup_data = data_conector.getBackup()
+        response = app.response_class(
+            response=json.dumps(backup_data),
+            status=200,
+            mimetype='application/json'
+        )
+    else:
+        data_conector.log(
+            'Alert', 'Request to API > backup > get endpoint with bad authentication')
+        response = app.response_class(
+            response=json.dumps(FOUR_O_ONE),
+            status=401,
+            mimetype='application/json'
+        )
+    return response
 
 
 def tokenGenerator(agent, type):
@@ -1076,6 +1096,5 @@ def page_not_found(error):
 
 
 if __name__ == "__main__":
-    from gevent import monkey
     monkey.patch_all()
     runapp()
