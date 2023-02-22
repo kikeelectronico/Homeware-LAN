@@ -235,31 +235,24 @@ def apiStatusUpdate():
 @app.route("/api/status/get/", methods=['GET'])
 @app.route("/api/status/get/<value>", methods=['GET'])
 @app.route("/api/status/get/<value>/", methods=['GET'])
-def apiStatusGet(value=''):
+def apiStatusGet(value=None):
 
     accessLevel = checkAccessLevel(request.headers)
 
     if accessLevel >= 10:
-        status = data_conector.getStatus()
-        if not value == '':
-            if value in status:
-                response = app.response_class(
-                    response=json.dumps(status[value]),
-                    status=200,
-                    mimetype='application/json'
-                )
-            else:
-                response = app.response_class(
-                    response=json.dumps(FOUR_O_FOUR),
-                    status=404,
-                    mimetype='application/json'
-                )
+        status = data_conector.getStatus(value)
+        if status is None:
+            response = app.response_class(
+                response=json.dumps(FOUR_O_FOUR),
+                status=404,
+                mimetype='application/json'
+            )
         else:
             response = app.response_class(
                 response=json.dumps(status),
                 status=200,
                 mimetype='application/json'
-            )
+            )            
     else:
         data_conector.log(
             'Alert', 'Request to API > status > get endpoint with bad authentication')

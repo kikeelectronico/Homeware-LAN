@@ -333,15 +333,25 @@ class Data:
 
 # STATUS
 
-	def getStatus(self):
-		devices_keys = self.redis.keys("status/*")
-		status = {}
-		for param_key_string in devices_keys:
-			param_key = param_key_string.decode().split("/")
-			if not param_key[1] in status.keys():
-				status[param_key[1]] = {}
-			status[param_key[1]][param_key[2]] = pickle.loads(self.redis.get(param_key_string))
-		return status
+	def getStatus(self, id=None):
+		if id is None:
+			devices_keys = self.redis.keys("status/*")
+			status = {}
+			for param_key_string in devices_keys:
+				param_key = param_key_string.decode().split("/")
+				if not param_key[1] in status.keys():
+					status[param_key[1]] = {}
+				status[param_key[1]][param_key[2]] = pickle.loads(self.redis.get(param_key_string))
+			return status
+		else:
+			device_keys = self.redis.keys("status/" + str(id) + "/*")
+			if len(device_keys) == 0:
+				return None
+			status = {}
+			for param_key_string in device_keys:
+				param_key = param_key_string.decode().split("/")
+				status[param_key[2]] = pickle.loads(self.redis.get(param_key_string))
+			return status
 
 	def updateParamStatus(self, device, param, value):
 		if len(self.redis.keys('status/' + device + '/' + param)) == 1:
