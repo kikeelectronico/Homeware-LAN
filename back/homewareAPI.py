@@ -621,18 +621,10 @@ def apiSystemStatus():
     accessLevel = checkAccessLevel(request.headers)
 
     if accessLevel >= 100:
-        # Try to get username and password
-        try:
-            mqttData = data_conector.getMQTT()
-            if not mqttData['user'] == "":
-                publish.single("homeware/alive", "all", hostname=hostname.MQTT_HOST, auth={
+        mqttData = data_conector.getMQTT()
+        publish.single("homeware/alive", "all", hostname=hostname.MQTT_HOST, auth={
                                 'username': mqttData['user'], 'password': mqttData['password']})
-            else:
-                publish.single("homeware/alive", "all",
-                                hostname=hostname.MQTT_HOST)
-        except:
-            data_conector.log('Warning','Unable to send alive request')
-
+        
         responseData = {
             'api': {
                 'enable': True,

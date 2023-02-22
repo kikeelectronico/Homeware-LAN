@@ -227,25 +227,12 @@ def syncDevicesStatus():
 	if data_conector.getSyncDevices():
 		devices = data_conector.getStatus()
 		for device in devices.keys():
-			try:
-				mqttData = data_conector.getMQTT()
-				if not mqttData['user'] == "":
-					publish.single("device/" + device, json.dumps(devices[device]), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
-				else:
-					publish.single("device/" + device, json.dumps(devices[device]), hostname=hostname.MQTT_HOST)
+			mqttData = data_conector.getMQTT()
+			publish.single("device/" + device, json.dumps(devices[device]), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
 
-			except:
-				data_conector.log('Warning','Param update not sent through MQTT')
 			for param in devices[device].keys():
-				try:
-					mqttData = data_conector.getMQTT()
-					if not mqttData['user'] == "":
-						publish.single("device/" + device + '/'+param, str(devices[device][param]), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
-					else:
-						publish.single("device/" + device + '/'+param, str(devices[device][param]), hostname=hostname.MQTT_HOST)
-
-				except:
-					data_conector.log('Warning','Param update not sent through MQTT')
+				mqttData = data_conector.getMQTT()
+				publish.single("device/" + device + '/'+param, str(devices[device][param]), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
 
 def clearLogFile():
 	# Delete at 00:00

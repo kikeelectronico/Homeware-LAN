@@ -35,13 +35,8 @@ def mqttReader():
 	client.on_connect = on_connect
 	client.on_message = on_message
 
-	# Try to get username and password
-	try:
-		mqttData = data_conector.getMQTT()
-		if not mqttData['user'] == "":
-			client.username_pw_set(mqttData['user'], mqttData['password'])
-	except:
-		print('MQTT credentials free')
+	mqttData = data_conector.getMQTT()
+	client.username_pw_set(mqttData['user'], mqttData['password'])
 
 	client.connect(hostname.MQTT_HOST, hostname.MQTT_PORT, 60)
 	client.loop_forever()
@@ -59,25 +54,11 @@ def control(payload):
 		data_conector.updateParamStatus(id,param,value)
 	elif intent == 'request':
 		status = data_conector.getStatus()[id]
-		try:
-			mqttData = data_conector.getMQTT()
-			if not mqttData['user'] == "":
-				publish.single("device/"+id, json.dumps(status), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
-			else:
-				publish.single("device/"+id, json.dumps(status), hostname=hostname.MQTT_HOST)
-
-		except:
-			data_conector.log('Warning','Param update not sent through MQTT')
+		mqttData = data_conector.getMQTT()
+		publish.single("device/"+id, json.dumps(status), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
 		for param in status.keys():
-			try:
-				mqttData = data_conector.getMQTT()
-				if not mqttData['user'] == "":
-					publish.single("device/"+id+'/'+param, str(status[param]), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
-				else:
-					publish.single("device/"+id+'/'+param, str(status[param]), hostname=hostname.MQTT_HOST)
-
-			except:
-				data_conector.log('Warning','Param update not sent through MQTT')
+			mqttData = data_conector.getMQTT()
+			publish.single("device/"+id+'/'+param, str(status[param]), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
 
 if __name__ == "__main__":
 	data_conector.log('Log', 'Starting HomewareMQTT core')
