@@ -239,7 +239,9 @@ def clearLogFile():
 	now = datetime.now()
 	hour = now.hour
 	minute = now.minute
+	print(hour, minute)
 	if hour == 0 and minute == 0:
+		data_conector.log('Log', 'Cleaning the log')
 		data_conector.deleteLog()
 
 if __name__ == "__main__":
