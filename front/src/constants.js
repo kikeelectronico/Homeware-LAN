@@ -574,7 +574,7 @@ const deviceReference = {
       attributes: {
         colorModel: {
           type: "string",
-          default: "rgb"
+          default: ""
         },
         commandOnlyColorSetting: {
             type: "bool",
