@@ -616,8 +616,7 @@ class Data:
 
 	def log(self, severity, message):
 		log_file = open('../logs/' + "homeware.log", "a")
-		now = datetime.now()
-		date_time = now.strftime("%d/%m/%Y, %H:%M:%S")
+		date_time = str(datetime.today())
 		log_register = severity + ' - ' + date_time  + ' - ' + message + '\n';
 		log_file.write(log_register)
 		log_file.close()
@@ -674,8 +673,7 @@ class Data:
 						new_log.append(register)
 					
 				except:
-					now = datetime.now()
-					date_time = now.strftime("%d/%m/%Y, %H:%M:%S")
+					date_time = str(datetime.today())
 					log_register = 'Log - ' + date_time  + ' - Unable to process a registry from the log file\n';
 					new_log.append(log_register)
 

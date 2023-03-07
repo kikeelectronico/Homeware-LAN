@@ -11,6 +11,8 @@ from data import Data
 #Init the data managment object
 data_conector = Data()
 
+already_run = False
+
 def verifyTasks():
 	tasks = data_conector.getTasks()
 	status = data_conector.getStatus()
@@ -239,10 +241,12 @@ def clearLogFile():
 	now = datetime.now()
 	hour = now.hour
 	minute = now.minute
-	print(hour, minute)
-	if hour == 0 and minute == 0:
+	if hour == 0 and minute == 0 and not already_run:
 		data_conector.log('Log', 'Cleaning the log')
 		data_conector.deleteLog()
+		already_run = True
+	elif hour == 0 and minute == 1:
+		already_run = False
 
 if __name__ == "__main__":
 	data_conector.log('Log', 'Starting HomewareTask core')
