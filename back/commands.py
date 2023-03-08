@@ -20,44 +20,20 @@ class Commands:
                 self.device, output, self.params[input])
 
     def sendCommand(self, command):
-        try:
-            mqttData = self.data_conector.getMQTT()
-            if not mqttData['user'] == "":
-                publish.single("device/" + self.device + "/command",
+        mqttData = self.data_conector.getMQTT()
+        publish.single("device/" + self.device + "/command",
                         command, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
-            else:
-                publish.single("device/" + self.device + "/command",
-                        command, hostname=hostname.MQTT_HOST)
-        except:
-            publish.single("device/" + self.device + "/command",
-                        command, hostname=hostname.MQTT_HOST)
 
     def sendDobleCommand(self, param, true_command, false_command):
         if param in self.params.keys():
             if self.params[param]:
-                try:
-                    mqttData = self.data_conector.getMQTT()
-                    if not mqttData['user'] == "":
-                        publish.single("device/" + self.device + "/command",
+                mqttData = self.data_conector.getMQTT()
+                publish.single("device/" + self.device + "/command",
                                true_command, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
-                    else:
-                        publish.single("device/" + self.device + "/command",
-                               true_command, hostname=hostname.MQTT_HOST)
-                except:
-                    publish.single("device/" + self.device + "/command",
-                               true_command, hostname=hostname.MQTT_HOST)
             else:
-                try:
-                    mqttData = self.data_conector.getMQTT()
-                    if not mqttData['user'] == "":
-                        publish.single("device/" + self.device + "/command",
+                mqttData = self.data_conector.getMQTT()
+                publish.single("device/" + self.device + "/command",
                                false_command, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
-                    else:
-                        publish.single("device/" + self.device + "/command",
-                               false_command, hostname=hostname.MQTT_HOST)
-                except:
-                    publish.single("device/" + self.device + "/command",
-                               false_command, hostname=hostname.MQTT_HOST)
 
     def ArmDisarm(self):
         # armFailure

@@ -19,7 +19,7 @@ class Data:
 	"""Access to the Homeware database and files."""
   
 
-	version = 'v1.9'
+	version = 'v1.10'
 	homewareFile = 'homeware.json'
 
 	def __init__(self):
@@ -333,15 +333,25 @@ class Data:
 
 # STATUS
 
-	def getStatus(self):
-		devices_keys = self.redis.keys("status/*")
-		status = {}
-		for param_key_string in devices_keys:
-			param_key = param_key_string.decode().split("/")
-			if not param_key[1] in status.keys():
-				status[param_key[1]] = {}
-			status[param_key[1]][param_key[2]] = pickle.loads(self.redis.get(param_key_string))
-		return status
+	def getStatus(self, id=None):
+		if id is None:
+			devices_keys = self.redis.keys("status/*")
+			status = {}
+			for param_key_string in devices_keys:
+				param_key = param_key_string.decode().split("/")
+				if not param_key[1] in status.keys():
+					status[param_key[1]] = {}
+				status[param_key[1]][param_key[2]] = pickle.loads(self.redis.get(param_key_string))
+			return status
+		else:
+			device_keys = self.redis.keys("status/" + str(id) + "/*")
+			if len(device_keys) == 0:
+				return None
+			status = {}
+			for param_key_string in device_keys:
+				param_key = param_key_string.decode().split("/")
+				status[param_key[2]] = pickle.loads(self.redis.get(param_key_string))
+			return status
 
 	def updateParamStatus(self, device, param, value):
 		if len(self.redis.keys('status/' + device + '/' + param)) == 1:
@@ -357,16 +367,9 @@ class Data:
 				{'topic': "device/" + device + '/' + param, 'payload': str(value)},
 				{'topic': "device/" + device, 'payload': json.dumps(status)}
 			]
-			# Try to get username and password
-			try:
-				mqttData = self.getMQTT()
-				if not mqttData['user'] == "":
-					publish.multiple(msgs, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
-				else:
-					publish.multiple(msgs, hostname=hostname.MQTT_HOST)
-
-			except:
-				self.log('Warning','Param update not sent through MQTT')
+			# Send the messagees
+			mqttData = self.getMQTT()
+			publish.multiple(msgs, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
 
 			# Inform Google HomeGraph
 			if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
@@ -613,8 +616,7 @@ class Data:
 
 	def log(self, severity, message):
 		log_file = open('../logs/' + "homeware.log", "a")
-		now = datetime.now()
-		date_time = now.strftime("%d/%m/%Y, %H:%M:%S")
+		date_time = str(datetime.today())
 		log_register = severity + ' - ' + date_time  + ' - ' + message + '\n';
 		log_file.write(log_register)
 		log_file.close()
@@ -671,8 +673,7 @@ class Data:
 						new_log.append(register)
 					
 				except:
-					now = datetime.now()
-					date_time = now.strftime("%d/%m/%Y, %H:%M:%S")
+					date_time = str(datetime.today())
 					log_register = 'Log - ' + date_time  + ' - Unable to process a registry from the log file\n';
 					new_log.append(log_register)
 

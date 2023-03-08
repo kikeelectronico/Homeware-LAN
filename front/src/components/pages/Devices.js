@@ -31,6 +31,7 @@ import Heater from "../devices/Heater";
 import Hood from "../devices/Hood";
 import SecuritySystem from "../devices/SecuritySystem";
 import Blender from "../devices/Blender";
+import WaterHeater from "../devices/WaterHeater";
 import Global from "../devices/Global";
 import Scene from "../devices/Scene";
 import getCookieValue from "../../functions";
@@ -389,6 +390,16 @@ class Devices extends React.Component {
       else if (device.type === "action.devices.types.BLENDER")
         return (
           <Blender
+            key={device.id}
+            device={device}
+            status={this.state.data.status[device.id]}
+            reload={this.loadData}
+          />
+        );
+      
+      else if (device.type === "action.devices.types.WATERHEATER")
+        return (
+          <WaterHeater
             key={device.id}
             device={device}
             status={this.state.data.status[device.id]}

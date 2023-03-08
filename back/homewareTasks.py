@@ -11,6 +11,8 @@ from data import Data
 #Init the data managment object
 data_conector = Data()
 
+already_run = False
+
 def verifyTasks():
 	tasks = data_conector.getTasks()
 	status = data_conector.getStatus()
@@ -227,33 +229,24 @@ def syncDevicesStatus():
 	if data_conector.getSyncDevices():
 		devices = data_conector.getStatus()
 		for device in devices.keys():
-			try:
-				mqttData = data_conector.getMQTT()
-				if not mqttData['user'] == "":
-					publish.single("device/" + device, json.dumps(devices[device]), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
-				else:
-					publish.single("device/" + device, json.dumps(devices[device]), hostname=hostname.MQTT_HOST)
+			mqttData = data_conector.getMQTT()
+			publish.single("device/" + device, json.dumps(devices[device]), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
 
-			except:
-				data_conector.log('Warning','Param update not sent through MQTT')
 			for param in devices[device].keys():
-				try:
-					mqttData = data_conector.getMQTT()
-					if not mqttData['user'] == "":
-						publish.single("device/" + device + '/'+param, str(devices[device][param]), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
-					else:
-						publish.single("device/" + device + '/'+param, str(devices[device][param]), hostname=hostname.MQTT_HOST)
-
-				except:
-					data_conector.log('Warning','Param update not sent through MQTT')
+				mqttData = data_conector.getMQTT()
+				publish.single("device/" + device + '/'+param, str(devices[device][param]), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
 
 def clearLogFile():
 	# Delete at 00:00
 	now = datetime.now()
 	hour = now.hour
 	minute = now.minute
-	if hour == 0 and minute == 0:
+	if hour == 0 and minute == 0 and not already_run:
+		data_conector.log('Log', 'Cleaning the log')
 		data_conector.deleteLog()
+		already_run = True
+	elif hour == 0 and minute == 1:
+		already_run = False
 
 if __name__ == "__main__":
 	data_conector.log('Log', 'Starting HomewareTask core')

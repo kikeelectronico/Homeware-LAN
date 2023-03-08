@@ -574,7 +574,7 @@ const deviceReference = {
       attributes: {
         colorModel: {
           type: "string",
-          default: "rgb"
+          default: ""
         },
         commandOnlyColorSetting: {
             type: "bool",
@@ -1074,7 +1074,8 @@ const deviceReference = {
       name: 'Color',
       commanded: true,
       default: {
-        spectrumRgb: 16711935
+        spectrumRgb: 16711935,
+        temperature: 2000
       }
     },
     thermostatTemperatureSetpointHigh: {

@@ -4,7 +4,7 @@ import Information from './aux/Information'
 import Connecting from './aux/Connecting'
 import Edit from './aux/Edit'
 
-class Radiator extends React.Component {
+class WaterHeater extends React.Component {
 
   render() {
 
@@ -16,7 +16,7 @@ class Radiator extends React.Component {
       width: '100%',
       height: '20px',
       borderRadius: '20px 20px 0px 0px',
-      backgroundColor: 'red',
+      backgroundColor: '#8A2BE2',
       opacity: this.props.status.on ? '1' : '0.4'
     }
 
@@ -38,4 +38,4 @@ class Radiator extends React.Component {
   }
 }
 
-export default Radiator
+export default WaterHeater

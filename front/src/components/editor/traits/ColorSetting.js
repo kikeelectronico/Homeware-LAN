@@ -30,14 +30,13 @@ class ColorSetting extends React.Component {
           </div>
           <div className="three_table_cel">
             <select name="type" id="colorModel" className="table_input" value={this.props.attributes.colorModel} onChange={this.update}>
-              <option value="">Select</option>
+              <option value="">No color</option>
               <option value="rgb">RGB light</option>
               <option value="hsv">HSV light</option>
-              <option value="">Color temperature</option>
             </select>
           </div>
           <div className="three_table_cel">
-            <span className="attribute_advise"></span>
+            <span className="attribute_advise">Select a color coding format.</span>
           </div>
         </div>
         <div className="three_table_row">
