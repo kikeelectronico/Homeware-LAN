@@ -17,7 +17,7 @@
     "react-router-dom": "^5.3.0",
     "react-router-link": "^2.0.2",
     "react-scripts": "^5.0.1",
-    "react-switch": "^5.0.1",
+    "react-switch": "^7.0.0",
     "react-toasts": "^3.0.6",
     "reactjs-popup": "^2.0.5"
   },
