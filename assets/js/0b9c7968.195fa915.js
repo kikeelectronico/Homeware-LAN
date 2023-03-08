@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[547],{3847:function(a){a.exports=JSON.parse('{"allTagsPath":"/Homeware-LAN/blog/tags","name":"hola","count":1,"permalink":"/Homeware-LAN/blog/tags/hola"}')}}]);
