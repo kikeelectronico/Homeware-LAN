@@ -1,9 +1,6 @@
 FROM python:3.8-buster AS base
-
 COPY ./back /app/back
-
 COPY ./configuration_templates /app/configuration_templates
-
 WORKDIR /app/back
-
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
