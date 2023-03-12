@@ -214,11 +214,11 @@ class App extends React.Component {
                 <Routes>
                   <Route exact={ true } path="/" element={<Devices/>}> </Route>
                   <Route exact={ true } path="/devices" element={<Devices/>}> </Route>
-                  <Route path="/devices/editor" element={<Editor/>}> </Route>
-                  <Route path="/devices/info" element={<Info/>}> </Route>
-                  <Route path="/devices/connecting" element={<Connecting/>}> </Route>
+                  <Route path="/devices/editor/:deviceId" element={<Editor/>}> </Route>
+                  <Route path="/devices/info/:deviceId" element={<Info/>}> </Route> 
+                  <Route path="/devices/connecting/:deviceId" element={<Connecting/>}> </Route>
                   <Route exact={ true } path="/tasks" element={<Tasks/>}> </Route>
-                  <Route path="/tasks/manager" element={<Manager/>}> </Route>
+                  <Route path="/tasks/manager/:taskId" element={<Manager/>}> </Route>
                   <Route path="/settings" element={<Settings/>}> </Route>
                   <Route path="/system" element={<System git={this.state.git} version={this.state.version}/>}>  </Route>
                   <Route path="/backup" element={<Backup/>}> </Route>
