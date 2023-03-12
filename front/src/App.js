@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { Link } from "react-router-dom";
 import getCookieValue from './functions'
 import { root } from './constants'
@@ -211,18 +211,20 @@ class App extends React.Component {
                 </div>
               </div>
               <div className="page">
-                <Route exact={ true } path="/"> <Devices/> </Route>
-                <Route exact={ true } path="/devices"> <Devices/> </Route>
-                <Route path="/devices/editor"> <Editor/> </Route>
-                <Route path="/devices/info"> <Info/> </Route>
-                <Route path="/devices/connecting"> <Connecting/> </Route>
-                <Route exact={ true } path="/tasks"> <Tasks/> </Route>
-                <Route path="/tasks/manager"> <Manager/> </Route>
-                <Route path="/settings"> <Settings/> </Route>
-                <Route path="/system"> <System git={this.state.git} version={this.state.version}/> </Route>
-                <Route path="/backup"> <Backup/> </Route>
-                <Route path="/access"> <Access/> </Route>
-                <Route path="/logs"> <Logs/> </Route>
+                <Routes>
+                  <Route exact={ true } path="/" element={<Devices/>}> </Route>
+                  <Route exact={ true } path="/devices" element={<Devices/>}> </Route>
+                  <Route path="/devices/editor/:deviceId" element={<Editor/>}> </Route>
+                  <Route path="/devices/info/:deviceId" element={<Info/>}> </Route> 
+                  <Route path="/devices/connecting/:deviceId" element={<Connecting/>}> </Route>
+                  <Route exact={ true } path="/tasks" element={<Tasks/>}> </Route>
+                  <Route path="/tasks/manager/:taskId" element={<Manager/>}> </Route>
+                  <Route path="/settings" element={<Settings/>}> </Route>
+                  <Route path="/system" element={<System git={this.state.git} version={this.state.version}/>}>  </Route>
+                  <Route path="/backup" element={<Backup/>}> </Route>
+                  <Route path="/access" element={<Access/>}> </Route>
+                  <Route path="/logs" element={<Logs/>}> </Route>
+                </Routes>
               </div>
             </div>
           </div>

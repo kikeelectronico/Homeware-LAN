@@ -751,7 +751,7 @@ def files(operation='', file='', token=''):
             date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
             result = send_file('../homeware.json',
                                mimetype="application/json",  # use appropriate type based on file
-                               attachment_filename=file + '_' + \
+                               download_name=file + '_' + \
                                str(date_time) + '.json',
                                as_attachment=True,
                                conditional=False)
@@ -779,7 +779,7 @@ def files(operation='', file='', token=''):
                 date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
                 result = send_file('../logs/homeware.log',
                                    mimetype="text/plain",  # use appropriate type based on file
-                                   attachment_filename='homeware_' + \
+                                   download_name='homeware_' + \
                                    str(date_time) + '.log',
                                    as_attachment=True,
                                    conditional=False)
