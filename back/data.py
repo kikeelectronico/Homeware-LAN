@@ -19,7 +19,7 @@ class Data:
 	"""Access to the Homeware database and files."""
   
 
-	version = 'v1.10.1'
+	version = 'v1.10.2'
 	homewareFile = 'homeware.json'
 
 	def __init__(self):
@@ -509,7 +509,7 @@ class Data:
 		data = {
 			"apikey": token
 		}
-		return data
+		return datav1.10.2
 
 	def getToken(self,agent="",type="",subtype=""):
 		if agent == 'front':
