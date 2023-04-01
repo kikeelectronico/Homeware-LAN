@@ -509,7 +509,7 @@ class Data:
 		data = {
 			"apikey": token
 		}
-		return datav1.10.2
+		return data
 
 	def getToken(self,agent="",type="",subtype=""):
 		if agent == 'front':
