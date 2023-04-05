@@ -4,9 +4,13 @@ import Switch from "react-switch";
 class EnergyStorage extends React.Component {
   constructor(props) {
     super(props);
+    this.update = this.update.bind(this);
     this.updateCheckbox = this.updateCheckbox.bind(this);
   }
 
+  update(event){
+    this.props.update('attributes/' + event.target.id,event.target.value);
+  }
 
   updateCheckbox(checked, attribute){
     this.props.update('attributes/' + attribute,checked);
