@@ -1023,8 +1023,8 @@ const deviceReference = {
           default: false
         },
         energyStorageDistanceUnitForUX: {
-          type: "array",
-          default: ["KILOMETERS","MILES"]
+          type: "string",
+          default: ""
         },
         isRechargeable: {
           type: "bool",
