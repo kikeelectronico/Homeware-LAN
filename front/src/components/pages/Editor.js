@@ -20,6 +20,7 @@ import Timer from "../editor/traits/Timer";
 import TemperatureControl from "../editor/traits/TemperatureControl";
 import Cook from "../editor/traits/Cook";
 import SensorState from "../editor/traits/SensorState";
+import EnergyStorage from "../editor/traits/EnergyStorage";
 import getCookieValue from "../../functions";
 import { root, deviceReference } from "../../constants";
 
@@ -411,6 +412,13 @@ class Editor extends React.Component {
       else if (trait === "action.devices.traits.SensorState")
         return (
           <SensorState
+            attributes={this.state.device.attributes}
+            update={this.update}
+          />
+        );
+      else if (trait === "action.devices.traits.EnergyStorage")
+        return (
+          <EnergyStorage
             attributes={this.state.device.attributes}
             update={this.update}
           />

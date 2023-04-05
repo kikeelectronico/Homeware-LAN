@@ -1014,7 +1014,31 @@ const deviceReference = {
       },
       params: ['currentSensorStateData'],
       commands: []
-    }
+    },
+    "action.devices.traits.EnergyStorage": {
+      name: 'Energy Storage',
+      attributes: {
+        queryOnlyEnergyStorage: {
+          type: "bool",
+          default: false
+        },
+        energyStorageDistanceUnitForUX: {
+          type: "array",
+          default: ["KILOMETERS","MILES"]
+        },
+        isRechargeable: {
+          type: "bool",
+          default: false
+        }
+      },
+      params: ['descriptiveCapacityRemaining', 'capacityRemaining', 'capacityUntilFull','isCharging','isPluggedIn'],
+      commands: [
+        {
+          command: 'Charge',
+          description: 'Start charging'
+        }
+      ]
+    },
   },
   params: {
     thermostatTemperatureAmbient: {
@@ -1252,6 +1276,36 @@ const deviceReference = {
       commanded: true,
       default: {}
     },
+    descriptiveCapacityRemaining: {
+      type: "string",
+      name: 'Remaining capacity description',
+      commanded: false,
+      default: ''
+    },
+    capacityRemaining: {
+      type: "object",
+      name: 'Remaining capacity',
+      commanded: false,
+      default: []
+    },
+    capacityUntilFull: {
+      type: "object",
+      name: 'Capacity until full',
+      commanded: false,
+      default: []
+    },
+    isCharging: {
+      type: "bool",
+      name: 'Is charging',
+      commanded: false,
+      default: false
+    },
+    isPluggedIn: {
+      type: "bool",
+      name: 'Is plugged in',
+      commanded: false,
+      default: false
+    }
   }
 }
 
