@@ -91,6 +91,12 @@ const deviceReference = {
         "action.devices.traits.SensorState"
       ]
     },
+    "action.devices.types.CHARGER": {
+      name: "Cargador",
+      traits: [
+        "action.devices.traits.EnergyStorage"
+      ]
+    },
     "action.devices.types.CLOSET": {
       name: "Closet",
       traits: [
@@ -391,8 +397,8 @@ const deviceReference = {
     "action.devices.types.SENSOR": {
       name: "Sensor",
       traits: [
-        "action.devices.traits.OnOff",
-        "action.devices.traits.SensorState"
+        "action.devices.traits.SensorState",
+        "action.devices.traits.EnergyStorage"
       ]
     },
     "action.devices.types.SECURITYSYSTEM": {
