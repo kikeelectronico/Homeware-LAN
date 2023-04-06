@@ -140,9 +140,24 @@ class Editor extends React.Component {
   update(key, value) {
     var temp_device = this.state.device;
     var keys = key.split("/");
-    if (keys.length === 1) temp_device[key] = value;
-    else if (keys.length === 2) temp_device[keys[0]][keys[1]] = value;
-    else if (keys.length === 3) temp_device[keys[0]][keys[1]][keys[2]] = value;
+    if (keys.length === 1) {
+      if (value === "")
+        delete temp_device[key]
+      else
+        temp_device[key] = value;
+    } 
+    else if (keys.length === 2) {
+      if (value === "")
+        delete temp_device[keys[0]][keys[1]]
+      else
+        temp_device[keys[0]][keys[1]] = value;
+    }
+    else if (keys.length === 3) {
+      if (value === "")
+        delete temp_device[keys[0]][keys[1]][keys[2]]
+      else
+        temp_device[keys[0]][keys[1]][keys[2]] = value;
+    }
     this.setState({
       device: temp_device,
     });
