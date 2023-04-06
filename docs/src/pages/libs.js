@@ -196,7 +196,7 @@ function Libs() {
             </a>
           </li>
         </ul>
-        <p>Let me know if I have forgot something.</p>
+        <p>Let me know if I have forgotten something.</p>
       </div>
     </Layout>
   );
