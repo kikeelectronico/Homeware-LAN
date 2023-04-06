@@ -76,7 +76,6 @@ class Commands:
         if 'color' in self.params.keys():
             color = {}
             if 'temperature' in self.params['color'].keys():
-                color['temperature'] = self.params['color']['temperature']
                 color['temperatureK'] = self.params['color']['temperature']
             if 'spectrumRGB' in self.params['color'].keys():
                 color['spectrumRGB'] = self.params['color']['spectrumRGB']
