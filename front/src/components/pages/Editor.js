@@ -192,7 +192,8 @@ class Editor extends React.Component {
         //Set the default attributes values
         var attributes = deviceReference.traits[trait].attributes;
         Object.keys(attributes).forEach((attribute, i) => {
-          temp_device.attributes[attribute] = attributes[attribute].default;
+          if (attributes[attribute].default !== "")
+            temp_device.attributes[attribute] = attributes[attribute].default;
         });
         //Set the default status params
         var params = deviceReference.traits[trait].params;
