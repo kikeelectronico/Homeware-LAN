@@ -281,10 +281,16 @@ class Data:
 			if device['id'] == deviceID:
 				temp_devices.append(incommingData['device'])
 				found = True
+				# Update the received params
 				status = incommingData['status']
 				params = status.keys()
 				for param in params:
 					self.redis.set("status/" + deviceID + "/" + param, pickle.dumps(status[param]))
+				# Delete the not received params
+				db_params_keys = self.redis.keys("status/" + deviceID + "/*")
+				for db_param_key in db_params_keys:
+					if db_param_key.decode("utf-8").split("/")[2] not in list(params):
+						self.redis.delete(db_param_key)
 			else:
 				temp_devices.append(device)
 		self.redis.set('devices',json.dumps(temp_devices))
