@@ -6,11 +6,11 @@ sidebar_label: Installation
 
 # Dependencies
 
-1. Install docker and docker-compose
+1. Install docker and docker-compose.
 ```bash
 sudo apt install -y docker docker-compose
 ```
-2. Install git
+2. Install git.
 ```bash
 sudo apt install -y git
 ```
@@ -24,7 +24,7 @@ sudo apt install -y nano
 
 2. Create a DDNS domain and set it using your public IP. DuckDNS and no-ip are supported.
 
-3. Clone the repo and cd into it  
+3. Clone the repo and cd into it.
 ```bash
 git clone https://github.com/kikeelectronico/Homeware-LAN.git
 ```
@@ -40,7 +40,7 @@ cp configuration_templates/.env.template .env
 - EMAIL: your email. It is used for getting the SSL certificate from Let's Encrypt.
 - HOMEWARE_USER: the admin username that you will use to log in.
 - HOMEWARE_PASSWORD: the admin password that you will use to log in.
-6. Copy the docker-compose file
+6. Copy the docker-compose file.
 - Debian / Ubuntu
 ```bash
 cp docker/docker-compose-debian.yaml docker-compose.yaml
@@ -49,7 +49,7 @@ cp docker/docker-compose-debian.yaml docker-compose.yaml
 ```bash
 cp docker/docker-compose-raspberry.yaml docker-compose.yaml
 ```
-7. Start the project
+7. Start the project.
 ```bash
 docker-compose up -d
 ```
