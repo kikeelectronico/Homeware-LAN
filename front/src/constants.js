@@ -1103,10 +1103,7 @@ const deviceReference = {
       type: "color",
       name: 'Color',
       commanded: true,
-      default: {
-        spectrumRgb: 16711935,
-        temperature: 2000
-      }
+      default: {}
     },
     thermostatTemperatureSetpointHigh: {
       type: "int",
