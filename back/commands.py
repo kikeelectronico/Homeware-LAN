@@ -14,10 +14,9 @@ class Commands:
         self.device = device
         self.params = params
 
-    def saveAndSend(self, input, output):
+    def saveAndSend(self, input, output, bool_negate=False):
         if input in self.params.keys():
-            self.data_conector.updateParamStatus(
-                self.device, output, self.params[input])
+            self.data_conector.updateParamStatus(self.device, output, self.params[input] if not bool_negate else not self.params[input])
 
     def sendCommand(self, command):
         mqttData = self.data_conector.getMQTT()
@@ -226,6 +225,7 @@ class Commands:
 
     def ActivateScene(self):
         self.saveAndSend('deactivate', 'deactivate')
+        self.saveAndSend('deactivate', 'enable', bool_negate=True)
         return ""
 
     def Cook(self):
