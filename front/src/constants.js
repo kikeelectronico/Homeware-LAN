@@ -1091,7 +1091,7 @@ const deviceReference = {
       select: ["true","false"],
       name: 'Enabled (not official)',
       commanded: true,
-      default: true
+      default: false
     },
     brightness: {
       type: "int",
