@@ -91,6 +91,12 @@ const deviceReference = {
         "action.devices.traits.SensorState"
       ]
     },
+    "action.devices.types.CHARGER": {
+      name: "Cargador",
+      traits: [
+        "action.devices.traits.EnergyStorage"
+      ]
+    },
     "action.devices.types.CLOSET": {
       name: "Closet",
       traits: [
@@ -391,8 +397,8 @@ const deviceReference = {
     "action.devices.types.SENSOR": {
       name: "Sensor",
       traits: [
-        "action.devices.traits.OnOff",
-        "action.devices.traits.SensorState"
+        "action.devices.traits.SensorState",
+        "action.devices.traits.EnergyStorage"
       ]
     },
     "action.devices.types.SECURITYSYSTEM": {
@@ -524,12 +530,6 @@ const deviceReference = {
         "action.devices.traits.OpenClose"
       ]
     },
-    "action.devices.types.SCENE": {
-      name: "Scene",
-      traits: [
-        "action.devices.traits.Scene"
-      ]
-    },
     "action.devices.types.YOGURTMAKER": {
       name: "Yogurt maker",
       traits: [
@@ -540,23 +540,41 @@ const deviceReference = {
         "action.devices.traits.Timer",
         "action.devices.traits.Toggles"
       ]
-    }
+    },
+    "action.devices.types.SCENE": {
+      name: "Scene",
+      traits: [
+        "action.devices.traits.Scene"
+      ]
+    },
   },
   traits: {
-    "action.devices.traits.OnOff": {
-      name: 'Power control',
+    "action.devices.traits.ArmDisarm": {
+      name: 'Arm or disarm',
       attributes: {
-        commandOnlyOnOff: {
-          type: "bool",
-          default: false
-        },
-        queryOnlyOnOff: {
-          type: "bool",
-          default: false
+        availableArmLevels: {
+          type: "strigifyedObject",
+          default: {
+            levels: [],
+            ordered: true
+          }
         }
       },
-      params: ['on'],
-      commands: []
+      params: ['isArmed', 'currentArmLevel','exitAllowance'],
+      commands: [
+        {
+          command: 'cancel',
+          description: 'The arm process must be canceled'
+        },
+        {
+          command: 'arm',
+          description: 'Arm the system'
+        },
+        {
+          command: 'disarm',
+          description: 'Disarm the system'
+        }
+      ]
     },
     "action.devices.traits.Brightness": {
       name: 'Brightness',
@@ -601,45 +619,190 @@ const deviceReference = {
       params: ['color'],
       commands: []
     },
-    "action.devices.traits.TemperatureSetting": {
-      name: 'Temperature Settings',
+    "action.devices.traits.Cook": {
+      name: 'Cooking',
       attributes: {
-        availableThermostatModes: {
-          type: "select",
-          default: "off,heat,cool"
+        foodPresets: {
+          type: "strigifyedObject",
+          default: []
         },
-        thermostatTemperatureRange: {
-          type: "object",
-          default: {
-            minThresholdCelsius: 18,
-            maxThresholdCelsius: 34
-          }
-        },
-        thermostatTemperatureUnit: {
-          type: "string",
-          default: "C"
-        },
-        bufferRangeCelsius: {
-          type: "int",
-          default: 2
-        },
-        commandOnlyTemperatureSetting: {
+        supportedCookingModes: {
+          type: "selectToArray",
+          default: []
+        }
+      },
+      params: ['currentCookingMode','currentFoodPreset','currentFoodQuantity','currentFoodUnit'],
+      commands: []
+    },
+    "action.devices.traits.Dock": {
+      name: 'Dock',
+      attributes: {},
+      params: ['isDocked'],
+      commands: []
+    },
+    "action.devices.traits.EnergyStorage": {
+      name: 'Energy Storage',
+      attributes: {
+        queryOnlyEnergyStorage: {
           type: "bool",
           default: false
         },
-        queryOnlyTemperatureSetting: {
+        energyStorageDistanceUnitForUX: {
+          type: "string",
+          default: ""
+        },
+        isRechargeable: {
           type: "bool",
           default: false
         }
       },
-      params: [
-        'thermostatMode',
-        'thermostatTemperatureSetpoint',
-        'thermostatTemperatureAmbient',
-        'thermostatTemperatureSetpointHigh',
-        'thermostatTemperatureSetpointLow',
-        'thermostatHumidityAmbient'
-      ],
+      params: ['descriptiveCapacityRemaining', 'capacityRemaining', 'capacityUntilFull','isCharging','isPluggedIn'],
+      commands: [
+        {
+          command: 'Charge',
+          description: 'Start charging'
+        }
+      ]
+    },
+    "action.devices.traits.FanSpeed": {
+      name: 'Fan Speed',
+      attributes: {
+        availableFanSpeeds: {
+          type: "strigifyedObject",
+          default: {
+            speeds: [],
+            ordered: true
+          }
+        },
+        reversible: {
+          type: "bool",
+          default: true
+        },
+        commandOnlyFanSpeed: {
+          type: "bool",
+          default: true
+        }
+      },
+      params: ['currentFanSpeedSetting'],
+      commands: []
+    },
+    "action.devices.traits.Fill": {
+      name: 'Fill',
+      attributes: {
+        availableFillLevels: {
+          type: "strigifyedObject",
+          default: {
+            levels: [],
+            ordered: true
+          }
+        }
+      },
+      params: ['isFilled','currentFillLevel'],
+      commands: [
+        {
+          command: 'fill',
+          description: 'Fill'
+        },
+        {
+          command: 'drain',
+          description: 'Drain'
+        }
+      ]
+    },
+    "action.devices.traits.HumiditySetting": {
+      name: 'Humidity setting',
+      attributes: {
+        humiditySetpointRange: {
+          type: "object",
+          default: {
+            minPercent: 0,
+            maxPercent: 100
+          },
+          content: {
+            minPercent: {
+              type: "int"
+            },
+            maxPercent: {
+              type: "int"
+            }
+          }
+        },
+        commandOnlyHumiditySetting: {
+          type: "bool",
+          default: false
+        },
+        queryOnlyHumiditySetting: {
+          type: "bool",
+          default: false
+        }
+      },
+      params: ['humiditySetpointPercent','humidityAmbientPercent'],
+      commands: []
+    },
+    "action.devices.traits.Locator": {
+      name: 'Locator',
+      attributes: {
+      },
+      params: [],
+      commands: [
+        {
+          command: 'silence',
+          description: 'Stop the alarm'
+        }
+      ]
+    },
+    "action.devices.traits.LockUnlock": {
+      name: 'Lock or unlock',
+      attributes: {},
+      params: ['isLocked','isJammed'],
+      commands: [
+        {
+          command: 'lock',
+          description: 'Lock'
+        },
+        {
+          command: 'unlock',
+          description: 'Unlock'
+        }
+      ]
+    },
+    "action.devices.traits.Modes": {
+      name: 'Modes',
+      attributes: {
+        availableModes: {
+          type: "strigifyedObject",
+          default: []
+        },
+        commandOnlyModes: {
+          type: "bool",
+          default: false
+        }
+      },
+      params: ['currentModeSettings'],
+      commands: [
+        {
+          command: 'start',
+          description: 'Start cooking'
+        },
+        {
+          command: 'stop',
+          description: 'Stop cooking'
+        }
+      ]
+    },
+    "action.devices.traits.OnOff": {
+      name: 'Power control',
+      attributes: {
+        commandOnlyOnOff: {
+          type: "bool",
+          default: false
+        },
+        queryOnlyOnOff: {
+          type: "bool",
+          default: false
+        }
+      },
+      params: ['on'],
       commands: []
     },
     "action.devices.traits.OpenClose": {
@@ -703,20 +866,11 @@ const deviceReference = {
       params: ['rotationPercent','rotationDegrees'],
       commands: []
     },
-    "action.devices.traits.LockUnlock": {
-      name: 'Lock or unlock',
+    "action.devices.traits.RunCycle": {
+      name: 'RunCycle',
       attributes: {},
-      params: ['isLocked','isJammed'],
-      commands: [
-        {
-          command: 'lock',
-          description: 'Lock'
-        },
-        {
-          command: 'unlock',
-          description: 'Unlock'
-        }
-      ]
+      params: [],
+      commands: []
     },
     "action.devices.traits.Scene": {
       name: 'Scene',
@@ -726,28 +880,22 @@ const deviceReference = {
           default: true
         }
       },
-      params: ['deactivate'],
+      params: ['deactivate','enable'],
       commands: []
     },
-    "action.devices.traits.Dock": {
-      name: 'Dock',
-      attributes: {},
-      params: ['isDocked'],
-      commands: []
-    },
-    "action.devices.traits.Toggles": {
-      name: 'Toogles',
+    "action.devices.traits.SensorState": {
+      name: 'Sesnor - Google doesn\'t respond',
       attributes: {
-        availableToggles: {
-          type: "strigifyedObject",
-          default: []
-        },
-        commandOnlyToggles: {
-          type: "bool",
-          default: false
+        sensorStatesSupported: {
+          type: 'object',
+          default: [
+            {
+              name: ""
+            }
+          ]
         }
       },
-      params: ['currentToggleSettings'],
+      params: ['currentSensorStateData'],
       commands: []
     },
     "action.devices.traits.StartStop": {
@@ -782,19 +930,10 @@ const deviceReference = {
         }
       ]
     },
-    "action.devices.traits.Timer": {
-      name: 'Timer - Google doesn\'t respond',
-      attributes: {
-        maxTimerLimitSec: {
-          type: "int",
-          default: 1000
-        },
-        commandOnlyTimer: {
-          type: "bool",
-          default: false
-        }
-      },
-      params: ['timerRemainingSec', 'timerPaused'],
+    "action.devices.traits.StatusReport": {
+      name: 'Status report',
+      attributes: {},
+      params: ['currentStatusReport'],
       commands: []
     },
     "action.devices.traits.TemperatureControl": {
@@ -835,186 +974,77 @@ const deviceReference = {
       params: ['temperatureSetpointCelsius','temperatureAmbientCelsius'],
       commands: []
     },
-    "action.devices.traits.FanSpeed": {
-      name: 'Fan Speed',
+    "action.devices.traits.TemperatureSetting": {
+      name: 'Temperature Settings',
       attributes: {
-        availableFanSpeeds: {
-          type: "strigifyedObject",
-          default: {
-            speeds: [],
-            ordered: true
-          }
+        availableThermostatModes: {
+          type: "select",
+          default: "off,heat,cool"
         },
-        reversible: {
-          type: "bool",
-          default: true
-        },
-        commandOnlyFanSpeed: {
-          type: "bool",
-          default: true
-        }
-      },
-      params: ['currentFanSpeedSetting'],
-      commands: []
-    },
-    "action.devices.traits.ArmDisarm": {
-      name: 'Arm or disarm',
-      attributes: {
-        availableArmLevels: {
-          type: "strigifyedObject",
-          default: {
-            levels: [],
-            ordered: true
-          }
-        }
-      },
-      params: ['isArmed', 'currentArmLevel','exitAllowance'],
-      commands: [
-        {
-          command: 'cancel',
-          description: 'The arm process must be canceled'
-        },
-        {
-          command: 'arm',
-          description: 'Arm the system'
-        },
-        {
-          command: 'disarm',
-          description: 'Disarm the system'
-        }
-      ]
-    },
-    "action.devices.traits.Fill": {
-      name: 'Fill',
-      attributes: {
-        availableFillLevels: {
-          type: "strigifyedObject",
-          default: {
-            levels: [],
-            ordered: true
-          }
-        }
-      },
-      params: ['isFilled','currentFillLevel'],
-      commands: [
-        {
-          command: 'fill',
-          description: 'Fill'
-        },
-        {
-          command: 'drain',
-          description: 'Drain'
-        }
-      ]
-    },
-    "action.devices.traits.RunCycle": {
-      name: 'RunCycle',
-      attributes: {},
-      params: [],
-      commands: []
-    },
-    "action.devices.traits.StatusReport": {
-      name: 'Status report',
-      attributes: {},
-      params: ['currentStatusReport'],
-      commands: []
-    },
-    "action.devices.traits.HumiditySetting": {
-      name: 'Humidity setting',
-      attributes: {
-        humiditySetpointRange: {
+        thermostatTemperatureRange: {
           type: "object",
           default: {
-            minPercent: 0,
-            maxPercent: 100
-          },
-          content: {
-            minPercent: {
-              type: "int"
-            },
-            maxPercent: {
-              type: "int"
-            }
+            minThresholdCelsius: 18,
+            maxThresholdCelsius: 34
           }
         },
-        commandOnlyHumiditySetting: {
+        thermostatTemperatureUnit: {
+          type: "string",
+          default: "C"
+        },
+        bufferRangeCelsius: {
+          type: "int",
+          default: 2
+        },
+        commandOnlyTemperatureSetting: {
           type: "bool",
           default: false
         },
-        queryOnlyHumiditySetting: {
+        queryOnlyTemperatureSetting: {
           type: "bool",
           default: false
         }
       },
-      params: ['humiditySetpointPercent','humidityAmbientPercent'],
+      params: [
+        'thermostatMode',
+        'thermostatTemperatureSetpoint',
+        'thermostatTemperatureAmbient',
+        'thermostatTemperatureSetpointHigh',
+        'thermostatTemperatureSetpointLow',
+        'thermostatHumidityAmbient'
+      ],
       commands: []
     },
-    "action.devices.traits.Cook": {
-      name: 'Cooking',
+    "action.devices.traits.Timer": {
+      name: 'Timer - Google doesn\'t respond',
       attributes: {
-        foodPresets: {
+        maxTimerLimitSec: {
+          type: "int",
+          default: 1000
+        },
+        commandOnlyTimer: {
+          type: "bool",
+          default: false
+        }
+      },
+      params: ['timerRemainingSec', 'timerPaused'],
+      commands: []
+    },
+    "action.devices.traits.Toggles": {
+      name: 'Toogles',
+      attributes: {
+        availableToggles: {
           type: "strigifyedObject",
           default: []
         },
-        supportedCookingModes: {
-          type: "selectToArray",
-          default: []
-        }
-      },
-      params: ['currentCookingMode','currentFoodPreset','currentFoodQuantity','currentFoodUnit'],
-      commands: []
-    },
-    "action.devices.traits.Modes": {
-      name: 'Modes',
-      attributes: {
-        availableModes: {
-          type: "strigifyedObject",
-          default: []
-        },
-        commandOnlyModes: {
+        commandOnlyToggles: {
           type: "bool",
           default: false
         }
       },
-      params: ['currentModeSettings'],
-      commands: [
-        {
-          command: 'start',
-          description: 'Start cooking'
-        },
-        {
-          command: 'stop',
-          description: 'Stop cooking'
-        }
-      ]
-    },
-    "action.devices.traits.Locator": {
-      name: 'Locator',
-      attributes: {
-      },
-      params: [],
-      commands: [
-        {
-          command: 'silence',
-          description: 'Stop the alarm'
-        }
-      ]
-    },
-    "action.devices.traits.SensorState": {
-      name: 'Sesnor - Google doesn\'t respond',
-      attributes: {
-        sensorStatesSupported: {
-          type: 'object',
-          default: [
-            {
-              name: ""
-            }
-          ]
-        }
-      },
-      params: ['currentSensorStateData'],
+      params: ['currentToggleSettings'],
       commands: []
-    }
+    },
   },
   params: {
     thermostatTemperatureAmbient: {
@@ -1056,6 +1086,13 @@ const deviceReference = {
       commanded: true,
       default: true
     },
+    enable: {
+      type: "bool",
+      select: ["true","false"],
+      name: 'Enabled (not official)',
+      commanded: true,
+      default: false
+    },
     brightness: {
       type: "int",
       name: 'Brightness',
@@ -1075,7 +1112,7 @@ const deviceReference = {
       commanded: true,
       default: {
         spectrumRgb: 16711935,
-        temperature: 2000
+        temperatureK: 2000
       }
     },
     thermostatTemperatureSetpointHigh: {
@@ -1252,6 +1289,36 @@ const deviceReference = {
       commanded: true,
       default: {}
     },
+    descriptiveCapacityRemaining: {
+      type: "string",
+      name: 'Remaining capacity description',
+      commanded: false,
+      default: ''
+    },
+    capacityRemaining: {
+      type: "object",
+      name: 'Remaining capacity',
+      commanded: false,
+      default: []
+    },
+    capacityUntilFull: {
+      type: "object",
+      name: 'Capacity until full',
+      commanded: false,
+      default: []
+    },
+    isCharging: {
+      type: "bool",
+      name: 'Is charging',
+      commanded: false,
+      default: false
+    },
+    isPluggedIn: {
+      type: "bool",
+      name: 'Is plugged in',
+      commanded: false,
+      default: false
+    }
   }
 }
 

@@ -20,6 +20,7 @@ import Timer from "../editor/traits/Timer";
 import TemperatureControl from "../editor/traits/TemperatureControl";
 import Cook from "../editor/traits/Cook";
 import SensorState from "../editor/traits/SensorState";
+import EnergyStorage from "../editor/traits/EnergyStorage";
 import getCookieValue from "../../functions";
 import { root, deviceReference } from "../../constants";
 
@@ -139,9 +140,24 @@ class Editor extends React.Component {
   update(key, value) {
     var temp_device = this.state.device;
     var keys = key.split("/");
-    if (keys.length === 1) temp_device[key] = value;
-    else if (keys.length === 2) temp_device[keys[0]][keys[1]] = value;
-    else if (keys.length === 3) temp_device[keys[0]][keys[1]][keys[2]] = value;
+    if (keys.length === 1) {
+      if (value === "")
+        delete temp_device[key]
+      else
+        temp_device[key] = value;
+    } 
+    else if (keys.length === 2) {
+      if (value === "")
+        delete temp_device[keys[0]][keys[1]]
+      else
+        temp_device[keys[0]][keys[1]] = value;
+    }
+    else if (keys.length === 3) {
+      if (value === "")
+        delete temp_device[keys[0]][keys[1]][keys[2]]
+      else
+        temp_device[keys[0]][keys[1]][keys[2]] = value;
+    }
     this.setState({
       device: temp_device,
     });
@@ -176,7 +192,8 @@ class Editor extends React.Component {
         //Set the default attributes values
         var attributes = deviceReference.traits[trait].attributes;
         Object.keys(attributes).forEach((attribute, i) => {
-          temp_device.attributes[attribute] = attributes[attribute].default;
+          if (attributes[attribute].default !== "")
+            temp_device.attributes[attribute] = attributes[attribute].default;
         });
         //Set the default status params
         var params = deviceReference.traits[trait].params;
@@ -411,6 +428,13 @@ class Editor extends React.Component {
       else if (trait === "action.devices.traits.SensorState")
         return (
           <SensorState
+            attributes={this.state.device.attributes}
+            update={this.update}
+          />
+        );
+      else if (trait === "action.devices.traits.EnergyStorage")
+        return (
+          <EnergyStorage
             attributes={this.state.device.attributes}
             update={this.update}
           />

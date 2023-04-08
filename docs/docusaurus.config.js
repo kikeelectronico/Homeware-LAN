@@ -24,7 +24,12 @@ module.exports = {
         },
         {
           to: 'api/',
-          label: 'API',
+          label: 'API REST',
+          position: 'left',
+        },
+        {
+          to: 'docs/unsupported-devices/',
+          label: 'Unsopported devices',
           position: 'left',
         },
         {

@@ -27,6 +27,25 @@ class Deactivate extends React.Component {
       "param": "deactivate",
       "value": !this.props.status.deactivate
     }));
+
+    var http_2 = new XMLHttpRequest();
+    http_2.onload = function (e) {
+      if (http_2.readyState === 4) {
+        if (http_2.status === 200) {
+          this.props.reload();
+        } else {
+          console.error(http_2.statusText);
+        }
+      }
+    }.bind(this)
+    http_2.open("POST", root + "api/status/update/");
+    http_2.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    http_2.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    http_2.send(JSON.stringify({
+      "id": this.props.id,
+      "param": "enable",
+      "value": this.props.status.deactivate
+    }));
   }
 
   render() {

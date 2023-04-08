@@ -14,10 +14,9 @@ class Commands:
         self.device = device
         self.params = params
 
-    def saveAndSend(self, input, output):
+    def saveAndSend(self, input, output, bool_negate=False):
         if input in self.params.keys():
-            self.data_conector.updateParamStatus(
-                self.device, output, self.params[input])
+            self.data_conector.updateParamStatus(self.device, output, self.params[input] if not bool_negate else not self.params[input])
 
     def sendCommand(self, command):
         mqttData = self.data_conector.getMQTT()
@@ -76,7 +75,6 @@ class Commands:
         if 'color' in self.params.keys():
             color = {}
             if 'temperature' in self.params['color'].keys():
-                color['temperature'] = self.params['color']['temperature']
                 color['temperatureK'] = self.params['color']['temperature']
             if 'spectrumRGB' in self.params['color'].keys():
                 color['spectrumRGB'] = self.params['color']['spectrumRGB']
@@ -227,6 +225,7 @@ class Commands:
 
     def ActivateScene(self):
         self.saveAndSend('deactivate', 'deactivate')
+        self.saveAndSend('deactivate', 'enable', bool_negate=True)
         return ""
 
     def Cook(self):
@@ -415,3 +414,7 @@ class Commands:
                 state[mode] = self.params['updateModeSettings'][mode]
             self.data_conector.updateParamStatus(
                 self.device, 'currentModeSettings', state)
+
+    def Charge(self):
+        self.sendCommand("charge")
+        return ""
