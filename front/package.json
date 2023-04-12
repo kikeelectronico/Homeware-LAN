@@ -9,7 +9,7 @@
     "json-schema": "^0.4.0",
     "link": "^1.5.1",
     "react": "^16.13.1",
-    "react-bootstrap": "^2.7.2",
+    "react-bootstrap": "^2.7.3",
     "react-dom": "^16.13.1",
     "react-json-view": "^1.21.3",
     "react-markdown": "^8.0.6",
