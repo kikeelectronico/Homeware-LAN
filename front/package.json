@@ -13,7 +13,7 @@
     "react-dom": "^16.13.1",
     "react-json-view": "^1.21.3",
     "react-markdown": "^8.0.6",
-    "react-router": "^6.8.2",
+    "react-router": "^6.11.0",
     "react-router-dom": "^6.10.0",
     "react-router-link": "^2.0.2",
     "react-scripts": "^5.0.1",
