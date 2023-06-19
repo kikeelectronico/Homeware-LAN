@@ -1040,6 +1040,10 @@ const deviceReference = {
         commandOnlyToggles: {
           type: "bool",
           default: false
+        },
+        queryOnlyToggles: {
+          type: "bool",
+          default: false
         }
       },
       params: ['currentToggleSettings'],
