@@ -224,7 +224,6 @@ class Commands:
         return ""
 
     def ActivateScene(self):
-        self.saveAndSend('deactivate', 'deactivate')
         self.saveAndSend('deactivate', 'enable', bool_negate=True)
         return ""
 

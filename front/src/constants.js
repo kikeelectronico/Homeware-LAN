@@ -880,7 +880,7 @@ const deviceReference = {
           default: true
         }
       },
-      params: ['deactivate','enable'],
+      params: ['enable'],
       commands: []
     },
     "action.devices.traits.SensorState": {
@@ -1082,13 +1082,6 @@ const deviceReference = {
       name: 'Power',
       commanded: true,
       default: false
-    },
-    deactivate: {
-      type: "bool",
-      select: ["true","false"],
-      name: 'Deactivate',
-      commanded: true,
-      default: true
     },
     enable: {
       type: "bool",
