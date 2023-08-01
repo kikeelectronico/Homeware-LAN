@@ -198,7 +198,7 @@ A list of taks. In example:
     target: [
       {
         device: "night_scene",
-        param: "deactivate",
+        param: "enable",
         value: false
       }
     ]
@@ -244,7 +244,7 @@ A task object. In example:
   target: [
     {
       device: "night_scene",
-      param: "deactivate",
+      param: "enable",
       value: false
     }
   ]
@@ -286,7 +286,7 @@ The definition of the task and its id.
     target: [
       {
         device: "night_scene",
-        param: "deactivate",
+        param: "enable",
         value: false
       }
     ]
@@ -332,7 +332,7 @@ The definition of the task and its id.
     target: [
       {
         device: "night_scene",
-        param: "deactivate",
+        param: "enable",
         value: false
       }
     ]

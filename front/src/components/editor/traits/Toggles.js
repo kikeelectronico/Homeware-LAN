@@ -91,6 +91,18 @@ class Toggles extends React.Component {
 
         <div className="three_table_row">
           <div className="three_table_cel align_right">
+            <i>queryOnlyToggles</i>
+          </div>
+          <div className="three_table_cel">
+            <Switch onChange={(checked) => {this.updateCheckbox(checked,"queryOnlyToggles")}} checked={this.props.attributes.queryOnlyToggles} />
+          </div>
+          <div className="three_table_cel">
+            <span className="attribute_advise">Enable it if Google shouldn't change the device state.</span>
+          </div>
+        </div>
+
+        <div className="three_table_row">
+          <div className="three_table_cel align_right">
             Add a toggle
           </div>
           <div className="three_table_cel">
