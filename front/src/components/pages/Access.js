@@ -27,7 +27,7 @@ function Access () {
     http.open("GET", root + "api/access/get/");
     http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
     http.send();
-  })
+  }, [])
 
   const generateAPIKey = () => {
     ToastsStore.warning("Generating API key");

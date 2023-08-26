@@ -28,7 +28,7 @@ function Logs () {
     http.open("GET", root + "api/log/get/");
     http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
     http.send();
-  })
+  }, [])
 
   const loadMore = () => {
     if (page < data.length/10 - 1) setPage(page + 1)
