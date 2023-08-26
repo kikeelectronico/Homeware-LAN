@@ -1,4 +1,4 @@
-var root = window.location.href.includes('localhost') ? "http://homeware.local/" : "/"
+var root = window.location.href.includes('localhost') ? "http://localhost:5001/" : "/"
 
 const deviceReference = {
   devices: {
@@ -398,7 +398,8 @@ const deviceReference = {
       name: "Sensor",
       traits: [
         "action.devices.traits.SensorState",
-        "action.devices.traits.EnergyStorage"
+        "action.devices.traits.EnergyStorage",
+        "action.devices.traits.OccupancySensing"
       ]
     },
     "action.devices.types.SECURITYSYSTEM": {
@@ -789,6 +790,18 @@ const deviceReference = {
           description: 'Stop cooking'
         }
       ]
+    },
+    "action.devices.traits.OccupancySensing": {
+      name: 'Occupancy sensing',
+      attributes: {
+        occupancySensorConfiguration: {
+          type: "objects-list",
+          default: [],
+          content: []
+        }
+      },
+      params: ['occupancy'],
+      commands: []
     },
     "action.devices.traits.OnOff": {
       name: 'Power control',
@@ -1315,6 +1328,12 @@ const deviceReference = {
       name: 'Is plugged in',
       commanded: false,
       default: false
+    },
+    occupancy: {
+      type: "string",
+      name: "Occupancy",
+      commanded: false,
+      default: "UNKNOWN_OCCUPANCY_STATE"
     }
   }
 }

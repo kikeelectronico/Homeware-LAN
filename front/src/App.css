@@ -128,6 +128,47 @@
     text-align: left;
   }
 
+  .attribute_table {
+    width: 90%;
+    margin-left: 5%;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .attribute_table_title {
+    flex: 1;
+    text-align: left;
+  }
+
+  .attribute_table_form {
+    flex: 2;
+    text-align: left;
+
+  }
+
+  .attribute_table_form_add_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .attribute_table_subattribute {
+    border-top: lightgray solid 1px;
+    margin-top: 10px;
+    padding-top: 20px;
+  }
+
+  .attribute_table_subattribute_row {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+  }
+
+  .attribute_table_subattribute_input {
+    flex: 3;
+  }
+
   .page_block_buttons_container {
     width: 80%;
     margin-top: 10px;

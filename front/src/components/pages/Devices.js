@@ -34,6 +34,7 @@ import Blender from "../devices/Blender";
 import WaterHeater from "../devices/WaterHeater";
 import Global from "../devices/Global";
 import Scene from "../devices/Scene";
+import Sensor from "../devices/Sensor";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
 
@@ -318,6 +319,16 @@ class Devices extends React.Component {
       else if (device.type === "action.devices.types.PERGOLA")
         return (
           <Pergola
+            key={device.id}
+            device={device}
+            status={this.state.data.status[device.id]}
+            reload={this.loadData}
+          />
+        );
+      
+      else if (device.type === "action.devices.types.SENSOR")
+        return (
+          <Sensor
             key={device.id}
             device={device}
             status={this.state.data.status[device.id]}
