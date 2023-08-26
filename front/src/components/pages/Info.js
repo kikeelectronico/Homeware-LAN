@@ -1,48 +1,41 @@
-import React from 'react';
+import React, {useState, useEffect} from "react";
 import ReactJson from 'react-json-view'
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
 import './Info.css'
 
-class Editor extends React.Component {
-  constructor(props) {
-    super(props);
-    const id = window.location.pathname.split('/')[3];
-    this.state = {
-      id: id,
-      device: {
-        attributes: {},
-        deviceInfo: {},
-        id: "",
-        name: {
-          defaultnames: [],
-          nicknames: [],
-          name: ""
-        },
-        traits: [],
-        type: ""
-      },
-      status: {
-        online: true
-      }
-    }
-  }
+function Info() {
 
-  componentDidMount() {
+  const [id, setId] = useState("")
+  const [device, setDevice] = useState({
+      attributes: {},
+      deviceInfo: {},
+      id: "",
+      name: {
+        defaultnames: [],
+        nicknames: [],
+        name: ""
+      },
+      traits: [],
+      type: ""
+    })
+  const [status, setStatus] = useState({online: true})
+
+  useEffect(() => setId(window.location.pathname.split('/')[3]), [])
+
+  useEffect(() => {
     var dev = new XMLHttpRequest();
     dev.onload = function (e) {
       if (dev.readyState === 4) {
         if (dev.status === 200) {
           var data = JSON.parse(dev.responseText);
-          this.setState({
-             device: data
-           });
+          setDevice(data)
         } else {
           console.error(dev.statusText);
         }
       }
-    }.bind(this);
+    }
     dev.open("GET", root + "api/devices/get/" + this.state.id + "/");
     dev.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
     dev.send();
@@ -52,45 +45,41 @@ class Editor extends React.Component {
       if (sta.readyState === 4) {
         if (sta.status === 200) {
           var data = JSON.parse(sta.responseText);
-          this.setState({
-             status: data
-           });
+          setStatus(data)
         } else {
           console.error(sta.statusText);
         }
       }
-    }.bind(this);
-    sta.open("GET", root + "api/status/get/" + this.state.id + "/");
+    }
+    sta.open("GET", root + "api/status/get/" + id + "/");
     sta.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
     sta.send();
-  }
+  }, [id])
 
-  render() {
-    return (
-      <div>
-        <div className="page_block_container">
-          <h2>Device definition</h2>
-          <div className="advise">
-            <span>General settings of the device.</span>
-            <hr/>
-          </div>
-          <div className="json_viewer">
-            <ReactJson src={this.state.device} />
-          </div>
+  return (
+    <div>
+      <div className="page_block_container">
+        <h2>Device definition</h2>
+        <div className="advise">
+          <span>General settings of the device.</span>
+          <hr/>
         </div>
-        <div className="page_block_container">
-          <h2>Device status</h2>
-          <div className="advise">
-            <span>Status of the device.</span>
-            <hr/>
-          </div>
-          <div className="json_viewer">
-            <ReactJson src={this.state.status} />
-          </div>
+        <div className="json_viewer">
+          <ReactJson src={device} />
         </div>
       </div>
-    );
-  }
+      <div className="page_block_container">
+        <h2>Device status</h2>
+        <div className="advise">
+          <span>Status of the device.</span>
+          <hr/>
+        </div>
+        <div className="json_viewer">
+          <ReactJson src={status} />
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default Editor
+export default Info
