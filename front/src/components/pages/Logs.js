@@ -3,6 +3,8 @@ import { ToastsContainer, ToastsStore } from "react-toasts";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
 
+import {Button, Stack} from '@mui/material';
+
 import "./Logs.css";
 
 function Logs () {
@@ -79,15 +81,11 @@ function Logs () {
           }
         </div>
         <div className="page_block_buttons_container">
-          <button type="button" onClick={nextPage}>
-            Load more
-          </button>
-          <button type="button" onClick={downloadLog}>
-            Download
-          </button>
-          <button type="button" onClick={deleteLog}>
-            Delete
-          </button>
+          <Stack spacing={2} direction="row">
+            <Button variant="contained" onClick={nextPage}>Load more</Button>
+            <Button variant="contained" onClick={downloadLog}>Download</Button>
+            <Button variant="contained" onClick={deleteLog}>Delete</Button>
+          </Stack>
         </div>
       </div>
       <ToastsContainer store={ToastsStore} />
