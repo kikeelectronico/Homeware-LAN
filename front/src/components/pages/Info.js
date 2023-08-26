@@ -36,7 +36,7 @@ function Info() {
         }
       }
     }
-    dev.open("GET", root + "api/devices/get/" + this.state.id + "/");
+    dev.open("GET", root + "api/devices/get/" + id + "/");
     dev.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
     dev.send();
 
