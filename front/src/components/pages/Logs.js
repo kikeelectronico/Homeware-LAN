@@ -24,7 +24,7 @@ function Logs () {
           ToastsStore.error("Something went wrong");
         }
       }
-    }.bind(this);
+    }
     http.open("GET", root + "api/log/get/");
     http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
     http.send();
