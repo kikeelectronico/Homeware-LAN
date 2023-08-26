@@ -2,7 +2,7 @@ FROM node:lts-alpine AS base
 RUN mkdir /app
 WORKDIR /app
 COPY front ./
-RUN npm install
+RUN npm install --legacy-peer-deps
 RUN npm run build
 
 FROM nginx
