@@ -1328,6 +1328,12 @@ const deviceReference = {
       name: 'Is plugged in',
       commanded: false,
       default: false
+    },
+    occupancy: {
+      type: "string",
+      name: "Occupancy",
+      commanded: false,
+      default: "UNKNOWN_OCCUPANCY_STATE"
     }
   }
 }
