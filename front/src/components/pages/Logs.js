@@ -30,12 +30,7 @@ function Logs () {
     http.send();
   })
 
-
-  const previousPage = () => {
-    if (page > 1) setPage(page - 1)
-  }
-
-  const nextPage = () => {
+  const loadMore = () => {
     if (page < data.length/10 - 1) setPage(page + 1)
   }
 
@@ -82,7 +77,7 @@ function Logs () {
         </div>
         <div className="page_block_buttons_container">
           <Stack spacing={2} direction="row">
-            <Button variant="contained" onClick={nextPage}>Load more</Button>
+            <Button variant="contained" onClick={loadMore}>Load more</Button>
             <Button variant="contained" onClick={downloadLog}>Download</Button>
             <Button variant="contained" onClick={deleteLog}>Delete</Button>
           </Stack>
