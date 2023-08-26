@@ -25,19 +25,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Start Redis $REDIS_VERSION
+      - name: Start Redis ${{REDIS_VERSION}}
         uses: supercharge/redis-github-action@1.1.0
         with:
-          redis-version: $REDIS_VERSION
-      - name: Start Mosquitto broker $MOSQUITTO_VERSION
+          redis-version: ${{REDIS_VERSION}}
+      - name: Start Mosquitto broker ${{MOSQUITTO_VERSION}}
         uses: Namoshek/mosquitto-github-action@v1
         with:
-          version: $MOSQUITTO_VERSION
+          version: ${{MOSQUITTO_VERSION}}
           ports: '1883:1883'
-      - name: Set up Python $PYTHON_VERSION
+      - name: Set up Python ${{PYTHON_VERSION}}
         uses: actions/setup-python@v2
         with:
-          python-version: $PYTHON_VERSION
+          python-version: ${{PYTHON_VERSION}}
       - name: Install dependencies
         run: pip install -r requirements.txt
         working-directory: ./back
