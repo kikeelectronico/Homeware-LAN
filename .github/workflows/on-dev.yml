@@ -15,9 +15,39 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-push-be-docker-image:
-    name: Build backend
+  unit_test_backend:
+    name: Unit testing backend
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        redis-version: [6]
+        python-version: [3.8]
+        mosquitto-version: [2.0]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Start Redis ${{ matrix.redis-version }}
+        uses: supercharge/redis-github-action@1.1.0
+        with:
+          redis-version: ${{ matrix.redis-version }}
+      - name: Start Mosquitto broker
+        uses: Namoshek/mosquitto-github-action@v1
+        with:
+          version: ${{ matrix.mosquitto-version }}
+          ports: '1883:1883'
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        working-directory: ./back
+      - name: Test
+        run: python -m unittest discover
+        working-directory: ./back
+  build_and_push_backend:
+    name: Build and push backend
+    runs-on: ubuntu-latest
+    needs: unit_test_backend
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -40,8 +70,8 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/homewarelan-back:dev
-  build-push-fe-docker-image:
-    name: Build frontend
+  build_push_frontend:
+    name: Build and push frontend
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
