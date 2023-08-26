@@ -24,7 +24,7 @@ jobs:
     name: Unit testing backend
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Start Redis ${{env.REDIS_VERSION}}
         uses: supercharge/redis-github-action@1.1.0
         with:
@@ -35,7 +35,7 @@ jobs:
           version: ${{env.MOSQUITTO_VERSION}}
           ports: '1883:1883'
       - name: Set up Python ${{env.PYTHON_VERSION}}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: ${{env.PYTHON_VERSION}}
       - name: Install dependencies
