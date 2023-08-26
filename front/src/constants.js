@@ -398,7 +398,8 @@ const deviceReference = {
       name: "Sensor",
       traits: [
         "action.devices.traits.SensorState",
-        "action.devices.traits.EnergyStorage"
+        "action.devices.traits.EnergyStorage",
+        "action.devices.traits.OccupancySensing"
       ]
     },
     "action.devices.types.SECURITYSYSTEM": {
