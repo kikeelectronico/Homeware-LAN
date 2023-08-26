@@ -8,13 +8,12 @@ import './Connecting.css';
 function Connecting() {
 
   const [id, setId] = useState("")
-  const [traits, setTraits] = useState([])
   const [params, setParams] = useState([])
   const [commands, setCommands] = useState([])
   
   useEffect(() => {
     setId(window.location.pathname.split('/')[3])
-  })
+  }, [])
 
   useEffect(() => {
     var dev = new XMLHttpRequest();
@@ -22,7 +21,6 @@ function Connecting() {
       if (dev.readyState === 4) {
         if (dev.status === 200) {
           const data = JSON.parse(dev.responseText);
-          setTraits(data.traits)
           var _params = []
           var _commands = []
           data.traits.forEach((trait) => {
@@ -36,10 +34,10 @@ function Connecting() {
         }
       }
     }
-    dev.open("GET", root + "api/devices/get/" + this.state.id + "/");
+    dev.open("GET", root + "api/devices/get/" + id + "/");
     dev.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
     dev.send();
-  }, [])
+  }, [id])
 
   return (
     <div>
@@ -64,7 +62,7 @@ function Connecting() {
       
             var topic = 'None - Controlled only by the device'
             if (deviceReference.params[param].commanded)
-              topic = 'device/' + this.state.id + '/' + param
+              topic = 'device/' + id + '/' + param
       
             return (
               <div key={i} className="param_table_row">
@@ -98,7 +96,7 @@ function Connecting() {
             return (
               <div key={i} className="command_table_row">
                 <div className="command_table_cel">{command.command}</div>
-                <div className="command_table_cel">{'device/' + this.state.id + '/command'}</div>
+                <div className="command_table_cel">{'device/' + id + '/command'}</div>
                 <div className="command_table_cel">{command.description}</div>
               </div>
             )

@@ -22,7 +22,7 @@ import Fan from "../devices/Fan";
 import Fireplace from "../devices/Fireplace";
 import Garage from "../devices/Garage";
 import Gate from "../devices/Gate";
-import Global from "../devices/Global";
+// import Global from "../devices/Global";
 import Heater from "../devices/Heater";
 import Hood from "../devices/Hood";
 import Light from "../devices/Light";
