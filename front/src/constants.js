@@ -790,6 +790,18 @@ const deviceReference = {
         }
       ]
     },
+    "action.devices.traits.OccupancySensing": {
+      name: 'Occupancy sensing',
+      attributes: {
+        occupancySensorConfiguration: {
+          type: "objects-list",
+          default: [],
+          content: []
+        }
+      },
+      params: ['occupancy'],
+      commands: []
+    },
     "action.devices.traits.OnOff": {
       name: 'Power control',
       attributes: {
