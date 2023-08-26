@@ -17,8 +17,6 @@ function Sensor(props) {
         opacity: props.status.occupancy === "UCCUPIED" ? '1' : '0.4',
     }
 
-    console.log(props.device.name.name)
-
     return (
         <div>
             <div className="device_card">
