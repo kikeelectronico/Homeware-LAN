@@ -9,6 +9,11 @@ on:
       - 'configuration_templates/**'
       - 'docker/**'
       - 'front/**'
+
+env:
+  REDIS_VERSION: 6
+  PYTHON_VERSION: 3.8
+  MOSQUITTO_VERSION: 2.0
     
 concurrency: 
   group: ${{ github.workflow }}
@@ -18,26 +23,21 @@ jobs:
   unit_test_backend:
     name: Unit testing backend
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        redis-version: [6]
-        python-version: [3.8]
-        mosquitto-version: [2.0]
     steps:
       - uses: actions/checkout@v1
-      - name: Start Redis ${{ matrix.redis-version }}
+      - name: Start Redis $REDIS_VERSION
         uses: supercharge/redis-github-action@1.1.0
         with:
-          redis-version: ${{ matrix.redis-version }}
-      - name: Start Mosquitto broker
+          redis-version: $REDIS_VERSION
+      - name: Start Mosquitto broker $MOSQUITTO_VERSION
         uses: Namoshek/mosquitto-github-action@v1
         with:
-          version: ${{ matrix.mosquitto-version }}
+          version: $MOSQUITTO_VERSION
           ports: '1883:1883'
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python $PYTHON_VERSION
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: $PYTHON_VERSION
       - name: Install dependencies
         run: pip install -r requirements.txt
         working-directory: ./back
