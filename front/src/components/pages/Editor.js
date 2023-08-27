@@ -427,11 +427,12 @@ function Editor() {
     return (
       <div>
         <div className="page_block_container">
-          <h2>Global settings</h2>
+          <h2>General settings</h2>
           <div className="advise">
-            <span>General settings of the device.</span>
-            <hr />
+              <span> Nick names must be separeted by commas.</span>
+              <span> Fields with * are required.</span>
           </div>
+          <hr/>
           <div className="page_block_content_container">
             <div className="two_table_row">
               <div className="two_table_cel">Device ID*</div>
@@ -516,22 +517,32 @@ function Editor() {
               }
               update={update}
             />
-            <div className="advise">
-              <span>
-                Nick names must be separeted by <i>,</i> commas.
-              </span>
-              <br />
-              <span>* data is required.</span>
+            <div className="page_block_buttons_container">
+              <Stack spacing={2} direction="row">
+                <Button
+                  variant="contained"
+                  onClick={deleteDevice}
+                  style={create ? {backgroundColor: "red", color: "white", opacity: "0.4"} : {backgroundColor: "red"}}
+                  disabled={create}
+                >
+                  Delete
+                </Button>
+                <Button variant="contained" onClick={saveDevice}>Save</Button>
+              </Stack>
             </div>
-            <hr />
-            <h2>Traits</h2>
-            <div className="advise">
-              <span>The traits define what the device can do.</span>
-            </div>
+          </div>
+        </div>
+
+        <div className="page_block_container">
+          <h2>Traits</h2>
+          <div className="advise">
+            <span>The traits define what the device can do.</span>
+          </div>
+          <hr />
+          <div className="page_block_content_container">
             {
               device_tratis.map((trait) => (
                 <div key={trait}>
-                  <hr className="separator" />
                   <div className="three_table_row">
                     <div className="three_table_cel">
                       <b>{deviceReference.traits[trait].name}</b>
@@ -558,14 +569,14 @@ function Editor() {
                     </div>
                   </div>
                   {renderAttrinutes(trait)}
+                  <hr className="separator" />
                 </div>
               ))
             }
             {not_recomended_traits ? <></> : 
               <Button variant="contained" onClick={notRecomendedTraits}>More traits</Button>
             }
-            <hr />
-            <div className="two_table_cel">
+            <div className="page_block_buttons_container">
               <Stack spacing={2} direction="row">
                 <Button
                   variant="contained"

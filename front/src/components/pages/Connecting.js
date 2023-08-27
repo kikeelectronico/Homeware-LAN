@@ -44,63 +44,80 @@ function Connecting() {
       <div className="page_block_container">
         <h2>Params</h2>
         <div className="advise">
-          <p>Params are data interchanged between Google and the device and stored in Homeware database. </p>
-          <p>If the param has got a notification topic, Google Home can control it. A notification will be sent in this MQTT topic when Google change a param.</p>
-          <p>If the param hasn't got a notification topic, the device should update the param value when necessary.</p>
-          <hr/>
+          <span>Params are data interchanged between Google and the device and stored in Homeware database. A notification will be sent in this MQTT topic when Google change a param.</span>
         </div>
-        <div className="param_table_row param_table_header">
-          <div className="param_table_cel"><b>Param</b></div>
-          <div className="param_table_cel"><b>Notifications topic</b></div>
-          <div className="param_table_cel"><b>Type</b></div>
-        </div>
+        <hr/>
         {
-          params.map((param, i) => {
-            var type = deviceReference.params[param].type
-            if (type === 'list')
-              type = 'string'
-      
-            var topic = 'None - Controlled only by the device'
-            if (deviceReference.params[param].commanded)
-              topic = 'device/' + id + '/' + param
-      
-            return (
-              <div key={i} className="param_table_row">
-                <div className="param_table_cel">{param}</div>
-                <div className="param_table_cel">{topic}</div>
-                <div className="param_table_cel">{type}</div>
+          params.length === 0 ? 
+            <div className="info">
+              There are no params for this device.
+            </div>
+          :
+            <>
+              <div className="param_table_row param_table_header">
+                <div className="param_table_cel"><b>Param</b></div>
+                <div className="param_table_cel"><b>Notifications topic</b></div>
+                <div className="param_table_cel"><b>Type</b></div>
               </div>
-            )
-          })
+              {
+                params.map((param, i) => {
+                  var type = deviceReference.params[param].type
+                  if (type === 'list')
+                    type = 'string'
+            
+                  var topic = 'None - Controlled only by the device'
+                  if (deviceReference.params[param].commanded)
+                    topic = 'device/' + id + '/' + param
+            
+                  return (
+                    <div key={i} className="param_table_row">
+                      <div className="param_table_cel">{param}</div>
+                      <div className="param_table_cel">{topic}</div>
+                      <div className="param_table_cel">{type}</div>
+                    </div>
+                  )
+                })
+              }
+              <div className="advise" style={{textAlign: "left"}}>
+                <hr/>
+                <p>The device can change the value of any param sending an execute request to "device/control" topic as follow</p>
+                <ReactJson src={{"id":"light001","param":"brightness","value":"80","intent":"execute"}}/>
+              </div>
+            </>
         }
-        <div className="advise" style={{textAlign: "left"}}>
-          <hr/>
-          <p>The device can change the value of any param sending an execute request to device/control topic as follow</p>
-          <ReactJson src={{"id":"light001","param":"brightness","value":"80","intent":"execute"}}/>
-        </div>
+        
       </div>
 
       <div className="page_block_container">
         <h2>Commands</h2>
         <div className="advise">
-          <p>Commands are directs orders from Google to the device. Commands are not stored in Homeware's database.</p>
-          <hr/>
+          <span>Commands are directs orders from Google to the device. Commands are not stored in Homeware's database.</span>
         </div>
-        <div className="command_table_row command_table_header">
-          <div className="command_table_cel"><b>Command</b></div>
-          <div className="command_table_cel"><b>Notifications topic</b></div>
-          <div className="command_table_cel"><b>Description</b></div>
-        </div>
+        <hr/>
         {
-          commands.map((command, i) => {
-            return (
-              <div key={i} className="command_table_row">
-                <div className="command_table_cel">{command.command}</div>
-                <div className="command_table_cel">{'device/' + id + '/command'}</div>
-                <div className="command_table_cel">{command.description}</div>
+          commands.length === 0 ? 
+            <div className="info">
+              There are no commands for this device.
+            </div>
+          :
+            <>
+              <div className="command_table_row command_table_header">
+                <div className="command_table_cel"><b>Command</b></div>
+                <div className="command_table_cel"><b>Notifications topic</b></div>
+                <div className="command_table_cel"><b>Description</b></div>
               </div>
-            )
-          })
+              {
+                commands.map((command, i) => {
+                  return (
+                    <div key={i} className="command_table_row">
+                      <div className="command_table_cel">{command.command}</div>
+                      <div className="command_table_cel">{'device/' + id + '/command'}</div>
+                      <div className="command_table_cel">{command.description}</div>
+                    </div>
+                  )
+                })
+              }
+            </>
         }
       </div>
     </div>

@@ -60,6 +60,9 @@ function Logs () {
     <div>
       <div className="page_block_container">
         <h2>Homeware-LAN log</h2>
+        <div className="advise">
+          <span>Main log of Homeware.</span>
+        </div>
         <hr />
         <div>
           {

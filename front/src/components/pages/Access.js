@@ -87,6 +87,9 @@ function Access () {
     <div>
       <div className="page_block_container">
         <h2>API key</h2>
+        <div className="advise">
+          <span>The API Key gives you access to the Homeware's API. Please do not generate an API Key if you are not sure of what you are doing.</span>
+        </div>
         <hr />
         <div className="page_block_content_container">
           <div className="two_table_row">
@@ -105,16 +108,13 @@ function Access () {
         <div className="page_block_buttons_container">
           <Button variant="contained" onClick={generateAPIKey}>Generate</Button>
         </div>
-        <div className="advise">
-          <span>
-            The API Key gives you access to the Homeware's API. Please do not
-            generate an API Key if you are not sure of what you are doing.
-          </span>
-        </div>
       </div>
 
       <div className="page_block_container">
         <h2>Change password</h2>
+        <div className="advise">
+          <span>Change the password of the admin user.</span>
+        </div>
         <hr />
         <div className="page_block_content_container">
           <div className="two_table_row">

@@ -3,8 +3,6 @@ import ReactJson from 'react-json-view'
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
-import './Info.css'
-
 function Info() {
 
   const [id, setId] = useState("")
@@ -62,9 +60,9 @@ function Info() {
         <h2>Device definition</h2>
         <div className="advise">
           <span>General settings of the device.</span>
-          <hr/>
         </div>
-        <div className="json_viewer">
+        <hr/>
+        <div className="page_block_buttons_container">
           <ReactJson src={device} />
         </div>
       </div>
@@ -72,9 +70,9 @@ function Info() {
         <h2>Device status</h2>
         <div className="advise">
           <span>Status of the device.</span>
-          <hr/>
         </div>
-        <div className="json_viewer">
+        <hr/>
+        <div className="page_block_buttons_container">
           <ReactJson src={status} />
         </div>
       </div>

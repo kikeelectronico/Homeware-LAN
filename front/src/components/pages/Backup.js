@@ -23,16 +23,19 @@ function Backup() {
     <div>
       <div className="page_block_container">
         <h2>Backup</h2>
+        <div className="advise">
+          <span>Download a backup file.</span>
+        </div>
         <hr />
         <div className="page_block_content_container">
           <Button variant="contained" onClick={backup}>Backup</Button>
         </div>
-        <div className="advise">
-          <span>Download a backup file.</span>
-        </div>
       </div>
       <div className="page_block_container">
         <h2>Restore</h2>
+        <div className="advise">
+          <span>Restore a backup file.</span>
+        </div>
         <hr />
         <div className="page_block_content_container">
           <form
@@ -44,9 +47,6 @@ function Backup() {
             <input type="file" name="file" />
             <Button variant="contained" onClick={() => {document.getElementById("restore-form").submit()}}>Restore</Button>
           </form>
-        </div>
-        <div className="advise">
-          <span>Restore a backup file.</span>
         </div>
       </div>
       <ToastsContainer store={ToastsStore} />

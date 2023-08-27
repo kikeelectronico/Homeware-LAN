@@ -103,6 +103,11 @@ function Settings() {
     <div>
       <div className="page_block_container">
         <h2>Actions on Google</h2>
+        <div className="advise">
+          <span>
+            This data is used to by Google to authenticate in Homeware. If you change it here, you must change it on the Actions Console &#62; Develop &#62; Account Linking.
+          </span>
+        </div>
         <hr />
         <div className="page_block_content_container">
           <div className="two_table_row">
@@ -166,17 +171,22 @@ function Settings() {
         <div className="page_block_buttons_container">
           <Button variant="contained" onClick={save}>Save</Button>
         </div>
-        <div className="advise">
-          <span>
-            Actions on Google settings. It is used to authenticate with
-            Google. If you change it here, you must change it on the Actions
-            Console &#62; Develop &#62; Account Linking.
-          </span>
-        </div>
       </div>
 
       <div className="page_block_container">
         <h2>Automatic Sync with Google</h2>
+        <div className="advise">
+          <span>
+            Inform Google automatically every time a device change. Upload the file needed for Google Auth. Read the{" "}
+            <a
+              href="https://kikeelectronico.github.io/Homeware-LAN/docs/google-auth"
+              target="_blanck"
+            >
+              instructions.
+            </a>
+            .
+          </span>
+        </div>
         <hr />
         <div className="two_table_row">
           <div className="two_table_cel">Enable</div>
@@ -187,7 +197,6 @@ function Settings() {
             />
           </div>
         </div>
-        <hr/>
         <div className="page_block_content_container">
           <form
             id="google-auth"
@@ -199,22 +208,13 @@ function Settings() {
             <Button variant="contained" onClick={() => {document.getElementById("google-auth").submit()}}>Upload</Button>
           </form>
         </div>
-        <div className="advise">
-          <span>
-            Upload the file needed for Google Auth. Read the{" "}
-            <a
-              href="https://kikeelectronico.github.io/Homeware-LAN/docs/google-auth"
-              target="_blanck"
-            >
-              instructions.
-            </a>
-            .
-          </span>
-        </div>
       </div>
 
       <div className="page_block_container">
         <h2>MQTT</h2>
+        <div className="advise">
+          <span>This section tells Homeware its credentials. You must configure the username and password into Mosquitto manually from a terminal.</span>
+        </div>
         <hr />
         <div className="page_block_content_container">
           <div className="two_table_row">
@@ -245,17 +245,13 @@ function Settings() {
         <div className="page_block_buttons_container">
           <Button variant="contained" onClick={save}>Save</Button>
         </div>
-        <div className="advise">
-          <span>
-            Important. You must configure the username and password into
-            Mosquitto manually from a terminal. This is only for telling
-            Homeware its credentials. Clear both if you don't use credentials.
-          </span>
-        </div>
       </div>
 
       <div className="page_block_container">
         <h2>Global settings for devices</h2>
+        <div className="advise">
+          <span>Settings that affects all the devices.</span>
+        </div>
         <hr/>
         <div className="page_block_content_container">
           <div className="three_table_row">
@@ -268,8 +264,8 @@ function Settings() {
                 checked={settings.sync_devices}
               />
             </div>
-            <div className="three_table_cel">
-              <span className="attribute_advise">Send the status to the devices proactively.</span>
+            <div className="advise three_table_cel">
+              <span >Send the status to the devices proactively.</span>
             </div>
           </div>
         </div>
@@ -282,6 +278,9 @@ function Settings() {
 
       <div className="page_block_container">
         <h2>DDNS provider</h2>
+        <div className="advise">
+          <span>Set up the access data to the DDNS provider account. Open an issue on Github if you want a DDNS provider that is not listed.</span>
+        </div>
         <hr />
         <div className="page_block_content_container">
           <div className="two_table_row">
@@ -395,16 +394,13 @@ function Settings() {
         <div className="page_block_buttons_container">
           <Button variant="contained" onClick={save}>Save</Button>
         </div>
-        <div className="advise">
-          <span>
-            Set up the access data to the DDNS provider account. Open an issue
-            on Github if you want a DDNS provider that is not listed.
-          </span>
-        </div>
       </div>
 
       <div className="page_block_container">
         <h2>Log settings</h2>
+        <div className="advise">
+          <span>Homeware will save the log for the last {settings.log.days} days. It is no recommended to use a large number. Set 0 to disable this function.</span>
+        </div>
         <hr />
         <div className="page_block_content_container">
           <div className="two_table_row">
@@ -423,11 +419,6 @@ function Settings() {
         </div>
         <div className="page_block_buttons_container">
           <Button variant="contained" onClick={save}>Save</Button>
-        </div>
-        <div className="advise">
-          <span>
-            Homeware will save the log for the last {settings.log.days} days. It is no recommended to use a large number. Set 0 to disable this function.
-          </span>
         </div>
       </div>
 

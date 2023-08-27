@@ -43,6 +43,9 @@ function System(props) {
     <div>
       <div className="page_block_container">
         <h2>System status</h2>
+        <div className="advise">
+          <span>These are the core components of Homeware-LAN. All must be running.</span>
+        </div>
         <hr />
         <div className="page_block_content_container">
           {
@@ -56,15 +59,12 @@ function System(props) {
             ))
           }
           </div>
-        <div className="advise">
-          <span>
-            These are the core elements of Homeware-LAN. All must be
-            running.
-          </span>
-        </div>
       </div>
       <div className="page_block_container">
         <h2>System update</h2>
+        <div className="advise">
+          <span>Check for a system update.</span>
+        </div>
         <hr />
         <div className="page_block_content_container text_left">
           <b>System version:</b> {props.version}
@@ -91,11 +91,6 @@ function System(props) {
               )}
             </div>
           )}
-        </div>
-        <div className="advise">
-          <span>
-            Verify if there is any code update and upgrade if necessary.
-          </span>
         </div>
       </div>
     </div>
