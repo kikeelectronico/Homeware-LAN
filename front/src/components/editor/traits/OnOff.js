@@ -1,16 +1,26 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, forwardRef, useImperativeHandle} from 'react';
 import Switch from "react-switch";
 
-const OnOff = (props) => {
+const attributes = {
+  commandOnlyOnOff: false,
+  queryOnlyOnOff: false
+}
+
+// const states = {
+//   on: false
+// }
+
+const OnOff = forwardRef((props, ref) => {
 
   useEffect(() => {
-    console.log("mount")
-    return () => console.log("unmount")
+    props.updateAttributes(null, attributes, "insert")
   }, [])
 
-  const updateCheckbox =(checked, attribute) => {
-    this.props.update('attributes/' + attribute,checked);
-  }
+  useImperativeHandle(ref, () => ({
+    deleteAttributes() {
+      props.updateAttributes(null, attributes, "delete")
+    }
+  }))
 
   return (
     <div>
@@ -19,7 +29,7 @@ const OnOff = (props) => {
           <i>commandOnlyOnOff</i>
         </div>
         <div className="three_table_cel">
-          <Switch onChange={(checked) => {updateCheckbox(checked,"commandOnlyOnOff")}} checked={props.attributes.commandOnlyOnOff} />
+          <Switch onChange={(checked) => props.updateAttributes("commandOnlyOnOff", checked, "update")} checked={props.attributes.commandOnlyOnOff} />
         </div>
         <div className="three_table_cel">
           <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the state.</span>
@@ -30,7 +40,7 @@ const OnOff = (props) => {
           <i>queryOnlyOnOff</i>
         </div>
         <div className="three_table_cel">
-          <Switch onChange={(checked) => {updateCheckbox(checked,"queryOnlyOnOff")}} checked={props.attributes.queryOnlyOnOff} />
+          <Switch onChange={(checked) => props.updateAttributes("queryOnlyOnOff", checked, "update")} checked={props.attributes.queryOnlyOnOff} />
         </div>
         <div className="three_table_cel">
           <span className="attribute_advise">Enable it if Google shouldn't change the device state.</span>
@@ -38,6 +48,6 @@ const OnOff = (props) => {
       </div>
     </div>
   )
-}
+})
 
 export default OnOff

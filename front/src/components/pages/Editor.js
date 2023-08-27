@@ -96,13 +96,23 @@ function Editor() {
   }
 
   const updateAttributes = (_key, _value, _action) => {
-    if (_action === "update") {
+    if (_action === "insert") {
+      let _attributes = {...attributes}
+      let _attributes_keys = Object.keys(_value)
+      for(let i = 0; i < _attributes_keys.length; i++) {
+        _attributes[_attributes_keys[i]] = _value[_attributes_keys[i]]
+      }
+      setAttributes(_attributes)
+    } else if (_action === "update") {
       let _attributes = {...attributes}
       _attributes[_key] = _value
       setAttributes(_attributes)
     } else if (_action === "delete") {
       let _attributes = {...attributes}
-      _attributes.splice(_attributes.indexOf(_key),1)
+      let _attributes_keys = Object.keys(_value)
+      for(let i = 0; i < _attributes_keys.length; i++) {
+        delete _attributes[_attributes_keys[i]]
+      }
       setAttributes(_attributes)
     }
   }
