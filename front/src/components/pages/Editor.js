@@ -1,56 +1,28 @@
 import React, {useState, useEffect} from "react";
-import {Button, Stack} from '@mui/material';
-import Switch from "react-switch";
+import {Button, Stack, Select, MenuItem} from '@mui/material';
 import { ToastsContainer, ToastsStore } from "react-toasts";
 import getCookieValue from "../../functions";
 import { root, deviceReference } from "../../constants";
-
-import ArmDisarm from "../editor/traits/ArmDisarm";
-import Brightness from "../editor/traits/Brightness";
-import ColorSetting from "../editor/traits/ColorSetting";
-import Cook from "../editor/traits/Cook";
-import EnergyStorage from "../editor/traits/EnergyStorage";
-import FanSpeed from "../editor/traits/FanSpeed";
-import Fill from "../editor/traits/Fill";
-import HumiditySetting from "../editor/traits/HumiditySetting";
-import Modes from "../editor/traits/Modes";
-import OccupancySensing from "../editor/traits/OccupancySensing";
-import OnOff from "../editor/traits/OnOff";
-import OpenClose from "../editor/traits/OpenClose";
-import Rotation from "../editor/traits/Rotation";
-import Scene from "../editor/traits/Scene";
-import SensorState from "../editor/traits/SensorState";
-import StartStop from "../editor/traits/StartStop";
-import TemperatureControl from "../editor/traits/TemperatureControl";
-import TemperatureSetting from "../editor/traits/TemperatureSetting";
+import Trait from "../editor/Trait";
 import Text from "../editor/Text";
-import Timer from "../editor/traits/Timer";
-import Toggles from "../editor/traits/Toggles";
 
 import "./Editor.css";
 
-let MANDATORY_CONTENT_LINES = 3
 
 function Editor() {
   
   const [id, setId] = useState("")
-  const [create, setCreate] = useState()
-  const [device, setDevice] = useState({
-    attributes: {},
-    deviceInfo: {},
-    id: "",
-    name: {
-      defaultNames: [],
-      nicknames: [],
-      name: "",
-    },
-    traits: [],
-    type: "",
-  })
+  const [create, setCreate] = useState(true)
+  const [loading, setLoading] = useState(true)
+  const [type, setType] = useState("")
+  const [nicknames, setNicknames] = useState([])
+  const [traits, setTraits] = useState([])
+  const [device_info, setDeviceInfo] = useState({})
+  const [attributes, setAttributes] = useState({})
+
   const [status, setStatus] = useState({online: true})
-  const [device_tratis, setDeviceTraits] = useState([])
-  const [not_recomended_traits, SetNonRecomendedTraits] = useState(false)
-  const [mandatory_content, setMandatoryContent] = useState(0)
+  const [traits_to_show, setTraitsToShow] = useState([])
+  const [not_recomended_traits, setNonRecomendedTraits] = useState(false)
 
   useEffect(() => {
     let _id = window.location.pathname.split("/")[3]
@@ -65,14 +37,13 @@ function Editor() {
         if (http.readyState === 4) {
           if (http.status === 200) {
             var data = JSON.parse(http.responseText);
-            var recomended_tratis = deviceReference.devices[data.type].traits;
-            var _device_tratis = data.traits.concat(recomended_tratis);
-            _device_tratis = _device_tratis.filter((trait, index) => {
-              return _device_tratis.indexOf(trait) === index;
-            });
-            setDevice(data)
-            setDeviceTraits(_device_tratis)
-            setMandatoryContent(3)
+            setType(data.type)
+            setNicknames(data.name.nicknames)
+            setTraits(data.traits)
+            setTraitsToShow(deviceReference.devices[data.type].traits)
+            setDeviceInfo(data.deviceInfo)
+            setAttributes(data.attributes)
+            setLoading(false)
           } else {
             console.error(http.statusText);
             ToastsStore.error("Something went wrong");
@@ -106,115 +77,50 @@ function Editor() {
     }
   }, [id, create])
 
-  const updateNames = (dumy_key, value) => {
-    if(value.length > 0)
-      setMandatoryContent(mandatory_content + 1)
-    else
-      setMandatoryContent(mandatory_content - 1)
-    var names = value.split(",");
-    var temp_device = device;
-    temp_device.name = {
-      defaultNames: names,
-      nicknames: names,
-      name: names[0],
-    };
-    setDevice(temp_device)
+  const updateDeviceInfo = (_key, _value) => {
+    let _device_info = {...device_info}
+    _device_info[_key] = _value
+    setDeviceInfo(_device_info)
   }
 
-  const update = (key, value) => {
-    var temp_device = device;
-    var keys = key.split("/");
-    if (keys.length === 1) {
-      if (value === "")
-        delete temp_device[key]
-      else
-        temp_device[key] = value;
-    } 
-    else if (keys.length === 2) {
-      if (value === "")
-        delete temp_device[keys[0]][keys[1]]
-      else
-        temp_device[keys[0]][keys[1]] = value;
+  const updateTraits = (_trait, _action) => {
+    if (_action === "insert") {
+      let _traits = [...traits]
+      _traits.push(_trait)
+      setTraits(_traits)
+    } else if (_action === "delete") {
+      let _traits = [...traits]
+      _traits.splice(_traits.indexOf(_trait),1)
+      setTraits(_traits)
     }
-    else if (keys.length === 3) {
-      if (value === "")
-        delete temp_device[keys[0]][keys[1]][keys[2]]
-      else
-        temp_device[keys[0]][keys[1]][keys[2]] = value;
+  }
+
+  const updateAttributes = (_key, _value, _action) => {
+    if (_action === "update") {
+      let _attributes = {...attributes}
+      _attributes[_key] = _value
+      setAttributes(_attributes)
+    } else if (_action === "delete") {
+      let _attributes = {...attributes}
+      _attributes.splice(_attributes.indexOf(_key),1)
+      setAttributes(_attributes)
     }
-    setDevice(temp_device)
   }
 
-  const updateId = (event) => {
-    if(event.target.value.length > 0)
-      setMandatoryContent(mandatory_content + 1)
-    else
-      setMandatoryContent(mandatory_content - 1)
-    update("id", event.target.value);
-  }
-
-  const updateType = (event) => {
-    if(event.target.value !== 'default')
-      setMandatoryContent(mandatory_content + 1)
-    else
-      setMandatoryContent(mandatory_content - 1)
-    update("type", event.target.value);
-    setDeviceTraits(deviceReference.devices[event.target.value].traits)
-  }
-
-  const updateTraits = (checked, trait) => {
-    var temp_device = device;
-    var temp_status = status;
-    if (checked) {
-      if (device.traits.includes(trait) === false) {
-        //Push the trait to the device
-        temp_device.traits.push(trait);
-        //Set the default attributes values
-        var attributes = deviceReference.traits[trait].attributes;
-        Object.keys(attributes).forEach((attribute, i) => {
-          if (attributes[attribute].default !== "")
-            temp_device.attributes[attribute] = attributes[attribute].default;
-        });
-        //Set the default status params
-        var params = deviceReference.traits[trait].params;
-        params.forEach((param, i) => {
-          temp_status[param] = deviceReference.params[param].default;
-        });
-      }
-    } else {
-      //Delete the trait from the list
-      if (device.traits.includes(trait) === true) {
-        temp_device.traits = temp_device.traits.filter(function (
-          value,
-          index,
-          arr
-        ) {
-          return value !== trait;
-        });
-      }
-      //Delete the attributes values
-      attributes = deviceReference.traits[trait].attributes;
-      Object.keys(attributes).forEach((attribute, i) => {
-        if (Object.keys(temp_device.attributes).includes(attribute))
-          delete temp_device.attributes[attribute];
-      });
-      //Delete the status params
-      params = deviceReference.traits[trait].params;
-      params.forEach((param, i) => {
-        if (Object.keys(temp_status).includes(param)) delete temp_status[param];
-      });
+  const updateStatus = (_key, _value, _action) => {
+    if (_action === "update") {
+      let _status = {...status}
+      _status[_key] = _value
+      setStatus(_status)
+    } else if (_action === "delete") {
+      let _status = {...status}
+      _status[_key] = _value
+      setStatus(_status)
     }
-    setDevice(temp_device)
-    setStatus(temp_status)
-  }
-
-  const notRecomendedTraits = () => {
-    setDeviceTraits(Object.keys(deviceReference.traits))
-    SetNonRecomendedTraits(true)
   }
 
   const saveDevice = () => {
-    if(mandatory_content >= MANDATORY_CONTENT_LINES) {
+    if(true) {
       ToastsStore.warning("Saving");
       var http = new XMLHttpRequest();
       http.onload = function (e) {
@@ -231,9 +137,21 @@ function Editor() {
         }
       }
       var payload = {
-        device: device,
+        device: {
+          id: id,
+          type: type,
+          deviceInfo: device_info,
+          traits: traits,
+          attributes: attributes,
+          name: {
+            defaultNames: nicknames,
+            nicknames: nicknames,
+            name: nicknames[0]
+          }
+        },
         status: status,
       };
+      console.log(payload)
       if (create) {
         http.open("POST", root + "api/devices/create/");
       } else {
@@ -265,7 +183,7 @@ function Editor() {
       };
       http.open(
         "POST",
-        root + "api/devices/delete/" + device.id + "/"
+        root + "api/devices/delete/" + id + "/"
       );
       http.setRequestHeader(
         "authorization",
@@ -277,245 +195,68 @@ function Editor() {
     }
   }
 
-  const renderAttrinutes = (trait) => {
-    if (device.traits.includes(trait)) {
-      if (trait === "action.devices.traits.Scene")
-        return (
-          <Scene
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.OnOff")
-        return (
-          <OnOff
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.Brightness")
-        return (
-          <Brightness
-            commandOnlyBrightness={
-              device.attributes.commandOnlyBrightness
-            }
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.ColorSetting")
-        return (
-          <ColorSetting
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.FanSpeed")
-        return (
-          <FanSpeed
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.TemperatureSetting")
-        return (
-          <TemperatureSetting
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.Toggles")
-        return (
-          <Toggles
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.Modes")
-        return (
-          <Modes
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.HumiditySetting")
-        return (
-          <HumiditySetting
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.OpenClose")
-        return (
-          <OpenClose
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.Rotation")
-        return (
-          <Rotation
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.Fill")
-        return (
-          <Fill
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.ArmDisarm")
-        return (
-          <ArmDisarm
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.StartStop")
-        return (
-          <StartStop
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.Timer")
-        return (
-          <Timer
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.TemperatureControl")
-        return (
-          <TemperatureControl
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.Cook")
-        return (
-          <Cook
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.SensorState")
-        return (
-          <SensorState
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.EnergyStorage")
-        return (
-          <EnergyStorage
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-      else if (trait === "action.devices.traits.OccupancySensing")
-        return (
-          <OccupancySensing
-            attributes={device.attributes}
-            update={update}
-          />
-        );
-    }
-  }
-
-    return (
-      <div>
-        <div className="page_block_container">
-          <h2>General settings</h2>
-          <div className="advise">
-              <span> Nick names must be separeted by commas.</span>
-              <span> Fields with * are required.</span>
-          </div>
-          <hr/>
+  return (
+    <div>
+      <div className="page_block_container">
+        <h2>General settings</h2>
+        <div className="advise">
+            <span> Nick names must be separeted by commas.</span>
+            <span> Fields with * are required.</span>
+        </div>
+        <hr/>
+        { loading ? <></> : 
           <div className="page_block_content_container">
-            <div className="two_table_row">
-              <div className="two_table_cel">Device ID*</div>
-              <div className="two_table_cel">
-                <input
-                  type="text"
-                  className="two_input"
-                  id="id"
-                  defaultValue={device.id}
-                  onChange={updateId}
-                  disabled={create ? false : true}
-                />
-              </div>
-            </div>
+            <Text name="Nick names*" data="id"
+              value={id}
+              update={setId}
+              disabled={create ? false : true}
+            />
             <div className="two_table_row">
               <div className="two_table_cel">Device Type*</div>
               <div className="two_table_cel">
-                <select
-                  name="type"
-                  className="two_input"
+                <Select
                   id="type"
-                  value={device.type}
-                  onChange={updateType}
-                  disabled={create ? false : true}
-                >
-                  <option value="default">Select a device</option>
+                  className="two_input"
+                  value={type}
+                  onChange={(event) => {
+                    setType(event.target.value);
+                    setTraits(deviceReference.devices[event.target.value].traits)
+                    setTraitsToShow(deviceReference.devices[event.target.value].traits)
+                  }}
+                  disabled={!create}
+                >                  
                   {
                     Object.keys(deviceReference.devices).map((type) => {
                       return (
-                        <option key={type} value={type}>
+                        <MenuItem key={type} value={type}>
                           {deviceReference.devices[type].name}
-                        </option>
+                        </MenuItem>
                       );
                     })
                   }
-                </select>
+                </Select>
               </div>
             </div>
-            <Text
-              name="Nick names*"
-              data="nicknames"
-              value={device.name.nicknames.map((name) => {return name})}
-              update={updateNames}
+
+            <Text name="Nick names*" data="nicknames"
+              value={nicknames.map((name) => {return name})}
+              update={(value) => setNicknames(value.split(","))}
             />
-            <Text
-              name="Hardware version"
-              data="deviceInfo/hwVersion"
-              value={
-                device.deviceInfo
-                  ? device.deviceInfo.hwVersion
-                  : ""
-              }
-              update={update}
+            <Text name="Hardware version" data="deviceInfo/hwVersion"
+              value={device_info ? device_info.hwVersion : "" }
+              update={(value) => updateDeviceInfo("hwVersion", value)}
             />
-            <Text
-              name="Software version"
-              data="deviceInfo/swVersion"
-              value={
-                device.deviceInfo
-                  ? device.deviceInfo.swVersion
-                  : ""
-              }
-              update={update}
+            <Text name="Software version" data="deviceInfo/swVersion"
+              value={ device_info ? device_info.swVersion : "" }
+              update={(value) => updateDeviceInfo("swVersion", value)}
             />
-            <Text
-              name="Manufacturer"
-              data="deviceInfo/manufacturer"
-              value={
-                device.deviceInfo
-                  ? device.deviceInfo.manufacturer
-                  : ""
-              }
-              update={update}
+            <Text name="Manufacturer" data="deviceInfo/manufacturer" 
+              value={ device_info ? device_info.manufacturer : "" }
+              update={(value) => updateDeviceInfo("manufacturer", value)}
             />
-            <Text
-              name="Model"
-              data="deviceInfo/model"
-              value={
-                device.deviceInfo
-                  ? device.deviceInfo.model
-                  : ""
-              }
-              update={update}
+            <Text name="Model" data="deviceInfo/model"
+              value={ device_info ? device_info.model : "" }
+              update={(value) => updateDeviceInfo("model", value)}
             />
             <div className="page_block_buttons_container">
               <Stack spacing={2} direction="row">
@@ -531,50 +272,40 @@ function Editor() {
               </Stack>
             </div>
           </div>
-        </div>
+        }
+      </div>
 
-        <div className="page_block_container">
-          <h2>Traits</h2>
-          <div className="advise">
-            <span>The traits define what the device can do.</span>
-          </div>
-          <hr />
+      <div className="page_block_container">
+        <h2>Traits</h2>
+        <div className="advise">
+          <span>The traits define what the device can do.</span>
+        </div>
+        <hr />
+        { loading ? <></> : 
           <div className="page_block_content_container">
             {
-              device_tratis.map((trait) => (
-                <div key={trait}>
-                  <div className="three_table_row">
-                    <div className="three_table_cel">
-                      <b>{deviceReference.traits[trait].name}</b>
-                    </div>
-                    <div className="three_table_cel">
-                      <Switch
-                        onChange={(checked) => {
-                          updateTraits(checked, trait);
-                        }}
-                        checked={device.traits.includes(trait)}
-                      />
-                    </div>
-                    <div className="three_table_cel">
-                      Read Google's{" "}
-                      <a
-                        href={
-                          "https://developers.google.com/assistant/smarthome/traits/" +
-                          trait.split(".")[3].toLowerCase()
-                        }
-                        target="blanck"
-                      >
-                        documentation
-                      </a>
-                    </div>
-                  </div>
-                  {renderAttrinutes(trait)}
-                  <hr className="separator" />
-                </div>
+              traits_to_show.map((trait) => (
+                <Trait
+                  trait={trait}
+                  device_traits={traits}
+                  attributes={attributes}
+                  updateTraits={updateTraits}
+                  updateAttributes={updateAttributes}
+                  updateStatus={updateStatus}
+                  key={trait}
+                />
               ))
             }
             {not_recomended_traits ? <></> : 
-              <Button variant="contained" onClick={notRecomendedTraits}>More traits</Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setNonRecomendedTraits(true)
+                  setTraitsToShow(Object.keys(deviceReference.traits))
+                }}
+              >
+                More traits
+              </Button>
             }
             <div className="page_block_buttons_container">
               <Stack spacing={2} direction="row">
@@ -590,11 +321,12 @@ function Editor() {
               </Stack>
             </div>
           </div>
-        </div>
-
-        <ToastsContainer store={ToastsStore} />
+        }
       </div>
-    );
+
+      <ToastsContainer store={ToastsStore} />
+    </div>
+  );
   
 }
 
