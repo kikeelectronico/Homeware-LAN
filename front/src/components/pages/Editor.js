@@ -56,7 +56,7 @@ function Editor() {
     let _id = window.location.pathname.split("/")[3]
     setId(_id)
     setCreate(_id === "")
-  })
+  },[])
 
   useEffect(() => {
     if (!create) {
@@ -104,7 +104,7 @@ function Editor() {
       );
       sta.send();
     }
-  }, [id])
+  }, [id, create])
 
   const updateNames = (dumy_key, value) => {
     if(value.length > 0)
