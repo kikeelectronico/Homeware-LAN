@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Switch } from '@mui/material';
+import Switch from "react-switch";
 
 import { deviceReference } from "../../constants";
 
@@ -30,10 +30,9 @@ const Trait = (props) => {
 
     useEffect(() => setShowAttributes(props.device_traits.includes(props.trait)), [props.device_traits, props.trait])
 
-    const enableTrait = (event) => {
-        let new_status = event.target.checked
-        setShowAttributes(new_status)
-        props.updateTraits(props.trait, new_status ? "insert" : "delete")
+    const enableTrait = (checked) => {
+        setShowAttributes(checked)
+        props.updateTraits(props.trait, checked ? "insert" : "delete")
     }
 
     const renderAttrinutes = (trait) => {
