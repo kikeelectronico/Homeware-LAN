@@ -319,14 +319,6 @@ function Editor() {
             }
             <div className="page_block_buttons_container">
               <Stack spacing={2} direction="row">
-                <Button
-                  variant="contained"
-                  onClick={deleteDevice}
-                  style={create ? {backgroundColor: "red", color: "white", opacity: "0.4"} : {backgroundColor: "red"}}
-                  disabled={create}
-                >
-                  Delete
-                </Button>
                 <Button variant="contained" onClick={saveDevice}>Save</Button>
               </Stack>
             </div>
