@@ -6,7 +6,7 @@ Homeware containts a backend that does the integration and a web forntend that a
 
 # Install
 
-https://kikeelectronico.github.io/Homeware-LAN/docs/install
+https://homeware.enriquegomez.me/docs/install
 
 # Stay up to date
 
@@ -20,7 +20,7 @@ Read [CONTRIBUTING.md](https://kikeelectronico.github.io/Homeware-LAN/docs/contr
 
 ## Homeware Docs
 
-https://kikeelectronico.github.io/Homeware-LAN/
+https://homeware.enriquegomez.me/
 
 ## Google guides
 
