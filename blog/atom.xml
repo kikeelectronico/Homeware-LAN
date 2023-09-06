@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://kikeelectronico.github.io/Homeware-LAN/blog</id>
+    <id>https://homeware.enriquegomez.me/blog</id>
     <title>Homeware Docs Blog</title>
     <updated>2019-05-28T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://kikeelectronico.github.io/Homeware-LAN/blog"/>
+    <link rel="alternate" href="https://homeware.enriquegomez.me/blog"/>
     <subtitle>Homeware Docs Blog</subtitle>
-    <icon>https://kikeelectronico.github.io/Homeware-LAN/img/favicon.ico</icon>
+    <icon>https://homeware.enriquegomez.me/img/favicon.ico</icon>
     <entry>
         <title type="html"><![CDATA[Hola]]></title>
-        <id>https://kikeelectronico.github.io/Homeware-LAN/blog/hola</id>
-        <link href="https://kikeelectronico.github.io/Homeware-LAN/blog/hola"/>
+        <id>https://homeware.enriquegomez.me/blog/hola</id>
+        <link href="https://homeware.enriquegomez.me/blog/hola"/>
         <updated>2019-05-28T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet]]></summary>
         <content type="html"><![CDATA[<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet</p>]]></content>

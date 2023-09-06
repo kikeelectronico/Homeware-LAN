@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
     <channel>
         <title>Homeware Docs Blog</title>
-        <link>https://kikeelectronico.github.io/Homeware-LAN/blog</link>
+        <link>https://homeware.enriquegomez.me/blog</link>
         <description>Homeware Docs Blog</description>
         <lastBuildDate>Tue, 28 May 2019 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
@@ -10,8 +10,8 @@
         <language>en</language>
         <item>
             <title><![CDATA[Hola]]></title>
-            <link>https://kikeelectronico.github.io/Homeware-LAN/blog/hola</link>
-            <guid>https://kikeelectronico.github.io/Homeware-LAN/blog/hola</guid>
+            <link>https://homeware.enriquegomez.me/blog/hola</link>
+            <guid>https://homeware.enriquegomez.me/blog/hola</guid>
             <pubDate>Tue, 28 May 2019 00:00:00 GMT</pubDate>
             <description><![CDATA[Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet]]></description>
             <content:encoded><![CDATA[<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet</p>]]></content:encoded>
