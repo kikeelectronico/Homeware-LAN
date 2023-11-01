@@ -1,4 +1,4 @@
-import React, {useEffect, forwardRef, useImperativeHandle} from 'react';
+import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
 
 const attributes = {
@@ -18,35 +18,78 @@ const states = {
 
 const ColorSetting = forwardRef((props, ref) => {
 
+  const [commandOnlyColorSetting, setCommandOnlyColorSetting] = useState(attributes.commandOnlyColorSetting)
+  const [colorModel, setColorModel] = useState(attributes.colorModel)
+  const [colorTemperatureRange, setColorTemperatureRange] = useState(attributes.colorTemperatureRange)
+
   useEffect(() => {
-    if (!"commandOnlyColorSetting" in props.attributes) {
-      props.updateAttributes(null, attributes, "insert")
+    if ("commandOnlyColorSetting" in props.attributes) {
+      setCommandOnlyColorSetting(props.attributes.commandOnlyColorSetting)
+      setColorModel(props.attributes.colorModel)
+      setColorTemperatureRange(props.attributes.colorTemperatureRange )
+    } else {
       props.updateStatus(null, states, "insert")
+      props.updateAttributes(null, attributes, "insert")
     }
   }, [])
 
   useImperativeHandle(ref, () => ({
     deleteAttributes() {
-      props.updateAttributes(null, attributes, "drop")
       props.updateStatus(null, states, "drop")
+      props.updateAttributes(null, attributes, "drop")
     }
   }))
 
+  const updateType = (type) => {
+    setColorModel(type)
+    props.updateAttributes("colorModel", type, "update")
+    if (type === "") {
+      setColorTemperatureRange(attributes.colorTemperatureRange)
+      props.updateAttributes("colorTemperatureRange", attributes.colorTemperatureRange, "update")
+    } else {
+      setColorTemperatureRange(undefined)
+      props.updateAttributes("colorTemperatureRange", null, "delete")
+    }
+  }
+
   const updateRange = (sub_attribute, value) => {
-    let colorTemperatureRange = {...props.attributes.colorTemperatureRange}
-    colorTemperatureRange[sub_attribute] = value
-    props.updateAttributes("colorTemperatureRange", colorTemperatureRange, "update")
+    let _colorTemperatureRange = {...colorTemperatureRange}
+    _colorTemperatureRange[sub_attribute] = value
+    setColorTemperatureRange(_colorTemperatureRange)
+    props.updateAttributes("colorTemperatureRange", _colorTemperatureRange, "update")
   }
 
   return (
     <div>
       <div className="three_table_row">
         <div className="three_table_cel align_right">
+          <i>commandOnlyColorSetting</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              setCommandOnlyColorSetting(checked)
+              props.updateAttributes("commandOnlyColorSetting", checked, "update")
+            }}
+            checked={commandOnlyColorSetting}
+          />
+        </div>
+        <div className="three_table_cel">
+          <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the color.</span>
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
           <i>Color type</i>
         </div>
         <div className="three_table_cel">
-          <select name="type" onChange={event => props.updateAttributes("colorModel", event.target.value, "update")} className="table_input" value={props.attributes.colorModel ? props.attributes.colorModel : "temperature"}>
-            <option value="">No color</option>
+          <select 
+            name="type"
+            onChange={event => updateType(event.target.value)}
+            className="table_input"
+            value={colorModel}
+          >
+            <option value="">Color temperature</option>
             <option value="rgb">RGB light</option>
             <option value="hsv">HSV light</option>
           </select>
@@ -54,15 +97,23 @@ const ColorSetting = forwardRef((props, ref) => {
         <div className="three_table_cel">
           <span className="attribute_advise">Select a color coding format.</span>
         </div>
-      </div>
-      
-          
-            <div className="three_table_row">
+      </div> 
+      {
+        colorTemperatureRange ?
+          <>
+             <div className="three_table_row">
               <div className="three_table_cel align_right">
                 Minimum temperature
               </div>
               <div className="three_table_cel">
-                <input type="number"  onChange={event => updateRange("temperatureMinK", parseInt(event.target.value))} defaultValue={props.attributes.colorTemperatureRange ? props.attributes.colorTemperatureRange.temperatureMinK : 0} min="0" max="10000" className="int_input"/>
+                <input
+                  type="number"
+                  onChange={event => {
+                    updateRange("temperatureMinK", parseInt(event.target.value))
+                  }}
+                  defaultValue={colorTemperatureRange.temperatureMinK}
+                  min="0" max="10000" className="int_input"
+                />
               </div>
               <div className="three_table_cel">
                 <span className="attribute_advise">Minimum color temperature (in Kelvin) supported by the device.</span>
@@ -73,23 +124,24 @@ const ColorSetting = forwardRef((props, ref) => {
                 Maximum temperature
               </div>
               <div className="three_table_cel">
-                <input type="number"  onChange={event => updateRange("temperatureMaxK", parseInt(event.target.value))} defaultValue={props.attributes.colorTemperatureRange ? props.attributes.colorTemperatureRange.temperatureMaxK : 0} min="0" max="10000" className="int_input"/>
+                <input
+                  type="number"
+                  onChange={event => {
+                    updateRange("temperatureMaxK", parseInt(event.target.value))
+                  }}
+                  defaultValue={colorTemperatureRange.temperatureMaxK}
+                  min="0" max="10000" className="int_input"
+                />
               </div>
               <div className="three_table_cel">
                 <span className="attribute_advise">Maximum color temperature (in Kelvin) supported by the device.</span>
               </div>
             </div>
-            <div className="three_table_row">
-              <div className="three_table_cel align_right">
-                <i>commandOnlyColorSetting</i>
-              </div>
-              <div className="three_table_cel">
-                <Switch onChange={(checked) => props.updateAttributes("commandOnlyColorSetting", checked, "update")} checked={props.attributes.commandOnlyColorSetting} />
-              </div>
-              <div className="three_table_cel">
-                <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the color.</span>
-              </div>
-            </div>
+          </>
+        : <></>
+      }
+     
+            
     </div>
   );
   

@@ -1,4 +1,4 @@
-import React, {useEffect, forwardRef, useImperativeHandle} from 'react';
+import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
 
 const attributes = {
@@ -11,11 +11,14 @@ const states = {
 
 const Brightness = forwardRef((props, ref) => {
 
+  const [commandOnlyBrightness, setCommandOnlyBrightness] = useState(false)
+
   useEffect(() => {
-    if (!"commandOnlyOnOff" in props.attributes) {
-      console.log("inserting")
-      props.updateAttributes(null, attributes, "insert")
+    if ("commandOnlyBrightness" in props.attributes) {
+      setCommandOnlyBrightness(props.attributes.commandOnlyBrightness)
+    } else {
       props.updateStatus(null, states, "insert")
+      props.updateAttributes(null, attributes, "insert")
     }
   }, [])
 
@@ -33,10 +36,18 @@ const Brightness = forwardRef((props, ref) => {
           <i>commandOnlyBrightness</i>
         </div>
         <div className="three_table_cel">
-          <Switch onChange={(checked) => props.updateAttributes("commandOnlyBrightness", checked, "update")} checked={props.attributes.commandOnlyBrightness} />
+          <Switch
+            onChange={(checked) => {
+              setCommandOnlyBrightness(checked)
+              props.updateAttributes("commandOnlyBrightness", checked, "update")
+            }}
+            checked={commandOnlyBrightness}
+          />
         </div>
         <div className="three_table_cel">
-          <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the brightness.</span>
+          <span className="attribute_advise">
+            Enable it if Homeware-LAN shouldn't inform Google Home about the brightness.
+          </span>
         </div>
       </div>
     </div>

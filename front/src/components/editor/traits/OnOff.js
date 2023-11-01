@@ -1,4 +1,4 @@
-import React, {useEffect, forwardRef, useImperativeHandle} from 'react';
+import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
 
 const attributes = {
@@ -12,17 +12,23 @@ const states = {
 
 const OnOff = forwardRef((props, ref) => {
 
+  const [commandOnlyOnOff, setCommandOnlyOnOff] = useState(false)
+  const [queryOnlyOnOff, setQueryOnlyOnOff] = useState(false)
+
   useEffect(() => {
-    if (!"commandOnlyOnOff" in props.attributes) {
-      props.updateAttributes(null, attributes, "insert")
+    if ("commandOnlyOnOff" in props.attributes) {
+      setCommandOnlyOnOff(props.attributes.commandOnlyOnOff)
+      setQueryOnlyOnOff(props.attributes.queryOnlyOnOff)
+    } else {
       props.updateStatus(null, states, "insert")
+      props.updateAttributes(null, attributes, "insert")
     }
   }, [])
 
   useImperativeHandle(ref, () => ({
     deleteAttributes() {
-      props.updateAttributes(null, attributes, "drop")
       props.updateStatus(null, states, "drop")
+      props.updateAttributes(null, attributes, "drop")
     }
   }))
 
@@ -33,10 +39,18 @@ const OnOff = forwardRef((props, ref) => {
           <i>commandOnlyOnOff</i>
         </div>
         <div className="three_table_cel">
-          <Switch onChange={(checked) => props.updateAttributes("commandOnlyOnOff", checked, "update")} checked={props.attributes.commandOnlyOnOff} />
+          <Switch
+            onChange={(checked) => {
+              setCommandOnlyOnOff(checked)
+              props.updateAttributes("commandOnlyOnOff", checked, "update")
+            }}
+            checked={commandOnlyOnOff}
+          />
         </div>
         <div className="three_table_cel">
-          <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the state.</span>
+          <span className="attribute_advise">
+            Enable it if Homeware-LAN shouldn't inform Google Home about the state.
+          </span>
         </div>
       </div>
       <div className="three_table_row">
@@ -44,10 +58,18 @@ const OnOff = forwardRef((props, ref) => {
           <i>queryOnlyOnOff</i>
         </div>
         <div className="three_table_cel">
-          <Switch onChange={(checked) => props.updateAttributes("queryOnlyOnOff", checked, "update")} checked={props.attributes.queryOnlyOnOff} />
+          <Switch
+            onChange={(checked) => {
+              setQueryOnlyOnOff(checked)
+              props.updateAttributes("queryOnlyOnOff", checked, "update")
+            }}
+            checked={queryOnlyOnOff}
+          />
         </div>
         <div className="three_table_cel">
-          <span className="attribute_advise">Enable it if Google shouldn't change the device state.</span>
+          <span className="attribute_advise">
+            Enable it if Google shouldn't change the device state.
+          </span>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {Button, Stack, Select, MenuItem} from '@mui/material';
 import { ToastsContainer, ToastsStore } from "react-toasts";
 import getCookieValue from "../../functions";
@@ -18,9 +18,10 @@ function Editor() {
   const [nicknames, setNicknames] = useState([])
   const [traits, setTraits] = useState([])
   const [device_info, setDeviceInfo] = useState({})
-  const [attributes, setAttributes] = useState({})
 
-  const [status, setStatus] = useState({online: true})
+  const attributes = useRef({})
+  const status = useRef({online: true})
+
   const [traits_to_show, setTraitsToShow] = useState([])
   const [not_recomended_traits, setNonRecomendedTraits] = useState(false)
 
@@ -42,7 +43,7 @@ function Editor() {
             setTraits(data.traits)
             setTraitsToShow(deviceReference.devices[data.type].traits)
             setDeviceInfo(data.deviceInfo)
-            setAttributes(data.attributes)
+            attributes.current = data.attributes
             setLoading(false)
           } else {
             console.error(http.statusText);
@@ -62,7 +63,7 @@ function Editor() {
         if (sta.readyState === 4) {
           if (sta.status === 200) {
             var data = JSON.parse(sta.responseText);
-            setStatus(data)
+            status.current = data
           } else {
             console.error(sta.statusText);
           }
@@ -97,56 +98,40 @@ function Editor() {
 
   const updateAttributes = (_key, _value, _action) => {
     if (_action === "insert") {
-      let _attributes = {...attributes}
       let _attributes_keys = Object.keys(_value)
       for(let i = 0; i < _attributes_keys.length; i++) {
-        _attributes[_attributes_keys[i]] = _value[_attributes_keys[i]]
+        attributes.current[_attributes_keys[i]] = _value[_attributes_keys[i]]
       }
-      setAttributes(_attributes)
     } else if (_action === "drop") {
-      let _attributes = {...attributes}
       let _attributes_keys = Object.keys(_value)
       for(let i = 0; i < _attributes_keys.length; i++) {
-        delete _attributes[_attributes_keys[i]]
+        delete attributes.current[_attributes_keys[i]]
       }
-      setAttributes(_attributes)
     } else if (_action === "update") {
-      let _attributes = {...attributes}
-      _attributes[_key] = _value
-      setAttributes(_attributes)
+      attributes.current[_key] = _value
     } else if (_action === "delete") {
-      if (_key in attributes) {
-        let _attributes = {...attributes}
-        delete _attributes[_key]
-        setAttributes(_attributes)
+      if (_key in attributes.current) {
+        delete attributes.current[_key]
       }
     }
   }
 
   const updateStatus = (_key, _value, _action) => {
     if (_action === "insert") {
-      let _status = {...status}
       let _status_keys = Object.keys(_value)
       for(let i = 0; i < _status_keys.length; i++) {
-        _status[_status_keys[i]] = _value[_status_keys[i]]
+        status.current[_status_keys[i]] = _value[_status_keys[i]]
       }
-      setStatus(_status)
     } else if (_action === "drop") {
-      let _status = {...status}
       let _status_keys = Object.keys(_value)
       for(let i = 0; i < _status_keys.length; i++) {
-        delete _status[_status_keys[i]]
+        delete status.current[_status_keys[i]]
       }
-      setStatus(_status)
     } else if (_action === "update") {
-      let _status = {...status}
-      _status[_key] = _value
-      setStatus(_status)
+      status.current[_key] = _value
     } else if (_action === "delete") {
       if (_key in status) {
-        let _status = {...status}
-        delete _status[_key]
-        setAttributes(_status)
+        delete status.current[_key]
       }
     }
   }
@@ -174,16 +159,15 @@ function Editor() {
           type: type,
           deviceInfo: device_info,
           traits: traits,
-          attributes: attributes,
+          attributes: attributes.current,
           name: {
             defaultNames: nicknames,
             nicknames: nicknames,
             name: nicknames[0]
           }
         },
-        status: status,
+        status: status.current,
       };
-      console.log(payload)
       if (create) {
         http.open("POST", root + "api/devices/create/");
       } else {
@@ -320,7 +304,7 @@ function Editor() {
                 <Trait
                   trait={trait}
                   device_traits={traits}
-                  attributes={attributes}
+                  attributes={attributes.current}
                   updateTraits={updateTraits}
                   updateAttributes={updateAttributes}
                   updateStatus={updateStatus}
