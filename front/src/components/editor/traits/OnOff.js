@@ -6,19 +6,21 @@ const attributes = {
   queryOnlyOnOff: false
 }
 
-// const states = {
-//   on: false
-// }
+const states = {
+  on: false
+}
 
 const OnOff = forwardRef((props, ref) => {
 
   useEffect(() => {
     props.updateAttributes(null, attributes, "insert")
+    props.updateStatus(null, states, "insert")
   }, [])
 
   useImperativeHandle(ref, () => ({
     deleteAttributes() {
       props.updateAttributes(null, attributes, "delete")
+      props.updateStatus(null, states, "delete")
     }
   }))
 
