@@ -13,11 +13,17 @@ const states = {
 const OnOff = forwardRef((props, ref) => {
 
   useEffect(() => {
-    props.updateAttributes(null, attributes, "insert")
-    props.updateStatus(null, states, "insert")
+    if (!"commandOnlyOnOff" in props.attributes) {
+      props.updateAttributes(null, attributes, "insert")
+      props.updateStatus(null, states, "insert")
+    }
   }, [])
 
   useImperativeHandle(ref, () => ({
+    insertAttributes() {
+      props.updateAttributes(null, attributes, "insert")
+      props.updateStatus(null, states, "insert")
+    },
     deleteAttributes() {
       props.updateAttributes(null, attributes, "drop")
       props.updateStatus(null, states, "drop")
