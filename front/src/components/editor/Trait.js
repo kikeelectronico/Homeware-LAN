@@ -40,8 +40,8 @@ const Trait = (props) => {
 
     const renderAttrinutes = (trait) => {
       if (trait === "action.devices.traits.ArmDisarm") return <ArmDisarm attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus}/>
-      else if (trait === "action.devices.traits.Brightness") return <Brightness attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus}  ref={childRef}/>
-      else if (trait === "action.devices.traits.ColorSetting") return <ColorSetting attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus}/>
+      else if (trait === "action.devices.traits.Brightness") return <Brightness attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
+      else if (trait === "action.devices.traits.ColorSetting") return <ColorSetting attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.Cook") return <Cook attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus}/>
       else if (trait === "action.devices.traits.EnergyStorage") return <EnergyStorage attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus}/>
       else if (trait === "action.devices.traits.FanSpeed") return <FanSpeed attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus}/>
