@@ -13,16 +13,13 @@ const Brightness = forwardRef((props, ref) => {
 
   useEffect(() => {
     if (!"commandOnlyOnOff" in props.attributes) {
+      console.log("inserting")
       props.updateAttributes(null, attributes, "insert")
       props.updateStatus(null, states, "insert")
     }
   }, [])
 
   useImperativeHandle(ref, () => ({
-    insertAttributes() {
-      props.updateAttributes(null, attributes, "insert")
-      props.updateStatus(null, states, "insert")
-    },
     deleteAttributes() {
       props.updateAttributes(null, attributes, "drop")
       props.updateStatus(null, states, "drop")

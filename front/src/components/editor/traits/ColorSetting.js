@@ -19,7 +19,7 @@ const states = {
 const ColorSetting = forwardRef((props, ref) => {
 
   useEffect(() => {
-    if ("commandOnlyColorSetting" in props.attributes) {} else {
+    if (!"commandOnlyColorSetting" in props.attributes) {
       props.updateAttributes(null, attributes, "insert")
       props.updateStatus(null, states, "insert")
     }
