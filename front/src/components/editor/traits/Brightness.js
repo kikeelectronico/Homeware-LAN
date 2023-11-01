@@ -1,36 +1,44 @@
-import React from 'react';
+import React, {useEffect, forwardRef, useImperativeHandle} from 'react';
 import Switch from "react-switch";
 
-class Brightness extends React.Component {
-  constructor(props) {
-    super(props);
-    this.updateCheckbox = this.updateCheckbox.bind(this);
-  }
+const attributes = {
+  commandOnlyBrightness: false,
+}
 
+const states = {
+  brightness: 100
+}
 
-  updateCheckbox(checked, attribute){
-    this.props.update('attributes/' + attribute,checked);
-  }
+const Brightness = forwardRef((props, ref) => {
 
-  render() {
+  useEffect(() => {
+    props.updateAttributes(null, attributes, "insert")
+    props.updateStatus(null, states, "insert")
+  }, [])
 
+  useImperativeHandle(ref, () => ({
+    deleteAttributes() {
+      props.updateAttributes(null, attributes, "delete")
+      props.updateStatus(null, states, "delete")
+    }
+  }))
 
-    return (
-      <div>
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            <i>commandOnlyBrightness</i>
-          </div>
-          <div className="three_table_cel">
-            <Switch onChange={(checked) => {this.updateCheckbox(checked,"commandOnlyBrightness")}} checked={this.props.commandOnlyBrightness} />
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the brightness.</span>
-          </div>
+  return (
+    <div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          <i>commandOnlyBrightness</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch onChange={(checked) => props.updateAttributes("commandOnlyBrightness", checked, "update")} checked={props.attributes.commandOnlyBrightness} />
+        </div>
+        <div className="three_table_cel">
+          <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the brightness.</span>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+  
+})
 
 export default Brightness
