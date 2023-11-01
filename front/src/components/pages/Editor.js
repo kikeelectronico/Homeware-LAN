@@ -118,13 +118,23 @@ function Editor() {
   }
 
   const updateStatus = (_key, _value, _action) => {
-    if (_action === "update") {
+    if (_action === "insert") {
+      let _status = {...status}
+      let _status_keys = Object.keys(_value)
+      for(let i = 0; i < _status_keys.length; i++) {
+        _status[_status_keys[i]] = _value[_status_keys[i]]
+      }
+      setStatus(_status)
+    } else if (_action === "update") {
       let _status = {...status}
       _status[_key] = _value
       setStatus(_status)
     } else if (_action === "delete") {
       let _status = {...status}
-      _status[_key] = _value
+      let _status_keys = Object.keys(_value)
+      for(let i = 0; i < _status_keys.length; i++) {
+        delete _status[_status_keys[i]]
+      }
       setStatus(_status)
     }
   }
