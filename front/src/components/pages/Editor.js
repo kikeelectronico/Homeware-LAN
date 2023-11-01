@@ -115,9 +115,11 @@ function Editor() {
       _attributes[_key] = _value
       setAttributes(_attributes)
     } else if (_action === "delete") {
-      let _attributes = {...attributes}
-      delete _attributes[_key]
-      setAttributes(_attributes)
+      if (_key in attributes) {
+        let _attributes = {...attributes}
+        delete _attributes[_key]
+        setAttributes(_attributes)
+      }
     }
   }
 
@@ -141,9 +143,11 @@ function Editor() {
       _status[_key] = _value
       setStatus(_status)
     } else if (_action === "delete") {
-      let _status = {...status}
-      delete _status[_key]
-      setAttributes(_status)
+      if (_key in status) {
+        let _status = {...status}
+        delete _status[_key]
+        setAttributes(_status)
+      }
     }
   }
 
