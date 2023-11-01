@@ -19,8 +19,8 @@ const OnOff = forwardRef((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     deleteAttributes() {
-      props.updateAttributes(null, attributes, "delete")
-      props.updateStatus(null, states, "delete")
+      props.updateAttributes(null, attributes, "drop")
+      props.updateStatus(null, states, "drop")
     }
   }))
 
