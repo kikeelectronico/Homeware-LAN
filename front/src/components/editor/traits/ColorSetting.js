@@ -46,7 +46,7 @@ const ColorSetting = forwardRef((props, ref) => {
     if (type === "") {
       setColorTemperatureRange(attributes.colorTemperatureRange)
       props.updateAttributes("colorTemperatureRange", attributes.colorTemperatureRange, "update")
-      props.updateStatus("color", {temperature: 3000}, "update")
+      props.updateStatus("color", {temperatureK: 3000}, "update")
     } else if (type === "hsv") {
       setColorTemperatureRange(undefined)
       props.updateAttributes("colorTemperatureRange", null, "delete")
