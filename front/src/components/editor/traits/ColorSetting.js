@@ -25,8 +25,8 @@ const ColorSetting = forwardRef((props, ref) => {
   useEffect(() => {
     if ("commandOnlyColorSetting" in props.attributes) {
       setCommandOnlyColorSetting(props.attributes.commandOnlyColorSetting)
-      setColorModel(props.attributes.colorModel)
-      setColorTemperatureRange(props.attributes.colorTemperatureRange )
+      setColorModel("colorModel" in props.attributes ? props.attributes.colorModel : "")
+      setColorTemperatureRange("colorTemperatureRange" in props.attributes ? props.attributes.colorTemperatureRange : undefined)
     } else {
       props.updateStatus(null, states, "insert")
       props.updateAttributes(null, attributes, "insert")
@@ -42,16 +42,18 @@ const ColorSetting = forwardRef((props, ref) => {
 
   const updateType = (type) => {
     setColorModel(type)
-    props.updateAttributes("colorModel", type, "update")
     if (type === "") {
+      props.updateAttributes("colorModel", null, "delete")
       setColorTemperatureRange(attributes.colorTemperatureRange)
       props.updateAttributes("colorTemperatureRange", attributes.colorTemperatureRange, "update")
       props.updateStatus("color", {temperatureK: 3000}, "update")
     } else if (type === "hsv") {
+      props.updateAttributes("colorModel", type, "update")
       setColorTemperatureRange(undefined)
       props.updateAttributes("colorTemperatureRange", null, "delete")
       props.updateStatus("color", {spectrumHSV: {hue: 300, saturation: 1, value: 1}}, "update")
     } else {
+      props.updateAttributes("colorModel", type, "update")
       setColorTemperatureRange(undefined)
       props.updateAttributes("colorTemperatureRange", null, "delete")
       props.updateStatus("color", states.color, "update")
