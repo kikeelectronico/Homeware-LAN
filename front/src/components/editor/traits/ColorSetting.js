@@ -119,7 +119,7 @@ const ColorSetting = forwardRef((props, ref) => {
                   onChange={event => {
                     updateRange("temperatureMinK", parseInt(event.target.value))
                   }}
-                  defaultValue={colorTemperatureRange.temperatureMinK}
+                  value={colorTemperatureRange.temperatureMinK}
                   min="0" max="10000" className="int_input"
                 />
               </div>
@@ -137,7 +137,7 @@ const ColorSetting = forwardRef((props, ref) => {
                   onChange={event => {
                     updateRange("temperatureMaxK", parseInt(event.target.value))
                   }}
-                  defaultValue={colorTemperatureRange.temperatureMaxK}
+                  value={colorTemperatureRange.temperatureMaxK}
                   min="0" max="10000" className="int_input"
                 />
               </div>
