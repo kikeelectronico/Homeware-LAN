@@ -29,6 +29,7 @@ function Editor() {
     let _id = window.location.pathname.split("/")[3]
     setId(_id)
     setCreate(_id === "")
+    setLoading(_id !== "")
   },[])
 
   useEffect(() => {
