@@ -145,38 +145,38 @@ function Devices() {
       <div className="page_cards_container">
         {
           processed_devices.map((device) => {
-            if (device.type === "action.devices.types.AC_UNIT") return <AcUnit key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.AIRCOOLER") return <AirCooler key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.AIRCOOLER") return <AirCooler key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.AIRFRESHENER") return <AirFreshener key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.AIRPURIFIER") return <AirPurifier key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.AWING") return <Awing key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.BATHTUB") return <Bathtub key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.BED") return <Bed key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.BLENDER") return <Blender key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.BLINDS") return <Blinds key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.CLOSET") return <Closet key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.CURTAIN") return <Curtain key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.DOOR") return <Door key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.DRAWER") return <Drawer key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.FAN") return <Fan key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.FIREPLACE") return <Fireplace key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.GARAGE") return <Garage key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.GATE") return <Gate key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.HEATER") return <Heater key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.HOOD") return <Hood key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.LOCK") return <Lock key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
+            if (device.type === "action.devices.types.AC_UNIT") return <AcUnit key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.AIRCOOLER") return <AirCooler key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.AIRCOOLER") return <AirCooler key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.AIRFRESHENER") return <AirFreshener key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.AIRPURIFIER") return <AirPurifier key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.AWING") return <Awing key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.BATHTUB") return <Bathtub key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.BED") return <Bed key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.BLENDER") return <Blender key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.BLINDS") return <Blinds key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.CLOSET") return <Closet key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.CURTAIN") return <Curtain key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.DOOR") return <Door key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.DRAWER") return <Drawer key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.FAN") return <Fan key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.FIREPLACE") return <Fireplace key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.GARAGE") return <Garage key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.GATE") return <Gate key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.HEATER") return <Heater key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.HOOD") return <Hood key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.LOCK") return <Lock key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
             else if (device.type === "action.devices.types.OUTLET") return <Outlet key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
-            else if (device.type === "action.devices.types.PERGOLA") return <Pergola key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.RADIATOR") return <Radiator key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
+            else if (device.type === "action.devices.types.PERGOLA") return <Pergola key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.RADIATOR") return <Radiator key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
             else if (device.type === "action.devices.types.SECURITYSYSTEM") return <SecuritySystem key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
-            else if (device.type === "action.devices.types.SENSOR") return <Sensor key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.SHUTTER") return <Shutter key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.SWITCH") return <Switch key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.THERMOSTAT") return <Thermostat key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.VALVE") return <Valve key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.WATERHEATER") return <WaterHeater key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
-            else if (device.type === "action.devices.types.WINDOW") return <Window key={device.id} device={device} status={data.status[device.id]}  reload={loadData}/>
+            else if (device.type === "action.devices.types.SENSOR") return <Sensor key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.SHUTTER") return <Shutter key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.SWITCH") return <Switch key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.THERMOSTAT") return <Thermostat key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.VALVE") return <Valve key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.WATERHEATER") return <WaterHeater key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
+            else if (device.type === "action.devices.types.WINDOW") return <Window key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
             else if (device.type === "action.devices.types.LIGHT")  return <Light key={device.id} device={device} status={data.status[device.id]} reload={loadData}/>
             else return <></>
           })
