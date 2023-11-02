@@ -1,48 +1,28 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
-class ArmDisarm extends React.Component {
+const ArmDisarm = (props) => {
 
-  render() {
+  const [currentArmLevel, setCurrentArmLevel] = useState("")
 
-    const container = {
-      float: 'left',
-      marginLeft: '5px',
-      height: "30px",
-    }
-
-    const title = {
-      color: "#777",
-      fontSize: 25,
-      lineHeight: "30px",
-      verticalAlign: "middle",
-    };
-
-    var currentArmLevel = this.props.status.currentArmLevel
-    if (currentArmLevel.length > 15) currentArmLevel = this.props.status.currentArmLevel.substring(0,15) + '...'
-
-    const image = {
-      width: '30px'
-    }
-
-    var icon = 'lock_close';
-    var lock_title = 'Armed'
-    if (!this.props.status.isArmed) {
-      icon = 'lock_open';
-      lock_title = 'Disarmed';
-    }
-
-    return (
-      <div style={container}>
-        <img
-          src={ '/devices/' + icon + '.png' }
-          title={ lock_title }
-          alt={ this.props.image }
-          style={ image }
-        />
-        <span style={title}>{currentArmLevel}</span>
-      </div>
-    );
-  }
+  useEffect(() => {
+    var _currentArmLevel = props.status.currentArmLevel
+    if (_currentArmLevel.length > 15) _currentArmLevel = props.status.currentArmLevel.substring(0,15) + '...'
+    setCurrentArmLevel(_currentArmLevel)
+  }, [props.status.currentArmLevel])
+  
+  return (
+    <div
+      style={{float: 'left', marginLeft: '5px', height: "30px"}}
+    >
+      <img src={props.status.isArmed ? "/devices/lock_close.png" : "/devices/lock_open.png"} title={props.status.isArmed ? "Armed" : "Disarmed"} alt={"lock icon"} style={{width: '30px'}} />
+      <span
+        style={{color: "#777", fontSize: 25, lineHeight: "30px", verticalAlign: "middle"}}
+      >
+        {currentArmLevel} %
+      </span>
+    </div>
+  );
+  
 }
 
 export default ArmDisarm

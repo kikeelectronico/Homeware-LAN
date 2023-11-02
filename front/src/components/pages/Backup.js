@@ -1,74 +1,58 @@
-import React from "react";
+import React, {useEffect} from "react";
+import {Button} from '@mui/material';
 import { ToastsContainer, ToastsStore } from "react-toasts";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
 
-class Backup extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      status: "",
-    };
-  }
+function Backup() {
 
-  componentDidMount() {
+  useEffect(() => {
     var url = new URL(window.location);
-    var status = url.searchParams.get("status");
-    if(status === "Success")
+    var _status = url.searchParams.get("status");
+    if(_status === "Success")
       ToastsStore.success("Uploaded correctly");
-    this.setState({ status });
-  }
+  }, [])
 
-  backup() {
+  const backup = () => {
     ToastsStore.warning("Downloading");
-    const url =
-      root +
-      "files/buckup/homeware/" +
-      getCookieValue("token") +
-      "?code=" +
-      String(Math.random());
+    const url = root + "files/buckup/homeware/" + getCookieValue("token") + "?code=" + String(Math.random());
     window.open(url, '_blank')
   }
 
-  render() {
-    const restore_url =
-      root + "files/restore/homeware/" + getCookieValue("token") + "/";
-
-    return (
-      <div>
-        <div className="page_block_container">
-          <h2>Backup</h2>
-          <hr />
-          <div className="page_block_content_container">
-            <button type="button" onClick={this.backup}>
-              Backup
-            </button>
-          </div>
-          <div className="advise">
-            <span>Download a backup file.</span>
-          </div>
+  return (
+    <div>
+      <div className="page_block_container">
+        <h2>Backup</h2>
+        <div className="advise">
+          <span>Download a backup file.</span>
         </div>
-        <div className="page_block_container">
-          <h2>Restore</h2>
-          <hr />
-          <div className="page_block_content_container">
-            <form
-              method="post"
-              encType="multipart/form-data"
-              action={restore_url}
-            >
-              <input type="file" name="file" />
-              <button type="submit">Restore</button>
-            </form>
-          </div>
-          <div className="advise">
-            <span>Restore a backup file.</span>
-          </div>
+        <hr />
+        <div className="page_block_content_container">
+          <Button variant="contained" onClick={backup}>Backup</Button>
         </div>
-        <ToastsContainer store={ToastsStore} />
       </div>
-    );
-  }
+      <div className="page_block_container">
+        <h2>Restore</h2>
+        <div className="advise">
+          <span>Restore a backup file.</span>
+        </div>
+        <hr />
+        <div className="page_block_content_container">
+          <form
+            id="restore-form"
+            method="post"
+            encType="multipart/form-data"
+            action={root + "files/restore/homeware/" + getCookieValue("token") + "/"}
+          >
+            <input type="file" name="file" />
+            <Button variant="contained" onClick={() => {document.getElementById("restore-form").submit()}}>Restore</Button>
+          </form>
+        </div>
+      </div>
+      <ToastsContainer store={ToastsStore} />
+    </div>
+  );
+  
 }
 
 export default Backup;

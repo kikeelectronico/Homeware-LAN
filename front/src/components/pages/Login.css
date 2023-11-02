@@ -1,7 +1,28 @@
 .login_form_container {
-  margin: 20%;
+  width: 300px;
+  margin-left: calc((100vw - 320px)/2);
+  margin-top: 15%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 20px;
+  background-color: white;
 }
 
 .login_element {
-  margin: 10px;
 }
+
+.login_input {
+  border: lightgray solid 1px;
+}
+
+.alert_message {
+  width: calc(100%-40px);
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: rgba(255, 255, 0, 0.5);
+  color: black;
+  border-radius: 20px;
+}
+

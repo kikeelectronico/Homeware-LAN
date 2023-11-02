@@ -22,6 +22,25 @@
   height: 25px;
 }
 
+.advise {
+  width: 70%;
+  margin-left: 15%;
+  margin-top: 10px;
+  color: #aaa;
+}
+
+.two_input {
+  width: 100%;
+}
+
+.number_input {
+  width: 80px;
+}
+
+.two_table_cel label {
+  margin-left: 20px;
+}
+
 @media only screen and (min-width: 1300px) {
   .App {
     text-align: center;
@@ -76,6 +95,30 @@
     text-align: left;
     background-color: white;
   }
+
+  .menu_data {
+    position: absolute;
+    bottom: 0px;
+  }
+  
+  .menu_data_version {
+    padding: 10px;
+    color: #aaa;
+  }
+  
+  .menu_data_alert {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #1c8adb;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .align_right {
+    text-align: right;
+    padding: 0px 0;
+    padding-right: 10px;
+  }  
 
   .page {
     padding-top: 40px;
@@ -169,28 +212,7 @@
     flex: 3;
   }
 
-  .page_block_buttons_container {
-    width: 80%;
-    margin-top: 10px;
-    margin-left: 10%;
-    font-size: 18px;
-    text-align: left;
-  }
-
-  .page_block_buttons_container > button {
-    width: 200px;
-  }
-
-  .page_title_container {
-    width: 80%;
-    margin-left: 8%;
-    background-color: white;
-    padding-top: 10px;
-    padding-left: 20px;
-    padding-bottom: 10px;
-    padding-right: 20px;
-    border-radius: 20px;
-  }
+  /* Page type: block */
 
   .page_block_container {
     width: 80%;
@@ -216,10 +238,20 @@
     text-align: center;
   }
 
+  .page_block_buttons_container {
+    width: 80%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 10%;
+    text-align: left;
+  }
+
+  /* Page type: clear */
+
   .page_buttons_containter {
     width: 80%;
-    margin-left: 9%;
-    margin-top: 10px;
+    margin-left: 10%;
+    margin-top: 20px;
   }
 
   .page_search_containter {
@@ -254,18 +286,6 @@
   .page_search_bar:focus {
     border: none;
     border-color: #aaa;
-  }
-
-  .two_input {
-    width: 100%;
-  }
-
-  .number_input {
-    width: 80px;
-  }
-
-  .two_table_cel label {
-    margin-left: 20px;
   }
 }
 
@@ -408,25 +428,7 @@
     text-align: left;
   }
 
-  .page_block_buttons_container {
-    margin-top: 50px;
-  }
-
-  .page_block_buttons_container > button {
-    width: 200px;
-    margin-bottom: 10px;
-  }
-
-  .page_title_container {
-    width: 80%;
-    margin-left: 5%;
-    background-color: white;
-    padding-top: 10px;
-    padding-left: 20px;
-    padding-bottom: 10px;
-    padding-right: 20px;
-    border-radius: 20px;
-  }
+  /* Page type: block */
 
   .page_block_container {
     width: 80%;
@@ -451,62 +453,15 @@
     text-align: center;
   }
 
+  .page_block_buttons_container {
+    margin-top: 100px;
+  }
+
+  /* Page type: clear */
+
   .page_buttons_containter {
     width: 80%;
-    margin-left: 9%;
+    margin-left: 10%;
     margin-top: 10px;
   }
-
-  .two_input {
-    width: 100%;
-  }
-
-  .number_input {
-    width: 90%;
-  }
-
-  .two_table_cel label {
-    margin-left: 20px;
-  }
-}
-
-.advise {
-  width: 70%;
-  margin-left: 15%;
-  margin-top: 10px;
-  color: #aaa;
-}
-
-.menu_data {
-  position: absolute;
-  bottom: 0px;
-}
-
-.menu_data_version {
-  padding: 10px;
-  color: #aaa;
-}
-
-.menu_data_alert {
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #1c8adb;
-  color: white;
-  cursor: pointer;
-}
-
-.alert_message {
-  width: 40%;
-  margin-left: 30%;
-  margin-bottom: 20px;
-  padding: 20px;
-  background-color: rgba(255, 255, 0, 0.5);
-  color: black;
-  border-radius: 20px;
-}
-
-.align_right {
-  text-align: right;
-  padding: 0px 0;
-  padding-right: 10px;
 }
