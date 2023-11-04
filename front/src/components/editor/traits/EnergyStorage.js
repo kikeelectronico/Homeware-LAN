@@ -8,7 +8,13 @@ const attributes = {
 }
 
 const states = {
-
+  descriptiveCapacityRemaining: "HIGH",
+  capacityRemaining: [
+    {
+      rawValue: 90,
+      unit: "PERCENTAGE"
+    }
+  ]
 }
 
 const EnergyStorage = forwardRef((props, ref) => {
