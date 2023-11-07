@@ -27,7 +27,7 @@ const EnergyStorage = forwardRef((props, ref) => {
     if ("queryOnlyEnergyStorage" in props.attributes) {
       setQueryOnlyEnergyStorage(props.attributes.queryOnlyEnergyStorage)
       setIsRechargeable(props.attributes.isRechargeable)
-      setEnergyStorageDistanceUnitForUX(props.attributes.energyStorageDistanceUnitForUX)
+      setEnergyStorageDistanceUnitForUX("energyStorageDistanceUnitForUX" in props.attributes ? props.attributes.energyStorageDistanceUnitForUX : "")
     } else {
       props.updateStatus(null, states, "insert")
       props.updateAttributes(null, attributes, "insert")
