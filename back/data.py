@@ -385,7 +385,7 @@ class Data:
 				try:
 					homegraph.reportState(self.redis.get("domain").decode('UTF-8'),states)
 				except:
-					self.log('Unable to communicate with homegraph')
+					self.log("Warning", "Unable to communicate with homegraph")
 
 			return True
 		else:
