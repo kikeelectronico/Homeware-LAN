@@ -6,7 +6,7 @@ Homeware containts a backend that does the integration and a web forntend that a
 
 # Install
 
-https://kikeelectronico.github.io/Homeware-LAN/docs/install
+https://homeware.enriquegomez.me/docs/install
 
 # Stay up to date
 
@@ -14,13 +14,13 @@ Spanish Telegram channel: [https://t.me/homeware_up_to_date](https://t.me/homewa
 
 # Contribute
 
-Read [CONTRIBUTING.md](https://kikeelectronico.github.io/Homeware-LAN/docs/contributing/) and [CODE_OF_CONDUCT.md](https://kikeelectronico.github.io/Homeware-LAN/docs/code-of-conduct/).
+Read [CONTRIBUTING.md](https://homeware.enriquegomez.me/docs/contributing/) and [CODE_OF_CONDUCT.md](https://homeware.enriquegomez.me/docs/code-of-conduct/).
 
 # Documentation
 
 ## Homeware Docs
 
-https://kikeelectronico.github.io/Homeware-LAN/
+https://homeware.enriquegomez.me/
 
 ## Google guides
 

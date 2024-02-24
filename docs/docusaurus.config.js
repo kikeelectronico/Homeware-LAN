@@ -2,7 +2,7 @@ module.exports = {
   title: 'Homeware Docs',
   tagline: 'A complete ecosystem to connect your DIY devices with Google Home.',
   url: 'https://kikeelectronico.github.io',
-  baseUrl: '/Homeware-LAN/',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
