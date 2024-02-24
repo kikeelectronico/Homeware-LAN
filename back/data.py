@@ -19,7 +19,7 @@ class Data:
 	"""Access to the Homeware database and files."""
   
 
-	version = 'v1.10.5'
+	version = 'v1.11.0'
 	homewareFile = 'homeware.json'
 
 	def __init__(self):
@@ -382,7 +382,10 @@ class Data:
 				states = {}
 				states[device] = {}
 				states[device][param] = value
-				homegraph.reportState(self.redis.get("domain").decode('UTF-8'),states)
+				try:
+					homegraph.reportState(self.redis.get("domain").decode('UTF-8'),states)
+				except:
+					self.log("Warning", "Unable to communicate with homegraph")
 
 			return True
 		else:

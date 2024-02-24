@@ -2,7 +2,7 @@ FROM node:lts-alpine AS base
 RUN mkdir -p /usr/share/Homeware-LAN/front
 WORKDIR /usr/share/Homeware-LAN/front
 COPY front ./
-RUN npm install --no-package-lock
+RUN npm install --legacy-peer-deps
 RUN npm run build
 
 FROM nginx

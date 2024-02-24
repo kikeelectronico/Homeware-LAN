@@ -1,42 +1,35 @@
-import React from 'react';
+import React, {useState, useEffect}  from 'react';
 
-class LockUnlock extends React.Component {
+const LockUnlock = (props) => {
 
-  render() {
+  const [icon, setIcon] = useState("lock_close")
+  const [title, setTitle] = useState("")
 
-    const container = {
-      float: 'left',
-      marginLeft: '5px'
+  useEffect(() => {
+    if (props.status.isJammed) {
+      setIcon('lock_alert')
+      setTitle('It is jammed')
+    } else if (props.status.isLocked) {
+      setIcon('lock_close')
+      setTitle('It is close')
+    } else if (!props.status.isLocked) {
+      setIcon('lock_open')
+      setTitle('It is open')
     }
-
-    const image = {
-      width: '30px'
-    }
-
-    var icon = 'lock_close';
-    var title = ''
-    if (this.props.status.isJammed) {
-      icon = 'lock_alert';
-      title = 'It is jammed';
-    } else if (this.props.status.isLocked) {
-      icon = 'lock_close';
-      title = 'It is close';
-    } else if (!this.props.status.isLocked) {
-      icon = 'lock_open';
-      title = 'It is open';
-    } 
+  }, [props.status])
+    
 
     return (
-      <div style={container}>
+      <div style={{float: 'left', marginLeft: '5px', height: "30px"}}>
         <img
           src={ '/devices/' + icon + '.png' }
           title={ title }
-          alt={ this.props.image }
-          style={ image }
+          alt={ props.image }
+          style={{width: '30px'}}
         />
       </div>
     );
-  }
+  
 }
 
 export default LockUnlock

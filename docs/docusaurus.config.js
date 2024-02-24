@@ -1,7 +1,7 @@
 module.exports = {
   title: 'Homeware Docs',
   tagline: 'A complete ecosystem to connect your DIY devices with Google Home.',
-  url: 'https://kikeelectronico.github.io',
+  url: 'https://homeware.enriquegomez.me/',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',

@@ -1,21 +1,15 @@
-import React from 'react';
+import React, {useState} from "react";
+import {Button} from '@mui/material';
 import { root } from '../../constants'
-import Form from "react-bootstrap/Form";
 
 import './Login.css'
 
-class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      enable_message: false,
-      message: ''
-    }
-    this.login = this.login.bind(this);
-    this.grantAccess = this.grantAccess.bind(this);
-  }
+function Login() {
 
-  login() {
+  const [enable_message, setEnableMessage] = useState(false)
+  const [message, setMessage] = useState("")
+
+  const login = () => {
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       var response = JSON.parse(http.responseText);
@@ -25,78 +19,58 @@ class Login extends React.Component {
         document.cookie = "token=" + response['token'] + "; path=/";
         window.location = '/';
       } else if (response['status'] === 'fail'){
-        this.setState({
-          enable_message: true,
-          message: 'Incorrect User or Password'
-        })
-        setTimeout(function(){
-          this.setState({
-             enable_message: false
-           });
-        }.bind(this), 5000)
+        setEnableMessage(true)
+        setMessage("Incorrect User or Password")
+        setTimeout(() => setEnableMessage(false), 5000)
       }
-    }.bind(this);
+    }
     http.open("GET", root + "api/user/login/");
     http.setRequestHeader('user', document.getElementById('user').value)
     http.setRequestHeader('pass', document.getElementById('password').value)
     http.send();
   }
 
-  grantAccess() {
+  const grantAccess = () => {
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       if (http.responseText !== 'fail')
         window.location = http.responseText;
       else {
-        this.setState({
-          enable_message: true,
-          message: 'Incorrect User or Password'
-        })
-        setTimeout(function(){
-          this.setState({
-             enable_message: false
-           });
-        }.bind(this), 5000)
+        setEnableMessage(true)
+        setMessage("Incorrect User or Password")
+        setTimeout(() => setEnableMessage(false), 5000)
       }
-    }.bind(this);
+    }
     http.open("GET", root + "api/user/googleSync/");
     http.setRequestHeader('user', document.getElementById('user').value)
     http.setRequestHeader('pass', document.getElementById('password').value)
     http.send();
   }
 
-  submit = (e) => {
-    e.preventDefault()
+  const submit = (event) => {
+    event.preventDefault()
     if(!window.location.href.includes('google')) {
-      this.login()
+      login()
     } else {
-      this.grantAccess()
+      grantAccess()
     }
   }
 
-  render() {
-
-    var message = '';
-    if (this.state.enable_message){
-      message = <div className="alert_message"> { this.state.message } </div>
-    }
-
-    return (
-      <div className="login_form_container">
-        { window.location.href.includes('google') ? <p>Google request access to Homeware-Lan</p> : '' }
-        <br/>
-        <Form onSubmit={this.submit.bind(this)}>
-          <span className="login_element">Username</span>
-          <input type="text" name="user" id="user"/>
-          <span className="login_element">Password</span>
-          <input type="password" name="password" id="password"/>
-          <button type="submit" className="login_element">{ !window.location.href.includes('google') ? <span>Login</span> : <span>Grant access</span> }</button>
-        </Form>
-        <br/>
-        { message }
-      </div>
-    );
-  }
+  return (
+    <div className="login_form_container">
+      { window.location.href.includes('google') ? <p>Google request access to Homeware-Lan</p> : '' }
+      <br/>
+      <span className="login_element">Username</span>
+      <input type="text" name="user" id="user" className="login_input"/>
+      <span className="login_element">Password</span>
+      <input type="password" name="password" id="password" className="login_input"/>
+      <Button variant="contained" onClick={submit}>
+        <span>{ !window.location.href.includes('google') ? "Login" : "Grant access" }</span>
+      </Button>
+      <br/>
+      { enable_message ? <div className="alert_message"> { message } </div> : <></>}
+    </div>
+  );
 }
 
 export default Login

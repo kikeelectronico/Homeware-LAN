@@ -23,10 +23,10 @@ jobs:
     strategy:
       matrix:
         redis-version: [6]
-        python-version: [3.7]
+        python-version: [3.8, 3.9]
         mosquitto-version: [2.0]
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Start Redis ${{ matrix.redis-version }}
         uses: supercharge/redis-github-action@1.1.0
         with:
@@ -37,7 +37,7 @@ jobs:
           version: ${{ matrix.mosquitto-version }}
           ports: '1883:1883'
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
