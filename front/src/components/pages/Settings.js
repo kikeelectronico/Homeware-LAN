@@ -239,7 +239,7 @@ class Settings extends React.Component {
             <span>
               Upload the file needed for Google Auth. Read the{" "}
               <a
-                href="https://kikeelectronico.github.io/Homeware-LAN/docs/google-auth"
+                href="https://homeware.enriquegomez.me/docs/google-auth"
                 target="_blanck"
               >
                 instructions.
