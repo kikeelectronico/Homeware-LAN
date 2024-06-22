@@ -6,7 +6,7 @@ sidebar_label: Create a device
 
 For create a device click `New`.
 
-<img src="/Homeware-LAN/img/create-device/C1.png"/>
+<img src="/img/create-device/C1.png"/>
 
 ## Global Settings
 
@@ -30,11 +30,11 @@ For enabling a trait, click on its switch.
 
 Some traits must be configured, for example in the *Power control* trait we can enable *commandOnlyOnOff* and *queryOnlyOnOff*.
 
-<img src="/Homeware-LAN/img/create-device/C2.png"/>
+<img src="/img/create-device/C2.png"/>
 
 In the *Color setting* trait we can enable *Color type*, *Minimum temperature*, *Maximum temperature* and *commandOnlyColorSetting*.
 
-<img src="/Homeware-LAN/img/create-device/C3.png"/>
+<img src="/img/create-device/C3.png"/>
 
 ## Save
 
