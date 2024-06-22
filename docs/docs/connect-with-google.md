@@ -18,22 +18,22 @@ Go to <a href="https://console.actions.google.com/" target="blanck">Actions on G
 1. Select `New project`.
 2. Write a name for the project.
 
-<img src="/Homeware-LAN/img/connect-with-google/S2C1.png"/>
+<img src="/img/connect-with-google/S2C1.png"/>
 
 3. Select `Smart Home` and then click `Start Building`.
 
-<img src="/Homeware-LAN/img/connect-with-google/S2C2.png"/>
+<img src="/img/connect-with-google/S2C2.png"/>
 
 4. Go to `Develop` from the top menu, select `Invocation` in the left side menu, write `Home` as *Display Name* and click `Save`.
 
-<img src="/Homeware-LAN/img/connect-with-google/S2C3.png"/>
+<img src="/img/connect-with-google/S2C3.png"/>
 
 5. Select `Actions` in the left side menu, add the *Fulfillment URL* using your domain and click `Save`
 
 > - Fulfillment URL: `https://<your.domain.com>/smarthome/`
 
 
-<img src="/Homeware-LAN/img/connect-with-google/S2C4.png"/>
+<img src="/img/connect-with-google/S2C4.png"/>
 
 6. Go to `Account Linking` in the left side menu. Enter the client information that the Homeware assistant gives you and click `Next`.
 
@@ -42,15 +42,15 @@ Go to <a href="https://console.actions.google.com/" target="blanck">Actions on G
 - Authorization URL: `https://<your.domain.com>/auth/`
 - Token URL: `https://<your.domain.com>/token/`
 
-<img src="/Homeware-LAN/img/connect-with-google/S2C5.png"/>
+<img src="/img/connect-with-google/S2C5.png"/>
 
 7. Skip this step by clicking `Next`.
 
-<img src="/Homeware-LAN/img/connect-with-google/S2C6.png"/>
+<img src="/img/connect-with-google/S2C6.png"/>
 
 8. Enable *Google to transmit clientID and secret via HTTP basic auth header*, click `Next` and the click `Save`.
 
-<img src="/Homeware-LAN/img/connect-with-google/S2C7.png"/>
+<img src="/img/connect-with-google/S2C7.png"/>
 
 ## Link your Account
 

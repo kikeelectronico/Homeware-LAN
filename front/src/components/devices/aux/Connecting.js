@@ -1,26 +1,16 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
-class Connecting extends React.Component {
-  render() {
+const Connecting = (props) => {
 
-    const container = {
-      float: 'left',
-      marginLeft: '5px'
-    }
-
-    const image = {
-      width: '30px'
-    }
-
-    return (
-      <div style={container}>
-        <Link to={"/devices/connecting/" + this.props.id + "/"}>
-          <img src="/devices/connecting.png" alt={ this.props.image } style={ image }/>
-        </Link>
-      </div>
-    );
-  }
+  return (
+    <div style={{float: 'left', marginLeft: '5px'}}>
+      <Link to={"/devices/connecting/" + props.id + "/"}>
+        <img src="/devices/connecting.png" alt={ props.image } style={{ width: '30px'}}/>
+      </Link>
+    </div>
+  );
+  
 }
 
 export default Connecting

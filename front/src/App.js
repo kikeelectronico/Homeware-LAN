@@ -193,7 +193,7 @@ class App extends React.Component {
                   <MenuElement image="/menu/logs_icon.png" title="Logs" href="/logs"/>
                   <hr/>
                   <MenuElement image="/menu/repo_icon.png" title="Repo" exec={ ()=>{window.location.href = "https://github.com/kikeelectronico/Homeware-LAN"} }/>
-                  <MenuElement image="/menu/help_icon.png" title="How to" exec={ ()=>{window.location.href = "https://kikeelectronico.github.io/Homeware-LAN/"} }/>
+                  <MenuElement image="/menu/help_icon.png" title="How to" exec={ ()=>{window.location.href = "https://homeware.enriquegomez.me/"} }/>
                   <hr/>
                   <MenuElement image="/menu/logout_icon.png" title="Logout" exec={ this.logout }/>
                 </div>

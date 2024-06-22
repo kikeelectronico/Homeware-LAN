@@ -46,6 +46,6 @@ sudo rm /lib/systemd/system/homewareRedis.service
 
 ## Install the new version
 
-https://kikeelectronico.github.io/Homeware-LAN/docs/install
+https://homeware.enriquegomez.me/docs/install
 
 Do not forget to clean your web browser's cache.

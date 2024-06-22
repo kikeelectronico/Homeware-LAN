@@ -1,35 +1,65 @@
-import React from 'react';
+import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import {InputLabel, Button, Select, MenuItem, Box, TextField, FormControl, IconButton, Stack} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const data_model = {
-    "occupancySensorType": "PIR",
-    "occupiedToUnoccupiedDelaySec": 10,
-    "unoccupiedToOccupiedDelaySec": 10,
-    "unoccupiedToOccupiedEventThreshold": 10
+const attributes = {
+    occupancySensorConfiguration: [
+        {
+            occupancySensorType: "PIR",
+            occupiedToUnoccupiedDelaySec: 10,
+            unoccupiedToOccupiedDelaySec: 10,
+            unoccupiedToOccupiedEventThreshold: 10
+        }
+    ]
+  }
+  
+const states = {
+    occupancy: "UNOCCUPIED"
 }
 
-function OccupancySensing(props) {
+const OccupancySensing = forwardRef((props, ref) => {
+
+    const [occupancySensorConfiguration, setOccupancySensorConfiguration] = useState(attributes.occupancySensorConfiguration)
+
+    useEffect(() => {
+        if ("occupancySensorConfiguration" in props.attributes) {
+            setOccupancySensorConfiguration(props.attributes.occupancySensorConfiguration)
+        } else {
+          props.updateStatus(null, states, "insert")
+          props.updateAttributes(null, attributes, "insert")
+        }
+      }, [])
+    
+      useImperativeHandle(ref, () => ({
+        deleteAttributes() {
+          props.updateStatus(null, states, "drop")
+          props.updateAttributes(null, attributes, "drop")
+        }
+      }))
     
     const addOccupancySensorConfiguration = () => {
         let _occupancySensorConfiguration = [...props.attributes.occupancySensorConfiguration]
-        _occupancySensorConfiguration.push(data_model)
-        props.update("attributes/occupancySensorConfiguration", _occupancySensorConfiguration)
+        _occupancySensorConfiguration.push(attributes.occupancySensorConfiguration[0])
+        setOccupancySensorConfiguration(_occupancySensorConfiguration)
+        props.updateAttributes("occupancySensorConfiguration", _occupancySensorConfiguration, "update")
     }
 
     const removeOccupancySensorConfiguration = (index) => {
         let _occupancySensorConfiguration = [...props.attributes.occupancySensorConfiguration]
         _occupancySensorConfiguration.splice(index, 1)
-        props.update("attributes/occupancySensorConfiguration", _occupancySensorConfiguration)
+        setOccupancySensorConfiguration(_occupancySensorConfiguration)
+        props.updateAttributes("occupancySensorConfiguration", _occupancySensorConfiguration, "update")
     }
 
     const updateOccupancySensorConfigurationParam = (index, name, value) => {
-        let _occupancySensorConfiguration = [...props.attributes.occupancySensorConfiguration]
+        let _occupancySensorConfiguration = [...occupancySensorConfiguration]
         _occupancySensorConfiguration[index][name] = value
-        props.update("attributes/occupancySensorConfiguration", _occupancySensorConfiguration)     
+        setOccupancySensorConfiguration(_occupancySensorConfiguration)
+        props.updateAttributes("occupancySensorConfiguration", _occupancySensorConfiguration, "update")
     }
 
-    function OccupancySensorConfiguration(props) {
+    const OccupancySensorConfiguration = (props) => {
+        
         return (
             <Box className="attribute_table_subattribute">
                 <Box className="attribute_table_subattribute_row">
@@ -42,6 +72,7 @@ function OccupancySensing(props) {
                             data-test="occupancySensorType"
                             label="Sensor type"
                             className="attribute_table_subattribute_input"
+                            type="number"
                             value={props.config.occupancySensorType}
                             onChange={(event) => {
                                 props.updateConfigParam(props.index, "occupancySensorType", event.target.value)
@@ -55,40 +86,40 @@ function OccupancySensing(props) {
                 </Box>
                 <Box className="attribute_table_subattribute_row">
                     <TextField
-                        id="occupiedToUnoccupiedDelaySec"
                         data-test="occupiedToUnoccupiedDelaySec"
                         label="Occupied to Unoccupied delay in seconds"
                         className="attribute_table_subattribute_input"
+                        type="number"
                         variant="outlined"
                         value={props.config.occupiedToUnoccupiedDelaySec}
                         onChange={(event) => {
-                            props.updateConfigParam(props.index, "occupiedToUnoccupiedDelaySec", event.target.value)
+                            props.updateConfigParam(props.index, "occupiedToUnoccupiedDelaySec", parseInt(event.target.value))
                         }}
                     />
                 </Box>
                 <Box className="attribute_table_subattribute_row">
                     <TextField
-                        id="unoccupiedToOccupiedDelaySec"
                         data-test="unoccupiedToOccupiedDelaySec"
                         label="Uncccupied to Occupied delay in seconds"
                         className="attribute_table_subattribute_input"
+                        type="number"
                         variant="outlined"
                         value={props.config.unoccupiedToOccupiedDelaySec}
                         onChange={(event) => {
-                            props.updateConfigParam(props.index, "unoccupiedToOccupiedDelaySec", event.target.value)
+                            props.updateConfigParam(props.index, "unoccupiedToOccupiedDelaySec", parseInt(event.target.value))
                         }}
                     />
                 </Box>
                 <Box className="attribute_table_subattribute_row">
                     <TextField
-                        id="unoccupiedToOccupiedEventThreshold"
                         data-test="unoccupiedToOccupiedEventThreshold"
                         label="Unoccupied to Occupied events threshold"
                         className="attribute_table_subattribute_input"
+                        type="number"
                         variant="outlined"
                         value={props.config.unoccupiedToOccupiedEventThreshold}
                         onChange={(event) => {
-                            props.updateConfigParam(props.index, "unoccupiedToOccupiedEventThreshold", event.target.value)
+                            props.updateConfigParam(props.index, "unoccupiedToOccupiedEventThreshold", parseInt(event.target.value))
                         }}
                     />
                 </Box>
@@ -109,7 +140,7 @@ function OccupancySensing(props) {
                 </div>
                 <div className="attribute_table_form">
                     {
-                        props.attributes.occupancySensorConfiguration.map((config, index) => {
+                        occupancySensorConfiguration.map((config, index) => {
                             return <OccupancySensorConfiguration
                                         config={config}
                                         index={index}
@@ -132,6 +163,6 @@ function OccupancySensing(props) {
             </div>
         </div>
     );
-}
+})
 
 export default OccupancySensing

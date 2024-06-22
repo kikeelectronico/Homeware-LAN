@@ -382,7 +382,10 @@ class Data:
 				states = {}
 				states[device] = {}
 				states[device][param] = value
-				homegraph.reportState(self.redis.get("domain").decode('UTF-8'),states)
+				try:
+					homegraph.reportState(self.redis.get("domain").decode('UTF-8'),states)
+				except:
+					self.log("Warning", "Unable to communicate with homegraph")
 
 			return True
 		else:
