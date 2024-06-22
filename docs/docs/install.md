@@ -53,7 +53,7 @@ cp docker/docker-compose-raspberry.yaml docker-compose.yaml
 ```bash
 docker-compose up -d
 ```
-8. Follow this steps to link Homeware with Google Home: https://kikeelectronico.github.io/Homeware-LAN/docs/connect-with-google
+8. Follow this steps to link Homeware with Google Home: https://homeware.enriquegomez.me/docs/connect-with-google
 
 9. Finally, set up the necessary data using the Homeware's _Settings_ page.
 

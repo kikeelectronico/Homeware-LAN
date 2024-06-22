@@ -8,7 +8,7 @@ function API() {
 
   return (
     <Layout title="API">
-      <iframe src="/Homeware-LAN/api-build/" style={{width: '100%', height: height}}/>
+      <iframe src="/api-build/" style={{width: '100%', height: height}}/>
     </Layout>
   );
 }
