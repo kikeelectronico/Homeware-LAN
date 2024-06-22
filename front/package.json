@@ -22,7 +22,7 @@
     "react-scripts": "^5.0.1",
     "react-switch": "^7.0.0",
     "react-toasts": "^3.0.6",
-    "reactjs-popup": "^2.0.5"
+    "reactjs-popup": "^2.0.6"
   },
   "scripts": {
     "start": "react-scripts start",
