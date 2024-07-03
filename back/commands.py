@@ -246,6 +246,7 @@ class Commands:
                 return "minSpeedReached"
             else:
                 self.saveAndSend('fanSpeedPercent', 'currentFanSpeedPercent')
+        return ""
             
     def SetFanSpeedRelativeSpeed(self):
         # maxSpeedReached
