@@ -414,7 +414,8 @@ class Commands:
                 state[mode] = self.params['updateModeSettings'][mode]
             self.data_conector.updateParamStatus(
                 self.device, 'currentModeSettings', state)
-
+        return ""
+        
     def Charge(self):
         self.sendCommand("charge")
         return ""
