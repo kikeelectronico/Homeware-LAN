@@ -33,7 +33,7 @@ const OnOff = forwardRef((props, ref) => {
   }))
 
   return (
-    <div>
+    <>
       <div className="three_table_row">
         <div className="three_table_cel align_right">
           <i>commandOnlyOnOff</i>
@@ -46,11 +46,6 @@ const OnOff = forwardRef((props, ref) => {
             }}
             checked={commandOnlyOnOff}
           />
-        </div>
-        <div className="three_table_cel">
-          <span className="attribute_advise">
-            Enable it if Homeware-LAN shouldn't inform Google Home about the state.
-          </span>
         </div>
       </div>
       <div className="three_table_row">
@@ -66,13 +61,8 @@ const OnOff = forwardRef((props, ref) => {
             checked={queryOnlyOnOff}
           />
         </div>
-        <div className="three_table_cel">
-          <span className="attribute_advise">
-            Enable it if Google shouldn't change the device state.
-          </span>
-        </div>
       </div>
-    </div>
+    </>
   )
 })
 

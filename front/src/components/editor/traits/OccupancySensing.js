@@ -133,7 +133,6 @@ const OccupancySensing = forwardRef((props, ref) => {
     }
 
     return (
-        <div>
             <div className="attribute_table">
                 <div className="attribute_table_title">
                 <i>occupancySensorConfiguration</i>
@@ -161,7 +160,6 @@ const OccupancySensing = forwardRef((props, ref) => {
                     </Box>
                 </div>
             </div>
-        </div>
     );
 })
 
