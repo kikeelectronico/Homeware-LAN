@@ -91,51 +91,6 @@ const FanSpeed = forwardRef((props, ref) => {
     props.updateAttributes("availableFanSpeeds", _availableFanSpeeds, "update")
   }
 
-  const Speed = (props) => {
-    return (
-      <Box className="attribute_table_subattribute">
-          <Box className="attribute_table_subattribute_row">
-              <FormControl fullWidth>
-                  <InputLabel id="occupancySensorType-label">
-                      Languaje
-                  </InputLabel>
-                  <Select
-                      id="lang"
-                      data-test="lang"
-                      label="Languaje"
-                      className="attribute_table_subattribute_input"
-                      value={props.speed.speed_values[0].lang}
-                      onChange={(event) => {
-                          props.updateSpeedParam(props.index, "lang", event.target.value)
-                      }}
-                  >
-                      <MenuItem value="en">en</MenuItem>
-                      <MenuItem value="es">es</MenuItem>
-                  </Select>
-              </FormControl>
-          </Box>
-          <Box className="attribute_table_subattribute_row">
-              <TextField
-                  data-test="speed_name"
-                  label="Speed name"
-                  className="attribute_table_subattribute_input"
-                  type="text"
-                  variant="outlined"
-                  value={props.speed.speed_name}
-                  onChange={(event) => {
-                      props.updateSpeedParam(props.index, "speed_name", event.target.value)
-                  }}
-              />
-          </Box>
-          <Stack direction="row" spacing={1}>
-              <IconButton size="large" onClick={() => props.removeSpeed(props.index)}>
-                  <DeleteIcon />
-              </IconButton>
-          </Stack>
-      </Box>
-  );
-  }
-
   return (
     <>
       <div className="three_table_row">
