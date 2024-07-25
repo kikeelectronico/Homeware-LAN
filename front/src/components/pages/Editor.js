@@ -131,7 +131,7 @@ function Editor() {
     } else if (_action === "update") {
       status.current[_key] = _value
     } else if (_action === "delete") {
-      if (_key in status) {
+      if (_key in status.current) {
         delete status.current[_key]
       }
     }
