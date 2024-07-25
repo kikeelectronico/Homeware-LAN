@@ -53,11 +53,15 @@ const FanSpeed = forwardRef((props, ref) => {
 
   useEffect(() => {
     if (!supportsFanSpeedPercent) {
-      props.updateAttributes("supportsFanSpeedPercent", "", "delete")
+      props.updateAttributes("supportsFanSpeedPercent", null, "delete")
       props.updateAttributes("availableFanSpeeds", availableFanSpeeds, "update")
+      props.updateStatus("currentFanSpeedPercent", null, "delete")
+      props.updateStatus("currentFanSpeedSetting", "", "update")
     } else {
       props.updateAttributes("supportsFanSpeedPercent", supportsFanSpeedPercent, "update")
-      props.updateAttributes("availableFanSpeeds", "", "delete")
+      props.updateAttributes("availableFanSpeeds", null, "delete")
+      props.updateStatus("currentFanSpeedPercent", 0, "update")
+      props.updateStatus("currentFanSpeedSetting", null, "delete")
     }
       
       
