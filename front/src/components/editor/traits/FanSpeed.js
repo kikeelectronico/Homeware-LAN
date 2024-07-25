@@ -82,11 +82,20 @@ const FanSpeed = forwardRef((props, ref) => {
     let _availableFanSpeeds = {...availableFanSpeeds}
     if (name === "speed_name") {
       _availableFanSpeeds["speeds"][index]["speed_name"] = value
-      _availableFanSpeeds["speeds"][index]["speed_values"][0]["speed_synonym"] = [value]
+      _availableFanSpeeds["speeds"][index]["speed_values"]= [
+        {
+          "speed_synonym":  value,
+          "lang": _availableFanSpeeds["speeds"][index]["speed_values"][0]["lang"]
+        }
+      ]
     }  else if (name === "lang") {
-      _availableFanSpeeds["speeds"][index]["speed_values"][0]["lang"] = value
+      _availableFanSpeeds["speeds"][index]["speed_values"]= [
+        {
+          "speed_synonym":  _availableFanSpeeds["speeds"][index]["speed_values"][0]["speed_synonym"],
+          "lang": value
+        }
+      ]
     }
-    console.log(index, _availableFanSpeeds)
     setAvailableFanSpeeds(_availableFanSpeeds)
     props.updateAttributes("availableFanSpeeds", _availableFanSpeeds, "update")
   }
@@ -184,7 +193,7 @@ const FanSpeed = forwardRef((props, ref) => {
                             />
                         </Box>
                         <Stack direction="row" spacing={1}>
-                            <IconButton size="large" onClick={() => removeFanSpeed(props.index)}>
+                            <IconButton size="large" onClick={() => removeFanSpeed(index)}>
                                 <DeleteIcon />
                             </IconButton>
                         </Stack>
