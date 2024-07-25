@@ -197,13 +197,48 @@ const FanSpeed = forwardRef((props, ref) => {
           <div className="three_table_cel">
             {
                 availableFanSpeeds.speeds.map((speed, index) => {
-                    return <Speed
-                                speed={speed}
-                                index={index}
-                                removeSpeed={removeFanSpeed}
-                                updateSpeedParam={updateFanSpeed}
-                                key={index}
+                    return (
+                      <Box className="attribute_table_subattribute" key={index}>
+                        <Box className="attribute_table_subattribute_row">
+                            <FormControl fullWidth>
+                                <InputLabel id="occupancySensorType-label">
+                                    Languaje
+                                </InputLabel>
+                                <Select
+                                    id="lang"
+                                    data-test="lang"
+                                    label="Languaje"
+                                    className="attribute_table_subattribute_input"
+                                    value={speed.speed_values[0].lang}
+                                    onChange={(event) => {
+                                      updateFanSpeed(index, "lang", event.target.value)
+                                    }}
+                                >
+                                    <MenuItem value="en">en</MenuItem>
+                                    <MenuItem value="es">es</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Box>
+                        <Box className="attribute_table_subattribute_row">
+                            <TextField
+                                data-test="speed_name"
+                                label="Speed name"
+                                className="attribute_table_subattribute_input"
+                                type="text"
+                                variant="outlined"
+                                value={speed.speed_name}
+                                onChange={(event) => {
+                                  updateFanSpeed(index, "speed_name", event.target.value)
+                                }}
                             />
+                        </Box>
+                        <Stack direction="row" spacing={1}>
+                            <IconButton size="large" onClick={() => removeFanSpeed(props.index)}>
+                                <DeleteIcon />
+                            </IconButton>
+                        </Stack>
+                    </Box>
+                    )
                 })
             }
             <Box className="attribute_table_form_add_button">
