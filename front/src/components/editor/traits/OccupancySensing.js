@@ -38,14 +38,14 @@ const OccupancySensing = forwardRef((props, ref) => {
       }))
     
     const addOccupancySensorConfiguration = () => {
-        let _occupancySensorConfiguration = [...props.attributes.occupancySensorConfiguration]
-        _occupancySensorConfiguration.push(attributes.occupancySensorConfiguration[0])
+        let _occupancySensorConfiguration = [...occupancySensorConfiguration]
+        _occupancySensorConfiguration.push({...attributes.occupancySensorConfiguration[0]})
         setOccupancySensorConfiguration(_occupancySensorConfiguration)
         props.updateAttributes("occupancySensorConfiguration", _occupancySensorConfiguration, "update")
     }
 
     const removeOccupancySensorConfiguration = (index) => {
-        let _occupancySensorConfiguration = [...props.attributes.occupancySensorConfiguration]
+        let _occupancySensorConfiguration = [...occupancySensorConfiguration]
         _occupancySensorConfiguration.splice(index, 1)
         setOccupancySensorConfiguration(_occupancySensorConfiguration)
         props.updateAttributes("occupancySensorConfiguration", _occupancySensorConfiguration, "update")
