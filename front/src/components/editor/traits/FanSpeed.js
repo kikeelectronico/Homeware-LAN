@@ -41,7 +41,7 @@ const FanSpeed = forwardRef((props, ref) => {
       props.updateStatus(null, states, "insert")
       props.updateAttributes(null, attributes, "insert")
     }
-  }, [])
+  }, [props])
 
   useImperativeHandle(ref, () => ({
     deleteAttributes() {
@@ -62,7 +62,7 @@ const FanSpeed = forwardRef((props, ref) => {
     }
       
       
-  }, [supportsFanSpeedPercent])
+  }, [supportsFanSpeedPercent, availableFanSpeeds, props])
 
   const addFanSpeed = () => {
     let _availableFanSpeeds = {...availableFanSpeeds}
