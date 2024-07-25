@@ -14,7 +14,7 @@ const states = {
 }
 
 const speed_template = {
-  "speed_name": "sdf",
+  "speed_name": "",
   "speed_values": [
     {
       "speed_synonym": [""],
@@ -34,8 +34,7 @@ const FanSpeed = forwardRef((props, ref) => {
     if ("reversible" in props.attributes) {
       setReversible(props.attributes.reversible)
       setCommandOnlyFanSpeed(props.attributes.commandOnlyFanSpeed)
-      if ("supportsFanSpeedPercent" in props.attributes)
-        setSupportsFanSpeedPercent(props.attributes.supportsFanSpeedPercent)      
+      setSupportsFanSpeedPercent(props.attributes.supportsFanSpeedPercent) 
       if ("availableFanSpeeds" in props.attributes)
         setAvailableFanSpeeds(props.attributes.availableFanSpeeds)
     } else {
@@ -53,12 +52,10 @@ const FanSpeed = forwardRef((props, ref) => {
 
   useEffect(() => {
     if (!supportsFanSpeedPercent) {
-      props.updateAttributes("supportsFanSpeedPercent", null, "delete")
       props.updateAttributes("availableFanSpeeds", availableFanSpeeds, "update")
       props.updateStatus("currentFanSpeedPercent", null, "delete")
       props.updateStatus("currentFanSpeedSetting", "", "update")
     } else {
-      props.updateAttributes("supportsFanSpeedPercent", supportsFanSpeedPercent, "update")
       props.updateAttributes("availableFanSpeeds", null, "delete")
       props.updateStatus("currentFanSpeedPercent", 0, "update")
       props.updateStatus("currentFanSpeedSetting", null, "delete")
@@ -70,7 +67,6 @@ const FanSpeed = forwardRef((props, ref) => {
   const addFanSpeed = () => {
     let _availableFanSpeeds = {...availableFanSpeeds}
     _availableFanSpeeds.speeds.push({...speed_template})
-    console.log(_availableFanSpeeds)
     setAvailableFanSpeeds(_availableFanSpeeds)
     props.updateAttributes("availableFanSpeeds", _availableFanSpeeds, "update")
   }
