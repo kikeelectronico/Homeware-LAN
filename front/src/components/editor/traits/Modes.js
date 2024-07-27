@@ -53,9 +53,10 @@ const Modes = forwardRef((props, ref) => {
     let settings_str = ""
     for (let i = 0; i < settings.length; i++) {
       settings_str += settings[i]["setting_name"]
-      if (i < settings.length)
+      if (i < settings.length-1)
         settings_str += ","
     }
+    return settings_str
   }
 
   const addMode = () => {
