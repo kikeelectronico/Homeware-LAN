@@ -10,7 +10,7 @@ const attributes = {
 }
 
 const states = {
-  currentToggleSettings: []
+  currentToggleSettings: {}
 }
 
 const toggle_template = {
@@ -56,17 +56,30 @@ const Toggles = forwardRef((props, ref) => {
 
   const removeToggle = (index) => {
     let _availableToggles = [...availableToggles]
+    let _name = _availableToggles[index]["name"]
     _availableToggles.splice(index, 1)
     setAvailableToggles(_availableToggles)
     props.updateAttributes("availableToggles", _availableToggles, "update")
+    // Update status
+    let _currentToggleSettings = {...props.status.currentToggleSettings}
+    if (_name in _currentToggleSettings)
+      delete _currentToggleSettings[_name]
+    props.updateStatus("currentToggleSettings", _currentToggleSettings, "update")
   }
 
-  const updateName = (index, value) => {
+  const updateName = (index, name) => {
     let _availableToggles = [...availableToggles]
-    _availableToggles[index]["name"] = value
-    _availableToggles[index]["name_values"][0]["name_synonym"][0] = value
+    let _prev_name = _availableToggles[index]["name"]
+    _availableToggles[index]["name"] = name
+    _availableToggles[index]["name_values"][0]["name_synonym"][0] = name
     setAvailableToggles(_availableToggles)
     props.updateAttributes("availableToggles", _availableToggles, "update")
+    // Update status
+    let _currentToggleSettings = {...props.status.currentToggleSettings}
+    if (_prev_name in _currentToggleSettings)
+      delete _currentToggleSettings[_prev_name]
+    _currentToggleSettings[name] = false
+    props.updateStatus("currentToggleSettings", _currentToggleSettings, "update")
   }
 
   const updateLang = (index, value) => {

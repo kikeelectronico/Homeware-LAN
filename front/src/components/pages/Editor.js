@@ -311,6 +311,7 @@ function Editor() {
                   trait={trait}
                   device_traits={traits}
                   attributes={attributes.current}
+                  status={status.current}
                   updateTraits={updateTraits}
                   updateAttributes={updateAttributes}
                   updateStatus={updateStatus}
