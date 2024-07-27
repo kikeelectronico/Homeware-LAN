@@ -162,7 +162,7 @@
     margin-top: 20px;
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: 250px 250px auto;
+    grid-template-columns: 300px 250px auto;
   }
 
   .three_table_cel {
