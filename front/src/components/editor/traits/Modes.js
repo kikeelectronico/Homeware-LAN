@@ -67,17 +67,30 @@ const Modes = forwardRef((props, ref) => {
 
   const removeMode = (index) => {
     let _availableModes = [...availableModes]
+    let _name = _availableModes[index]["name"]
     _availableModes.splice(index, 1)
     setAvailableModes(_availableModes)
     props.updateAttributes("availableModes", _availableModes, "update")
+    // Update status
+    let _currentModeSettings = {...props.status.currentModeSettings}
+    if (_name in _currentModeSettings)
+      delete _currentModeSettings[_name]
+    props.updateStatus("currentModeSettings", _currentModeSettings, "update")
   }
 
   const updateName = (index, name) => {
     let _availableModes = [...availableModes]
+    let _prev_name = _availableModes[index]["name"]
     _availableModes[index]["name"] = name
     _availableModes[index]["name_values"][0]["name_synonym"][0] = name
     setAvailableModes(_availableModes)
     props.updateAttributes("availableModes", _availableModes, "update")
+    // Update status
+    let _currentModeSettings = {...props.status._currentModeSettings}
+    if (_prev_name in _currentModeSettings)
+      delete _currentModeSettings[_prev_name]
+    _currentModeSettings[name] = ""
+    props.updateStatus("currentModeSettings", _currentModeSettings, "update")
   }
 
   const updatesettings = (index, settings_str) => {
