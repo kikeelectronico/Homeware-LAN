@@ -11,8 +11,6 @@ import Devices from './components/pages/Devices'
 import Editor from './components/pages/Editor'
 import Info from './components/pages/Info'
 import Connecting from './components/pages/Connecting'
-import Tasks from './components/pages/Tasks'
-import Manager from './components/pages/Manager'
 import Settings from './components/pages/Settings'
 import System from './components/pages/System'
 import Backup from './components/pages/Backup'
@@ -185,7 +183,6 @@ class App extends React.Component {
               <div className="menu" id="menu">
                 <div>
                   <MenuElement image="/menu/devices_icon.png" title="Devices" href="/devices"/>
-                  <MenuElement image="/menu/tasks_icon.png" title="Tasks" href="/tasks"/>
                   <MenuElement image="/menu/settings_icon.png" title="Settings" href="/settings"/>
                   <MenuElement image="/menu/status_icon.png" title="System" href="/system"/>
                   <MenuElement image="/menu/backup_icon.png" title="Backup" href="/backup"/>
@@ -218,9 +215,6 @@ class App extends React.Component {
                   <Route path="/devices/editor/:deviceId" element={<Editor/>}> </Route>
                   <Route path="/devices/info/:deviceId" element={<Info/>}> </Route> 
                   <Route path="/devices/connecting/:deviceId" element={<Connecting/>}> </Route>
-                  <Route exact={ true } path="/tasks" element={<Tasks/>}> </Route>
-                  <Route path="/tasks/manager/" element={<Manager/>}> </Route>
-                  <Route path="/tasks/manager/:taskId" element={<Manager/>}> </Route>
                   <Route path="/settings" element={<Settings/>}> </Route>
                   <Route path="/system" element={<System git={this.state.git} version={this.state.version}/>}>  </Route>
                   <Route path="/backup" element={<Backup/>}> </Route>

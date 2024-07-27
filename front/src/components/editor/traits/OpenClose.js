@@ -36,7 +36,7 @@ const OpenClose = forwardRef((props, ref) => {
   }))
 
   return (
-    <div>
+    <>
       <div className="three_table_row">
         <div className="three_table_cel align_right">
           <i>discreteOnlyOpenClose</i>
@@ -49,9 +49,6 @@ const OpenClose = forwardRef((props, ref) => {
             }}
             checked={discreteOnlyOpenClose}
           />
-        </div>
-        <div className="three_table_cel">
-          <span className="attribute_advise">Enable it if the device must either be fully open or fully closed.</span>
         </div>
       </div>
 
@@ -68,9 +65,6 @@ const OpenClose = forwardRef((props, ref) => {
             checked={commandOnlyOpenClose}
           />
         </div>
-        <div className="three_table_cel">
-          <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the state.</span>
-        </div>
       </div>
 
       <div className="three_table_row">
@@ -86,12 +80,8 @@ const OpenClose = forwardRef((props, ref) => {
             checked={queryOnlyOpenClose}
           />
         </div>
-        <div className="three_table_cel">
-          <span className="attribute_advise">Enable it if Google shouldn't change the device state.</span>
-        </div>
       </div>
-
-    </div>
+    </>
   );
 })
 
