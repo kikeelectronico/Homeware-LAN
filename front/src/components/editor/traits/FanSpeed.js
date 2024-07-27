@@ -60,8 +60,6 @@ const FanSpeed = forwardRef((props, ref) => {
       props.updateStatus("currentFanSpeedPercent", 0, "update")
       props.updateStatus("currentFanSpeedSetting", null, "delete")
     }
-      
-      
   }, [supportsFanSpeedPercent, availableFanSpeeds, props])
 
   const addFanSpeed = () => {
