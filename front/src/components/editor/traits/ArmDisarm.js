@@ -63,7 +63,12 @@ const ArmDisarm = forwardRef((props, ref) => {
   const updateName = (index, value) => {
     let _availableArmLevels = {...availableArmLevels}
     _availableArmLevels["levels"][index]["level_name"] = value
-    _availableArmLevels["levels"][index]["level_values"][0]["level_synonym"][0] = value
+    _availableArmLevels["levels"][index]["level_values"]= [
+      {
+        "level_synonym":  [value],
+        "lang": _availableArmLevels["levels"][index]["level_values"][0]["lang"]
+      }
+    ]
     setAvailableArmLevels(_availableArmLevels)
     props.updateAttributes("availableArmLevels", _availableArmLevels, "update")
   }

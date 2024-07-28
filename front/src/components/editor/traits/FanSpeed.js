@@ -81,7 +81,12 @@ const FanSpeed = forwardRef((props, ref) => {
   const updateName = (index, value) => {
     let _availableFanSpeeds = {...availableFanSpeeds}
     _availableFanSpeeds["speeds"][index]["speed_name"] = value
-    _availableFanSpeeds["speeds"][index]["speed_values"][0]["speed_synonym"][0] = value
+    _availableFanSpeeds["speeds"][index]["speed_values"]= [
+      {
+        "speed_synonym":  [value],
+        "lang": _availableFanSpeeds["speeds"][index]["speed_values"][0]["lang"]
+      }
+    ]
     setAvailableFanSpeeds(_availableFanSpeeds)
     props.updateAttributes("availableFanSpeeds", _availableFanSpeeds, "update")
   }
