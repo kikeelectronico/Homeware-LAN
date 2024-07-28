@@ -71,7 +71,12 @@ const Toggles = forwardRef((props, ref) => {
     let _availableToggles = [...availableToggles]
     let _prev_name = _availableToggles[index]["name"]
     _availableToggles[index]["name"] = name
-    _availableToggles[index]["name_values"][0]["name_synonym"][0] = name
+    _availableToggles[index]["name_values"]= [
+      {
+        "name_synonym":  [name],
+        "lang": _availableToggles[index]["name_values"][0]["lang"]
+      }
+    ]
     setAvailableToggles(_availableToggles)
     props.updateAttributes("availableToggles", _availableToggles, "update")
     // Update status

@@ -83,7 +83,12 @@ const Modes = forwardRef((props, ref) => {
     let _availableModes = [...availableModes]
     let _prev_name = _availableModes[index]["name"]
     _availableModes[index]["name"] = name
-    _availableModes[index]["name_values"][0]["name_synonym"][0] = name
+    _availableModes[index]["name_values"]= [
+      {
+        "name_synonym":  [name],
+        "lang": _availableModes[index]["name_values"][0]["lang"]
+      }
+    ]
     setAvailableModes(_availableModes)
     props.updateAttributes("availableModes", _availableModes, "update")
     // Update status

@@ -47,6 +47,8 @@ const FanSpeed = forwardRef((props, ref) => {
     deleteAttributes() {
       props.updateStatus(null, states, "drop")
       props.updateAttributes(null, attributes, "drop")
+      props.updateAttributes("availableFanSpeeds", null, "delete")
+      props.updateStatus("currentFanSpeedSetting", null, "delete")
     }
   }))
 
@@ -76,25 +78,28 @@ const FanSpeed = forwardRef((props, ref) => {
     props.updateAttributes("availableFanSpeeds", _availableFanSpeeds, "update")
   }
 
-  const updateFanSpeed = (index, name, value) => {
+  const updateName = (index, value) => {
     let _availableFanSpeeds = {...availableFanSpeeds}
-    if (name === "speed_name") {
-      _availableFanSpeeds["speeds"][index]["speed_name"] = value
-      _availableFanSpeeds["speeds"][index]["speed_values"]= [
-        {
-          "speed_synonym":  value,
-          "lang": _availableFanSpeeds["speeds"][index]["speed_values"][0]["lang"]
-        }
-      ]
-    }  else if (name === "lang") {
-      _availableFanSpeeds["speeds"][index]["speed_values"]= [
+    _availableFanSpeeds["speeds"][index]["speed_name"] = value
+    _availableFanSpeeds["speeds"][index]["speed_values"]= [
+      {
+        "speed_synonym":  [value],
+        "lang": _availableFanSpeeds["speeds"][index]["speed_values"][0]["lang"]
+      }
+    ]
+    setAvailableFanSpeeds(_availableFanSpeeds)
+    props.updateAttributes("availableFanSpeeds", _availableFanSpeeds, "update")
+  }
+
+  const updateLang = (index, value) => {
+    let _availableFanSpeeds = {...availableFanSpeeds}
+    _availableFanSpeeds["speeds"][index]["speed_values"]= [
         {
           "speed_synonym":  _availableFanSpeeds["speeds"][index]["speed_values"][0]["speed_synonym"],
           "lang": value
         }
       ]
-    }
-    setAvailableFanSpeeds(_availableFanSpeeds)
+      setAvailableFanSpeeds(_availableFanSpeeds)
     props.updateAttributes("availableFanSpeeds", _availableFanSpeeds, "update")
   }
 
@@ -154,50 +159,50 @@ const FanSpeed = forwardRef((props, ref) => {
           </div>
           <div className="three_table_cel">
             {
-                availableFanSpeeds.speeds.map((speed, index) => {
-                    return (
-                      <Box className="attribute_table_subattribute" key={index}>
-                        <Box className="attribute_table_subattribute_row">
-                            <FormControl fullWidth>
-                                <InputLabel id="occupancySensorType-label">
-                                    Languaje
-                                </InputLabel>
-                                <Select
-                                    id="lang"
-                                    data-test="lang"
-                                    label="Languaje"
-                                    className="attribute_table_subattribute_input"
-                                    value={speed.speed_values[0].lang}
-                                    onChange={(event) => {
-                                      updateFanSpeed(index, "lang", event.target.value)
-                                    }}
-                                >
-                                    <MenuItem value="en">en</MenuItem>
-                                    <MenuItem value="es">es</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Box>
-                        <Box className="attribute_table_subattribute_row">
-                            <TextField
-                                data-test="speed_name"
-                                label="Speed name"
-                                className="attribute_table_subattribute_input"
-                                type="text"
-                                variant="outlined"
-                                value={speed.speed_name}
-                                onChange={(event) => {
-                                  updateFanSpeed(index, "speed_name", event.target.value)
-                                }}
-                            />
-                        </Box>
-                        <Stack direction="row" spacing={1}>
-                            <IconButton size="large" onClick={() => removeFanSpeed(index)}>
-                                <DeleteIcon />
-                            </IconButton>
-                        </Stack>
+              availableFanSpeeds.speeds.map((speed, index) => {
+                return (
+                  <Box className="attribute_table_subattribute" key={index}>
+                    <Box className="attribute_table_subattribute_row">
+                      <TextField
+                        data-test="speed_name"
+                        label="Speed name"
+                        className="attribute_table_subattribute_input"
+                        type="text"
+                        variant="outlined"
+                        value={speed.speed_name}
+                        onChange={(event) => {
+                          updateName(index, event.target.value)
+                        }}
+                      />
                     </Box>
-                    )
-                })
+                    <Box className="attribute_table_subattribute_row">
+                      <FormControl fullWidth>
+                        <InputLabel id="occupancySensorType-label">
+                          Languaje
+                        </InputLabel>
+                        <Select
+                          id="lang"
+                          data-test="lang"
+                          label="Languaje"
+                          className="attribute_table_subattribute_input"
+                          value={speed.speed_values[0].lang}
+                          onChange={(event) => {
+                            updateLang(index, event.target.value)
+                          }}
+                        >
+                          <MenuItem value="en">en</MenuItem>
+                          <MenuItem value="es">es</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Box>
+                    <Stack direction="row" spacing={1}>
+                        <IconButton size="large" onClick={() => removeFanSpeed(index)}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Stack>
+                </Box>
+                )
+              })
             }
             <Box className="attribute_table_form_add_button">
                 <Button
