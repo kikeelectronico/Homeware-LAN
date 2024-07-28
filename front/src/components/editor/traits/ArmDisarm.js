@@ -1,87 +1,152 @@
-import React from 'react';
+import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
+import Switch from "react-switch";
+import {InputLabel, Button, Select, MenuItem, Box, TextField, FormControl, IconButton, Stack} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-class ArmDisarm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.updateSecurityLevel = this.updateSecurityLevel.bind(this);
-    this.addSecurityLevel = this.addSecurityLevel.bind(this);
+const attributes = {
+  availableArmLevels: {
+    levels: [],
+    ordered: false
+  },
+}
+
+const states = {
+  isArmed: false,
+  currentArmLevel: "",
+  exitAllowance: 30
+}
+
+const level_template = {
+  "level_name": "",
+  "level_values": [
+    {
+      "level_synonym": [""],
+      "lang": "en"
+    }
+  ]
+}
+
+const ArmDisarm = forwardRef((props, ref) => {
+
+  const [availableArmLevels, setAvailableArmLevels] = useState(attributes.availableArmLevels)
+
+  useEffect(() => {
+    if ("availableArmLevels" in props.attributes) {
+      setAvailableArmLevels(props.attributes.availableArmLevels)
+    } else {
+      props.updateStatus(null, states, "insert")
+      props.updateAttributes(null, attributes, "insert")
+    }
+  }, [props])
+
+  useImperativeHandle(ref, () => ({
+    deleteAttributes() {
+      props.updateStatus(null, states, "drop")
+      props.updateAttributes(null, attributes, "drop")
+    }
+  }))
+
+  const addLevel = () => {
+    let _availableArmLevels = {...availableArmLevels}
+    _availableArmLevels.levels.push({...level_template})
+    setAvailableArmLevels(_availableArmLevels)
+    props.updateAttributes("availableArmLevels", _availableArmLevels, "update")
   }
 
-  updateSecurityLevel(event){
-    const id = event.target.id.split('_')
-    const level_id = id[1]
-    //Process the attribute and value depending of the attribute
-    const level_attribute = id[0] === 'lang' ? id[0] : 'level_synonym';
-    const value = id[0] === 'lang' ? event.target.value : event.target.value.split(',')
-    //Update the temporal data and update it
-    var temp_availableArmLevels = this.props.attributes.availableArmLevels
-    temp_availableArmLevels.levels[level_id].level_values[0][level_attribute] = value
-    if (id[0] === 'names') temp_availableArmLevels.levels[level_id].level_name = value[0]
-    this.props.update('attributes/availableArmLevels', temp_availableArmLevels);
+  const removeLevel = (index) => {
+    let _availableArmLevels = {...availableArmLevels}
+    _availableArmLevels.levels.splice(index, 1)
+    setAvailableArmLevels(_availableArmLevels)
+    props.updateAttributes("availableArmLevels", _availableArmLevels, "update")
   }
 
-  addSecurityLevel(){
-    var temp_availableArmLevels = this.props.attributes.availableArmLevels
-    temp_availableArmLevels.levels.push({
-      "level_name": "",
-      "level_values": [
+  const updateName = (index, value) => {
+    let _availableArmLevels = {...availableArmLevels}
+    _availableArmLevels["levels"][index]["level_name"] = value
+    _availableArmLevels["levels"][index]["level_values"][0]["level_synonym"][0] = value
+    setAvailableArmLevels(_availableArmLevels)
+    props.updateAttributes("availableArmLevels", _availableArmLevels, "update")
+  }
+
+  const updateLang = (index, value) => {
+    let _availableArmLevels = {...availableArmLevels}
+    _availableArmLevels["levels"][index]["level_values"]= [
         {
-          "level_synonym": [""],
-          "lang": "en"
+          "level_synonym":  _availableArmLevels["levels"][index]["level_values"][0]["level_synonym"],
+          "lang": value
         }
       ]
-    });
-    this.props.update('attributes/availableArmLevels', temp_availableArmLevels);
+    setAvailableArmLevels(_availableArmLevels)
+    props.updateAttributes("availableArmLevels", _availableArmLevels, "update")
   }
 
-  render() {
-
-    const names_box = {
-      marginLeft: '20px',
-      width: '150px'
-    }
-
-    const levels = this.props.attributes.availableArmLevels.levels.map((level, i) => {
-      return (
-              <div key={i}>
-                <div className="two_table_row" key={i}>
-                  <div className="two_table_cel">
-                  </div>
-                  <div className="two_table_cel">
-                    <label>
-                      <span>Languaje: </span>
-                      <select name="type" id={"lang_" + i} value={level.level_values[0].lang} onChange={this.updateSecurityLevel}>
-                        <option value="es">es</option>
-                        <option value="en">en</option>
-                      </select>
-                    </label>
-                    <label>
-                      <span>Level name: </span>
-                      <input type="text" id={"names_" + i} style={names_box} defaultValue={level.level_values[0].level_synonym} placeholder="Security level name" onChange={this.updateSecurityLevel}/>
-                    </label>
-                  </div>
-                </div>
-              </div>
-              )
-    });
-
-    return (
-      <div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            Add a security level
-          </div>
-          <div className="three_table_cel">
-            <button type="button" className="add_attribute_button" onClick={ this.addSecurityLevel }>Add</button>
-          </div>
+  return (
+    <>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          <i>availableArmLevels</i>
         </div>
-
-        {levels}
-
+        <div className="three_table_cel">
+          {
+            availableArmLevels.levels.map((level, index) => {
+              return (
+                <Box className="attribute_table_subattribute" key={index}>
+                  <Box className="attribute_table_subattribute_row">
+                    <TextField
+                      data-test="speed_name"
+                      label="Speed name"
+                      className="attribute_table_subattribute_input"
+                      type="text"
+                      variant="outlined"
+                      value={level.level_name}
+                      onChange={(event) => {
+                        updateName(index, event.target.value)
+                      }}
+                    />
+                  </Box>
+                  <Box className="attribute_table_subattribute_row">
+                    <FormControl fullWidth>
+                      <InputLabel id="occupancySensorType-label">
+                        Languaje
+                      </InputLabel>
+                      <Select
+                        id="lang"
+                        data-test="lang"
+                        label="Languaje"
+                        className="attribute_table_subattribute_input"
+                        value={level.level_values[0].lang}
+                        onChange={(event) => {
+                          updateLang(index, event.target.value)
+                        }}
+                      >
+                        <MenuItem value="en">en</MenuItem>
+                        <MenuItem value="es">es</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Box>
+                  <Stack direction="row" spacing={1}>
+                      <IconButton size="large" onClick={() => removeLevel(index)}>
+                          <DeleteIcon />
+                      </IconButton>
+                  </Stack>
+                </Box>
+              )
+            })
+          }
+          <Box className="attribute_table_form_add_button">
+              <Button
+                  variant="contained"
+                  className="attribute_table_form_add_button"
+                  onClick={addLevel}
+              >
+                  Add
+              </Button>
+          </Box>
+        </div>
       </div>
-    );
-  }
-}
+    </>
+  );
+
+})
 
 export default ArmDisarm
