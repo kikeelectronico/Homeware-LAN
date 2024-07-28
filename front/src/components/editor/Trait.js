@@ -13,6 +13,7 @@ import FanSpeed from "./traits/FanSpeed";
 import Fill from "./traits/Fill";
 import HumiditySetting from "./traits/HumiditySetting";
 import Locator from './traits/Locator';
+import LockUnlock from './traits/LockUnlock';
 import Modes from "./traits/Modes";
 import OccupancySensing from "./traits/OccupancySensing";
 import OnOff from "./traits/OnOff";
@@ -51,8 +52,7 @@ const Trait = (props) => {
       else if (trait === "action.devices.traits.Fill") return <Fill attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.HumiditySetting") return <HumiditySetting attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.Locator") return <Locator ref={childRef}/>
-    //   else if (trait === "action.devices.traits.Locator") return <Locator status={props.status} updateStatus={props.updateStatus} ref={childRef}/>
-
+      else if (trait === "action.devices.traits.LockUnlock") return <LockUnlock status={props.status} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.Modes") return <Modes attributes={props.attributes} updateAttributes={props.updateAttributes} status={props.status} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.OccupancySensing") return <OccupancySensing attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.OnOff") return <OnOff attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/> 
