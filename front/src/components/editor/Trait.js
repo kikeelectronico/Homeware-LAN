@@ -7,6 +7,7 @@ import ArmDisarm from "./traits/ArmDisarm";
 import Brightness from "./traits/Brightness";
 import ColorSetting from "./traits/ColorSetting";
 import Cook from "./traits/Cook";
+import Dock from './traits/Dock';
 import EnergyStorage from "./traits/EnergyStorage";
 import FanSpeed from "./traits/FanSpeed";
 import Fill from "./traits/Fill";
@@ -43,6 +44,7 @@ const Trait = (props) => {
       else if (trait === "action.devices.traits.Brightness") return <Brightness attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.ColorSetting") return <ColorSetting attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
     //   else if (trait === "action.devices.traits.Cook") return <Cook attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
+      else if (trait === "action.devices.traits.Dock") return <Dock status={props.status} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.EnergyStorage") return <EnergyStorage attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.FanSpeed") return <FanSpeed attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.Fill") return <Fill attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
