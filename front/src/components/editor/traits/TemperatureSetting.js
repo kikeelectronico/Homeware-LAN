@@ -292,23 +292,6 @@ const TemperatureSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-
-      {/* 
-
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
-          Units
-        </div>
-        <div className="three_table_cel">
-          <select name="type" id="thermostatTemperatureUnit" className="table_input" value={this.props.attributes.thermostatTemperatureUnit} onChange={this.update}>
-            <option value="C">Celsius</option>
-            <option value="F">Fahrenheit</option>
-          </select>
-        </div>
-      </div> */}
-
-
-
     </>
   );
   
