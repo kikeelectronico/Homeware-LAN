@@ -19,6 +19,7 @@ import OccupancySensing from "./traits/OccupancySensing";
 import OnOff from "./traits/OnOff";
 import OpenClose from "./traits/OpenClose";
 import Rotation from "./traits/Rotation";
+import RunCycle from './traits/RunCycle';
 import Scene from "./traits/Scene";
 import SensorState from "./traits/SensorState";
 import StartStop from "./traits/StartStop";
@@ -58,6 +59,7 @@ const Trait = (props) => {
       else if (trait === "action.devices.traits.OnOff") return <OnOff attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/> 
       else if (trait === "action.devices.traits.OpenClose") return <OpenClose attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.Rotation") return <Rotation attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
+      else if (trait === "action.devices.traits.RunCycle") return <RunCycle status={props.status} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.Scene") return <Scene attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
     //   else if (trait === "action.devices.traits.SensorState") return <SensorState attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.StartStop") return <StartStop attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
