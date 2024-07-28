@@ -51,7 +51,7 @@ const Trait = (props) => {
       else if (trait === "action.devices.traits.OccupancySensing") return <OccupancySensing attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.OnOff") return <OnOff attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/> 
       else if (trait === "action.devices.traits.OpenClose") return <OpenClose attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
-    //   else if (trait === "action.devices.traits.Rotation") return <Rotation attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
+      else if (trait === "action.devices.traits.Rotation") return <Rotation attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.Scene") return <Scene attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
     //   else if (trait === "action.devices.traits.SensorState") return <SensorState attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
     //   else if (trait === "action.devices.traits.StartStop") return <StartStop attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
