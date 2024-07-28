@@ -1,5 +1,4 @@
-import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
-import Switch from "react-switch";
+import React, {useEffect, forwardRef, useImperativeHandle} from 'react';
 
 const states = {
   isDocked: false
