@@ -13,10 +13,8 @@ const attributes = {
 }
 
 const states = {
-  activeThermostatMode: "off",
-  thermostatMode: "off",
-  thermostatTemperatureAmbient: 22,
-  thermostatTemperatureSetpoint: 22
+  temperatureSetpointCelsius: 22,
+  temperatureAmbientCelsius: 22
 }
 
 const TemperatureControl = forwardRef((props, ref) => {
