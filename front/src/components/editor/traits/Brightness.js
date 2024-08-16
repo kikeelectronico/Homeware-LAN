@@ -30,7 +30,6 @@ const Brightness = forwardRef((props, ref) => {
   }))
 
   return (
-    <div>
       <div className="three_table_row">
         <div className="three_table_cel align_right">
           <i>commandOnlyBrightness</i>
@@ -44,13 +43,7 @@ const Brightness = forwardRef((props, ref) => {
             checked={commandOnlyBrightness}
           />
         </div>
-        <div className="three_table_cel">
-          <span className="attribute_advise">
-            Enable it if Homeware-LAN shouldn't inform Google Home about the brightness.
-          </span>
-        </div>
       </div>
-    </div>
   );
   
 })

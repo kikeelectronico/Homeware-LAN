@@ -2,7 +2,7 @@
 
 Homeware is a _Google Home Provider Cloud Service_, a complete ecosystem that allows you to connect any of your DIY home devices to Google Home. Once connected you can control the device from both Google Assistant and Google Home App.
 
-Homeware containts a backend that does the integration and a web forntend that allows you to manage your devices and program tasks.
+Homeware containts a backend that does the integration and a web forntend that allows you to manage your devices.
 
 # Install
 

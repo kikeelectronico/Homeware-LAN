@@ -41,7 +41,7 @@
   margin-left: 20px;
 }
 
-@media only screen and (min-width: 1300px) {
+@media only screen and (min-width: 800px) {
   .App {
     text-align: center;
     height: 100%;
@@ -162,7 +162,7 @@
     margin-top: 20px;
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: 250px 250px auto;
+    grid-template-columns: 300px 250px auto;
   }
 
   .three_table_cel {
@@ -289,7 +289,7 @@
   }
 }
 
-@media only screen and (max-width: 1300px) {
+@media only screen and (max-width: 800px) {
   .App {
     text-align: center;
     height: 100%;

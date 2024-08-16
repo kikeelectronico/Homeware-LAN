@@ -68,7 +68,7 @@ const ColorSetting = forwardRef((props, ref) => {
   }
 
   return (
-    <div>
+    <>
       <div className="three_table_row">
         <div className="three_table_cel align_right">
           <i>commandOnlyColorSetting</i>
@@ -81,9 +81,6 @@ const ColorSetting = forwardRef((props, ref) => {
             }}
             checked={commandOnlyColorSetting}
           />
-        </div>
-        <div className="three_table_cel">
-          <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the color.</span>
         </div>
       </div>
       <div className="three_table_row">
@@ -101,9 +98,6 @@ const ColorSetting = forwardRef((props, ref) => {
             <option value="rgb">RGB light</option>
             <option value="hsv">HSV light</option>
           </select>
-        </div>
-        <div className="three_table_cel">
-          <span className="attribute_advise">Select a color coding format.</span>
         </div>
       </div> 
       {
@@ -123,9 +117,6 @@ const ColorSetting = forwardRef((props, ref) => {
                   min="0" max="10000" className="int_input"
                 />
               </div>
-              <div className="three_table_cel">
-                <span className="attribute_advise">Minimum color temperature (in Kelvin) supported by the device.</span>
-              </div>
             </div>
             <div className="three_table_row">
               <div className="three_table_cel align_right">
@@ -141,16 +132,11 @@ const ColorSetting = forwardRef((props, ref) => {
                   min="0" max="10000" className="int_input"
                 />
               </div>
-              <div className="three_table_cel">
-                <span className="attribute_advise">Maximum color temperature (in Kelvin) supported by the device.</span>
-              </div>
             </div>
           </>
         : <></>
-      }
-     
-            
-    </div>
+      }      
+    </>
   );
   
 })
