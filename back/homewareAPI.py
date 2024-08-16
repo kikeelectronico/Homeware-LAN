@@ -264,145 +264,6 @@ def apiStatusGet(value=None):
 
     return response
 
-@app.route("/api/tasks/update", methods=['POST'])
-@app.route("/api/tasks/update/", methods=['POST'])
-def apiTasksUpdate():
-
-    accessLevel = checkAccessLevel(request.headers)
-
-    if accessLevel >= 10:
-        incommingData = request.get_json()
-        if data_conector.updateTask(incommingData):
-            response = app.response_class(
-                response=json.dumps(TWO_O_O),
-                status=200,
-                mimetype='application/json'
-            )
-        else:
-            response = app.response_class(
-                response=json.dumps(FOUR_O_FOUR),
-                status=404,
-                mimetype='application/json'
-            )
-    else:
-        data_conector.log(
-            'Alert', 'Request to API > task > update endpoint with bad authentication')
-        response = app.response_class(
-            response=json.dumps(FOUR_O_ONE),
-            status=401,
-            mimetype='application/json'
-        )
-    
-    return response
-
-@app.route("/api/tasks/create", methods=['POST'])
-@app.route("/api/tasks/create/", methods=['POST'])
-def apiTasksCreate():
-
-    accessLevel = checkAccessLevel(request.headers)
-
-    if accessLevel >= 10:
-        incommingData = request.get_json()
-        data_conector.createTask(incommingData['task'])
-        response = app.response_class(
-            response=json.dumps(TWO_O_O),
-            status=200,
-            mimetype='application/json'
-        )
-    else:
-        data_conector.log(
-            'Alert', 'Request to API > task > create endpoint with bad authentication')
-        response = app.response_class(
-            response=json.dumps(FOUR_O_ONE),
-            status=401,
-            mimetype='application/json'
-        )
-
-    return response
-
-@app.route("/api/tasks/delete/<value>", methods=['POST'])
-@app.route("/api/tasks/delete/<value>/", methods=['POST'])
-def apiTasksDelete(value=''):
-
-    accessLevel = checkAccessLevel(request.headers)
-
-    if accessLevel >= 10:
-        if data_conector.deleteTask(int(value)):
-            response = app.response_class(
-                response=json.dumps(TWO_O_O),
-                status=200,
-                mimetype='application/json'
-            )
-        else:
-            response = app.response_class(
-                response=json.dumps(FOUR_O_FOUR),
-                status=404,
-                mimetype='application/json'
-            )
-    else:
-        data_conector.log(
-            'Alert', 'Request to API > task > delete endpoint with bad authentication')
-        response = app.response_class(
-                response=json.dumps(FOUR_O_ONE),
-                status=401,
-                mimetype='application/json'
-            )
-
-    
-    return response
-
-@app.route("/api/tasks/get", methods=['GET'])
-@app.route("/api/tasks/get/", methods=['GET'])
-@app.route("/api/tasks/get/<value>", methods=['GET'])
-@app.route("/api/tasks/get/<value>/", methods=['GET'])
-def apiTasksGet(value=''):
-
-    accessLevel = checkAccessLevel(request.headers)
-
-    if accessLevel >= 10:
-        tasks = data_conector.getTasks()
-        try:
-            if not value == '':
-                if 0 <= int(value) < len(tasks):
-                    response = app.response_class(
-                        response=json.dumps(tasks[int(value)]),
-                        status=200,
-                        mimetype='application/json'
-                    )
-                else:
-                    response = app.response_class(
-                        response=json.dumps(FOUR_O_FOUR),
-                        status=404,
-                        mimetype='application/json'
-                    )
-            else:
-                response = app.response_class(
-                    response=json.dumps(tasks),
-                    status=200,
-                    mimetype='application/json'
-                )
-        except:
-            responseData = {
-                'error': 'Invalid task ID, it must be a integer',
-                'code': 400,
-                'note': 'See the documentation https://homeware.enriquegomez.me/api/'
-            }
-            response = app.response_class(
-                response=json.dumps(responseData),
-                status=400,
-                mimetype='application/json'
-            )
-    else:
-        data_conector.log(
-            'Alert', 'Request to API > task > get endpoint with bad authentication')
-        response = app.response_class(
-            response=json.dumps(FOUR_O_ONE),
-            status=401,
-            mimetype='application/json'
-        )
-
-    return response
-
 @app.route("/api/global/version", methods=['GET'])
 @app.route("/api/global/version/", methods=['GET'])
 def apiGlobalVersion():
@@ -629,11 +490,6 @@ def apiSystemStatus():
                 'status': 'Stopped',
                 'title': 'Homeware MQTT'
             },
-            'tasks': {
-                'enable': True,
-                'status': 'Stopped',
-                'title': 'Homeware Task'
-            },
             'redis': data_conector.redisStatus()
         }
 
@@ -642,8 +498,6 @@ def apiSystemStatus():
             alive = data_conector.getAlive()
             if (ts - int(alive['mqtt'])) < 10:
                 responseData['mqtt']['status'] = "Running"
-            if (ts - int(alive['tasks'])) < 10:
-                responseData['tasks']['status'] = "Running"
         except:
             print("homewareMQTT stopped")
         
