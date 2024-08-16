@@ -490,6 +490,11 @@ def apiSystemStatus():
                 'status': 'Stopped',
                 'title': 'Homeware MQTT'
             },
+            'tasks': {
+                'enable': True,
+                'status': 'Stopped',
+                'title': 'Homeware Task'
+            },
             'redis': data_conector.redisStatus()
         }
 
@@ -498,6 +503,8 @@ def apiSystemStatus():
             alive = data_conector.getAlive()
             if (ts - int(alive['mqtt'])) < 10:
                 responseData['mqtt']['status'] = "Running"
+            if (ts - int(alive['tasks'])) < 10:
+                responseData['tasks']['status'] = "Running"
         except:
             print("homewareMQTT stopped")
         
