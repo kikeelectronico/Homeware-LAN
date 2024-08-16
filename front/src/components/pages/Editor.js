@@ -42,7 +42,12 @@ function Editor() {
             setType(data.type)
             setNicknames(data.name.nicknames)
             setTraits(data.traits)
-            setTraitsToShow(deviceReference.devices[data.type].traits)
+            let _traits_to_show = []
+            const all_traits = Object.keys(deviceReference.traits)
+            for (let i = 0; i < all_traits.length; i++)
+              if (data.traits.includes(all_traits[i]) || deviceReference.devices[data.type].traits.includes(all_traits[i]))
+                _traits_to_show.push(all_traits[i])
+            setTraitsToShow(_traits_to_show)
             setDeviceInfo(data.deviceInfo)
             attributes.current = data.attributes
             setLoading(false)
@@ -131,7 +136,7 @@ function Editor() {
     } else if (_action === "update") {
       status.current[_key] = _value
     } else if (_action === "delete") {
-      if (_key in status) {
+      if (_key in status.current) {
         delete status.current[_key]
       }
     }
@@ -306,6 +311,7 @@ function Editor() {
                   trait={trait}
                   device_traits={traits}
                   attributes={attributes.current}
+                  status={status.current}
                   updateTraits={updateTraits}
                   updateAttributes={updateAttributes}
                   updateStatus={updateStatus}

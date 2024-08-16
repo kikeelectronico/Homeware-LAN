@@ -1,37 +1,14 @@
-from ipaddress import ip_address
 import time
 from datetime import datetime
 import json
 import hostname
 import paho.mqtt.publish as publish
 import requests
-from base64 import b64encode
 from data import Data
 
 #Init the data managment object
 data_conector = Data()
-
 already_run = False
-
-def verifyTasks():
-	tasks = data_conector.getTasks()
-	status = data_conector.getStatus()
-
-	for taskData in tasks:
-		triggers = taskData['triggers']
-		try:
-			execution_value = operationExecutor('trigger', triggers, status)
-			if execution_value:
-				for target in taskData['target']:
-					value = target['value']
-					if target['value'] == 'true': value = True
-					elif target['value'] == 'false': value = False
-					elif target['param'] == 'color': value = {"spectrumRGB": value, "spectrumRgb": value}
-					data_conector.updateParamStatus(target['device'], target['param'], value)
-
-
-		except Exception as e:
-			data_conector.log('Alert', 'Catch an error in execution of ' + taskData['title'] + 'task' + str(e))
 
 def ddnsUpdater():
 	ddns = data_conector.getDDNS()
@@ -98,133 +75,6 @@ def ddnsUpdater():
 					else:
 						data_conector.updateDDNS(newIP, code, code, False, last)
 
-def operationExecutor(id, triggers, status):
-	operation = triggers[str(id)]
-	if operation['type'] == "d2b":
-		return d2bExecutor(operation['operation'], status)
-	elif operation['type'] == "d2d":
-		return d2dExecutor(operation['operation'], status)
-	elif operation['type'] == "d2i":
-		return d2iExecutor(operation['operation'], status)
-	elif operation['type'] == "d2l":
-		return d2lExecutor(operation['operation'], status)
-	elif operation['type'] == "time":
-		return timeExecutor(operation['operation'])
-	elif operation['type'] == "or":
-		return orExecutor(operation['operation'], triggers, status)
-	elif operation['type'] == "and":
-		return andExecutor(operation['operation'], triggers, status)
-
-def orExecutor(ids, triggers, status):
-	execution_values = []
-	for id in ids:
-		execution_values.append(operationExecutor(id, triggers, status))
-	return any(execution_values)
-
-def andExecutor(ids, triggers, status):
-	execution_values = []
-	for id in ids:
-		execution_values.append(operationExecutor(id, triggers, status))
-	return all(execution_values)
-
-def d2bExecutor(operation, status):
-	op = operation.split(':')
-	device = op[0]
-	param = op[1]
-	sign = op[2]
-	value = op[3] == "true"
-	if sign == '=' and status[device][param] == value:
-		return True
-	else:
-		return False
-
-def d2iExecutor(operation, status):
-	op = operation.split(':')
-	device = op[0]
-	param = op[1]
-	sign = op[2]
-	value = 0
-	try:
-		value = int(op[3])
-	except:
-		data_conector.log('Alert', device + param + value + 'is not an int')
-
-	if sign == '=' and status[device][param] == value:
-		return True
-	elif sign == '<' and status[device][param] < value:
-		return True
-	elif sign == '>' and status[device][param] > value:
-		return True
-	elif sign == '<=' and status[device][param] <= value:
-		return True
-	elif sign == '>=' and status[device][param] >= value:
-		return True
-	else:
-		return False
-
-def d2lExecutor(operation, status):
-	op = operation.split(':')
-	device = op[0]
-	param = op[1]
-	sign = op[2]
-	value = ""
-
-	try:
-		value = str(op[3])
-	except:
-		data_conector.log('Alert', device + param + value + 'is not an string')
-
-	if sign == '=' and status[device][param] == value:
-		return True
-	elif sign == '<' and status[device][param] < value:
-		return True
-	elif sign == '>' and status[device][param] > value:
-		return True
-	elif sign == '<=' and status[device][param] <= value:
-		return True
-	elif sign == '>=' and status[device][param] >= value:
-		return True
-	else:
-		return False
-
-def d2dExecutor(operation, status):
-	op = operation.split(':')
-	device_a = op[0]
-	param_a = op[1]
-	sign = op[2]
-	device_b = op[3]
-	param_b = op[4]
-
-	if sign == '=' and status[device_a][param_a] == status[device_b][param_b]:
-		return True
-	elif sign == '<' and status[device_a][param_a] < status[device_b][param_b]:
-		return True
-	elif sign == '>' and status[device_a][param_a] > status[device_b][param_b]:
-		return True
-	elif sign == '<=' and status[device_a][param_a] <= status[device_b][param_b]:
-		return True
-	elif sign == '>=' and status[device_a][param_a] >= status[device_b][param_b]:
-		return True
-	else:
-		return False
-
-def timeExecutor(operation):
-	op = operation.split(':')
-	h_op = int(op[0])
-	m_op = int(op[1])
-	w_op = op[2]
-	ts = time.localtime(time.time())
-	h = ts.tm_hour
-	m = ts.tm_min
-	pw = ts.tm_wday
-	week = [1,2,3,4,5,6,0]
-	w = str(week[pw])
-
-	if h == h_op and m == m_op and w in w_op:
-		return True
-	else:
-		return False
-
 def syncDevicesStatus():
 	if data_conector.getSyncDevices():
 		devices = data_conector.getStatus()
@@ -252,7 +102,6 @@ if __name__ == "__main__":
 	data_conector.log('Log', 'Starting HomewareTask core')
 	while(True):
 		ddnsUpdater()
-		verifyTasks()
 		syncDevicesStatus()
 		clearLogFile()
 		data_conector.updateAlive('tasks')
