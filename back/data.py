@@ -19,7 +19,7 @@ class Data:
 	"""Access to the Homeware database and files."""
   
 
-	version = 'v1.11.0'
+	version = 'v2.0.0'
 	homewareFile = 'homeware.json'
 
 	def __init__(self):
@@ -125,7 +125,6 @@ class Data:
 		data = {
 			'devices': json.loads(self.redis.get('devices')),
 			'status':self.getStatus(),
-			'tasks': json.loads(self.redis.get('tasks'))
 		}
 		return data
 
@@ -133,7 +132,6 @@ class Data:
 		data = {
 			'devices': json.loads(self.redis.get('devices')),
 			'status': self.getStatus(),
-			'tasks': json.loads(self.redis.get('tasks')),
 			'secure': {
 				"domain": self.redis.get("domain").decode('UTF-8'),
 				"user": self.redis.get("user/username").decode('UTF-8'),
@@ -176,7 +174,6 @@ class Data:
 		data = {
 			'devices': json.loads(self.redis.get('devices')),
 			'status': self.getStatus(),
-			'tasks': json.loads(self.redis.get('tasks')),
 			'secure': {
 				"domain": self.redis.get("domain").decode('UTF-8'),
 				"user": self.redis.get("user/username").decode('UTF-8'),
@@ -219,7 +216,6 @@ class Data:
 		file.close()
 		# Save the jsons
 		self.redis.set('devices',json.dumps(data['devices']))
-		self.redis.set('tasks',json.dumps(data['tasks']))
 		# Load the status in the database
 		status = data['status']
 		devices = status.keys()
@@ -387,38 +383,6 @@ class Data:
 				except:
 					self.log("Warning", "Unable to communicate with homegraph")
 
-			return True
-		else:
-			return False
-
-
-# TASKS
-
-	def getTasks(self):
-		return json.loads(self.redis.get('tasks'))
-
-	def getTask(self, i):
-		return json.loads(self.redis.get('tasks'))[i]
-
-	def updateTask(self, incommingData):
-		tasks = json.loads(self.redis.get('tasks'))
-		if int(incommingData['id']) < len(tasks):
-			tasks[int(incommingData['id'])] = incommingData['task']
-			self.redis.set('tasks',json.dumps(tasks))
-			return True
-		else:
-			return False
-
-	def createTask(self, task):
-		tasks = json.loads(self.redis.get('tasks'))
-		tasks.append(task)
-		self.redis.set('tasks',json.dumps(tasks))
-
-	def deleteTask(self, i):
-		tasks = json.loads(self.redis.get('tasks'))
-		if i < len(tasks):
-			del tasks[int(i)]
-			self.redis.set('tasks', json.dumps(tasks))
 			return True
 		else:
 			return False

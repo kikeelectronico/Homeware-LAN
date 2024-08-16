@@ -15,11 +15,3 @@ This function verify the public IP and sends request to the DDNS provider in ord
 ### syncDevicesStatus
 
 This functions sends the devices its status periodically.
-
-### operationExecutor
-
-This function is the entry point for the execution of the user's programed tasks.
-
-### <operation-name\>Executor
-
-There are a list of functions other than _operatorExecutor_ that are part of the recursive execution of the user's tasks. Each function do a specifuc operation like logic or, logic and, time verifier, etc.

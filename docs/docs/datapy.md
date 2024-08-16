@@ -27,7 +27,7 @@ The system version object.
 
 ## Method - getGlobal
 
-The method returns all the devices data and all tasks.
+The method returns all the devices data.
 
 `myData.getGlobal()`
 
@@ -36,13 +36,12 @@ The method returns all the devices data and all tasks.
 None
 
 ### Returns
-An object containing devices, status and tasks.
+An object containing devices and status.
 
 ```
 {
   devices: [...],
-  status: {...},
-  tasks: [...]
+  status: {...}
 }
 ```
 
@@ -164,200 +163,6 @@ It is the new value
 
 ### Returns
 `True` if the device was found and updated. `False` if the device was not found.
-
-## Method - getTasks
-This method returns a list with all the tasks.
-
-`myData.getTasks()`
-
-### Arguments
-None
-
-### Returns
-A list of taks. In example:
-
-```
-[
-  {
-    title: "A title",
-    description: " A description",
-    triggers: {
-      trigger: {
-        type: "or",
-        parent: "triggers",
-        operation: [
-          1602355786257
-        ]
-      },
-      "1602355786257": {
-        operation: "22:0:1234560",
-        parent: "trigger",
-        type: "time"
-      }
-    },
-    target: [
-      {
-        device: "night_scene",
-        param: "enable",
-        value: false
-      }
-    ]
-  },
-  ...
-]
-```
-
-## Method - getTask
-This method returns a task.
-
-`myData.getTask(task_id)`
-
-### Arguments
-
-#### task_id
-Identifies the task that will be returned.
-
-- Type: int
-- Example: 4
-
-### Returns
-A task object. In example:
-
-```
-{
-  title: "A title",
-  description: " A description",
-  triggers: {
-    trigger: {
-      type: "or",
-      parent: "triggers",
-      operation: [
-        1602355786257
-      ]
-    },
-    "1602355786257": {
-      operation: "22:0:1234560",
-      parent: "trigger",
-      type: "time"
-    }
-  },
-  target: [
-    {
-      device: "night_scene",
-      param: "enable",
-      value: false
-    }
-  ]
-}
-```
-
-## Method - updateTask
-This method updates the definition of a task.
-
-`myData.updateTask(task)`
-
-### Arguments
-
-#### task
-The definition of the task and its id.
-
-- Type: json
-- Example: 
-```
-{
-  id: 5,
-  task: {
-    title: "A title",
-    description: " A description",
-    triggers: {
-      trigger: {
-        type: "or",
-        parent: "triggers",
-        operation: [
-          1602355786257
-        ]
-      },
-      "1602355786257": {
-        operation: "22:0:1234560",
-        parent: "trigger",
-        type: "time"
-      }
-    },
-    target: [
-      {
-        device: "night_scene",
-        param: "enable",
-        value: false
-      }
-    ]
-  }
-}
-```
-
-### Returns
-`True` if the task was found and updated. `False` if the task was not found.
-
-## Method - createTask
-This method creates a new task with the definition received.
-
-`mydata.createTask(task)`
-
-### Arguments
-
-#### task
-The definition of the task and its id.
-
-- Type: json
-- Example: 
-```
-{
-  id: 5,
-  task: {
-    title: "A title",
-    description: " A description",
-    triggers: {
-      trigger: {
-        type: "or",
-        parent: "triggers",
-        operation: [
-          1602355786257
-        ]
-      },
-      "1602355786257": {
-        operation: "22:0:1234560",
-        parent: "trigger",
-        type: "time"
-      }
-    },
-    target: [
-      {
-        device: "night_scene",
-        param: "enable",
-        value: false
-      }
-    ]
-  }
-}
-```
-
-### Returns
-None
-
-## Method - deleteTask
-This method deletes a task.
-
-`myData.deleteTask(task_id)`
-
-### Arguments
-
-#### task_id
-The id of the task that wnat to be deleted.
-
-- Type: int
-- Example: 3
-
-### Returns
-`True` if the task was found and deleted. `False` if the task was not found.
 
 ## Method  - setUser
 This method set the username and password for the first time. It only can be call once.
@@ -914,7 +719,7 @@ This method updates the alive timestamp of some homeware's core element.
 The core name.
 
 - Type: string
-- Possible values: 'tasks' || 'mqtt'
+- Possible values: 'mqtt'
 
 ### Returns
 None
@@ -931,7 +736,6 @@ A system alive object.
 
 ```
 {
-  tasks: 1579452782954,
   mqtt: 1579452782954
 }
 ```

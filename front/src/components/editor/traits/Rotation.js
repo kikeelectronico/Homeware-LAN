@@ -1,105 +1,149 @@
-import React from 'react';
+import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
 
-class Rotation extends React.Component {
-  constructor(props) {
-    super(props);
-    this.update = this.update.bind(this);
-    this.updateNumber = this.updateNumber.bind(this);
-    this.updateCheckbox = this.updateCheckbox.bind(this);
-  }
-
-  update(event){
-    this.props.update('attributes/' + event.target.id,event.target.value);
-  }
-
-  updateNumber(event){
-    this.props.update('attributes/' + event.target.id,parseInt(event.target.value));
-  }
-
-  updateCheckbox(checked, attribute){
-    this.props.update('attributes/' + attribute,checked);
-  }
-
-  render() {
-    return (
-      <div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            Minimum rotation
-          </div>
-          <div className="three_table_cel">
-            <input type="number" id="rotationDegreesRange/rotationDegreesMin" defaultValue={ this.props.attributes.rotationDegreesRange ? this.props.attributes.rotationDegreesRange.rotationDegreesMin : 0} min="0" max="100" onChange={this.updateNumber} className="int_input"/>
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Minimum rotation degrees that a device can rotate.</span>
-          </div>
-        </div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            Maximum rotation
-          </div>
-          <div className="three_table_cel">
-            <input type="number" id="rotationDegreesRange/rotationDegreesMax" defaultValue={this.props.attributes.rotationDegreesRange ? this.props.attributes.rotationDegreesRange.rotationDegreesMax : 0} min="0" max="100" onChange={this.updateNumber} className="int_input"/>
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Maximum rotation degrees that a device can rotate.</span>
-          </div>
-        </div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            <i>commandOnlyRotation</i>
-          </div>
-          <div className="three_table_cel">
-            <Switch onChange={(checked) => {this.updateCheckbox(checked,"commandOnlyRotation")}} checked={this.props.attributes.commandOnlyRotation} />
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the device.</span>
-          </div>
-        </div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            <i>supportsContinuousRotation</i>
-          </div>
-          <div className="three_table_cel">
-            <Switch onChange={(checked) => {this.updateCheckbox(checked,"supportsContinuousRotation")}} checked={this.props.attributes.supportsContinuousRotation} />
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Enable it if the device supports continuous rotation.</span>
-          </div>
-        </div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            <i>supportsDegrees</i>
-          </div>
-          <div className="three_table_cel">
-            <Switch onChange={(checked) => {this.updateCheckbox(checked,"supportsDegrees")}} checked={this.props.attributes.supportsDegrees} />
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Enable it if the device allows rotation by degree.</span>
-          </div>
-        </div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            <i>supportsPercent</i>
-          </div>
-          <div className="three_table_cel">
-            <Switch onChange={(checked) => {this.updateCheckbox(checked,"supportsPercent")}} checked={this.props.attributes.supportsPercent} />
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Enable it if device allows rotation by percent.</span>
-          </div>
-        </div>
-
-      </div>
-    );
-  }
+const attributes = {
+  supportsDegrees: true,
+  supportsPercent: true,
+  rotationDegreesRange: {
+    rotationDegreesMin: 0,
+    rotationDegreesMax: 180,
+  },
+  supportsContinuousRotation: false,
+  commandOnlyRotation: false
 }
+
+const states = {
+  rotationDegrees: 22,
+  rotationPercent: 22,
+  targetRotationPercent: 22
+}
+
+const Rotation = forwardRef((props, ref) => {
+  
+  const [supportsDegrees, setSupportsDegrees] = useState(attributes.supportsDegrees)
+  const [supportsPercent, setSupportsPercent] = useState(attributes.supportsPercent)
+  const [rotationDegreesRange, setRotationDegreesRange] = useState(attributes.rotationDegreesRange)
+  const [supportsContinuousRotation, setSupportsContinuousRotation] = useState(attributes.supportsContinuousRotation)
+  const [commandOnlyRotation, setCommandOnlyRotation] = useState(attributes.commandOnlyRotation)
+  
+  useEffect(() => {
+    if ("commandOnlyRotation" in props.attributes) {
+      setSupportsDegrees(props.attributes.supportsDegrees)
+      setSupportsPercent(props.attributes.supportsPercent)
+      setRotationDegreesRange(props.attributes.rotationDegreesRange)
+      setSupportsContinuousRotation(props.attributes.supportsContinuousRotation)
+      setCommandOnlyRotation(props.attributes.commandOnlyRotation)
+    } else {
+      props.updateStatus(null, states, "insert")
+      props.updateAttributes(null, attributes, "insert")
+    }
+  }, [])
+
+  useImperativeHandle(ref, () => ({
+    deleteAttributes() {
+      props.updateStatus(null, states, "drop")
+      props.updateAttributes(null, attributes, "drop")
+    }
+  }))
+
+  const updateRange = (key, value) => {
+    let _rotationDegreesRange = {...rotationDegreesRange}
+    _rotationDegreesRange[key] = value
+    setRotationDegreesRange(_rotationDegreesRange)
+    props.updateAttributes("rotationDegreesRange", _rotationDegreesRange, "update")
+  }
+
+  return (
+    <>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          <i>supportsDegrees</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              setSupportsDegrees(checked)
+              props.updateAttributes("supportsDegrees", checked, "update")
+            }}
+            checked={supportsDegrees}
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          <i>supportsPercent</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              setSupportsPercent(checked)
+              props.updateAttributes("supportsPercent", checked, "update")
+            }}
+            checked={supportsPercent}
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          <i>supportsContinuousRotation</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              setSupportsContinuousRotation(checked)
+              props.updateAttributes("supportsContinuousRotation", checked, "update")
+            }}
+            checked={supportsContinuousRotation}
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          <i>commandOnlyRotation</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              setCommandOnlyRotation(checked)
+              props.updateAttributes("commandOnlyRotation", checked, "update")
+            }}
+            checked={commandOnlyRotation}
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          Minimum degrees
+        </div>
+        <div className="three_table_cel">
+          <input
+            type="number"
+            onChange={event => {
+              updateRange("rotationDegreesMin", parseInt(event.target.value))
+            }}
+            value={rotationDegreesRange.rotationDegreesMin}
+            min="0" max="100" className="int_input"
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          Maximum degrees
+        </div>
+        <div className="three_table_cel">
+          <input
+            type="number"
+            onChange={event => {
+              updateRange("rotationDegreesMax", parseInt(event.target.value))
+            }}
+            value={rotationDegreesRange.rotationDegreesMax}
+            min="0" max="360" className="int_input"
+          />
+        </div>
+      </div>
+    </>
+  );
+  
+})
 
 export default Rotation

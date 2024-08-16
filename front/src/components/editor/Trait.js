@@ -7,18 +7,23 @@ import ArmDisarm from "./traits/ArmDisarm";
 import Brightness from "./traits/Brightness";
 import ColorSetting from "./traits/ColorSetting";
 import Cook from "./traits/Cook";
+import Dock from './traits/Dock';
 import EnergyStorage from "./traits/EnergyStorage";
 import FanSpeed from "./traits/FanSpeed";
 import Fill from "./traits/Fill";
 import HumiditySetting from "./traits/HumiditySetting";
+import Locator from './traits/Locator';
+import LockUnlock from './traits/LockUnlock';
 import Modes from "./traits/Modes";
 import OccupancySensing from "./traits/OccupancySensing";
 import OnOff from "./traits/OnOff";
 import OpenClose from "./traits/OpenClose";
 import Rotation from "./traits/Rotation";
+import RunCycle from './traits/RunCycle';
 import Scene from "./traits/Scene";
 import SensorState from "./traits/SensorState";
 import StartStop from "./traits/StartStop";
+import StatusReport from './traits/StatusReport';
 import TemperatureControl from "./traits/TemperatureControl";
 import TemperatureSetting from "./traits/TemperatureSetting";
 import Timer from "./traits/Timer";
@@ -42,23 +47,28 @@ const Trait = (props) => {
       if (trait === "action.devices.traits.ArmDisarm") return <ArmDisarm attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.Brightness") return <Brightness attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.ColorSetting") return <ColorSetting attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
-      else if (trait === "action.devices.traits.Cook") return <Cook attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
+    //   else if (trait === "action.devices.traits.Cook") return <Cook attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
+      else if (trait === "action.devices.traits.Dock") return <Dock status={props.status} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.EnergyStorage") return <EnergyStorage attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.FanSpeed") return <FanSpeed attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.Fill") return <Fill attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.HumiditySetting") return <HumiditySetting attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
-      else if (trait === "action.devices.traits.Modes") return <Modes attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
+      else if (trait === "action.devices.traits.Locator") return <Locator ref={childRef}/>
+      else if (trait === "action.devices.traits.LockUnlock") return <LockUnlock status={props.status} updateStatus={props.updateStatus} ref={childRef}/>
+      else if (trait === "action.devices.traits.Modes") return <Modes attributes={props.attributes} updateAttributes={props.updateAttributes} status={props.status} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.OccupancySensing") return <OccupancySensing attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.OnOff") return <OnOff attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/> 
       else if (trait === "action.devices.traits.OpenClose") return <OpenClose attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.Rotation") return <Rotation attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
+      else if (trait === "action.devices.traits.RunCycle") return <RunCycle status={props.status} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.Scene") return <Scene attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
     //   else if (trait === "action.devices.traits.SensorState") return <SensorState attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.StartStop") return <StartStop attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
+      else if (trait === "action.devices.traits.StatusReport") return <StatusReport status={props.status} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.TemperatureControl") return <TemperatureControl attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.TemperatureSetting") return <TemperatureSetting attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
       else if (trait === "action.devices.traits.Timer") return <Timer attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
-      else if (trait === "action.devices.traits.Toggles") return <Toggles attributes={props.attributes} updateAttributes={props.updateAttributes} updateStatus={props.updateStatus} ref={childRef}/>
+      else if (trait === "action.devices.traits.Toggles") return <Toggles attributes={props.attributes} updateAttributes={props.updateAttributes} status={props.status} updateStatus={props.updateStatus} ref={childRef}/>
   }
 
     return (

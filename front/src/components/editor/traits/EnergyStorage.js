@@ -42,7 +42,7 @@ const EnergyStorage = forwardRef((props, ref) => {
   }))
 
     return (
-      <div>
+      <>
         <div className="three_table_row">
           <div className="three_table_cel align_right">
             <i>Distance units</i>
@@ -63,9 +63,6 @@ const EnergyStorage = forwardRef((props, ref) => {
               <option value="MILES">Miles</option>
             </select>
           </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Select the units of distance for remaining range if apply.</span>
-          </div>
         </div>
         <div className="three_table_row">
           <div className="three_table_cel align_right">
@@ -79,9 +76,6 @@ const EnergyStorage = forwardRef((props, ref) => {
               }}
               checked={queryOnlyEnergyStorage}
             />
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Enable it if Google Home can't control the device, only read the state.</span>
           </div>
         </div>
         <div className="three_table_row">
@@ -97,11 +91,8 @@ const EnergyStorage = forwardRef((props, ref) => {
               checked={isRechargeable}
             />
           </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Enable it if the device is rechargeable.</span>
-          </div>
         </div>
-      </div>
+      </>
     )
 })
 
