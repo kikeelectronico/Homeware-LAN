@@ -96,8 +96,6 @@ class Data:
 					"timestamp": self.redis.get("token/google/authorization_code/timestamp").decode('UTF-8'),
 					"value": self.redis.get("token/google/authorization_code/value").decode('UTF-8'),
 				},
-				"client_id": self.redis.get("token/google/client_id").decode('UTF-8'),
-				"client_secret": self.redis.get("token/google/client_secret").decode('UTF-8'),
 				"refresh_token": {
 					"timestamp": self.redis.get("token/google/refresh_token/timestamp").decode('UTF-8'),
 					"value": self.redis.get("token/google/refresh_token/value").decode('UTF-8'),
@@ -125,6 +123,8 @@ class Data:
 				"sync_google": pickle.loads(self.redis.get("sync_google")),
 				"sync_devices": pickle.loads(self.redis.get("sync_devices")),
 				"log": pickle.loads(self.redis.get("log")),
+				"client_id": self.redis.get("token/google/client_id").decode('UTF-8'),
+				"client_secret": self.redis.get("token/google/client_secret").decode('UTF-8'),
 			}
 			mongo_settings_col.insert_one(settings_data)
 		# End
@@ -529,36 +529,17 @@ class Data:
 # OAUTH
 
 ## ToDo
-## - Get oauth (agent, client_id, secret_id)
-## - Get oauth token
-## - Updata oauth token
+## - Get oauth token by agent and type
+## - Update oauth token by agent and type
 
 # SETTINGS
 
 	def getSettings(self):
-		data = {
-			"ddns": pickle.loads(self.redis.get('ddns')),
-			"sync_google": pickle.loads(self.redis.get("sync_google")),
-			"sync_devices": pickle.loads(self.redis.get("sync_devices")),
-			"log": pickle.loads(self.redis.get("log")),
-			"mqtt": {
-				"user": self.redis.get('mqtt/username').decode('UTF-8'),
-				"password": self.redis.get('mqtt/password').decode('UTF-8'),
-			}
-		}
-		return data
+		return self.mongo_db["settings"].find()[0]
 
 	def updateSettings(self, incommingData):
 		filter = {"_id": "settings"}
-		data = {
-			"domain": incommingData['ddns']['hostname'],
-			"ddns": incommingData["ddns"],
-			"mqtt": incommingData["mqtt"],
-			"sync_google": incommingData["sync_google"],
-			"sync_devices": incommingData["sync_devices"],
-			"log": incommingData["log"]
-		}
-		operation = {"$set": data}
+		operation = {"$set": incommingData}
 		self.mongo_db["settings"].update_one(filter, operation)
 
 	def getDDNS(self):

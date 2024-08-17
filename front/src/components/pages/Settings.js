@@ -8,7 +8,6 @@ import { root } from "../../constants";
 function Settings() {
 
   const [settings, setSettings] = useState({
-      // google: {},
       ddns: {
         enabled: false,
       },
@@ -16,7 +15,9 @@ function Settings() {
       apikey: "",
       sync_google: false,
       sync_devices: false,
-      log: {}
+      log: {},
+      client_id: "",
+      client_secret: ""
     })
 
   useEffect(() => {
@@ -101,7 +102,7 @@ function Settings() {
 
   return (
     <div>
-      {/*<div className="page_block_container">
+      <div className="page_block_container">
         <h2>Actions on Google</h2>
         <div className="advise">
           <span>
@@ -117,7 +118,7 @@ function Settings() {
                 type="text"
                 className="two_input"
                 id="google/client_id"
-                defaultValue={settings.google.client_id}
+                defaultValue={settings.client_id}
                 onChange={update}
               />
             </div>
@@ -129,7 +130,7 @@ function Settings() {
                 type="text"
                 className="two_input"
                 id="google/client_secret"
-                defaultValue={settings.google.client_secret}
+                defaultValue={settings.client_secret}
                 onChange={update}
               />
             </div>
@@ -171,7 +172,7 @@ function Settings() {
         <div className="page_block_buttons_container">
           <Button variant="contained" onClick={save}>Save</Button>
         </div>
-      </div>*/}
+      </div>
 
       <div className="page_block_container">
         <h2>Automatic Sync with Google</h2>
