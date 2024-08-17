@@ -3,6 +3,7 @@ import os
 import random
 import bcrypt
 import redis
+import pymongo
 import time
 from datetime import datetime, timedelta
 import dateutil.parser
@@ -34,7 +35,13 @@ class Data:
 				os.mkdir("../logs")
 
 		self.redis = redis.Redis(hostname.REDIS_HOST, hostname.REDIS_PORT)
+		self.mongo_client = pymongo.MongoClient("mongodb://" + hostname.MONGO_HOST + ":" + str(hostname.MONGO_PORT) + "/")
+		try:
+			self.mongo_db = self.mongo_client["homeware"]
+		except:
+			self.log('Warning','The Mongo database must be created')
 
+		# ToDo	
 		if not self.redis.get('transfer'):
 			self.log('Warning','The database must be created')
 			if not os.path.exists("../homeware.json"):
@@ -56,16 +63,83 @@ class Data:
 		if self.redis.get("alert") == None:
 			self.redis.set("alert","clear")
 
+		# Move not real time data to MogoDB
+		# Begin
+		if not "homeware" in self.mongo_client.list_database_names():
+			# Create db reference
+			self.mongo_db = self.mongo_client["homeware"]
+			# Create devices collection
+			mongo_devices_col = self.mongo_db["devices"]
+			devices = json.loads(self.redis.get('devices'))
+			for device in devices:
+				device["_id"] = device["id"]
+				mongo_devices_col.insert_one(device)
+			# Create user collection
+			mongo_users_col = self.mongo_db["users"]
+			user_data = {
+				"_id": self.redis.get("user/username").decode('UTF-8'),
+				"user": self.redis.get("user/username").decode('UTF-8'),
+				"password": self.redis.get("user/password").decode('UTF-8'),
+				"token": self.redis.get("token/front").decode('UTF-8'),
+			}
+			mongo_users_col.insert_one(user_data)
+			# Create oauth2 collection
+			mongo_oauth_col = self.mongo_db["oauth"]
+			google_data = {
+				"_id": "google",
+				"agent": "Google",
+				"access_token": {
+					"timestamp": self.redis.get("token/google/access_token/timestamp").decode('UTF-8'),
+					"value": self.redis.get("token/google/access_token/value").decode('UTF-8'),
+				},
+				"authorization_code": {
+					"timestamp": self.redis.get("token/google/authorization_code/timestamp").decode('UTF-8'),
+					"value": self.redis.get("token/google/authorization_code/value").decode('UTF-8'),
+				},
+				"client_id": self.redis.get("token/google/client_id").decode('UTF-8'),
+				"client_secret": self.redis.get("token/google/client_secret").decode('UTF-8'),
+				"refresh_token": {
+					"timestamp": self.redis.get("token/google/refresh_token/timestamp").decode('UTF-8'),
+					"value": self.redis.get("token/google/refresh_token/value").decode('UTF-8'),
+				}
+			}
+			mongo_oauth_col.insert_one(google_data)
+			# Create apikey collection
+			mongo_apikeys_col = self.mongo_db["apikeys"]
+			legacy_data = {
+				"_id": "legacy",
+				"agent": "legacy",
+				"apikey": self.redis.get("token/apikey").decode('UTF-8')
+			}
+			mongo_apikeys_col.insert_one(legacy_data)
+			# Create settings collection
+			mongo_settings_col = self.mongo_db["settings"]
+			settings_data = {
+				"_id": "settings",
+				"domain": self.redis.get("domain").decode('UTF-8'),
+				"ddns": pickle.loads(self.redis.get("ddns")),
+				"mqtt": {
+					"user": self.redis.get("mqtt/username").decode('UTF-8'),
+					"password": self.redis.get("mqtt/password").decode('UTF-8'),
+				},
+				"sync_google": pickle.loads(self.redis.get("sync_google")),
+				"sync_devices": pickle.loads(self.redis.get("sync_devices")),
+				"log": pickle.loads(self.redis.get("log")),
+			}
+			mongo_settings_col.insert_one(settings_data)
+		# End
+
 	def getVersion(self):
 		return {'version': self.version}
 
 	def getGlobal(self):
 		data = {
-			'devices': json.loads(self.redis.get('devices')),
-			'status':self.getStatus(),
+			'devices': json.loads(self.redis.get('devices')), # Todo
+			'status': self.getStatus(),
 		}
 		return data
 
+	# ToDo
 	def createFile(self,file):
 		data = {
 			'devices': json.loads(self.redis.get('devices')),
@@ -108,6 +182,7 @@ class Data:
 		file.write(json.dumps(data))
 		file.close()
 
+	# ToDo
 	def getBackup(self):
 		data = {
 			'devices': json.loads(self.redis.get('devices')),
@@ -148,6 +223,7 @@ class Data:
 		}
 		return data
 
+	# ToDo
 	def load(self):
 		file = open('../' + self.homewareFile, 'r')
 		data = json.load(file)

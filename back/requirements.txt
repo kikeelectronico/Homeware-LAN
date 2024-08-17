@@ -8,3 +8,4 @@ flask_cors==4.0.1
 bcrypt==4.2.0
 google-auth==2.33.0
 gevent
+pymongo==4.8.0
