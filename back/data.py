@@ -470,6 +470,7 @@ class Data:
 		else:
 			return "fail"
 
+
 # APIKEY
 
 	def getAPIKey(self):
@@ -497,6 +498,9 @@ class Data:
 			"apikey": token
 		}
 		return data
+
+## ToDo
+## - Validate apikey
 
 # RETURN A TOKEN
 
@@ -529,7 +533,9 @@ class Data:
 # OAUTH
 
 ## ToDo
-## - Get oauth token by agent and type
+## - Validate authorization code
+## - Validate refresh token
+## - Validate access token
 ## - Update oauth token by agent and type
 
 # SETTINGS
