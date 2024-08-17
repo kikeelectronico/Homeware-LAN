@@ -8,7 +8,7 @@ import { root } from "../../constants";
 function Settings() {
 
   const [settings, setSettings] = useState({
-      google: {},
+      // google: {},
       ddns: {
         enabled: false,
       },
@@ -101,7 +101,7 @@ function Settings() {
 
   return (
     <div>
-      <div className="page_block_container">
+      {/*<div className="page_block_container">
         <h2>Actions on Google</h2>
         <div className="advise">
           <span>
@@ -171,7 +171,7 @@ function Settings() {
         <div className="page_block_buttons_container">
           <Button variant="contained" onClick={save}>Save</Button>
         </div>
-      </div>
+      </div>*/}
 
       <div className="page_block_container">
         <h2>Automatic Sync with Google</h2>
