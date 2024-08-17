@@ -56,68 +56,6 @@ class Data:
 		if self.redis.get("alert") == None:
 			self.redis.set("alert","clear")
 
-		# Temp, for update from 1.6.4 to 1.7
-		# Beging
-		if self.redis.get("fast_status") == None:
-			status = json.loads(self.redis.get('status'))
-			devices = status.keys()
-			for device in devices:
-				params = status[device].keys()
-				for param in params:
-					self.redis.set("status/" + device + "/" + param, pickle.dumps(status[device][param]))
-			self.redis.set("fast_status", "true")
-
-		if self.redis.get("fast_token") == None:
-			token = json.loads(self.redis.get('secure'))['token']
-			self.redis.set("token/front", token['front'])
-			self.redis.set("token/apikey", token['apikey'])
-			self.redis.set("token/google/client_id", token['google']['client_id'])
-			self.redis.set("token/google/client_secret", token['google']['client_secret'])
-			self.redis.set("token/google/access_token/value", token['google']['access_token']['value'])
-			self.redis.set("token/google/access_token/timestamp", token['google']['access_token']['timestamp'])
-			self.redis.set("token/google/refresh_token/value", token['google']['refresh_token']['value'])
-			self.redis.set("token/google/refresh_token/timestamp", token['google']['refresh_token']['timestamp'])
-			self.redis.set("token/google/authorization_code/value", token['google']['authorization_code']['value'])
-			self.redis.set("token/google/authorization_code/timestamp", token['google']['authorization_code']['timestamp'])
-			self.redis.set("fast_token", "true")
-
-		if self.redis.get("fast_mqtt_b") == None:
-			mqtt = json.loads(self.redis.get('secure'))['mqtt']
-			self.redis.set("mqtt/username", mqtt['user'])
-			self.redis.set("mqtt/password", mqtt['password'])
-			self.redis.set("fast_mqtt_B", "true")
-
-		if self.redis.get("fast_user") == None:
-			secure = json.loads(self.redis.get('secure'))
-			self.redis.set("user/username", secure['user'])
-			self.redis.set("user/password", secure['pass'])
-			self.redis.set("fast_user", "true")
-
-		if self.redis.get("domain") == None:
-			secure = json.loads(self.redis.get('secure'))
-			self.redis.set("domain", secure['domain'])
-
-		if self.redis.get("ddns") == None:
-			ddns = json.loads(self.redis.get('secure'))['ddns']
-			self.redis.set("ddns", pickle.dumps(ddns))
-
-		if self.redis.get("log") == None:
-			try:
-				log = json.loads(self.redis.get('secure'))['log']
-				self.redis.set("log", pickle.dumps(log))
-			except:
-				log = {
-					"days": 30
-				}
-				self.redis.set("log", pickle.dumps(log))
-
-		if self.redis.get("sync_google") == None:
-			self.redis.set("sync_google", pickle.dumps(False))
-
-		if self.redis.get("sync_devices") == None:
-			self.redis.set("sync_devices", pickle.dumps(False))
-		# End
-
 	def getVersion(self):
 		return {'version': self.version}
 
