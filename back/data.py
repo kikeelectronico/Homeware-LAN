@@ -303,7 +303,6 @@ class Data:
 				if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
 					homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
 				return True
-
 		return False
 
 	def createDevice(self, incommingData):
@@ -318,7 +317,6 @@ class Data:
 			params = status.keys()
 			for param in params:
 				self.redis.set("status/" + deviceID + "/" + param, pickle.dumps(status[param]))
-
 			# Inform Google Home Graph
 			if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
 				homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
@@ -408,7 +406,6 @@ class Data:
 		else:
 			return { "message": "Fail, the password hasn't been changed" }
 
-
 	def login(self, headers):
 		username = headers['user']
 		password = headers['pass']
@@ -473,7 +470,7 @@ class Data:
 		else:
 			return "fail"
 
-# ACCESS
+# APIKEY
 
 	def getAPIKey(self):
 		apikey = self.mongo_db["apikeys"].find()[0]["apikey"]
@@ -500,6 +497,8 @@ class Data:
 			"apikey": token
 		}
 		return data
+
+# RETURN A TOKEN
 
 	def getToken(self,agent="",type="",subtype=""):
 		if agent == 'front':
@@ -530,6 +529,9 @@ class Data:
 # OAUTH
 
 ## ToDo
+## - Get oauth (agent, client_id, secret_id)
+## - Get oauth token
+## - Updata oauth token
 
 # SETTINGS
 
