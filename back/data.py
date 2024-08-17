@@ -610,8 +610,6 @@ class Data:
 			}
 		return status
 
-	
-
 # LOG
 
 	def log(self, severity, message):
