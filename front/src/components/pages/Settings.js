@@ -117,7 +117,7 @@ function Settings() {
               <input
                 type="text"
                 className="two_input"
-                id="google/client_id"
+                id="client_id"
                 defaultValue={settings.client_id}
                 onChange={update}
               />
@@ -129,7 +129,7 @@ function Settings() {
               <input
                 type="text"
                 className="two_input"
-                id="google/client_secret"
+                id="client_secret"
                 defaultValue={settings.client_secret}
                 onChange={update}
               />
