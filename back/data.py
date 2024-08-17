@@ -132,13 +132,6 @@ class Data:
 	def getVersion(self):
 		return {'version': self.version}
 
-	def getGlobal(self):
-		data = {
-			'devices': json.loads(self.redis.get('devices')), # Todo
-			'status': self.getStatus(),
-		}
-		return data
-
 	# ToDo
 	def createFile(self,file):
 		data = {
@@ -280,17 +273,22 @@ class Data:
 
 # DEVICES
 
+	def getGlobal(self):
+		data = {
+			'devices': self.getDevices(),
+			'status': self.getStatus(),
+		}
+		return data
+
 	def getDevices(self):
-		return json.loads(self.redis.get('devices'))
+		return list(self.mongo_db["devices"].find())
 
 	def updateDevice(self, incommingData):
 		deviceID = incommingData['device']['id']
-		temp_devices = []
-		found = False
-		for device in json.loads(self.redis.get('devices')):
-			if device['id'] == deviceID:
-				temp_devices.append(incommingData['device'])
-				found = True
+		filter = {"_id": deviceID}
+		if self.mongo_db["devices"].count_documents(filter) == 1:
+			operation = self.mongo_db["devices"].replace_one(filter, incommingData["device"])
+			if operation.modified_count == 1:
 				# Update the received params
 				status = incommingData['status']
 				params = status.keys()
@@ -301,51 +299,44 @@ class Data:
 				for db_param_key in db_params_keys:
 					if db_param_key.decode("utf-8").split("/")[2] not in list(params):
 						self.redis.delete(db_param_key)
-			else:
-				temp_devices.append(device)
-		self.redis.set('devices',json.dumps(temp_devices))
-		# Inform Google Home Graph
-		if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
-			homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
+				# Inform Google Home Graph
+				if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
+					homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
+				return True
 
-		return found
+		return False
 
 	def createDevice(self, incommingData):
 		deviceID = incommingData['device']['id']
+		filter = {"_id": deviceID}
+		if self.mongo_db["devices"].count_documents(filter) == 0:
+			device = incommingData["device"]
+			device["_id"] = deviceID
+			self.mongo_db["devices"].insert_one(incommingData['device'])
 
-		devices = json.loads(self.redis.get('devices'))
-		devices.append(incommingData['device'])
-		self.redis.set('devices',json.dumps(devices))
-
-		status = incommingData['status']
-		params = status.keys()
-		for param in params:
-			self.redis.set("status/" + deviceID + "/" + param, pickle.dumps(status[param]))
-
-		# Inform Google Home Graph
-		if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
-			homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
-
-	def deleteDevice(self, value):
-		temp_devices = []
-		found = False
-		for device in json.loads(self.redis.get('devices')):
-			if device['id'] != value:
-				temp_devices.append(device)
-			else:
-				found = True
-		self.redis.set('devices',json.dumps(temp_devices))
-		# Delete status
-		if found:
-			params = self.redis.keys('status/' + value + '/*')
+			status = incommingData['status']
+			params = status.keys()
 			for param in params:
-				self.redis.delete(param)
+				self.redis.set("status/" + deviceID + "/" + param, pickle.dumps(status[param]))
 
-		# Inform Google Home Graph
-		if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
-			homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
+			# Inform Google Home Graph
+			if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
+				homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
 
-		return found
+	def deleteDevice(self, deviceID):
+		filter = {"_id": deviceID}
+		if self.mongo_db["devices"].count_documents(filter) == 1:
+			operation = self.mongo_db["devices"].delete_one(filter)
+			if operation.deleted_count == 1:
+				# Delete status
+				params = self.redis.keys('status/' + deviceID + '/*')
+				for param in params:
+					self.redis.delete(param)
+				# Inform Google Home Graph
+				if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
+					homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
+			return True
+		return False
 
 # STATUS
 
