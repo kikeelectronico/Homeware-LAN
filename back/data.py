@@ -545,7 +545,7 @@ class Data:
 	def getDDNS(self):
 		return self.mongo_db["settings"].find()[0]["ddns"]
 
-	def updateDDNS(self, ip, status, code, enabled, last):
+	def updateDDNSstatus(self, ip, status, code, enabled, last):
 		ddns = self.mongo_db["settings"].find()[0]["ddns"]
 		ddns['ip'] = ip
 		ddns['status'] = status

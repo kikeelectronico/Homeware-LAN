@@ -546,10 +546,10 @@ An object that contains both the DDNS settings and the DDNS status.
 }
 ```
 
-## Method - updateDDNS
+## Method - updateDDNSstatus
 This method updates the DDNS status.
 
-`myData.updateDDNS(ip, status, code, enabled, last)`
+`myData.updateDDNSstatus(ip, status, code, enabled, last)`
 
 ### Arguments
 
