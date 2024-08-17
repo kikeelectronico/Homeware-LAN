@@ -78,7 +78,7 @@ class Data:
 			mongo_users_col = self.mongo_db["users"]
 			user_data = {
 				"_id": self.redis.get("user/username").decode('UTF-8'),
-				"user": self.redis.get("user/username").decode('UTF-8'),
+				"username": self.redis.get("user/username").decode('UTF-8'),
 				"password": self.redis.get("user/password").decode('UTF-8'),
 				"token": self.redis.get("token/front").decode('UTF-8'),
 			}
@@ -395,11 +395,15 @@ class Data:
 # USER
 
 	def updatePassword(self, incommingData):
-		ddbb_password_hash = self.redis.get("user/password").decode('UTF-8')
 		password = incommingData['pass']
+		user_data = self.mongo_db["users"].find()[0]
+		ddbb_password_hash = user_data["password"]
 		if bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
 			new_hash = str(bcrypt.hashpw(incommingData['new_pass'].encode('utf-8'), bcrypt.gensalt()))
-			self.redis.set("user/password",new_hash)
+			# Update password hash
+			filter = {"username": user_data["username"]}
+			operation = {"$set": {"password": new_hash}}
+			self.mongo_db["users"].update_one(filter, operation)
 			return { "message": "Updated" }
 		else:
 			return { "message": "Fail, the password hasn't been changed" }
@@ -408,8 +412,9 @@ class Data:
 	def login(self, headers):
 		username = headers['user']
 		password = headers['pass']
-		ddbb_password_hash = self.redis.get("user/password").decode('UTF-8')
-		ddbb_username = self.redis.get("user/username").decode('UTF-8')
+		user_data = self.mongo_db["users"].find()[0]
+		ddbb_password_hash = user_data["password"]
+		ddbb_username = user_data["username"]
 		if username == ddbb_username and bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
 			# Generate the token
 			chars = 'abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -419,7 +424,9 @@ class Data:
 				token += random.choice(chars)
 				i += 1
 			# Saved the new token
-			self.redis.set("token/front", token)
+			filter = {"username": ddbb_username}
+			operation = {"$set": {"token": token}}
+			self.mongo_db["users"].update_one(filter, operation)
 			# Prepare the response
 			responseData = {
 				'status': 'in',
@@ -439,9 +446,11 @@ class Data:
 	def validateUserToken(self, headers):
 		username = headers['user']
 		token = headers['token']
-
+		user_data = self.mongo_db["users"].find()[0]
+		ddbb_token = user_data["token"]
+		ddbb_username = user_data["username"]
 		responseData = {}
-		if username == self.redis.get("user/username").decode('UTF-8') and token == self.redis.get("token/front").decode('UTF-8'):
+		if username == ddbb_username and token == ddbb_token:
 			responseData = {
 				'status': 'in'
 			}
@@ -455,8 +464,9 @@ class Data:
 	def googleSync(self, headers, responseURL):
 		username = headers['user']
 		password = headers['pass']
-		ddbb_password_hash = self.redis.get("user/password").decode('UTF-8')
-		ddbb_username = self.redis.get("user/username").decode('UTF-8')
+		user_data = self.mongo_db["users"].find()[0]
+		ddbb_password_hash = user_data["password"]
+		ddbb_username = user_data["username"]
 		auth = False
 		if username == ddbb_username and bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
 			return responseURL
@@ -491,7 +501,8 @@ class Data:
 
 	def getToken(self,agent="",type="",subtype=""):
 		if agent == 'front':
-			return self.redis.get("token/front").decode('UTF-8')
+			user_data = self.mongo_db["users"].find()[0]
+			return user_data["token"]
 		elif agent == 'apikey':
 			return self.redis.get("token/apikey").decode('UTF-8')
 		elif type == 'client_id':
