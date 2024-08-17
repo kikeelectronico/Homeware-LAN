@@ -476,7 +476,7 @@ class Data:
 # ACCESS
 
 	def getAPIKey(self):
-		apikey = self.redis.get("token/apikey").decode('UTF-8')
+		apikey = self.mongo_db["apikeys"].find()[0]["apikey"]
 		data = {
 			"apikey": apikey
 		}
@@ -492,7 +492,9 @@ class Data:
 			token += random.choice(chars)
 			i += 1
 		# Save the new token
-		self.redis.set("token/apikey", token)
+		filter = {"_id": "legacy"}
+		operation = {"$set": {"apikey": token}}
+		self.mongo_db["apikeys"].update_one(filter, operation)
 		# Prepare the response
 		data = {
 			"apikey": token
@@ -504,26 +506,35 @@ class Data:
 			user_data = self.mongo_db["users"].find()[0]
 			return user_data["token"]
 		elif agent == 'apikey':
-			return self.redis.get("token/apikey").decode('UTF-8')
+			return self.mongo_db["apikeys"].find()[0]["apikey"]
 		elif type == 'client_id':
-			return self.redis.get("token/google/client_id").decode('UTF-8')
+			return self.mongo_db["oauth"].find()[0]["client_id"]
 		elif type == 'client_secret':
-			return self.redis.get("token/google/client_secret").decode('UTF-8')
+			return self.mongo_db["oauth"].find()[0]["client_secret"]
 		else:
-			return self.redis.get("token/" + agent + "/" + type + "/" + subtype).decode('UTF-8')
+			return self.mongo_db["oauth"].find()[0][type][subtype]
+			# return self.redis.get("token/" + agent + "/" + type + "/" + subtype).decode('UTF-8')
 
 	def updateToken(self,agent,type,value,timestamp):
-		self.redis.set("token/" + agent + "/" + type + "/value",value)
-		self.redis.set("token/" + agent + "/" + type + "/timestamp",timestamp)
+		filter = {"_id": "google"}
+		data = {}
+		data[type] = {
+			"value": value,
+			"timestamp", timestamp
+		}
+		operation = {"$set": data}
+		self.mongo_db["oauth"].update_one(filter, operation)
+		# self.redis.set("token/" + agent + "/" + type + "/value",value)
+		# self.redis.set("token/" + agent + "/" + type + "/timestamp",timestamp)
+
+# OAUTH
+
+## ToDo
 
 # SETTINGS
 
 	def getSettings(self):
 		data = {
-			"google": {
-				"client_id": self.redis.get('token/google/client_id').decode('UTF-8'),
-				"client_secret": self.redis.get('token/google/client_secret').decode('UTF-8'),
-			},
 			"ddns": pickle.loads(self.redis.get('ddns')),
 			"sync_google": pickle.loads(self.redis.get("sync_google")),
 			"sync_devices": pickle.loads(self.redis.get("sync_devices")),
@@ -537,49 +548,44 @@ class Data:
 		return data
 
 	def updateSettings(self, incommingData):
-		self.redis.set("token/google/client_id",incommingData['google']['client_id'])
-		self.redis.set("token/google/client_secret",incommingData['google']['client_secret'])
-		self.redis.set("mqtt/username",incommingData['mqtt']['user'])
-		self.redis.set("mqtt/password",incommingData['mqtt']['password'])
-		self.redis.set("sync_google",pickle.dumps(incommingData['sync_google']))
-		self.redis.set("sync_devices",pickle.dumps(incommingData['sync_devices']))
-
-		ddns = pickle.loads(self.redis.get("ddns"))
-		ddns["username"] = incommingData['ddns']['username']
-		ddns["password"] = incommingData['ddns']['password']
-		ddns["provider"] = incommingData['ddns']['provider']
-		ddns["hostname"] = incommingData['ddns']['hostname']
-		ddns["enabled"] = incommingData['ddns']['enabled']
-		self.redis.set("ddns",pickle.dumps(ddns))
-		
-		self.redis.set("domain",incommingData['ddns']['hostname'])
-		self.redis.set("log",pickle.dumps(incommingData['log']))
+		filter = {"_id": "settings"}
+		data = {
+			"domain": incommingData["domain"],
+			"ddns": incommingData["ddns"],
+			"mqtt": incommingData["mqtt"],
+			"sync_google": incommingData["sync_google"],
+			"sync_devices": incommingData["sync_devices"],
+			"log": incommingData["log"]
+		}
+		operation = {"$set": data}
+		self.mongo_db["settings"].update_one(filter, operation)
 
 	def setSyncDevices(self, value):
-		self.redis.set("sync_devices",pickle.dumps(value))
+		filter = {"_id": "settings"}
+		operation = {"$set": {"sync_devices": value}}
+		self.mongo_db["settings"].update_one(filter, operation)
 
 	def getSyncDevices(self):
-		return pickle.loads(self.redis.get('sync_devices'))
+		return self.mongo_db["settings"].find()[0]["sync_devices"]
 
 # SYSTEM
 
 	def getMQTT(self):
-		return {
-				"user": self.redis.get('mqtt/username').decode('UTF-8'),
-				"password": self.redis.get('mqtt/password').decode('UTF-8'),
-			}
+		return self.mongo_db["settings"].find()[0]["mqtt"]
 
 	def getDDNS(self):
-		return pickle.loads(self.redis.get('ddns'))
+		return self.mongo_db["settings"].find()[0]["ddns"]
 
 	def updateDDNS(self, ip, status, code, enabled, last):
-		ddns = pickle.loads(self.redis.get('ddns'))
+		ddns = self.mongo_db["settings"].find()[0]["ddns"]
 		ddns['ip'] = ip
 		ddns['status'] = status
 		ddns['code'] = code
 		ddns['enabled'] = enabled
 		ddns['last'] = last
-		self.redis.set('ddns',pickle.dumps(ddns))
+		filter = {"_id": "settings"}
+		operation = {"$set": {"ddns": ddns}}
+		self.mongo_db["settings"].update_one(filter, operation)
 
 	def redisStatus(self):
 		status = {}
@@ -599,7 +605,9 @@ class Data:
 		return status
 
 	def updateSyncGoogle(self,status):
-		self.redis.set("sync_google", pickle.dumps(status))
+		filter = {"_id": "settings"}
+		operation = {"$set": {"sync_google": status}}
+		self.mongo_db["settings"].update_one(filter, operation)
 
 # LOG
 
@@ -644,7 +652,7 @@ class Data:
 	def deleteLog(self):
 		new_log = []
 		# Get the days to delete
-		log = pickle.loads(self.redis.get('log'))
+		log = self.mongo_db["settings"].find()[0]["log"]
 		days = int(log['days'])
 
 		if not days == 0:
