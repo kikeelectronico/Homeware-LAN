@@ -520,7 +520,7 @@ class Data:
 		data = {}
 		data[type] = {
 			"value": value,
-			"timestamp", timestamp
+			"timestamp": timestamp
 		}
 		operation = {"$set": data}
 		self.mongo_db["oauth"].update_one(filter, operation)
