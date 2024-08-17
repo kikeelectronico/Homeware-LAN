@@ -552,7 +552,7 @@ class Data:
 	def updateSettings(self, incommingData):
 		filter = {"_id": "settings"}
 		data = {
-			"domain": incommingData["domain"],
+			"domain": incommingData['ddns']['hostname'],
 			"ddns": incommingData["ddns"],
 			"mqtt": incommingData["mqtt"],
 			"sync_google": incommingData["sync_google"],
