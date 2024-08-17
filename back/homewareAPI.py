@@ -495,7 +495,7 @@ def apiSystemStatus():
                 'status': 'Stopped',
                 'title': 'Homeware Task'
             },
-            'redis': data_conector.redisStatus()
+            'redis': data_conector.getRedisStatus()
         }
 
         try:

@@ -583,17 +583,17 @@ class Data:
 		operation = {"$set": {"sync_google": status}}
 		self.mongo_db["settings"].update_one(filter, operation)
 
-	def setSyncDevices(self, value):
+	def getSyncDevices(self):
+		return self.mongo_db["settings"].find()[0]["sync_devices"]
+	
+	def updateSyncDevices(self, value):
 		filter = {"_id": "settings"}
 		operation = {"$set": {"sync_devices": value}}
 		self.mongo_db["settings"].update_one(filter, operation)
 
-	def getSyncDevices(self):
-		return self.mongo_db["settings"].find()[0]["sync_devices"]
-
 # SYSTEM
 
-	def redisStatus(self):
+	def getRedisStatus(self):
 		status = {}
 		try:
 			response = self.redis.client_list()
@@ -611,21 +611,6 @@ class Data:
 		return status
 
 # LOG
-
-	def log(self, severity, message):
-		log_file = open('../logs/' + "homeware.log", "a")
-		date_time = str(datetime.today())
-		log_register = severity + ' - ' + date_time  + ' - ' + message + '\n';
-		log_file.write(log_register)
-		log_file.close()
-		if (severity == "Alert"):
-			self.redis.set('alert','set')
-
-		if (self.verbose):
-			print(log_register)
-
-	def setVerbose(self, verbose):
-		self.verbose = verbose
 
 	def getLog(self):
 		log = []
@@ -649,6 +634,18 @@ class Data:
 		self.redis.set('alert','clear')
 
 		return log
+
+	def log(self, severity, message):
+		log_file = open('../logs/' + "homeware.log", "a")
+		date_time = str(datetime.today())
+		log_register = severity + ' - ' + date_time  + ' - ' + message + '\n';
+		log_file.write(log_register)
+		log_file.close()
+		if (severity == "Alert"):
+			self.redis.set('alert','set')
+
+		if (self.verbose):
+			print(log_register)
 
 	def deleteLog(self):
 		new_log = []
@@ -681,11 +678,16 @@ class Data:
 				log_file.write(register)
 			log_file.close()
 
+	def setVerbose(self, verbose):
+		self.verbose = verbose
 
 	def isThereAnAlert(self):
 		return {"alert": self.redis.get('alert').decode('UTF-8')}
 
 # ALIVE
+
+	def getAlive(self):
+		return json.loads(self.redis.get('alive'))
 
 	def updateAlive(self, core):
 		ts = int(time.time())
@@ -696,6 +698,3 @@ class Data:
 			alive = {}
 		alive[core] = ts
 		self.redis.set('alive', json.dumps(alive))
-
-	def getAlive(self):
-		return json.loads(self.redis.get('alive'))
