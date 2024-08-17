@@ -566,11 +566,6 @@ class Data:
 
 	def getSyncDevices(self):
 		return self.mongo_db["settings"].find()[0]["sync_devices"]
-	
-	def updateSyncDevices(self, value):
-		filter = {"_id": "settings"}
-		operation = {"$set": {"sync_devices": value}}
-		self.mongo_db["settings"].update_one(filter, operation)
 
 # SYSTEM
 

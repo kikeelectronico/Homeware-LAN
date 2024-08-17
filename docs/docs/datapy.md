@@ -476,22 +476,6 @@ The domain name.
 ### Returns
 `Saved correctly!` if it is the first time. `Your domain has been set in the past` if the domain was set in the past.
 
-## Method - updateSyncDevices
-This method sets the sync_devices setting.
-
-`myData.updateSyncDevices(status)`
-
-### Arguments
-
-#### status
-The new value for the setting.
-
-- Type: bool
-- Example: true
-
-### Returns
-None
-
 ## Method - getSyncDevices
 This method returns the sync_devices setting.
 
