@@ -546,7 +546,6 @@ class Data:
 				"password": self.redis.get('mqtt/password').decode('UTF-8'),
 			}
 		}
-
 		return data
 
 	def updateSettings(self, incommingData):
@@ -562,19 +561,6 @@ class Data:
 		operation = {"$set": data}
 		self.mongo_db["settings"].update_one(filter, operation)
 
-	def setSyncDevices(self, value):
-		filter = {"_id": "settings"}
-		operation = {"$set": {"sync_devices": value}}
-		self.mongo_db["settings"].update_one(filter, operation)
-
-	def getSyncDevices(self):
-		return self.mongo_db["settings"].find()[0]["sync_devices"]
-
-# SYSTEM
-
-	def getMQTT(self):
-		return self.mongo_db["settings"].find()[0]["mqtt"]
-
 	def getDDNS(self):
 		return self.mongo_db["settings"].find()[0]["ddns"]
 
@@ -588,6 +574,24 @@ class Data:
 		filter = {"_id": "settings"}
 		operation = {"$set": {"ddns": ddns}}
 		self.mongo_db["settings"].update_one(filter, operation)
+
+	def getMQTT(self):
+		return self.mongo_db["settings"].find()[0]["mqtt"]
+
+	def updateSyncGoogle(self,status):
+		filter = {"_id": "settings"}
+		operation = {"$set": {"sync_google": status}}
+		self.mongo_db["settings"].update_one(filter, operation)
+
+	def setSyncDevices(self, value):
+		filter = {"_id": "settings"}
+		operation = {"$set": {"sync_devices": value}}
+		self.mongo_db["settings"].update_one(filter, operation)
+
+	def getSyncDevices(self):
+		return self.mongo_db["settings"].find()[0]["sync_devices"]
+
+# SYSTEM
 
 	def redisStatus(self):
 		status = {}
@@ -606,10 +610,7 @@ class Data:
 			}
 		return status
 
-	def updateSyncGoogle(self,status):
-		filter = {"_id": "settings"}
-		operation = {"$set": {"sync_google": status}}
-		self.mongo_db["settings"].update_one(filter, operation)
+	
 
 # LOG
 
