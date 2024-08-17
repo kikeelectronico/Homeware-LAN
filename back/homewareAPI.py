@@ -378,7 +378,7 @@ def apiAccessCreate():
     if accessLevel >= 100:
         data_conector.log('Warning', 'An API Key has been regenerated')
         response = app.response_class(
-            response=json.dumps(data_conector.generateAPIKey()),
+            response=json.dumps(data_conector.createAPIKey()),
             status=200,
             mimetype='application/json'
         )

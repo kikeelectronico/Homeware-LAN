@@ -212,7 +212,7 @@ class Test_data(unittest.TestCase):
 # ACCESS
 
 	def test_getAPIKey(self):
-		api_key = self.data.generateAPIKey()
+		api_key = self.data.createAPIKey()
 		self.assertEqual(api_key, self.data.getAPIKey())
 
 #  SETTINGS

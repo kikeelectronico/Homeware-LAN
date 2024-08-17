@@ -480,7 +480,7 @@ class Data:
 
 		return data
 
-	def generateAPIKey(self):
+	def createAPIKey(self):
 		# Generate the token
 		chars = 'abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 		token = ''

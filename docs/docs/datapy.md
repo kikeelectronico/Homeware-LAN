@@ -299,10 +299,10 @@ An object containing the apikey.
 }
 ```
 
-## Method - generateAPIKey
+## Method - createAPIKey
 This method generates a new apiakey. Only one apikey can be active. When a new apikey is generated, the older one will be deleted.
 
-`myData.generateAPIKey()`
+`myData.createAPIKey()`
 
 ### Arguments
 None
