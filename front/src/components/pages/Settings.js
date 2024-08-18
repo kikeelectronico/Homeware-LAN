@@ -141,7 +141,7 @@ function Settings() {
               <input
                 type="text"
                 className="two_input"
-                defaultValue={"https://" + settings.ddns.hostname + "/auth/"}
+                value={"https://" + settings.ddns.hostname + "/auth/"}
                 disabled
               />
             </div>
@@ -152,7 +152,7 @@ function Settings() {
               <input
                 type="text"
                 className="two_input"
-                defaultValue={"https://" + settings.ddns.hostname + "/token/"}
+                value={"https://" + settings.ddns.hostname + "/token/"}
                 disabled
               />
             </div>
@@ -163,7 +163,7 @@ function Settings() {
               <input
                 type="text"
                 className="two_input"
-                defaultValue={"https://" + settings.ddns.hostname + "/smarthome/"}
+                value={"https://" + settings.ddns.hostname + "/smarthome/"}
                 disabled
               />
             </div>
