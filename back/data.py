@@ -129,9 +129,6 @@ class Data:
 			mongo_settings_col.insert_one(settings_data)
 		# End
 
-	def getVersion(self):
-		return {'version': self.version}
-
 	# ToDo
 	def createFile(self,file):
 		data = {
@@ -270,6 +267,10 @@ class Data:
 		self.redis.set("fast_mqtt_b", "true")
 		self.redis.set("fast_user", "true")
 
+# VERSION
+
+	def getVersion(self):
+		return {'version': self.version}
 
 # DEVICES
 
