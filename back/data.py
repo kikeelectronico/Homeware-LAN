@@ -506,18 +506,6 @@ class Data:
 			return self.mongo_db["oauth"].find()[0][type][subtype]
 			# return self.redis.get("token/" + agent + "/" + type + "/" + subtype).decode('UTF-8')
 
-	def updateToken(self,agent,type,value,timestamp):
-		filter = {"_id": "google"}
-		data = {}
-		data[type] = {
-			"value": value,
-			"timestamp": timestamp
-		}
-		operation = {"$set": data}
-		self.mongo_db["oauth"].update_one(filter, operation)
-		# self.redis.set("token/" + agent + "/" + type + "/value",value)
-		# self.redis.set("token/" + agent + "/" + type + "/timestamp",timestamp)
-
 # OAUTH
 
 ## ToDo
@@ -525,6 +513,22 @@ class Data:
 ## - Validate refresh token
 ## - Validate access token
 ## - Update oauth token by agent and type
+
+def validateOauthToken(self, type, token):
+	oauth = self.mongo_db["oauth"].find()[0]
+	return token == oauth[type]["value"]
+		
+def updateOauthToken(self,agent,type,token,timestamp):
+	filter = {"_id": "google"}
+	data = {}
+	data[type] = {
+		"value": token,
+		"timestamp": timestamp
+	}
+	operation = {"$set": data}
+	result = self.mongo_db["oauth"].update_one(filter, operation)
+
+	return result.modified_count == 1
 
 # SETTINGS
 

@@ -351,10 +351,10 @@ An string containing the token or a token object.
 }
 ```
 
-## Method - updateToken
+## Method - updateOauthToken
 Update an oauth2 token of a service by type. Note: This method will be deprecated.
 
-`myData.updateToken(agent, type, value, timestamp)`
+`myData.updateOauthToken(agent, type, value, timestamp)`
 
 ### Arguments
 

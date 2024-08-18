@@ -713,7 +713,7 @@ def tokenGenerator(agent, type):
     legalTypes = ['access_token', 'authorization_code', 'refresh_token']
 
     if type in legalTypes:
-        data_conector.updateToken(agent, type, token, ts)
+        data_conector.updateOauthToken(agent, type, token, ts)
         return token
     else:
         data_conector.log(
