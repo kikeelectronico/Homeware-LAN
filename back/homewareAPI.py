@@ -604,8 +604,7 @@ def allowed_file(filename):
 @app.route("/files/<operation>/<file>/<token>/", methods=['GET', 'POST'])
 def files(operation='', file='', token=''):
     # Get the access_token
-    frontToken = data_conector.getToken(agent='front')
-    if token == frontToken:
+    if frontToken data_conector.validateUserToken(token):
         if operation == 'buckup':
             # Create file
             data_conector.createFile('homeware')
