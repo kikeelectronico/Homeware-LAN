@@ -374,9 +374,9 @@ class Data:
 			filter = {"username": user_data["username"]}
 			operation = {"$set": {"password": new_hash}}
 			self.mongo_db["users"].update_one(filter, operation)
-			return { "message": "Updated" }
+			return True
 		else:
-			return { "message": "Fail, the password hasn't been changed" }
+			return False
 
 	def login(self, headers):
 		username = headers['user']

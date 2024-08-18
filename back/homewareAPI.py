@@ -315,8 +315,10 @@ def apiUserPassword():
     accessLevel = checkAccessLevel(request.headers)
 
     if accessLevel >= 10:
+        updated = data_conector.updatePassword(request.get_json())
+
         response = app.response_class(
-            response=json.dumps(data_conector.updatePassword(request.get_json())),
+            response=json.dumps({ "message": "Updated" if updated else "Fail, the password hasn't been changed"}),
             status=200,
             mimetype='application/json'
         )

@@ -241,7 +241,7 @@ Both the current and new passwords in plain text.
 ```
 
 ### Returns
-`Updated` if the password is set. `Fail, the password hasn't been changed` if the process fails.
+`True` if the password is set. `False` if the process fails.
 
 ## Method - login
 This method login the user and returns an access token. Only one token can be active, so the current token will be deleted once a new one is created.
