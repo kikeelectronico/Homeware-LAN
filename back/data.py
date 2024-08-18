@@ -223,7 +223,6 @@ class Data:
 		}
 		return data
 
-	# ToDo
 	def loadBackupFile(self):
 		file = open('../' + self.homewareFile, 'r')
 		data = json.load(file)
