@@ -372,8 +372,8 @@ def apiUserValidateToken():
 @app.route("/api/user/googleSync", methods=['GET'])
 @app.route("/api/user/googleSync/", methods=['GET'])
 def apiUserGoogleSync():
-
-   return data_conector.googleSync(request.headers, responseURL)
+    headers = request.headers
+    return data_conector.googleSync(headers["user"], headers["pass"], responseURL)
 
 @app.route("/api/access/create", methods=['GET'])
 @app.route("/api/access/create/", methods=['GET'])

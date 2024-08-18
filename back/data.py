@@ -404,7 +404,7 @@ class Data:
 		ddbb_token = user_data["token"]
 		return token == ddbb_token
 
-	def googleSync(self, headers, responseURL):
+	def googleSync(self, username, password, responseURL):
 		username = headers['user']
 		password = headers['pass']
 		user_data = self.mongo_db["users"].find()[0]
