@@ -258,14 +258,13 @@ class Data:
 		else:
 			return self.mongo_db["devices"].find_one({"_id": device_id})
 
-	def updateDevice(self, incommingData):
-		device_id = incommingData['device']['id']
+	def updateDevice(self, device, status):
+		device_id = device['id']
 		filter = {"_id": device_id}
 		if self.mongo_db["devices"].count_documents(filter) == 1:
-			operation = self.mongo_db["devices"].replace_one(filter, incommingData["device"])
+			operation = self.mongo_db["devices"].replace_one(filter, device)
 			if operation.modified_count == 1:
 				# Update the received params
-				status = incommingData['status']
 				params = status.keys()
 				for param in params:
 					self.redis.set("status/" + device_id + "/" + param, pickle.dumps(status[param]))

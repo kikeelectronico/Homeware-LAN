@@ -88,7 +88,7 @@ def apiDevicesUpdate():
 
     if accessLevel >= 10:
         incommingData = request.get_json()
-        if data_conector.updateDevice(incommingData):
+        if data_conector.updateDevice(incommingData["device"], incommingData["status"]):
             response = app.response_class(
                 response=json.dumps(TWO_O_O),
                 status=200,
