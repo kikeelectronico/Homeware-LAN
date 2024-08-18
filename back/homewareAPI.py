@@ -71,11 +71,9 @@ def checkAccessLevel(headers):
     accessLevel = 0
     try:
         authorization = headers['authorization'].split(' ')[1]
-        savedToken = data_conector.getToken(agent='front')
-        savedAPIKey = data_conector.getToken(agent='apikey')
-        if authorization == savedAPIKey:
+        if data_conector.validateAPIKey(authorization):
             accessLevel = 10
-        elif authorization == savedToken:
+        elif data_conector.validateUserToken(authorization):
             accessLevel = 100
     except:
         accessLevel = 0
@@ -355,8 +353,12 @@ def apiUserLogin():
 @app.route("/api/user/validateToken/", methods=['GET'])
 def apiUserValidateToken():
 
+    responseData = {
+        'status': 'in' if data_conector.validateUserToken(request.headers["token"]) else "fail"
+    }
+
     response = app.response_class(
-        response=json.dumps(data_conector.validateUserToken(request.headers)),
+        response=json.dumps(responseData),
         status=200,
         mimetype='application/json'
     )
@@ -378,7 +380,7 @@ def apiAccessCreate():
     if accessLevel >= 100:
         data_conector.log('Warning', 'An API Key has been regenerated')
         response = app.response_class(
-            response=json.dumps(data_conector.generateAPIKey()),
+            response=json.dumps(data_conector.createAPIKey()),
             status=200,
             mimetype='application/json'
         )
@@ -495,7 +497,8 @@ def apiSystemStatus():
                 'status': 'Stopped',
                 'title': 'Homeware Task'
             },
-            'redis': data_conector.redisStatus()
+            'redis': data_conector.getRedisStatus(),
+            'mongo': data_conector.getMongoStatus()
         }
 
         try:
@@ -602,11 +605,10 @@ def allowed_file(filename):
 @app.route("/files/<operation>/<file>/<token>/", methods=['GET', 'POST'])
 def files(operation='', file='', token=''):
     # Get the access_token
-    frontToken = data_conector.getToken(agent='front')
-    if token == frontToken:
+    if data_conector.validateUserToken(token):
         if operation == 'buckup':
             # Create file
-            data_conector.createFile('homeware')
+            data_conector.createBackupFile('homeware')
             # Download file
             now = datetime.now()
             date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
@@ -629,7 +631,7 @@ def files(operation='', file='', token=''):
                     filename = file.filename
                     file.save(os.path.join(
                         app.config['UPLOAD_FOLDER'], "homeware.json"))
-                    data_conector.load()
+                    data_conector.loadBackupFile()
                     data_conector.log(
                         'Warning', 'A backup file has been restored')
                     return redirect('/backup/?status=Success')
@@ -673,7 +675,7 @@ def files(operation='', file='', token=''):
 def backupGet():
     accessLevel = checkAccessLevel(request.headers)
     if accessLevel >= 10:
-        backup_data = data_conector.getBackup()
+        backup_data = data_conector.getBackupData()
         response = app.response_class(
             response=json.dumps(backup_data),
             status=200,
@@ -711,7 +713,7 @@ def tokenGenerator(agent, type):
     legalTypes = ['access_token', 'authorization_code', 'refresh_token']
 
     if type in legalTypes:
-        data_conector.updateToken(agent, type, token, ts)
+        data_conector.updateOauthToken(agent, type, token, ts)
         return token
     else:
         data_conector.log(
@@ -725,7 +727,7 @@ def auth():
     clientId = request.args.get('client_id')  # ClientId from the client
     responseURI = request.args.get('redirect_uri')
     state = request.args.get('state')
-    if clientId == data_conector.getToken(agent='google', type="client_id"):
+    if data_conector.validateOauthCredentials("client_id", clientId):
         data_conector.log(
             'Warning', 'A new Google account has been linked from auth endpoint')
         # Create a new authorization_code
@@ -762,7 +764,7 @@ def token():
         code = request.form.get('refresh_token')
     obj = {}
     # Verify the code
-    if code == data_conector.getToken(agent, grantType, 'value'):
+    if  data_conector.validateOauthToken(grantType, code):
         # Tokens lifetime
         secondsInDay = 86400
         # Create a new token
@@ -816,7 +818,7 @@ def smarthome():
         agent = 'google'
     # Get the access_token
     tokenClient = request.headers['authorization'].split(' ')[1]
-    if tokenClient == data_conector.getToken(agent, 'access_token', 'value'):
+    if data_conector.validateOauthToken('access_token', tokenClient):
         # Anlalyze the inputs
         inputs = body['inputs']
         requestId = body['requestId']

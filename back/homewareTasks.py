@@ -54,9 +54,9 @@ def ddnsUpdater():
 					last = str(now.strftime("%m/%d/%Y, %H:%M:%S"))
 					if not 'good' in code and not 'nochg' in code:
 						code = noipRequest.text.split('\r')[0]
-						data_conector.updateDDNS(newIP, status[code], code, False, last)
+						data_conector.updateDDNSstatus(newIP, status[code], code, False, last)
 					else:
-						data_conector.updateDDNS(newIP, status[code], code, True, last)
+						data_conector.updateDDNSstatus(newIP, status[code], code, True, last)
 				elif ddns['provider'] == 'duckdns':
 					duckdnsServer = 'https://www.duckdns.org/update'
 					params = {
@@ -71,9 +71,9 @@ def ddnsUpdater():
 					now = datetime.now()
 					last = str(now.strftime("%m/%d/%Y, %H:%M:%S"))
 					if "OK" in code:
-						data_conector.updateDDNS(newIP, code, code, True, last)
+						data_conector.updateDDNSstatus(newIP, code, code, True, last)
 					else:
-						data_conector.updateDDNS(newIP, code, code, False, last)
+						data_conector.updateDDNSstatus(newIP, code, code, False, last)
 
 def syncDevicesStatus():
 	if data_conector.getSyncDevices():

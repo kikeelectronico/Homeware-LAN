@@ -45,11 +45,11 @@ An object containing devices and status.
 }
 ```
 
-## Method - createFile
+## Method - createBackupFile
 
 Homeware can backup the important data from the database into a file named _Homeware.json_. This method do the task.
 
-`myData.createFile()`
+`myData.createBackupFile()`
 
 ### Arguments
 
@@ -59,11 +59,11 @@ None
 
 None
 
-## Method - load
+## Method - loadBackupFile
 
 This method restore the database from the Homware.json file.
 
-`myData.load()`
+`myData.loadBackupFile()`
 
 ### Arguments
 
@@ -299,10 +299,10 @@ An object containing the apikey.
 }
 ```
 
-## Method - generateAPIKey
+## Method - createAPIKey
 This method generates a new apiakey. Only one apikey can be active. When a new apikey is generated, the older one will be deleted.
 
-`myData.generateAPIKey()`
+`myData.createAPIKey()`
 
 ### Arguments
 None
@@ -316,45 +316,10 @@ An object containing the apikey.
 }
 ```
 
-## Method - getToken
-Get an oauth2 active token's obeject by the service name. Note: This method will be deprecated.
-
-`myData.getToken(agent)`
-
-### Arguments
-
-#### agent
-The service name (agent). Only Google is supported by now.
-
-- Type: string
-- Possible values: 'google'
-
-### Returns
-An string containing the token or a token object.
-
-```
-{
-  access_token: {
-    timestamp: 1579452782954,
-    value: '-'
-  },
-  authorization_code: {
-    timestamp: 1579452777875,
-    value: '-'
-  },
-  client_id: '123',
-  client_secret: '456',
-  refresh_token: {
-    timestamp: 1579452782954,
-    value: '-'
-  }
-}
-```
-
-## Method - updateToken
+## Method - updateOauthToken
 Update an oauth2 token of a service by type. Note: This method will be deprecated.
 
-`myData.updateToken(agent, type, value, timestamp)`
+`myData.updateOauthToken(agent, type, value, timestamp)`
 
 ### Arguments
 
@@ -476,22 +441,6 @@ The domain name.
 ### Returns
 `Saved correctly!` if it is the first time. `Your domain has been set in the past` if the domain was set in the past.
 
-## Method - setSyncDevices
-This method sets the sync_devices setting.
-
-`myData.setSyncDevices(status)`
-
-### Arguments
-
-#### status
-The new value for the setting.
-
-- Type: bool
-- Example: true
-
-### Returns
-None
-
 ## Method - getSyncDevices
 This method returns the sync_devices setting.
 
@@ -546,10 +495,10 @@ An object that contains both the DDNS settings and the DDNS status.
 }
 ```
 
-## Method - updateDDNS
+## Method - updateDDNSstatus
 This method updates the DDNS status.
 
-`myData.updateDDNS(ip, status, code, enabled, last)`
+`myData.updateDDNSstatus(ip, status, code, enabled, last)`
 
 ### Arguments
 
@@ -586,10 +535,10 @@ Last request timestap.
 ### Returns
 None
 
-## Method - redisStatus
+## Method - getRedisStatus
 This method returns the status availability of the Redis server.
 
-`myData.redisStatus()`
+`myData.getRedisStatus()`
 
 ### Arguments
 None

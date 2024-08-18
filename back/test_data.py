@@ -11,13 +11,13 @@ class Test_data(unittest.TestCase):
 	def test_version(self):
 		self.assertEqual('v', self.data.getVersion()['version'][0])
 
-	def test_redisStatus(self):
+	def test_getRedisStatus(self):
 		response = {
 			'enable': True,
 			'status': 'Running',
 			'title': 'Redis database'
 		}
-		self.assertEqual(response, self.data.redisStatus())
+		self.assertEqual(response, self.data.getRedisStatus())
 
 # DEVICES
 
@@ -212,7 +212,7 @@ class Test_data(unittest.TestCase):
 # ACCESS
 
 	def test_getAPIKey(self):
-		api_key = self.data.generateAPIKey()
+		api_key = self.data.createAPIKey()
 		self.assertEqual(api_key, self.data.getAPIKey())
 
 #  SETTINGS

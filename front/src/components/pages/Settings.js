@@ -8,7 +8,6 @@ import { root } from "../../constants";
 function Settings() {
 
   const [settings, setSettings] = useState({
-      google: {},
       ddns: {
         enabled: false,
       },
@@ -16,7 +15,9 @@ function Settings() {
       apikey: "",
       sync_google: false,
       sync_devices: false,
-      log: {}
+      log: {},
+      client_id: "",
+      client_secret: ""
     })
 
   useEffect(() => {
@@ -116,8 +117,8 @@ function Settings() {
               <input
                 type="text"
                 className="two_input"
-                id="google/client_id"
-                defaultValue={settings.google.client_id}
+                id="client_id"
+                defaultValue={settings.client_id}
                 onChange={update}
               />
             </div>
@@ -128,8 +129,8 @@ function Settings() {
               <input
                 type="text"
                 className="two_input"
-                id="google/client_secret"
-                defaultValue={settings.google.client_secret}
+                id="client_secret"
+                defaultValue={settings.client_secret}
                 onChange={update}
               />
             </div>

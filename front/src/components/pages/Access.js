@@ -29,7 +29,7 @@ function Access () {
     http.send();
   }, [])
 
-  const generateAPIKey = () => {
+  const createAPIKey = () => {
     ToastsStore.warning("Generating API key");
     var http = new XMLHttpRequest();
     http.onload = function (e) {
@@ -106,7 +106,7 @@ function Access () {
           </div>
         </div>
         <div className="page_block_buttons_container">
-          <Button variant="contained" onClick={generateAPIKey}>Generate</Button>
+          <Button variant="contained" onClick={createAPIKey}>Generate</Button>
         </div>
       </div>
 
