@@ -184,41 +184,31 @@ class Data:
 
 	# ToDo
 	def getBackupData(self):
+		user = self.mongo_db["users"].find()[0]
+		oauth = self.mongo_db["oauth"].find()[0]
 		data = {
-			'devices': json.loads(self.redis.get('devices')),
+			'devices': self.getDevices(),
 			'status': self.getStatus(),
 			'secure': {
-				"domain": self.redis.get("domain").decode('UTF-8'),
-				"user": self.redis.get("user/username").decode('UTF-8'),
-				"pass": self.redis.get("user/password").decode('UTF-8'),
+				"domain": self.getSettings()["domain"],
+				"user": user["username"],
+				"pass": user["password"],
 				"token": {
-					"front": self.redis.get("token/front").decode('UTF-8'),
+					"front": user["token"],
 					"google": {
-						"access_token": {
-							"timestamp": self.redis.get("token/google/access_token/timestamp").decode('UTF-8'),
-							"value": self.redis.get("token/google/access_token/value").decode('UTF-8'),
-						},
-						"authorization_code": {
-							"timestamp": self.redis.get("token/google/authorization_code/timestamp").decode('UTF-8'),
-							"value": self.redis.get("token/google/authorization_code/value").decode('UTF-8'),
-						},
-						"client_id": self.redis.get("token/google/client_id").decode('UTF-8'),
-						"client_secret": self.redis.get("token/google/client_secret").decode('UTF-8'),
-						"refresh_token": {
-							"timestamp": self.redis.get("token/google/refresh_token/timestamp").decode('UTF-8'),
-							"value": self.redis.get("token/google/refresh_token/value").decode('UTF-8'),
-						}
+						"access_token": oauth["access_token"],
+						"authorization_code": oauth["authorization_code"],
+						"client_id": self.getSettings()["client_id"],
+						"client_secret": self.getSettings()["client_secret"],
+						"refresh_token": oauth["refresh_token"]
 					},
-					"apikey": self.redis.get("token/apikey").decode('UTF-8')
+					"apikey": self.mongo_db["apikeys"].find()[0]["apikey"]
 				},
-				"ddns": pickle.loads(self.redis.get("ddns")),
-				"mqtt": {
-					"user": self.redis.get("mqtt/username").decode('UTF-8'),
-					"password": self.redis.get("mqtt/password").decode('UTF-8'),
-				},
-				"sync_google": pickle.loads(self.redis.get("sync_google")),
-				"sync_devices": pickle.loads(self.redis.get("sync_devices")),
-				"log": pickle.loads(self.redis.get("log")),
+				"ddns": self.getSettings()["ddns"],
+				"mqtt": self.getSettings()["mqtt"],
+				"sync_google": self.getSettings()["sync_google"],
+				"sync_devices": self.getSettings()["sync_devices"],
+				"log": self.getSettings()["log"],
 			}
 		}
 		return data
