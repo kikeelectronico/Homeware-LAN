@@ -450,7 +450,7 @@ class Data:
 
 # OAUTH
 
-	def updateOauthToken(self,agent, type, token, timestamp):
+	def updateOauthToken(self, agent, type, token, timestamp):
 		filter = {"_id": "google"}
 		data = {}
 		data[type] = {
