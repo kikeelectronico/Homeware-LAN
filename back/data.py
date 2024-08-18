@@ -492,12 +492,6 @@ class Data:
 
 # OAUTH
 
-## ToDo
-## - Validate authorization code
-## - Validate refresh token
-## - Validate access token
-## - Update oauth token by agent and type
-
 def validateOauthToken(self, type, token):
 	oauth = self.mongo_db["oauth"].find()[0]
 	return token == oauth[type]["value"]
