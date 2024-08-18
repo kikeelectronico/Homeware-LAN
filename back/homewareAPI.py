@@ -497,7 +497,8 @@ def apiSystemStatus():
                 'status': 'Stopped',
                 'title': 'Homeware Task'
             },
-            'redis': data_conector.getRedisStatus()
+            'redis': data_conector.getRedisStatus(),
+            'mongo': data_conector.getMongoStatus()
         }
 
         try:

@@ -537,6 +537,23 @@ class Data:
 			}
 		return status
 
+	def getMongoStatus(self):
+		status = {}
+		try:
+			response = self.mongo_client.server_info()
+			status =  {
+				'enable': True,
+				'status': 'Running',
+				'title': 'Mongo database'
+			}
+		except pymongo.errors.ServerSelectionTimeoutErro:
+			status = {
+				'enable': True,
+				'status': 'Stopped',
+				'title': 'Mongo database'
+			}
+		return status
+
 # LOG
 
 	def getLog(self):
