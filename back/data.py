@@ -475,9 +475,9 @@ class Data:
 	def getSettings(self):
 		return self.mongo_db["settings"].find()[0]
 
-	def updateSettings(self, incommingData):
+	def updateSettings(self, settings):
 		filter = {"_id": "settings"}
-		operation = {"$set": incommingData}
+		operation = {"$set": settings}
 		self.mongo_db["settings"].update_one(filter, operation)
 
 	def getDDNS(self):

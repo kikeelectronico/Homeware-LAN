@@ -594,11 +594,11 @@ The settings object.
 ## Method - updateSettings
 This method updates the settings object.
 
-`myData.updateSettings(incomming_data)`
+`myData.updateSettings(settings)`
 
 ### Arguments
 
-#### incomming_data
+#### settings
 An object with the settings to save.
 
 - Type: json
