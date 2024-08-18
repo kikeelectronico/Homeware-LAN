@@ -182,7 +182,6 @@ class Data:
 		file.write(json.dumps(data))
 		file.close()
 
-	# ToDo
 	def getBackupData(self):
 		user = self.mongo_db["users"].find()[0]
 		oauth = self.mongo_db["oauth"].find()[0]
