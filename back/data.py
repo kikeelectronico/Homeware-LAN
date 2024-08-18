@@ -141,43 +141,7 @@ class Data:
 
 	# ToDo
 	def createFile(self,file):
-		data = {
-			'devices': json.loads(self.redis.get('devices')),
-			'status': self.getStatus(),
-			'secure': {
-				"domain": self.redis.get("domain").decode('UTF-8'),
-				"user": self.redis.get("user/username").decode('UTF-8'),
-				"pass": self.redis.get("user/password").decode('UTF-8'),
-				"token": {
-					"front": self.redis.get("token/front").decode('UTF-8'),
-					"google": {
-						"access_token": {
-							"timestamp": self.redis.get("token/google/access_token/timestamp").decode('UTF-8'),
-							"value": self.redis.get("token/google/access_token/value").decode('UTF-8'),
-						},
-						"authorization_code": {
-							"timestamp": self.redis.get("token/google/authorization_code/timestamp").decode('UTF-8'),
-							"value": self.redis.get("token/google/authorization_code/value").decode('UTF-8'),
-						},
-						"client_id": self.redis.get("token/google/client_id").decode('UTF-8'),
-						"client_secret": self.redis.get("token/google/client_secret").decode('UTF-8'),
-						"refresh_token": {
-							"timestamp": self.redis.get("token/google/refresh_token/timestamp").decode('UTF-8'),
-							"value": self.redis.get("token/google/refresh_token/value").decode('UTF-8'),
-						}
-					},
-					"apikey": self.redis.get("token/apikey").decode('UTF-8')
-				},
-				"ddns": pickle.loads(self.redis.get("ddns")),
-				"mqtt": {
-					"user": self.redis.get("mqtt/username").decode('UTF-8'),
-					"password": self.redis.get("mqtt/password").decode('UTF-8'),
-				},
-				"sync_google": pickle.loads(self.redis.get("sync_google")),
-				"sync_devices": pickle.loads(self.redis.get("sync_devices")),
-				"log": pickle.loads(self.redis.get("log")),
-			}
-		}
+		data = self.getBackupData()
 		file = open('../' + self.homewareFile, 'w')
 		file.write(json.dumps(data))
 		file.close()
