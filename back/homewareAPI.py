@@ -607,7 +607,7 @@ def files(operation='', file='', token=''):
     if frontToken data_conector.validateUserToken(token):
         if operation == 'buckup':
             # Create file
-            data_conector.createFile('homeware')
+            data_conector.createBackupFile('homeware')
             # Download file
             now = datetime.now()
             date_time = now.strftime("%m/%d/%Y, %H:%M:%S")

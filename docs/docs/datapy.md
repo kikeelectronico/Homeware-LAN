@@ -45,11 +45,11 @@ An object containing devices and status.
 }
 ```
 
-## Method - createFile
+## Method - createBackupFile
 
 Homeware can backup the important data from the database into a file named _Homeware.json_. This method do the task.
 
-`myData.createFile()`
+`myData.createBackupFile()`
 
 ### Arguments
 
