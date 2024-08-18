@@ -440,23 +440,10 @@ class Data:
 			self.log('Alert','Login failed, user: ' + username)
 			return responseData
 
-	def validateUserToken(self, headers):
-		username = headers['user']
-		token = headers['token']
+	def validateUserToken(self, token):
 		user_data = self.mongo_db["users"].find()[0]
 		ddbb_token = user_data["token"]
-		ddbb_username = user_data["username"]
-		responseData = {}
-		if username == ddbb_username and token == ddbb_token:
-			responseData = {
-				'status': 'in'
-			}
-		else:
-			responseData = {
-				'status': 'fail'
-			}
-
-		return responseData
+		return token == ddbb_token
 
 	def googleSync(self, headers, responseURL):
 		username = headers['user']

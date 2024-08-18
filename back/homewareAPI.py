@@ -354,8 +354,12 @@ def apiUserLogin():
 @app.route("/api/user/validateToken/", methods=['GET'])
 def apiUserValidateToken():
 
+    responseData = {
+        'status': 'in' if data_conector.validateUserToken(request.headers["token"]) else "fail"
+    }
+
     response = app.response_class(
-        response=json.dumps(data_conector.validateUserToken(request.headers)),
+        response=json.dumps(responseData),
         status=200,
         mimetype='application/json'
     )
