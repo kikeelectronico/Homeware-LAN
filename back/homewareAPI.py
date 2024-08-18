@@ -338,7 +338,8 @@ def apiUserSet():
 @app.route("/api/user/login", methods=['GET'])
 @app.route("/api/user/login/", methods=['GET'])
 def apiUserLogin():
-    token = data_conector.login(request.headers)
+    headers = request.headers
+    token = data_conector.login(headers["user"], headers["pass"])
     responseData = {
         'status': 'in' if token is not None else "fail",
         'user': request.headers['user'],

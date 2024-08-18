@@ -377,9 +377,7 @@ class Data:
 		else:
 			return False
 
-	def login(self, headers):
-		username = headers['user']
-		password = headers['pass']
+	def login(self, username, password):
 		user_data = self.mongo_db["users"].find()[0]
 		ddbb_password_hash = user_data["password"]
 		ddbb_username = user_data["username"]

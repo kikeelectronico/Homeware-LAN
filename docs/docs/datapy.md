@@ -361,7 +361,7 @@ The current password in plain text.
 The new password in plain text.
 
 - Type: string
-- Example: 'my-bew-password'
+- Example: 'my-new-password'
 
 
 ### Returns
@@ -370,21 +370,22 @@ The new password in plain text.
 ## Method - login
 This method login the user and returns an access token. Only one token can be active, so the current token will be deleted once a new one is created.
 
-`myData.login(incomming_data)`
+`myData.login(username, password)`
 
 ### Arguments
 
-#### incomming_data
-The username and password in plain text.
+#### password
+The username.
 
-- Type: json
-- Example: 
-```
-{
-  user: 'my-username',
-  pass: 'my-password'
-}
-```
+- Type: string
+- Example: 'my-username'
+
+#### new_password
+The password in plain text.
+
+- Type: string
+- Example: 'my-password'
+
 
 ### Returns
 Both the login data and login status object:
