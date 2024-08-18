@@ -256,8 +256,8 @@ class Data:
 		return list(self.mongo_db["devices"].find())
 
 	def updateDevice(self, incommingData):
-		deviceID = incommingData['device']['id']
-		filter = {"_id": deviceID}
+		device_id = incommingData['device']['id']
+		filter = {"_id": device_id}
 		if self.mongo_db["devices"].count_documents(filter) == 1:
 			operation = self.mongo_db["devices"].replace_one(filter, incommingData["device"])
 			if operation.modified_count == 1:
@@ -265,9 +265,9 @@ class Data:
 				status = incommingData['status']
 				params = status.keys()
 				for param in params:
-					self.redis.set("status/" + deviceID + "/" + param, pickle.dumps(status[param]))
+					self.redis.set("status/" + device_id + "/" + param, pickle.dumps(status[param]))
 				# Delete the not received params
-				db_params_keys = self.redis.keys("status/" + deviceID + "/*")
+				db_params_keys = self.redis.keys("status/" + device_id + "/*")
 				for db_param_key in db_params_keys:
 					if db_param_key.decode("utf-8").split("/")[2] not in list(params):
 						self.redis.delete(db_param_key)
@@ -278,28 +278,28 @@ class Data:
 		return False
 
 	def createDevice(self, incommingData):
-		deviceID = incommingData['device']['id']
-		filter = {"_id": deviceID}
+		device_id = incommingData['device']['id']
+		filter = {"_id": device_id}
 		if self.mongo_db["devices"].count_documents(filter) == 0:
 			device = incommingData["device"]
-			device["_id"] = deviceID
+			device["_id"] = device_id
 			self.mongo_db["devices"].insert_one(incommingData['device'])
 
 			status = incommingData['status']
 			params = status.keys()
 			for param in params:
-				self.redis.set("status/" + deviceID + "/" + param, pickle.dumps(status[param]))
+				self.redis.set("status/" + device_id + "/" + param, pickle.dumps(status[param]))
 			# Inform Google Home Graph
 			if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
 				homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
 
-	def deleteDevice(self, deviceID):
-		filter = {"_id": deviceID}
+	def deleteDevice(self, device_id):
+		filter = {"_id": device_id}
 		if self.mongo_db["devices"].count_documents(filter) == 1:
 			operation = self.mongo_db["devices"].delete_one(filter)
 			if operation.deleted_count == 1:
 				# Delete status
-				params = self.redis.keys('status/' + deviceID + '/*')
+				params = self.redis.keys('status/' + device_id + '/*')
 				for param in params:
 					self.redis.delete(param)
 				# Inform Google Home Graph
@@ -310,8 +310,8 @@ class Data:
 
 # STATUS
 
-	def getStatus(self, id=None):
-		if id is None:
+	def getStatus(self, device_id=None):
+		if device_id is None:
 			devices_keys = self.redis.keys("status/*")
 			status = {}
 			for param_key_string in devices_keys:
@@ -321,7 +321,7 @@ class Data:
 				status[param_key[1]][param_key[2]] = pickle.loads(self.redis.get(param_key_string))
 			return status
 		else:
-			device_keys = self.redis.keys("status/" + str(id) + "/*")
+			device_keys = self.redis.keys("status/" + str(device_id) + "/*")
 			if len(device_keys) == 0:
 				return None
 			status = {}
@@ -330,19 +330,19 @@ class Data:
 				status[param_key[2]] = pickle.loads(self.redis.get(param_key_string))
 			return status
 
-	def updateParamStatus(self, device, param, value):
-		if len(self.redis.keys('status/' + device + '/' + param)) == 1:
-			self.redis.set('status/' + device + '/' + param,pickle.dumps(value))
+	def updateParamStatus(self, device_id, param, value):
+		if len(self.redis.keys('status/' + device_id + '/' + param)) == 1:
+			self.redis.set('status/' + device_id + '/' + param,pickle.dumps(value))
 			# Create the status json
-			params_keys = self.redis.keys('status/' + device + '/*')
+			params_keys = self.redis.keys('status/' + device_id + '/*')
 			status = {}
 			for param_key_string in params_keys:
 				param_key = param_key_string.decode().split("/")
 				status[param_key[2]] = pickle.loads(self.redis.get(param_key_string))
 			# Compose the messages
 			msgs = [
-				{'topic': "device/" + device + '/' + param, 'payload': str(value)},
-				{'topic': "device/" + device, 'payload': json.dumps(status)}
+				{'topic': "device/" + device_id + '/' + param, 'payload': str(value)},
+				{'topic': "device/" + device_id, 'payload': json.dumps(status)}
 			]
 			# Send the messagees
 			mqttData = self.getMQTT()
@@ -351,8 +351,8 @@ class Data:
 			# Inform Google HomeGraph
 			if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
 				states = {}
-				states[device] = {}
-				states[device][param] = value
+				states[device_id] = {}
+				states[device_id][param] = value
 				try:
 					homegraph.reportState(self.redis.get("domain").decode('UTF-8'),states)
 				except:

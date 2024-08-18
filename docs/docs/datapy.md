@@ -166,11 +166,11 @@ It is the id of the device that want to be deleted.
 ## Method - getStatus
 This method returns the status of all the devices or the status of the indicated device.
 
-`myData.getStatus()`
+`myData.getStatus(device_id)`
 
 ### Arguments
 
-#### id
+#### device_id
 The id of the device whose status is requiered.
 
 - Type: string
@@ -196,11 +196,11 @@ If id is indicated: the status as a json object.
 ## Method - updateParamStatus
 This method updates the value of a param for a device.
 
-`myData.updateParamStatus(device,param,value)`
+`myData.updateParamStatus(device_id, param, value)`
 
 ### Arguments
 
-#### device
+#### device_id
 It is the id of the device.
 
 - Type: string
