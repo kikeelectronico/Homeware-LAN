@@ -508,6 +508,10 @@ def validateOauthToken(self, type, token):
 	oauth = self.mongo_db["oauth"].find()[0]
 	return token == oauth[type]["value"]
 
+def validateOauthCredentials(self, type, value):
+	if not type in ["client_id", "client_secret"]: return False
+	return self.mongo_db["settings"].find()[0][type] == value
+
 # SETTINGS
 
 	def getSettings(self):

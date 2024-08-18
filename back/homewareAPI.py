@@ -726,7 +726,7 @@ def auth():
     clientId = request.args.get('client_id')  # ClientId from the client
     responseURI = request.args.get('redirect_uri')
     state = request.args.get('state')
-    if clientId == data_conector.getToken(agent='google', type="client_id"):
+    if data_conector.validateOauthCredentials("client_id", clientId):
         data_conector.log(
             'Warning', 'A new Google account has been linked from auth endpoint')
         # Create a new authorization_code
