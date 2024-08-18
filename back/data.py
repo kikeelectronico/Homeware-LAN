@@ -182,7 +182,9 @@ class Data:
 		# Load the devices
 		for device in data['devices']:
 			device["_id"] = device["id"]
-			self.mongo_db["devices"].insert_one(device)
+			filter = {"_id": device["id"]}
+			operation = {"$set": device}
+			self.mongo_db["devices"].update_one(filter, operation, upsert = True)
 		# Load the status
 		status = data['status']
 		devices = status.keys()
@@ -202,14 +204,18 @@ class Data:
 			"client_id": data['secure']["token"]['google']["client_id"],
 			"client_secret": data['secure']["token"]['google']["client_secret"],
 		}
-		self.mongo_db["settings"].insert_one(settings)
+		filter = {"_id": "settings"}
+		operation = {"$set": settings}
+		self.mongo_db["settings"].update_one(filter, operation, upsert = True)
 		# Load the apikey
 		apikey = {
 			"_id": "legacy",
 			"agent": "legacy",
-			"apikey": data['secure']['apikey'],
+			"apikey": data['secure']['token']['apikey'],
 		}
-		self.mongo_db["apikeys"].insert_one(apikey)
+		filter = {"_id": "legacy"}
+		operation = {"$set": apikey}
+		self.mongo_db["apikeys"].update_one(filter, operation, upsert = True)
 		# Load the user
 		user = {
 			"_id": "admin",
@@ -217,16 +223,20 @@ class Data:
 			"password": data['secure']['pass'],
 			"token": data['secure']['token']['front'],
 		}
-		self.mongo_db["users"].insert_one(user)
+		filter = {"_id": "admin"}
+		operation = {"$set": user}
+		self.mongo_db["users"].update_one(filter, operation, upsert = True)
 		# Load the oauth tokens
-		user = {
+		oauth = {
 			"_id": "google",
 			"agent": "google",
 			"access_token": data['secure']['token']['google']["access_token"],
 			"authorization_code": data['secure']['token']['google']["authorization_code"],
 			"refresh_token": data['secure']['token']['google']["refresh_token"],
 		}
-		self.mongo_db["users"].insert_one(user)		
+		filter = {"_id": "google"}
+		operation = {"$set": oauth}
+		self.mongo_db["users"].update_one(filter, operation, upsert = True)		
 
 # VERSION
 
