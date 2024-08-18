@@ -674,7 +674,7 @@ def files(operation='', file='', token=''):
 def backupGet():
     accessLevel = checkAccessLevel(request.headers)
     if accessLevel >= 10:
-        backup_data = data_conector.getBackup()
+        backup_data = data_conector.getBackupData()
         response = app.response_class(
             response=json.dumps(backup_data),
             status=200,

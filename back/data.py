@@ -183,7 +183,7 @@ class Data:
 		file.close()
 
 	# ToDo
-	def getBackup(self):
+	def getBackupData(self):
 		data = {
 			'devices': json.loads(self.redis.get('devices')),
 			'status': self.getStatus(),
