@@ -630,7 +630,7 @@ def files(operation='', file='', token=''):
                     filename = file.filename
                     file.save(os.path.join(
                         app.config['UPLOAD_FOLDER'], "homeware.json"))
-                    data_conector.load()
+                    data_conector.loadBackupFile()
                     data_conector.log(
                         'Warning', 'A backup file has been restored')
                     return redirect('/backup/?status=Success')
