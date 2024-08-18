@@ -139,7 +139,6 @@ class Data:
 
 # BACKUP
 
-	# ToDo
 	def createBackupFile(self,file):
 		data = self.getBackupData()
 		file = open('../' + self.homewareFile, 'w')
