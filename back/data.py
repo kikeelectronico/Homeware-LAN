@@ -139,7 +139,7 @@ class Data:
 
 # BACKUP
 
-	def createBackupFile(self,file):
+	def createBackupFile(self):
 		data = self.getBackupData()
 		file = open('../' + self.homewareFile, 'w')
 		file.write(json.dumps(data))
