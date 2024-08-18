@@ -342,9 +342,14 @@ def apiUserSet():
 @app.route("/api/user/login", methods=['GET'])
 @app.route("/api/user/login/", methods=['GET'])
 def apiUserLogin():
-
+    token = data_conector.login(request.headers)
+    responseData = {
+        'status': 'in' if token is not None else "fail",
+        'user': request.headers['user'],
+        'token': token if token is not None else ""
+    }
     response = app.response_class(
-        response=json.dumps(data_conector.login(request.headers)),
+        response=json.dumps(responseData),
         status=200,
         mimetype='application/json'
     )

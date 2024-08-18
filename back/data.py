@@ -396,21 +396,11 @@ class Data:
 			filter = {"username": ddbb_username}
 			operation = {"$set": {"token": token}}
 			self.mongo_db["users"].update_one(filter, operation)
-			# Prepare the response
-			responseData = {
-				'status': 'in',
-				'user': username,
-				'token': token
-			}
 			self.log('Log',username + ' has login')
-			return responseData	
+			return token	
 		else:
-			# Prepare the response
-			responseData = {
-				'status': 'fail'
-			}
 			self.log('Alert','Login failed, user: ' + username)
-			return responseData
+			return None
 
 	def validateUserToken(self, token):
 		user_data = self.mongo_db["users"].find()[0]
