@@ -492,10 +492,6 @@ class Data:
 
 # OAUTH
 
-def validateOauthToken(self, type, token):
-	oauth = self.mongo_db["oauth"].find()[0]
-	return token == oauth[type]["value"]
-		
 def updateOauthToken(self,agent,type,token,timestamp):
 	filter = {"_id": "google"}
 	data = {}
@@ -507,6 +503,10 @@ def updateOauthToken(self,agent,type,token,timestamp):
 	result = self.mongo_db["oauth"].update_one(filter, operation)
 
 	return result.modified_count == 1
+
+def validateOauthToken(self, type, token):
+	oauth = self.mongo_db["oauth"].find()[0]
+	return token == oauth[type]["value"]
 
 # SETTINGS
 
