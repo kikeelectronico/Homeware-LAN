@@ -17,8 +17,7 @@ import hostname
 homegraph = HomeGraph()
 
 class Data:
-	"""Access to the Homeware database and files."""
-  
+	"""Access to Homeware's databases and files."""
 
 	version = 'v2.0.0'
 	homewareFile = 'homeware.json'
