@@ -41,7 +41,6 @@ class Data:
 		except:
 			self.log('Warning','The Mongo database must be created')
 
-		# ToDo	
 		if not self.redis.get('transfer'):
 			self.log('Warning','The database must be created')
 			if not os.path.exists("../homeware.json"):
@@ -50,13 +49,22 @@ class Data:
 			# Load the database using the template
 			self.load()
 			self.log('Warning','Using a template homeware file')
-			# Overwrite the settings given by the user
-			self.redis.set("domain", os.environ.get("HOMEWARE_DOMAIN", "localhost"))
-			ddns = pickle.loads(self.redis.get("ddns"))
-			ddns['hostname'] = os.environ.get("HOMEWARE_DOMAIN", "localhost")
-			self.redis.set("ddns", pickle.dumps(ddns))
-			self.redis.set("user/username", os.environ.get("HOMEWARE_USER", "admin"))
-			self.redis.set("user/password", str(bcrypt.hashpw(os.environ.get("HOMEWARE_PASSWORD", "admin").encode('utf-8'), bcrypt.gensalt())))
+			# Create db reference
+			self.mongo_db = self.mongo_client["homeware"]
+			# Override settings
+			filter = {"_id": "settings"}
+			operation = {"$set": {
+				"domain": os.environ.get("HOMEWARE_DOMAIN", "localhost"),
+				"ddns.hostname": os.environ.get("HOMEWARE_DOMAIN", "localhost")
+			}}
+			self.mongo_db["settings"].update_one(filter, operation)
+			# Override user
+			filter = {"_id": "admin"}
+			operation = {"$set": {
+				"username": os.environ.get("HOMEWARE_USER", "admin"),
+				"password": str(bcrypt.hashpw(os.environ.get("HOMEWARE_PASSWORD", "admin").encode('utf-8'), bcrypt.gensalt()))
+			}}
+			self.mongo_db["users"].update_one(filter, operation)
 			# Set the flag
 			self.redis.set("transfer", "true")
 
@@ -220,54 +228,54 @@ class Data:
 		file = open('../' + self.homewareFile, 'r')
 		data = json.load(file)
 		file.close()
-		# Save the jsons
-		self.redis.set('devices',json.dumps(data['devices']))
-		# Load the status in the database
+		# Load the devices
+		for device in data['devices']:
+			device["_id"] = device["id"]
+			self.mongo_db["devices"].insert_one(device)
+		# Load the status
 		status = data['status']
 		devices = status.keys()
 		for device in devices:
 			params = status[device].keys()
 			for param in params:
 				self.redis.set("status/" + device + "/" + param, pickle.dumps(status[device][param]))
-		# Load tokens
-		token = data['secure']['token']
-		self.redis.set("token/front", token['front'])
-		self.redis.set("token/apikey", token['apikey'])
-		self.redis.set("token/google/client_id", token['google']['client_id'])
-		self.redis.set("token/google/client_secret", token['google']['client_secret'])
-		self.redis.set("token/google/access_token/value", token['google']['access_token']['value'])
-		self.redis.set("token/google/access_token/timestamp", token['google']['access_token']['timestamp'])
-		self.redis.set("token/google/refresh_token/value", token['google']['refresh_token']['value'])
-		self.redis.set("token/google/refresh_token/timestamp", token['google']['refresh_token']['timestamp'])
-		self.redis.set("token/google/authorization_code/value", token['google']['authorization_code']['value'])
-		self.redis.set("token/google/authorization_code/timestamp", token['google']['authorization_code']['timestamp'])
-		# Load MQTT credentials
-		mqtt = data['secure']['mqtt']
-		self.redis.set("mqtt/username", mqtt['user'])
-		self.redis.set("mqtt/password", mqtt['password'])
-		# Load Admin user credentials
-		secure = data['secure']
-		self.redis.set("user/username", secure['user'])
-		self.redis.set("user/password", secure['pass'])
-		# Load generla config
-		self.redis.set("domain", secure['domain'])
-		self.redis.set("ddns", pickle.dumps(secure['ddns']))
-		try:
-			self.redis.set("log", pickle.dumps(secure['log']))
-		except:
-			log = {
-				"days": 30
-			}
-			self.redis.set("log", pickle.dumps(log))
-		
-		self.redis.set("sync_google", pickle.dumps(secure['sync_google']))
-		self.redis.set("sync_devices", pickle.dumps(secure['sync_devices']))
-
-		# Temp flags
-		self.redis.set("fast_status", "true")
-		self.redis.set("fast_token", "true")
-		self.redis.set("fast_mqtt_b", "true")
-		self.redis.set("fast_user", "true")
+		# Load the settings
+		settings = {
+			"_id": "settings",
+			"domain": data['secure']['domain'].
+			"ddns": data['secure']['ddns'],
+			"mqtt": data['secure']['mqtt'],
+			"sync_google": data['secure']['sync_google'],
+			"sync_devices": data['secure']['sync_devices'],
+			"log": data['secure']['log'],
+			"client_id": data['secure']["token"]['google']["client_id"],
+			"client_secret": data['secure']["token"]['google']["client_secret"],
+		}
+		self.mongo_db["settings"].insert_one(settings)
+		# Load the apikey
+		apikey = {
+			"_id": "legacy",
+			"agent": "legacy".
+			"apikey": data['secure']['apikey'],
+		}
+		self.mongo_db["apikeys"].insert_one(apikey)
+		# Load the user
+		user = {
+			"_id": "admin",
+			"username": data['secure']['user'],
+			"password": data['secure']['pass'],
+			"token": data['secure']['token']['front'],
+		}
+		self.mongo_db["users"].insert_one(user)
+		# Load the oauth tokens
+		user = {
+			"_id": "google",
+			"agent": "google",
+			"access_token": data['secure']['token']['google']["access_token"],
+			"authorization_code": data['secure']['token']['google']["authorization_code"],
+			"refresh_token": data['secure']['token']['google']["refresh_token"],
+		}
+		self.mongo_db["users"].insert_one(user)		
 
 # VERSION
 
