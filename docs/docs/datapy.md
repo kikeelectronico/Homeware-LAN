@@ -59,11 +59,11 @@ None
 
 None
 
-## Method - load
+## Method - loadBackupFile
 
 This method restore the database from the Homware.json file.
 
-`myData.load()`
+`myData.loadBackupFile()`
 
 ### Arguments
 
