@@ -72,8 +72,7 @@ def checkAccessLevel(headers):
     try:
         authorization = headers['authorization'].split(' ')[1]
         savedToken = data_conector.getToken(agent='front')
-        savedAPIKey = data_conector.getToken(agent='apikey')
-        if authorization == savedAPIKey:
+        if data_conector.validateAPIKey(authorization):
             accessLevel = 10
         elif authorization == savedToken:
             accessLevel = 100

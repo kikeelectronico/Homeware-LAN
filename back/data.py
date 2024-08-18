@@ -499,8 +499,9 @@ class Data:
 		}
 		return data
 
-## ToDo
-## - Validate apikey
+	def validateAPIKey(self, apikey):
+		filter = {"apikey": apikey}
+		return self.mongo_db["apikeys"].count_documents(filter) == 1
 
 # RETURN A TOKEN
 
