@@ -764,7 +764,7 @@ def token():
         code = request.form.get('refresh_token')
     obj = {}
     # Verify the code
-    if code == data_conector.getToken(agent, grantType, 'value'):
+    if  data_conector.validateOauthToken(grantType, code):
         # Tokens lifetime
         secondsInDay = 86400
         # Create a new token
@@ -818,7 +818,7 @@ def smarthome():
         agent = 'google'
     # Get the access_token
     tokenClient = request.headers['authorization'].split(' ')[1]
-    if tokenClient == data_conector.getToken(agent, 'access_token', 'value'):
+    if data_conector.validateOauthToken('access_token', tokenClient):
         # Anlalyze the inputs
         inputs = body['inputs']
         requestId = body['requestId']
