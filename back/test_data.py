@@ -56,7 +56,7 @@ class Test_data(unittest.TestCase):
 			"brightness": 80
 		}
 		# Crate a new device and check if it is saved in the ddbb
-		self.data.createDevice({"device":device,"status":status})
+		self.data.createDevice(device, status)
 		self.assertEqual(device,self.data.getDevices()[1])
 		self.assertEqual(status,self.data.getStatus()[device['id']])
 
@@ -95,7 +95,7 @@ class Test_data(unittest.TestCase):
 			"brightness": 80
 		}
 		# Crate a new device
-		self.data.createDevice({"device":device,"status":status})
+		self.data.createDevice(device, status)
 		# Update the device info
 		device['name']['name'] = 'Diodi'
 		self.assertTrue(self.data.updateDevice(device, status))
@@ -141,7 +141,7 @@ class Test_data(unittest.TestCase):
 			"brightness": 80
 		}
 		# Crate a new device
-		self.data.createDevice({"device":device,"status":status})
+		self.data.createDevice(device, status)
 		# Update the device status
 		self.assertFalse(self.data.getStatus()['light003']['on'])
 		#self.assertTrue(self.data.updateParamStatus('light003',"on",True))
@@ -182,7 +182,7 @@ class Test_data(unittest.TestCase):
 			"brightness": 80
 		}
 		# Crate a new device
-		self.data.createDevice({"device":device,"status":status})
+		self.data.createDevice(device, status)
 		# Delete a device that doesn't exists
 		self.assertFalse(self.data.deleteDevice('charger'))
 		# Delete the device

@@ -119,7 +119,7 @@ def apiDevicesCreate():
 
     if accessLevel >= 10:
         incommingData = request.get_json()
-        data_conector.createDevice(incommingData)
+        data_conector.createDevice(incommingData["device"], incommingData["status"])
         response = app.response_class(
             response=json.dumps(TWO_O_O),
             status=200,

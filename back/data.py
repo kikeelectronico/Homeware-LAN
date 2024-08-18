@@ -279,15 +279,13 @@ class Data:
 				return True
 		return False
 
-	def createDevice(self, incommingData):
-		device_id = incommingData['device']['id']
+	def createDevice(self, device, status):
+		device_id = device['id']
 		filter = {"_id": device_id}
 		if self.mongo_db["devices"].count_documents(filter) == 0:
-			device = incommingData["device"]
 			device["_id"] = device_id
-			self.mongo_db["devices"].insert_one(incommingData['device'])
+			self.mongo_db["devices"].insert_one(device)
 
-			status = incommingData['status']
 			params = status.keys()
 			for param in params:
 				self.redis.set("status/" + device_id + "/" + param, pickle.dumps(status[param]))

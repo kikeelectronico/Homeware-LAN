@@ -145,7 +145,7 @@ If id is indicated: the definition of the indicated device.
 
 The method updates an existing device.
 
-`myData.createDevice(device, status)`
+`myData.updateDevice(device, status)`
 
 ### Arguments
 
@@ -210,11 +210,11 @@ Check the device defition and status definition at <a href='https://developers.g
 
 The method creates a new device.
 
-`myData.createDevice(device_data)`
+`myData.createDevice(device, status)`
 
 ### Arguments
 
-#### device_data
+#### device
 It is the definition of the device that want to be created.
 
 - Type: json
@@ -222,12 +222,46 @@ It is the definition of the device that want to be created.
 
 ```
 {
-  device: {
-    ...
+  "attributes": {
+    "commandOnlyOnOff": true,
+    "queryOnlyOnOff": true,
+    "commandOnlyBrightness": true
   },
-  status: {
-    ...
-  }
+  "deviceInfo": {
+    "hwVersion": "1.0",
+    "swVersion": "1.0",
+    "manufacturer": "Homeware",
+    "model": "Homeware Lamp"
+  },
+  "id": "light",
+  "name": {
+    "defaultNames": [
+      "Lamp"
+    ],
+    "nicknames": [
+      "Lamp"
+    ],
+    "name": "Lamp"
+  },
+  "traits": [
+    "action.devices.traits.OnOff",
+    "action.devices.traits.Brightness"
+  ],
+  "type": "action.devices.types.LIGHT"
+}
+```
+
+#### status
+It is the status of the device that want to be created.
+
+- Type: json
+- Example: 
+
+```
+{
+  "online": true,
+  "on": false,
+  "brightness": 80
 }
 ```
 
