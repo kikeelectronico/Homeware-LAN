@@ -252,8 +252,11 @@ class Data:
 		}
 		return data
 
-	def getDevices(self):
-		return list(self.mongo_db["devices"].find())
+	def getDevices(self, device_id=None):
+		if device_id is None:
+			return list(self.mongo_db["devices"].find())
+		else:
+			return self.mongo_db["devices"].find_one({"_id": device_id})
 
 	def updateDevice(self, incommingData):
 		device_id = incommingData['device']['id']

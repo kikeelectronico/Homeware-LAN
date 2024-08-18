@@ -176,13 +176,8 @@ def apiDevicesGet(value=''):
 
     if accessLevel >= 10:
         if not value == '':
-            found = False
-            for device in data_conector.getDevices():
-                if device['id'] == value:
-                    responseData = device
-                    found = True
-                    break
-            if not found:
+            responseData = data_conector.getDevices(value)
+            if not responseData:
                 responseData = FOUR_O_FOUR
         else:
             responseData = data_conector.getDevices()

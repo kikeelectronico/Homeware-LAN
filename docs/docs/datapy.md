@@ -86,6 +86,61 @@ An object containing devices and status.
   status: {...}
 }
 ```
+
+## Method - getDevices
+This method returns the definition of all the devices or the definition of the indicated device.
+
+`myData.getStatus(device_id)`
+
+### Arguments
+
+#### device_id
+The id of the device whose definition is requiered.
+
+- Type: string
+- Example: 'lamp_001'
+- Optional
+
+### Returns
+If id is not indicated: a list of definitions.
+```
+[
+  {...},
+  {...},
+]
+```
+If id is indicated: the definition of the indicated device.
+```
+{
+  "attributes": {
+    "commandOnlyOnOff": true,
+    "queryOnlyOnOff": true,
+    "commandOnlyBrightness": true
+  },
+  "deviceInfo": {
+    "hwVersion": "1.0",
+    "swVersion": "1.0",
+    "manufacturer": "Homeware",
+    "model": "Homeware Lamp"
+  },
+  "id": "light",
+  "name": {
+    "defaultNames": [
+      "Lamp"
+    ],
+    "nicknames": [
+      "Lamp"
+    ],
+    "name": "Lamp"
+  },
+  "traits": [
+    "action.devices.traits.OnOff",
+    "action.devices.traits.Brightness"
+  ],
+  "type": "action.devices.types.LIGHT"
+}
+```
+
 ## Method - updateDevice
 
 The method updates an existing device.
