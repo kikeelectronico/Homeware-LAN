@@ -490,22 +490,6 @@ class Data:
 		filter = {"apikey": apikey}
 		return self.mongo_db["apikeys"].count_documents(filter) == 1
 
-# RETURN A TOKEN
-
-	def getToken(self,agent="",type="",subtype=""):
-		if agent == 'front':
-			user_data = self.mongo_db["users"].find()[0]
-			return user_data["token"]
-		elif agent == 'apikey':
-			return self.mongo_db["apikeys"].find()[0]["apikey"]
-		elif type == 'client_id':
-			return self.mongo_db["oauth"].find()[0]["client_id"]
-		elif type == 'client_secret':
-			return self.mongo_db["oauth"].find()[0]["client_secret"]
-		else:
-			return self.mongo_db["oauth"].find()[0][type][subtype]
-			# return self.redis.get("token/" + agent + "/" + type + "/" + subtype).decode('UTF-8')
-
 # OAUTH
 
 ## ToDo

@@ -316,41 +316,6 @@ An object containing the apikey.
 }
 ```
 
-## Method - getToken
-Get an oauth2 active token's obeject by the service name. Note: This method will be deprecated.
-
-`myData.getToken(agent)`
-
-### Arguments
-
-#### agent
-The service name (agent). Only Google is supported by now.
-
-- Type: string
-- Possible values: 'google'
-
-### Returns
-An string containing the token or a token object.
-
-```
-{
-  access_token: {
-    timestamp: 1579452782954,
-    value: '-'
-  },
-  authorization_code: {
-    timestamp: 1579452777875,
-    value: '-'
-  },
-  client_id: '123',
-  client_secret: '456',
-  refresh_token: {
-    timestamp: 1579452782954,
-    value: '-'
-  }
-}
-```
-
 ## Method - updateOauthToken
 Update an oauth2 token of a service by type. Note: This method will be deprecated.
 
