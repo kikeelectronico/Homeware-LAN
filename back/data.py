@@ -456,7 +456,7 @@ class Data:
 
 # OAUTH
 
-	def updateOauthToken(self,agent,type,token,timestamp):
+	def updateOauthToken(self,agent, type, token, timestamp):
 		filter = {"_id": "google"}
 		data = {}
 		data[type] = {
@@ -503,7 +503,7 @@ class Data:
 	def getMQTT(self):
 		return self.mongo_db["settings"].find()[0]["mqtt"]
 
-	def updateSyncGoogle(self,status):
+	def updateSyncGoogle(self, status):
 		filter = {"_id": "settings"}
 		operation = {"$set": {"sync_google": status}}
 		self.mongo_db["settings"].update_one(filter, operation)
