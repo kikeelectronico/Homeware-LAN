@@ -193,7 +193,7 @@ class Data:
 		# Load the settings
 		settings = {
 			"_id": "settings",
-			"domain": data['secure']['domain'].
+			"domain": data['secure']['domain'],
 			"ddns": data['secure']['ddns'],
 			"mqtt": data['secure']['mqtt'],
 			"sync_google": data['secure']['sync_google'],
@@ -206,7 +206,7 @@ class Data:
 		# Load the apikey
 		apikey = {
 			"_id": "legacy",
-			"agent": "legacy".
+			"agent": "legacy",
 			"apikey": data['secure']['apikey'],
 		}
 		self.mongo_db["apikeys"].insert_one(apikey)
@@ -419,7 +419,6 @@ class Data:
 		else:
 			return "fail"
 
-
 # APIKEY
 
 	def getAPIKey(self):
@@ -454,25 +453,25 @@ class Data:
 
 # OAUTH
 
-def updateOauthToken(self,agent,type,token,timestamp):
-	filter = {"_id": "google"}
-	data = {}
-	data[type] = {
-		"value": token,
-		"timestamp": timestamp
-	}
-	operation = {"$set": data}
-	result = self.mongo_db["oauth"].update_one(filter, operation)
+	def updateOauthToken(self,agent,type,token,timestamp):
+		filter = {"_id": "google"}
+		data = {}
+		data[type] = {
+			"value": token,
+			"timestamp": timestamp
+		}
+		operation = {"$set": data}
+		result = self.mongo_db["oauth"].update_one(filter, operation)
 
-	return result.modified_count == 1
+		return result.modified_count == 1
 
-def validateOauthToken(self, type, token):
-	oauth = self.mongo_db["oauth"].find()[0]
-	return token == oauth[type]["value"]
+	def validateOauthToken(self, type, token):
+		oauth = self.mongo_db["oauth"].find()[0]
+		return token == oauth[type]["value"]
 
-def validateOauthCredentials(self, type, value):
-	if not type in ["client_id", "client_secret"]: return False
-	return self.mongo_db["settings"].find()[0][type] == value
+	def validateOauthCredentials(self, type, value):
+		if not type in ["client_id", "client_secret"]: return False
+		return self.mongo_db["settings"].find()[0][type] == value
 
 # SETTINGS
 
