@@ -364,12 +364,11 @@ class Data:
 
 # USER
 
-	def updatePassword(self, incommingData):
-		password = incommingData['pass']
+	def updatePassword(self, password, new_password):
 		user_data = self.mongo_db["users"].find()[0]
 		ddbb_password_hash = user_data["password"]
 		if bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
-			new_hash = str(bcrypt.hashpw(incommingData['new_pass'].encode('utf-8'), bcrypt.gensalt()))
+			new_hash = str(bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()))
 			# Update password hash
 			filter = {"username": user_data["username"]}
 			operation = {"$set": {"password": new_hash}}

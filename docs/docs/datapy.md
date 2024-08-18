@@ -347,21 +347,22 @@ It is the new value
 ## Method - updatePassword
 This method updates the user's password.
 
-`myData.updatePassword(incomming_data)`
+`myData.updatePassword(password, new_password)`
 
 ### Arguments
 
-#### incomming_data
-Both the current and new passwords in plain text.
+#### password
+The current password in plain text.
 
-- Type: json
-- Example:
-```
-{
-  pass: 'my-password',
-  new_pass: 'my-new-password'
-}
-```
+- Type: string
+- Example: 'my-password'
+
+#### new_password
+The new password in plain text.
+
+- Type: string
+- Example: 'my-bew-password'
+
 
 ### Returns
 `True` if the password is set. `False` if the process fails.
