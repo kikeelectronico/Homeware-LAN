@@ -566,35 +566,14 @@ class Data:
 			print(log_register)
 
 	def deleteLog(self):
-		new_log = []
 		# Get the days to delete
 		log = self.mongo_db["settings"].find()[0]["log"]
 		days = int(log['days'])
 
 		if not days == 0:
-			# Load the log file
-			log_file = open("../logs/homeware.log","r")
-			registers = log_file.readlines()
-			log_file.close()
-			# Process the registers
-			n_days_ago = datetime.today() - timedelta(days)
-			for register in registers:
-				try:
-					timestamp = register.split(' - ')[1]
-					timestamp_date = dateutil.parser.parse(timestamp)
-					if timestamp_date > n_days_ago:
-						new_log.append(register)
-					
-				except:
-					date_time = str(datetime.today())
-					log_register = 'Log - ' + date_time  + ' - Unable to process a registry from the log file\n';
-					new_log.append(log_register)
-
-			# Write the new file in disk
-			log_file = open("../logs/homeware.log","w")
-			for register in new_log:
-				log_file.write(register)
-			log_file.close()
+			reference_timestamp = time.time() - (days * 24 * 60 * 60)
+			filter = {"timestamp": {"$lt": reference_timestamp}}
+			self.mongo_db["log"].delete_many(filter)
 
 	def setVerbose(self, verbose):
 		self.verbose = verbose
