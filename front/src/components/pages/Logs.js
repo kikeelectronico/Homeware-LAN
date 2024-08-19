@@ -34,12 +34,6 @@ function Logs () {
     if (page < data.length/10 - 1) setPage(page + 1)
   }
 
-  const downloadLog = () => {
-    ToastsStore.warning("Downloading");
-    const url = root + "files/download/log/" + getCookieValue("token");
-    window.open(url, '_blank')
-  }
-
   const deleteLog = () => {
     var http = new XMLHttpRequest();
     http.onload = function (e) {
@@ -86,7 +80,6 @@ function Logs () {
         <div className="page_block_buttons_container">
           <Stack spacing={2} direction="row">
             <Button variant="contained" onClick={loadMore}>Load more</Button>
-            <Button variant="contained" onClick={downloadLog}>Download</Button>
             <Button variant="contained" onClick={deleteLog}>Delete</Button>
           </Stack>
         </div>
