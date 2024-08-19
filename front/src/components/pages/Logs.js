@@ -34,12 +34,6 @@ function Logs () {
     if (page < data.length/10 - 1) setPage(page + 1)
   }
 
-  const downloadLog = () => {
-    ToastsStore.warning("Downloading");
-    const url = root + "files/download/log/" + getCookieValue("token");
-    window.open(url, '_blank')
-  }
-
   const deleteLog = () => {
     var http = new XMLHttpRequest();
     http.onload = function (e) {
@@ -54,6 +48,11 @@ function Logs () {
     http.open("GET", root + "api/log/delete/");
     http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
     http.send();
+  }
+
+  const formatTimestamp = (timestamp) => {
+    let a = new Date(timestamp * 1000);
+    return a.getDate() + '-' + a.getMonth() + '-' + a.getFullYear() + ' ' + a.getHours() + ':' + a.getMinutes() + ':' + a.getSeconds() ;
   }
 
   return (
@@ -71,7 +70,7 @@ function Logs () {
                 {register.severity === "Log" ? <b>{register.severity}</b> : <></>}
                 {register.severity === "Warning" ? <b className="logs_yellow">{register.severity}</b> : <></>}
                 {register.severity === "Alert" ? <b className="logs_red">{register.severity}</b> : <></>}
-                - {register.time}
+                - {formatTimestamp(register.timestamp)}
                 <br />
                 {register.message}
               </div>
@@ -81,7 +80,6 @@ function Logs () {
         <div className="page_block_buttons_container">
           <Stack spacing={2} direction="row">
             <Button variant="contained" onClick={loadMore}>Load more</Button>
-            <Button variant="contained" onClick={downloadLog}>Download</Button>
             <Button variant="contained" onClick={deleteLog}>Delete</Button>
           </Stack>
         </div>

@@ -543,34 +543,22 @@ class Data:
 # LOG
 
 	def getLog(self):
-		log = []
-		log_file = open('../logs/' + "homeware.log","r")
-		registers = log_file.readlines()
-		for register in registers:
-			try:
-				content = register.split(' - ')
-				log.append({
-					"severity": content[0],
-					"time": content[1],
-					"message": content[2]
-				})
-			except:
-				log.append({
-					"severity": 'Log',
-					"time": '',
-					"message": content
-				})
-		log_file.close()
+		log = list(self.mongo_db["log"].find())
 		self.redis.set('alert','clear')
-
 		return log
 
 	def log(self, severity, message):
-		log_file = open('../logs/' + "homeware.log", "a")
-		date_time = str(datetime.today())
-		log_register = severity + ' - ' + date_time  + ' - ' + message + '\n';
-		log_file.write(log_register)
-		log_file.close()
+		agent = "unknown"
+		timestamp = time.time()
+		register = {
+			"_id": str(timestamp) + "_" + agent,
+			"agent": agent,
+			"severity": severity,
+			"message": message,
+			"timestamp": timestamp
+		}
+		self.mongo_db["log"].insert_one(register)
+
 		if (severity == "Alert"):
 			self.redis.set('alert','set')
 
@@ -578,35 +566,14 @@ class Data:
 			print(log_register)
 
 	def deleteLog(self):
-		new_log = []
 		# Get the days to delete
 		log = self.mongo_db["settings"].find()[0]["log"]
 		days = int(log['days'])
 
 		if not days == 0:
-			# Load the log file
-			log_file = open("../logs/homeware.log","r")
-			registers = log_file.readlines()
-			log_file.close()
-			# Process the registers
-			n_days_ago = datetime.today() - timedelta(days)
-			for register in registers:
-				try:
-					timestamp = register.split(' - ')[1]
-					timestamp_date = dateutil.parser.parse(timestamp)
-					if timestamp_date > n_days_ago:
-						new_log.append(register)
-					
-				except:
-					date_time = str(datetime.today())
-					log_register = 'Log - ' + date_time  + ' - Unable to process a registry from the log file\n';
-					new_log.append(log_register)
-
-			# Write the new file in disk
-			log_file = open("../logs/homeware.log","w")
-			for register in new_log:
-				log_file.write(register)
-			log_file.close()
+			reference_timestamp = time.time() - (days * 24 * 60 * 60)
+			filter = {"timestamp": {"$lt": reference_timestamp}}
+			self.mongo_db["log"].delete_many(filter)
 
 	def setVerbose(self, verbose):
 		self.verbose = verbose

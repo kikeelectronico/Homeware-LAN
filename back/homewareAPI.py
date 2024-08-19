@@ -639,20 +639,6 @@ def files(operation='', file='', token=''):
                     data_conector.log(
                         'Warning', 'A backup file has been restored')
                     return redirect('/backup/?status=Success')
-        elif operation == 'download':
-            if file == "log":
-                # Download file
-                now = datetime.now()
-                date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
-                result = send_file('../logs/homeware.log',
-                                   mimetype="text/plain",  # use appropriate type based on file
-                                   download_name='homeware_' + \
-                                   str(date_time) + '.log',
-                                   as_attachment=True,
-                                   conditional=False)
-                data_conector.log(
-                    'Warning', 'The log file has been downloaded')
-                return result
         elif operation == 'upload':
             if file == "google":
                 if request.method == 'POST':
