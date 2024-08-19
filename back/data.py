@@ -566,11 +566,17 @@ class Data:
 		return log
 
 	def log(self, severity, message):
-		log_file = open('../logs/' + "homeware.log", "a")
-		date_time = str(datetime.today())
-		log_register = severity + ' - ' + date_time  + ' - ' + message + '\n';
-		log_file.write(log_register)
-		log_file.close()
+		agent = "unknown"
+		timestamp = time.time()
+		register = {
+			"_id": str(timestamp) + "_" + agent
+			"agent": agent,
+			"severity": severity,
+			"message": message,
+			"timestamp": timestamp
+		}
+		self.mongo_db["log"].insert_one(register)
+
 		if (severity == "Alert"):
 			self.redis.set('alert','set')
 
