@@ -203,12 +203,9 @@ const deviceReference = {
       ]
     },
     "action.devices.types.FREEZER": {
-      name: "Fireplace",
+      name: "Freezer",
       traits: [
-        "action.devices.traits.Modes",
-        "action.devices.traits.OnOff",
         "action.devices.traits.TemperatureControl",
-        "action.devices.traits.Toggles"
       ]
     },
     "action.devices.types.FRYER": {
