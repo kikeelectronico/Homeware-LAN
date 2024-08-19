@@ -551,7 +551,7 @@ class Data:
 		agent = "unknown"
 		timestamp = time.time()
 		register = {
-			"_id": str(timestamp) + "_" + agent
+			"_id": str(timestamp) + "_" + agent,
 			"agent": agent,
 			"severity": severity,
 			"message": message,
