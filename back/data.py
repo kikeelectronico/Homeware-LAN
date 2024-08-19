@@ -543,26 +543,8 @@ class Data:
 # LOG
 
 	def getLog(self):
-		log = []
-		log_file = open('../logs/' + "homeware.log","r")
-		registers = log_file.readlines()
-		for register in registers:
-			try:
-				content = register.split(' - ')
-				log.append({
-					"severity": content[0],
-					"time": content[1],
-					"message": content[2]
-				})
-			except:
-				log.append({
-					"severity": 'Log',
-					"time": '',
-					"message": content
-				})
-		log_file.close()
+		log = list(self.mongo_db["log"].find())
 		self.redis.set('alert','clear')
-
 		return log
 
 	def log(self, severity, message):
