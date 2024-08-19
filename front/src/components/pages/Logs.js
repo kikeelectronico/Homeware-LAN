@@ -56,6 +56,11 @@ function Logs () {
     http.send();
   }
 
+  const formatTimestamp = (timestamp) => {
+    let a = new Date(timestamp * 1000);
+    return a.getDate() + '-' + a.getMonth() + '-' + a.getFullYear() + ' ' + a.getHours() + ':' + a.getMinutes() + ':' + a.getSeconds() ;
+  }
+
   return (
     <div>
       <div className="page_block_container">
@@ -71,7 +76,7 @@ function Logs () {
                 {register.severity === "Log" ? <b>{register.severity}</b> : <></>}
                 {register.severity === "Warning" ? <b className="logs_yellow">{register.severity}</b> : <></>}
                 {register.severity === "Alert" ? <b className="logs_red">{register.severity}</b> : <></>}
-                - {register.time}
+                - {formatTimestamp(register.timestamp)}
                 <br />
                 {register.message}
               </div>
