@@ -109,10 +109,11 @@ const TemperatureControl = forwardRef((props, ref) => {
           <input
             type="number"
             onChange={event => {
-              updateRange("minThresholdCelsius", parseInt(event.target.value))
+              if (event.target.value < temperatureRange.maxThresholdCelsius)
+                updateRange("minThresholdCelsius", parseInt(event.target.value))
             }}
             value={temperatureRange.minThresholdCelsius}
-            min="0" max="10000" className="int_input"
+            min="-273" max="10000" className="int_input"
           />
         </div>
       </div>
@@ -124,10 +125,11 @@ const TemperatureControl = forwardRef((props, ref) => {
           <input
             type="number"
             onChange={event => {
-              updateRange("maxThresholdCelsius", parseInt(event.target.value))
+              if (event.target.value > temperatureRange.minThresholdCelsius)
+                updateRange("maxThresholdCelsius", parseInt(event.target.value))
             }}
             value={temperatureRange.maxThresholdCelsius}
-            min="0" max="10000" className="int_input"
+            min="-273" max="10000" className="int_input"
           />
         </div>
       </div>
