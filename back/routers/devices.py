@@ -86,3 +86,23 @@ def getDevices(device_id: str | None = None):
         return response
     else:
         return data_conector.getStatus()
+
+class State(BaseModel):
+    id: str
+    param: str
+    value: str
+
+@router.post("/api/status/update/", dependencies=[Depends(allowAuthenticated)])
+@router.post("/api/status/update/", dependencies=[Depends(allowAuthenticated)])
+def updateStatus(state: State):
+    if state:
+        if data_conector.updateParamStatus(sate.id, state.param, state.value):
+            return JSONResponse(status_code=200,
+                                content = {
+                                    "error": "Success",
+                                    "code": 200,
+                                })
+        else:
+            return errorResponses.FOUR_O_FOUR
+    else:
+        return errorResponses.FOUR_O_O
