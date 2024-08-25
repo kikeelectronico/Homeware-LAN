@@ -90,13 +90,13 @@ def getStatus(device_id: str | None = None):
 class State(BaseModel):
     id: str
     param: str
-    value: str
+    value: str | int | bool | float
 
 @router.post("/api/status/update/", dependencies=[Depends(allowAuthenticated)])
 @router.post("/api/status/update/", dependencies=[Depends(allowAuthenticated)])
 def updateStatus(state: State):
     if state:
-        if data_conector.updateParamStatus(sate.id, state.param, state.value):
+        if data_conector.updateParamStatus(state.id, state.param, state.value):
             return JSONResponse(status_code=200,
                                 content = {
                                     "error": "Success",
