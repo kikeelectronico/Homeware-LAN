@@ -49,3 +49,9 @@ def validateUserToken(password: Password | None = None):
         }
     else:
         return errorResponses.FOUR_O_O
+
+@router.get("/api/user/googleSync")
+@router.get("/api/user/googleSync/")
+def googleSync(username: Annotated[str | None, Header()] = None,
+            password: Annotated[str | None, Header()] = None):
+    return data_conector.googleSync(username, password, responseURL)
