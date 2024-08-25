@@ -12,7 +12,7 @@ data_conector = Data()
 
 @router.get("/api/global/get", dependencies=[Depends(allowAuthenticated)])
 @router.get("/api/global/get/", dependencies=[Depends(allowAuthenticated)])
-def getDevices():
+def getDevicesGlobal():
     response = data_conector.getGlobal()
     return response
 
@@ -62,7 +62,7 @@ def createDevices(device: Device):
 
 @router.post("/api/devices/delete/{device_id}", dependencies=[Depends(allowAuthenticated)])
 @router.post("/api/devices/delete/{device_id}/", dependencies=[Depends(allowAuthenticated)])
-def createDevices(device_id: str | None = None):
+def deleteDevices(device_id: str | None = None):
     if device_id:
         if data_conector.deleteDevice(device_id):
             return JSONResponse(status_code=200,
@@ -79,7 +79,7 @@ def createDevices(device_id: str | None = None):
 @router.get("/api/status/get/", dependencies=[Depends(allowAuthenticated)])
 @router.get("/api/status/get/{device_id}", dependencies=[Depends(allowAuthenticated)])
 @router.get("/api/status/get/{device_id}/", dependencies=[Depends(allowAuthenticated)])
-def getDevices(device_id: str | None = None):
+def getStatus(device_id: str | None = None):
     if device_id:
         response = data_conector.getStatus(device_id)
         if not response: return errorResponses.FOUR_O_FOUR
