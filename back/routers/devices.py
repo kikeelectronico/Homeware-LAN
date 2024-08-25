@@ -63,7 +63,7 @@ def createDevices(device: Device):
 @router.post("/api/devices/delete/{device_id}", dependencies=[Depends(allowAuthenticated)])
 @router.post("/api/devices/delete/{device_id}/", dependencies=[Depends(allowAuthenticated)])
 def createDevices(device_id: str | None):
-     if device_id:
+    if device_id:
         if data_conector.deleteDevice(device_id):
             return JSONResponse(status_code=200,
                                 content = {
@@ -74,3 +74,15 @@ def createDevices(device_id: str | None):
             return errorResponses.FOUR_O_FOUR
     else:
         return errorResponses.FOUR_O_O
+
+@router.get("/api/status/get", dependencies=[Depends(allowAuthenticated)])
+@router.get("/api/status/get/", dependencies=[Depends(allowAuthenticated)])
+@router.get("/api/status/get/{device_id}", dependencies=[Depends(allowAuthenticated)])
+@router.get("/api/status/get/{device_id}/", dependencies=[Depends(allowAuthenticated)])
+def getDevices(device_id: str | None = None):
+    if device_id:
+        response = data_conector.getStatus(device_id)
+        if not response: return errorResponses.FOUR_O_FOUR
+        return response
+    else:
+        return data_conector.getStatus()
