@@ -15,7 +15,7 @@ from data import Data
 from commands import Commands
 import hostname
 
-from routers import devices, log, users
+from routers import devices, log, users, system
 
 # Constants
 UPLOAD_FOLDER = '../'
@@ -44,6 +44,7 @@ app = FastAPI()
 app.include_router(devices.router)
 app.include_router(log.router)
 app.include_router(users.router)
+app.include_router(system.router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
