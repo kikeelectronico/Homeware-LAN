@@ -15,7 +15,7 @@ from data import Data
 from commands import Commands
 import hostname
 
-from routers import users
+from routers import users, devices
 
 # Constants
 UPLOAD_FOLDER = '../'
@@ -41,6 +41,7 @@ TWO_O_O = {
 }
 
 app = FastAPI()
+app.include_router(devices.router)
 app.include_router(users.router)
 app.add_middleware(
     CORSMiddleware,
@@ -62,20 +63,6 @@ commands = Commands(data_conector)
 @app.get("/test")
 def testEndPoint():
     return "Load"
-
-def checkAccessLevel(headers):
-
-    accessLevel = 0
-    try:
-        authorization = headers['authorization'].split(' ')[1]
-        if data_conector.validateAPIKey(authorization):
-            accessLevel = 10
-        elif data_conector.validateUserToken(authorization):
-            accessLevel = 100
-    except:
-        accessLevel = 0
-
-    return accessLevel
 
 if __name__ == "__main__":
    import uvicorn
