@@ -10,6 +10,6 @@ data_conector = Data()
 
 @router.get("/api/log/alert", dependencies=[Depends(allowUser)])
 @router.get("/api/log/alert/", dependencies=[Depends(allowUser)])
-def getGlobal():
+def getAlerts():
     response = data_conector.isThereAnAlert()
     return response

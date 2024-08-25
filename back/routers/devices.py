@@ -10,6 +10,6 @@ data_conector = Data()
 
 @router.get("/api/global/get", dependencies=[Depends(allowAuthenticated)])
 @router.get("/api/global/get/", dependencies=[Depends(allowAuthenticated)])
-def getGlobal():
+def getDevices():
     response = data_conector.getGlobal()
     return response
