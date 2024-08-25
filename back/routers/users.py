@@ -4,6 +4,7 @@ from typing import Annotated
 
 from data import Data
 import errorResponses
+from security.authentication import allowUser
 
 router = APIRouter()
 data_conector = Data()
@@ -28,6 +29,21 @@ def login(username: Annotated[str | None, Header()] = None,
             'status': 'in' if token is not None else "fail",
             'user': username,
             'token': token if token is not None else ""
+        }
+    else:
+        return errorResponses.FOUR_O_O
+
+class Password(BaseModel):
+    password: str
+    new_password: str
+
+@router.post("/api/user/password", dependencies=[Depends(allowUser)])
+@router.post("/api/user/password/", dependencies=[Depends(allowUser)])
+def validateUserToken(password: Password | None = None):
+    if password:
+        updated = data_conector.updatePassword(password.password, password.new_password)
+        return {
+            "message": "Updated" if updated else "Fail, the password hasn't been changed"
         }
     else:
         return errorResponses.FOUR_O_O
