@@ -20,9 +20,3 @@ FOUR_O_O = JSONResponse(status_code=404,
                                 "code": 400,
                                 "note": "See the documentation https://homeware.enriquegomez.me/"
                             })
-
-TWO_O_O = {
-    'status': 'Success',
-    'code': 200
-}
-
