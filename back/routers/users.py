@@ -14,10 +14,12 @@ data_conector = Data()
 def validateUserToken(token: Annotated[str | None, Header()] = None):
     if token:
         return {
-            'status': 'in' if data_conector.validateUserToken(token) else "fail"
+            "status": "in" if data_conector.validateUserToken(token) else "fail"
         }
     else:
-        return errorResponses.FOUR_O_O
+        return {
+            "status": "fail"
+        }
 
 @router.get("/api/user/login")
 @router.get("/api/user/login/")
