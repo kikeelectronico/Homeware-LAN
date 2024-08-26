@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Header
 from pydantic import BaseModel
 from typing import Annotated
+import time
 
 from security.authentication import allowAuthenticated, allowUser
 from data import Data
@@ -16,10 +17,6 @@ def getVersion():
 @router.get("/api/system/status", dependencies=[Depends(allowUser)])
 @router.get("/api/system/status/", dependencies=[Depends(allowUser)])
 def getSystemStatus():
-    # ToDo: move homeware heartbeat request to tasks
-    # mqttData = data_conector.getMQTT()
-    # publish.single("homeware/alive", "all", hostname=hostname.MQTT_HOST, auth={
-    #                         'username': mqttData['user'], 'password': mqttData['password']})
     response = {
         'api': {
             'enable': True,
