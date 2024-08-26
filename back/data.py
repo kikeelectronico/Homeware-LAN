@@ -403,7 +403,7 @@ class Data:
 		ddbb_token = user_data["token"]
 		return token == ddbb_token
 
-	def googleSync(self, username, password, responseURL):
+	def googleSync(self, username, password):
 		username = headers['user']
 		password = headers['pass']
 		user_data = self.mongo_db["users"].find()[0]
@@ -411,7 +411,7 @@ class Data:
 		ddbb_username = user_data["username"]
 		auth = False
 		if username == ddbb_username and bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
-			return responseURL
+			return self.redis.get("responseURL")
 		else:
 			return "fail"
 
@@ -468,6 +468,9 @@ class Data:
 	def validateOauthCredentials(self, type, value):
 		if not type in ["client_id", "client_secret"]: return False
 		return self.mongo_db["settings"].find()[0][type] == value
+
+	def setResponseURL(self, url):
+		self.redis.set("responseURL", url)
 
 # SETTINGS
 

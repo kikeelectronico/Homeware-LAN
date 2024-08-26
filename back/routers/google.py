@@ -43,8 +43,8 @@ def auth(client_id: str, redirect_uri: str, state: str):
         # Create a new authorization_code
         code = tokenGenerator('google', 'authorization_code')
         # Compose the response URL
-        global responseURL
         responseURL = redirect_uri + '?code=' + str(code) + '&state=' + state
+        data_conector.setResponseURL(responseURL)
         return redirect("/login/google/", code=302)
         # return '<a href="' + responseURL + '">enlace</a>'
     else:
