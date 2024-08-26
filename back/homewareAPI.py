@@ -15,13 +15,14 @@ from data import Data
 from commands import Commands
 import hostname
 
-from routers import devices, log, users, system
+from routers import access, devices, log, users, system
 
 # Constants
 UPLOAD_FOLDER = '../'
 ALLOWED_EXTENSIONS = {'json'}
 
 app = FastAPI()
+app.include_router(access.router)
 app.include_router(devices.router)
 app.include_router(log.router)
 app.include_router(users.router)
