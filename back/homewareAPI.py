@@ -50,6 +50,14 @@ commands = Commands(data_conector)
 def testEndPoint():
     return "Load"
 
+@app.get("/api/clock")
+@app.get("/api/clock/")
+def clock():
+    ts = time.localtime(time.time())
+    h = ts.tm_hour
+    m = ts.tm_min
+    return str(h) + ":" + str(m)
+
 if __name__ == "__main__":
    import uvicorn
    uvicorn.run(
