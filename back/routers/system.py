@@ -39,9 +39,15 @@ def getSystemStatus():
 
     ts = int(time.time())
     alive = data_conector.getAlive()
-    if (ts - int(alive['mqtt'])) < 10:
-        response['mqtt']['status'] = "Running"
-    if (ts - int(alive['tasks'])) < 10:
-        response['tasks']['status'] = "Running"
+    try:
+        if (ts - int(alive['mqtt'])) < 10:
+            response['mqtt']['status'] = "Running"
+    except:
+        data_conector.log("Log", "Fail to get MQTT core timestamp")
+    try:
+        if (ts - int(alive['tasks'])) < 10:
+            response['tasks']['status'] = "Running"
+    except:
+        data_conector.log("Log", "Fail to get Tasks core timestamp")
 
     return response
