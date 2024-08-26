@@ -8,8 +8,17 @@ from data import Data
 router = APIRouter()
 data_conector = Data()
 
+@router.get("/api/log/get", dependencies=[Depends(allowUser)])
+@router.get("/api/log/get/", dependencies=[Depends(allowUser)])
+def getAlerts():
+    return data_conector.getLog()
+
+@router.get("/api/log/delete", dependencies=[Depends(allowUser)])
+@router.get("/api/log/delete/", dependencies=[Depends(allowUser)])
+def getAlerts():
+    return data_conector.deleteLog()
+
 @router.get("/api/log/alert", dependencies=[Depends(allowUser)])
 @router.get("/api/log/alert/", dependencies=[Depends(allowUser)])
 def getAlerts():
-    response = data_conector.isThereAnAlert()
-    return response
+    return data_conector.isThereAnAlert()
