@@ -6,6 +6,11 @@ import { root } from "../../constants";
 
 function Backup() {
 
+  const formatTimestamp = (timestamp) => {
+    let a = new Date(timestamp * 1000);
+    return a.getDate() + '-' + a.getMonth() + '-' + a.getFullYear() + ' ' + a.getHours() + ':' + a.getMinutes() + ':' + a.getSeconds() ;
+  }
+
   const backup = () => {
     ToastsStore.warning("Downloading");
     var http = new XMLHttpRequest();
@@ -16,7 +21,7 @@ function Backup() {
           const blob = new Blob([http.responseText], { type: "text/plain" });
           const url = URL.createObjectURL(blob);
           const link = document.createElement("a");
-          link.download = "homeware.json";
+          link.download = "homeware " + formatTimestamp(Date.now()/1000) + ".json";
           link.href = url;
           link.click();
         } else {
