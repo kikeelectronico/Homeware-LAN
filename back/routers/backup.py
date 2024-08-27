@@ -16,7 +16,7 @@ def getBackup():
     return data_conector.getBackup()
 
 @router.put("/api/backup", dependencies=[Depends(allowUser)])
-def restoreBackupData(backup: dict | None = None):
+def restoreBackup(backup: dict | None = None):
     if backup:
         data_conector.restoreBackup(backup)
         return JSONResponse(status_code=200,
