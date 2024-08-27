@@ -57,7 +57,7 @@ function Logs () {
     const blob = new Blob([log_str], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.download = "homeware.log";
+    link.download = "homeware " + formatTimestamp(Date.now()/1000) + ".log";
     link.href = url;
     link.click();
   }
