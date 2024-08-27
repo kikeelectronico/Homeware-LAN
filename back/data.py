@@ -168,10 +168,7 @@ class Data:
 		}
 		return data
 
-	def loadBackupFile(self):
-		file = open('../' + self.homewareFile, 'r')
-		data = json.load(file)
-		file.close()
+	def restoreBackup(self, data):
 		# Load the devices
 		for device in data['devices']:
 			device["_id"] = device["id"]

@@ -25,11 +25,15 @@ See the file [configuration_template.json](https://github.com/kikeelectronico/Ho
 
 This method restore the database from the Homware.json file.
 
-`myData.loadBackupFile()`
+`myData.loadBackupFile(backup)`
 
 ### Arguments
 
-None
+#### backup
+The content of the backup file as JSON.
+
+- Type: JSON
+- Example: See the file [configuration_template.json](https://github.com/kikeelectronico/Homeware-LAN/blob/master/configuration_templates/template_homeware.json) for reference.
 
 ### Returns
 

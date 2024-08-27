@@ -6,13 +6,6 @@ import { root } from "../../constants";
 
 function Backup() {
 
-  useEffect(() => {
-    var url = new URL(window.location);
-    var _status = url.searchParams.get("status");
-    if(_status === "Success")
-      ToastsStore.success("Uploaded correctly");
-  }, [])
-
   const backup = () => {
     ToastsStore.warning("Downloading");
     var http = new XMLHttpRequest();
@@ -37,6 +30,30 @@ function Backup() {
     http.send();
   }
 
+  const restore = (e) => {
+    if (e.target.files) {
+      var fileReader = new FileReader();
+      fileReader.onload=function(){
+        const backup = fileReader.result
+        var http = new XMLHttpRequest();
+        http.onload = function (e) {
+          if (http.readyState === 4) {
+            if (http.status === 200) {
+              ToastsStore.success("Uploaded correctly");
+            } else {
+              ToastsStore.error("Something went wrong");
+            }
+          }
+        }
+        http.open("PUT", root + "api/backup");
+        http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+        http.send(backup);
+      }
+      fileReader.readAsText(e.target.files[0]);
+    }
+  }
+
   return (
     <div>
       <div className="page_block_container">
@@ -56,15 +73,7 @@ function Backup() {
         </div>
         <hr />
         <div className="page_block_content_container">
-          <form
-            id="restore-form"
-            method="post"
-            encType="multipart/form-data"
-            action={root + "files/restore/homeware/" + getCookieValue("token") + "/"}
-          >
-            <input type="file" name="file" />
-            <Button variant="contained" onClick={() => {document.getElementById("restore-form").submit()}}>Restore</Button>
-          </form>
+          <input id="file" type="file" onChange={restore} />
         </div>
       </div>
       <ToastsContainer store={ToastsStore} />
