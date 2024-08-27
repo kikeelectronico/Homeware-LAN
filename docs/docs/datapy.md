@@ -6,19 +6,6 @@ sidebar_label: Back - data.py
 
 Data is a class intended to interact with both the databases and disk files. When an object is created the constructor do tasks related with verifing the database and the data contined in it.
 
-## Method - createBackupFile
-
-Homeware can backup the important data from the database into a file named _Homeware.json_. This method do the job.
-
-`myData.createBackupFile()`
-
-### Arguments
-
-None
-
-### Returns
-
-None
 
 ## Method - getBackupData
 

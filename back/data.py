@@ -138,12 +138,6 @@ class Data:
 
 # BACKUP
 
-	def createBackupFile(self):
-		data = self.getBackupData()
-		file = open('../' + self.homewareFile, 'w')
-		file.write(json.dumps(data))
-		file.close()
-
 	def getBackupData(self):
 		user = self.mongo_db["users"].find()[0]
 		oauth = self.mongo_db["oauth"].find()[0]
