@@ -12,8 +12,8 @@ data_conector = Data()
 
 @router.get("/api/backup/get", dependencies=[Depends(allowAuthenticated)])
 @router.get("/api/backup/get/", dependencies=[Depends(allowAuthenticated)])
-def getBackupData():
-    return data_conector.getBackupData()
+def getBackup():
+    return data_conector.getBackup()
 
 @router.put("/api/backup", dependencies=[Depends(allowUser)])
 def restoreBackupData(backup: dict | None = None):

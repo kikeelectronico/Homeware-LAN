@@ -138,7 +138,7 @@ class Data:
 
 # BACKUP
 
-	def getBackupData(self):
+	def getBackup(self):
 		user = self.mongo_db["users"].find()[0]
 		oauth = self.mongo_db["oauth"].find()[0]
 		data = {

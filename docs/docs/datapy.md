@@ -7,11 +7,11 @@ sidebar_label: Back - data.py
 Data is a class intended to interact with both the databases and disk files. When an object is created the constructor do tasks related with verifing the database and the data contined in it.
 
 
-## Method - getBackupData
+## Method - getBackup
 
 Returns the backup data in a JSON format.
 
-`myData.getBackupData()`
+`myData.getBackup()`
 
 ### Arguments
 
