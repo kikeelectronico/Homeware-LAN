@@ -17,10 +17,6 @@ import hostname
 
 from routers import access, backup, devices, log, users, settings, system
 
-# Constants
-UPLOAD_FOLDER = '../'
-ALLOWED_EXTENSIONS = {'json'}
-
 app = FastAPI()
 app.include_router(access.router)
 app.include_router(backup.router)
@@ -37,12 +33,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Global variables
-responseURL = ''
 
 # Init the data managment object
 data_conector = Data()
-
 # Init command executor
 commands = Commands(data_conector)
 
