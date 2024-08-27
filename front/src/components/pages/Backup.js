@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {Button} from '@mui/material';
 import { ToastsContainer, ToastsStore } from "react-toasts";
 import getCookieValue from "../../functions";
@@ -17,7 +17,6 @@ function Backup() {
     http.onload = function (e) {
       if (http.readyState === 4) {
         if (http.status === 200) {
-          var data = JSON.parse(http.responseText);
           const blob = new Blob([http.responseText], { type: "text/plain" });
           const url = URL.createObjectURL(blob);
           const link = document.createElement("a");
