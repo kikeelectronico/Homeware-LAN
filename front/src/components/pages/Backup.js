@@ -15,8 +15,26 @@ function Backup() {
 
   const backup = () => {
     ToastsStore.warning("Downloading");
-    const url = root + "files/buckup/homeware/" + getCookieValue("token") + "?code=" + String(Math.random());
-    window.open(url, '_blank')
+    var http = new XMLHttpRequest();
+    http.onload = function (e) {
+      if (http.readyState === 4) {
+        if (http.status === 200) {
+          var data = JSON.parse(http.responseText);
+          const blob = new Blob([http.responseText], { type: "text/plain" });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.download = "homeware.json";
+          link.href = url;
+          link.click();
+        } else {
+          console.error(http.statusText);
+          ToastsStore.error("Something went wrong");
+        }
+      }
+    }
+    http.open("GET", root + "api/backup/get/");
+    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    http.send();
   }
 
   return (
