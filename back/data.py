@@ -498,6 +498,11 @@ class Data:
 	def getSyncDevices(self):
 		return self.mongo_db["settings"].find()[0]["sync_devices"]
 
+	def createServiceAccountKeyFile(self, serviceaccountkey):
+		with open("../files/google.json", "w") as file:
+			file.write(json.dumps(serviceaccountkey))
+		self.log('Info', 'A google auth file has been uploaded')
+
 # SYSTEM
 
 	def getRedisStatus(self):
