@@ -106,12 +106,6 @@ jobs:
         with:
           version: ">= 363.0.0"
           project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
-      - id: "gce_instance"
-        uses: "aplr/action-gcloud-compute-instance@v0.0.6"
-        with:
-          name_prefix: "hit"
-          source_instance_template: ${{ secrets.GCLOUD_MACHINE_TEMPLATE }}
-          zone: "europe-north1"
-          project: ${{ secrets.GCLOUD_PROJECT_ID }}
-      - name: "Use output"
-        run: 'curl "${{ steps.gce_instance.outputs.instance_ip }}"'
+      - name: "Create VM"
+        run: |
+          gcloud compute instances create homeware-integration-test --source-instance-template=${{ secrets.GCLOUD_MACHINE_TEMPLATE }} --zone=europe-north1-a
