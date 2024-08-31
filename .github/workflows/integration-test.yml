@@ -109,3 +109,11 @@ jobs:
       - name: "Create VM"
         run: |
           gcloud compute instances create homeware-integration-test --source-instance-template=${{ secrets.GCLOUD_MACHINE_TEMPLATE }} --zone=europe-north1-a
+      - name: "Wait until Homeware is ready"
+        uses: cygnetdigital/wait_for_response@v2.0.0
+        with:
+          url: ${{ secrets.HOMEWARE_HOST }}/test
+          responseCode: '200'
+          timeout: 2000
+          interval: 2000
+  
