@@ -68,7 +68,7 @@ def test_get_status_fail_no_header():
     assert response["code"] == 401
     assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
 
-def test_get_status():
+def test_get_status_with_device_id():
     headers = {
         "authorization": f"baerer {pytest.token}",
         "content-type": "application/json"
