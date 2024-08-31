@@ -152,6 +152,6 @@ jobs:
           project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
       - name: "Delete VM"
         run: |
-          gcloud compute instances delete homeware-integration-test
+          gcloud compute instances delete homeware-integration-test --zone=europe-north1-a
 
   
