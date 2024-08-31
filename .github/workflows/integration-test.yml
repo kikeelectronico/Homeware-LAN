@@ -114,6 +114,6 @@ jobs:
         with:
           url: ${{ secrets.HOMEWARE_HOST }}/test
           responseCode: '200'
-          timeout: 180000
+          timeout: 240000
           interval: 5000
   
