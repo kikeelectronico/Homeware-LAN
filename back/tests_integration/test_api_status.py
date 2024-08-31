@@ -14,11 +14,9 @@ def test_get_status():
     assert request.status_code == 200
     response = request.json()
     keys = list(response.keys())
-    assert len(keys) == 2
-    assert "scene" in keys
-    assert "test_device" in keys
-    assert response["scene"]["enable"] == False
-    assert response["test_device"]["on"] == False
+    assert len(keys) == 1
+    assert "light" in keys
+    assert response["light"]["on"] == False
 
 def test_get_status_fail_bad_token():
     headers = {
@@ -73,7 +71,7 @@ def test_get_status_with_device_id():
         "authorization": f"baerer {pytest.token}",
         "content-type": "application/json"
     }
-    device_id = "test_device"
+    device_id = "light"
     request = requests.get(pytest.host + f"/api/status/get/{device_id}", headers=headers)
     assert request.status_code == 200
     response = request.json()
@@ -99,7 +97,7 @@ def test_update_status():
         "content-type": "application/json"
     }
     body = {
-        "id": "test_device",
+        "id": "light",
         "param": "on",
         "value": True
     }
@@ -110,7 +108,7 @@ def test_update_status():
     assert response["code"] == 200
     # Reset value
     body = {
-        "id": "test_device",
+        "id": "light",
         "param": "on",
         "value": False
     }
@@ -139,7 +137,7 @@ def test_update_status_fail_bad_token():
         "content-type": "application/json"
     }
     body = {
-        "id": "test_device",
+        "id": "light",
         "param": "on",
         "value": True
     }
@@ -156,7 +154,7 @@ def test_update_status_fail_no_token_value():
         "content-type": "application/json"
     }
     body = {
-        "id": "test_device",
+        "id": "light",
         "param": "on",
         "value": True
     }
@@ -173,7 +171,7 @@ def test_update_status_fail_no_header_value():
         "content-type": "application/json"
     }
     body = {
-        "id": "test_device",
+        "id": "light",
         "param": "on",
         "value": True
     }
@@ -189,7 +187,7 @@ def test_update_status_fail_no_header():
         "content-type": "application/json"
     }
     body = {
-        "id": "test_device",
+        "id": "light",
         "param": "on",
         "value": True
     }

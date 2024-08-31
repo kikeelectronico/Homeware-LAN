@@ -13,11 +13,9 @@ def test_get_devices():
     request = requests.get(pytest.host + "/api/devices/get", headers=headers)
     assert request.status_code == 200
     response = request.json()
-    assert len(response) == 2
-    # assert response[0]["_id"] == "scene"
-    assert response[0]["id"] == "scene"
-    # assert response[1]["_id"] == "test_device"
-    assert response[1]["id"] == "test_device"
+    assert len(response) == 1
+    # assert response[0]["_id"] == "light"
+    assert response[0]["id"] == "light"
 
 def test_get_devices_fail_bad_token():
     headers = {
@@ -72,13 +70,13 @@ def test_get_device():
         "authorization": f"baerer {pytest.token}",
         "content-type": "application/json"
     }
-    device_id = "test_device"
+    device_id = "light"
     request = requests.get(pytest.host + f"/api/devices/get/{device_id}", headers=headers)
     assert request.status_code == 200
     response = request.json()
-    # assert device["_id"] == "test_device"
-    assert response["id"] == "test_device"
-    assert response["type"] == "action.devices.types.SWITCH"
+    # assert device["_id"] == "light"
+    assert response["id"] == "light"
+    assert response["type"] == "action.devices.types.LIGHT"
 
 def test_get_device_fail_bad_device_id():
     headers = {
@@ -135,7 +133,7 @@ def test_create_device():
     request = requests.get(pytest.host + f"/api/devices/get/{device_id}", headers=headers)
     assert request.status_code == 200
     response = request.json()
-    # assert device["_id"] == "test_device"
+    # assert device["_id"] == "switch000"
     assert response["id"] == "switch000"
     assert response["type"] == "action.devices.types.SWITCH"
 
@@ -337,7 +335,7 @@ def test_update_device():
     request = requests.get(pytest.host + f"/api/devices/get/{device_id}", headers=headers)
     assert request.status_code == 200
     response = request.json()
-    # assert device["_id"] == "test_device"
+    # assert device["_id"] == "switch000"
     assert response["id"] == "switch000"
     assert response["name"]["name"] == "Switch updated"
 

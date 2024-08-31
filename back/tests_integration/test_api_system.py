@@ -14,12 +14,12 @@ def test_get_status():
     assert request.status_code == 200
     response = request.json()
     keys = list(response.keys())
-    assert len(keys) == 5
+    assert len(keys) == 4
     assert "api" in keys
     assert "mqtt" in keys
     assert "tasks" in keys
     assert "redis" in keys
-    assert "mongo" in keys
+    # assert "mongo" in keys
 
 def test_get_status_fail_bad_token():
     headers = {
