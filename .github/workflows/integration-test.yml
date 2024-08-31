@@ -129,6 +129,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
         working-directory: ./back
+      - name: Install dependencies
+        run: pip install pytest
+        working-directory: ./back
       - name: Test
         run: pytest -v --host=${{ secrets.HOMEWARE_HOST }} --username=${{ secrets.HOMEWARE_USERNAME }} --password=${{ secrets.HOMEWARE_PASSWORD }}
         working-directory: ./back/tests_integration
