@@ -14,16 +14,16 @@ def test_get_settings():
     assert request.status_code == 200
     response = request.json()
     keys = list(response.keys())
-    assert len(keys) == 6
+    assert len(keys) == 9
     # assert "domain" in keys
-    assert "google" in keys
+    assert "_id" in keys
     assert "ddns" in keys
     assert "mqtt" in keys
     assert "sync_google" in keys
     assert "sync_devices" in keys
     assert "log" in keys
-    # assert "client_id" in keys
-    # assert "client_secret" in keys
+    assert "client_id" in keys
+    assert "client_secret" in keys
 
 def test_get_settings_fail_bad_token():
     headers = {
