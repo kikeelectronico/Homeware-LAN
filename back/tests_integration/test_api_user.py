@@ -18,7 +18,17 @@ def test_login():
     # Update token new token
     pytest.token = response["token"]
 
-def test_login_fail_password():
+def test_login_fail_bad_username():
+    headers = {
+        "user": "where-is-perry",
+        "pass": pytest.password
+    }
+    request = requests.get(pytest.host + "/api/user/login", headers=headers)
+    assert request.status_code == 200
+    response = request.json()
+    assert response["status"] == "fail"
+
+def test_login_fail_bad_password():
     headers = {
         "user": pytest.username,
         "pass": "PASSWORD"
@@ -38,10 +48,10 @@ def test_valiteToken():
     response = request.json()
     assert response["status"] == "in"
 
-def test_valiteToken_fail_token():
+def test_valiteToken_fail_bad_token():
     headers = {
         "user": pytest.username,
-        "token": "token"
+        "token": "where-is-perry"
     }
     request = requests.get(pytest.host + "/api/user/validateToken", headers=headers)
     assert request.status_code == 200
@@ -55,7 +65,7 @@ def test_changePassword():
     }
     body = {
         "pass": pytest.password,
-        "new_pass": "new_admin" 
+        "new_pass": "where-is-perry" 
     }
     request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
     assert request.status_code == 200
@@ -63,21 +73,85 @@ def test_changePassword():
     assert response["message"] == "Updated"
     # Reset password
     body = {
-        "pass": "new_admin",
+        "pass": "where-is-perry",
         "new_pass": pytest.password
     }
     request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
 
-def test_changePassword_fail_password():
+def test_changePassword_fail_bad_password():
     headers = {
         "authorization": f"baerer {pytest.token}",
         "content-type": "application/json"
     }
     body = {
-        "pass": "this_is_not_the_password",
+        "pass": "where-is-perry",
         "new_pass": "new_admin" 
     }
     request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
     assert request.status_code == 200
     response = request.json()
     assert response["message"] == "Fail, the password hasn't been changed"
+
+def test_changePassword_fail_bad_token():
+    headers = {
+        "authorization": f"baerer whre_is_perry",
+        "content-type": "application/json"
+    }
+    body = {
+        "pass": pytest.password,
+        "new_pass": "where-is-perry" 
+    }
+    request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
+    assert request.status_code == 401
+    response = request.json()
+    assert response["error"] == "Bad authentication"
+    assert response["code"] == 401
+    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+
+def test_changePassword_fail_no_token_value():
+    headers = {
+        "authorization": f"baerer ",
+        "content-type": "application/json"
+    }
+    body = {
+        "pass": pytest.password,
+        "new_pass": "where-is-perry" 
+    }
+    request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
+    assert request.status_code == 401
+    response = request.json()
+    assert response["error"] == "Bad authentication"
+    assert response["code"] == 401
+    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+
+
+def test_changePassword_fail_no_header_value():
+    headers = {
+        "authorization": f"",
+        "content-type": "application/json"
+    }
+    body = {
+        "pass": pytest.password,
+        "new_pass": "where-is-perry" 
+    }
+    request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
+    assert request.status_code == 401
+    response = request.json()
+    assert response["error"] == "Bad authentication"
+    assert response["code"] == 401
+    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+
+def test_changePassword_fail_no_header():
+    headers = {
+        "content-type": "application/json"
+    }
+    body = {
+        "pass": pytest.password,
+        "new_pass": "where-is-perry" 
+    }
+    request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
+    assert request.status_code == 401
+    response = request.json()
+    assert response["error"] == "Bad authentication"
+    assert response["code"] == 401
+    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
