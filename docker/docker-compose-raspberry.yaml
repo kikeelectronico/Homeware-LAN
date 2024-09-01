@@ -32,6 +32,7 @@ services:
     command: "python homewareTasks.py"
     environment:
       - REDIS_HOST=redis
+      - MONGO_HOST=mongodb
       - MQTT_HOST=mosquitto
     depends_on:
       - redis
@@ -49,6 +50,7 @@ services:
     command: "python homewareMQTT.py"
     environment:
       - REDIS_HOST=redis
+      - MONGO_HOST=mongodb
       - MQTT_HOST=mosquitto
     depends_on:
       - redis
