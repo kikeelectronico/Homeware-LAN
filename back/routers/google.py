@@ -61,15 +61,13 @@ def auth(client_id: str, redirect_uri: str, state: str):
     
 @router.post("/token")
 @router.post("/token/")
-def token(grant_type: Annotated[str | None, Form()] = None, client_id: Annotated[str | None, Form()] = None, client_secret: Annotated[str | None, Form()] = None, code: Annotated[str | None, Form()] = None, refresh_token: Annotated[str | None, Form()] = None):
+def token(grant_type: Annotated[str, Form()], client_id: Annotated[str | None, Form()] = None, client_secret: Annotated[str | None, Form()] = None, code: Annotated[str | None, Form()] = None, refresh_token: Annotated[str | None, Form()] = None):
     # agent = request.headers['User-Agent']
     # # Verify special agents
     # if '+http://www.google.com/bot.html' in agent:
     #     agent = 'google'
     # elif agent == 'OpenAuth':
     #     agent = 'google'
-    print("token")
-    print(grant_type, client_id, client_secret, code, refresh_token)
     agent = "google"
 
     token = ''
@@ -78,7 +76,6 @@ def token(grant_type: Annotated[str | None, Form()] = None, client_id: Annotated
     else:
         token = refresh_token
     response = {}
-    return {}
     # Verify the code
     if  data_conector.validateOauthToken(grant_type, token):
         # Tokens lifetime
