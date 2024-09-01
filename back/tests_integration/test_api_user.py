@@ -7,8 +7,8 @@ import json
 
 def test_login():
     headers = {
-        "user": pytest.username,
-        "pass": pytest.password
+        "username": pytest.username,
+        "password": pytest.password
     }
     request = requests.get(pytest.host + "/api/user/login", headers=headers)
     assert request.status_code == 200
@@ -20,8 +20,8 @@ def test_login():
 
 def test_login_fail_bad_username():
     headers = {
-        "user": "where-is-perry",
-        "pass": pytest.password
+        "username": "where-is-perry",
+        "password": pytest.password
     }
     request = requests.get(pytest.host + "/api/user/login", headers=headers)
     assert request.status_code == 200
@@ -30,8 +30,8 @@ def test_login_fail_bad_username():
 
 def test_login_fail_bad_password():
     headers = {
-        "user": pytest.username,
-        "pass": "PASSWORD"
+        "username": pytest.username,
+        "password": "PASSWORD"
     }
     request = requests.get(pytest.host + "/api/user/login", headers=headers)
     assert request.status_code == 200
@@ -40,7 +40,7 @@ def test_login_fail_bad_password():
 
 def test_valiteToken():
     headers = {
-        "user": pytest.username,
+        "username": pytest.username,
         "token": pytest.token
     }
     request = requests.get(pytest.host + "/api/user/validateToken", headers=headers)
@@ -50,7 +50,7 @@ def test_valiteToken():
 
 def test_valiteToken_fail_bad_token():
     headers = {
-        "user": pytest.username,
+        "username": pytest.username,
         "token": "where-is-perry"
     }
     request = requests.get(pytest.host + "/api/user/validateToken", headers=headers)
@@ -73,8 +73,8 @@ def test_changePassword():
     assert response["message"] == "Updated"
     # Reset password
     body = {
-        "pass": "where-is-perry",
-        "new_pass": pytest.password
+        "password": "where-is-perry",
+        "new_password": pytest.password
     }
     request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
 
@@ -84,8 +84,8 @@ def test_changePassword_fail_bad_password():
         "content-type": "application/json"
     }
     body = {
-        "pass": "where-is-perry",
-        "new_pass": "new_admin" 
+        "password": "where-is-perry",
+        "new_password": "new_admin" 
     }
     request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
     assert request.status_code == 200
@@ -98,8 +98,8 @@ def test_changePassword_fail_bad_token():
         "content-type": "application/json"
     }
     body = {
-        "pass": pytest.password,
-        "new_pass": "where-is-perry" 
+        "password": pytest.password,
+        "new_password": "where-is-perry" 
     }
     request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
@@ -114,8 +114,8 @@ def test_changePassword_fail_no_token_value():
         "content-type": "application/json"
     }
     body = {
-        "pass": pytest.password,
-        "new_pass": "where-is-perry" 
+        "password": pytest.password,
+        "new_password": "where-is-perry" 
     }
     request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
@@ -131,8 +131,8 @@ def test_changePassword_fail_no_header_value():
         "content-type": "application/json"
     }
     body = {
-        "pass": pytest.password,
-        "new_pass": "where-is-perry" 
+        "password": pytest.password,
+        "new_password": "where-is-perry" 
     }
     request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
@@ -146,8 +146,8 @@ def test_changePassword_fail_no_header():
         "content-type": "application/json"
     }
     body = {
-        "pass": pytest.password,
-        "new_pass": "where-is-perry" 
+        "password": pytest.password,
+        "new_password": "where-is-perry" 
     }
     request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
     assert request.status_code == 401

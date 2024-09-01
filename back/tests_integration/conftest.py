@@ -9,8 +9,8 @@ def pytest_configure(config):
     # Get user token
     pytest.token = ""
     headers = {
-        "user": config.getoption("username"),
-        "pass": config.getoption("password")
+        "username": config.getoption("username"),
+        "password": config.getoption("password")
     }
     request = requests.get(config.getoption("host") + "/api/user/login", headers=headers)
     if request.status_code == 200:
