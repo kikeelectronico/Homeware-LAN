@@ -404,8 +404,8 @@ class Data:
 		auth = False
 		if username == ddbb_username and bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
 			print("auth")
-			print(self.redis.get("responseURL")[2:-1])
-			return self.redis.get("responseURL")[2:-1]
+			print(self.redis.get("responseURL").decode('UTF-8'))
+			return self.redis.get("responseURL").decode('UTF-8')
 		else:
 			return "fail"
 
