@@ -456,7 +456,10 @@ class Data:
 		return result.modified_count == 1
 
 	def validateOauthToken(self, type, token):
-		oauth = self.mongo_db["oauth"].find()[0]
+		oauth = self.mongo_db["oauth"].find()
+		print(oauth)
+		oauth = oauth[0]
+		print(oauth[type]["value"])
 		return token == oauth[type]["value"]
 
 	def validateOauthCredentials(self, type, value):
