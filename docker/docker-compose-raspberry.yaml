@@ -6,7 +6,7 @@ services:
     image: ghcr.io/kikeelectronico/homewarelan-back
     restart: always
     hostname: backend
-    command: "gunicorn -w 1 -b 0.0.0.0:5001 homewareAPI:app"
+    command: "uvicorn homewareAPI:app --host=0.0.0.0 --port=5001 --workers 1" 
     environment:
       - REDIS_HOST=redis
       - MONGO_HOST=mongodb
