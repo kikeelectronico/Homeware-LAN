@@ -78,7 +78,6 @@ def token(grant_type: Annotated[str, Form()], client_id: Annotated[str | None, F
     response = {}
     # Verify the code
     if  data_conector.validateOauthToken(grant_type, token):
-        print("return tokens")
         # Tokens lifetime
         secondsInDay = 86400
         # Create a new token
@@ -97,11 +96,9 @@ def token(grant_type: Annotated[str, Form()], client_id: Annotated[str | None, F
 
         # Response back
         data_conector.log('Warning', 'New token has been created for ' + agent)
-        print(response)
         return response
     else:
         # Response back
-        print("something went wrong")
         response['error'] = 'invalid_grant'
         data_conector.log('Alert', 'Unauthorized token request. The new token hasn\'t been sent.')
         return response
@@ -120,18 +117,13 @@ def smarthome(body: dict, authorization: Annotated[str | None, Header()] = None)
     #     agent = 'google'
     agent = "google"
     # Get the access_token
-    print("/smarthomne")
-    print(authorization)
-    print(body)
     tokenClient = authorization.split(' ')[1]
     if data_conector.validateOauthToken('access_token', tokenClient):
-        print("/smarthome auth pass")
         # Anlalyze the inputs
         inputs = body['inputs']
         requestId = body['requestId']
         for input in inputs:
             if input['intent'] == 'action.devices.SYNC':
-                print("SYNC request")
                 devices = []
                 for device in data_conector.getDevices():
                     del device["_id"]
@@ -148,8 +140,6 @@ def smarthome(body: dict, authorization: Annotated[str | None, Header()] = None)
                 # data_conector.updateSyncGoogle(True)
                 if data_conector.deep_logging:
                     data_conector.log('Log', 'Response: ' + json.dumps(response))
-                print("response")
-                print(response)
                 return response
             elif input['intent'] == 'action.devices.QUERY':
                 response = {
@@ -218,7 +208,6 @@ def smarthome(body: dict, authorization: Annotated[str | None, Header()] = None)
             else:
                 data_conector.log('Log', 'Unknown request by ' + agent)
     else:
-        print("/smarthome auth NOT pass")
         data_conector.log('Alert', 'Unauthorized request from ' +
                           agent + '. Maybe the token has expired.')
         return "A"
