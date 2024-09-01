@@ -81,7 +81,7 @@ def test_get_device_fail_bad_device_id():
     response = request.json()
     assert response["error"] == "Not found"
     assert response["code"] == 404
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/"
 
 def test_create_device():
     headers = {
@@ -358,7 +358,9 @@ def test_update_device_fail_bad_device_id():
     request = requests.post(pytest.host + "/api/devices/update", headers=headers, data=json.dumps(body))
     assert request.status_code == 404
     response = request.json()
-    assert response["detail"] == "A valid token is needed"
+    assert response["error"] == "Not found"
+    assert response["code"] == 404
+    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/"
 
 def test_update_device_fail_bad_token():
     headers = {
@@ -529,7 +531,9 @@ def test_delete_device_fail_bad_device_id():
     request = requests.post(pytest.host + f"/api/devices/delete/{device_id}", headers=headers)
     assert request.status_code == 404
     response = request.json()
-    assert response["detail"] == "A valid token is needed"
+    assert response["error"] == "Not found"
+    assert response["code"] == 404
+    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/"
 
 def test_delete_devices_fail_bad_token():
     headers = {

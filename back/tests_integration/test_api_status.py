@@ -81,7 +81,7 @@ def test_get_status_fail_bad_device_id():
     response = request.json()
     assert response["error"] == "Not found"
     assert response["code"] == 404
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/"
 
 def test_update_status():
     headers = {
@@ -121,7 +121,7 @@ def test_update_status_fail_bad_device_id():
     response = request.json()
     assert response["error"] == "Not found"
     assert response["code"] == 404
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/"
 
 def test_update_status_fail_bad_token():
     headers = {
