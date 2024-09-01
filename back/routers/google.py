@@ -202,7 +202,7 @@ def smarthome(body: dict, authorization: Annotated[str | None, Header()] = None)
                 return response
             elif input['intent'] == 'action.devices.DISCONNECT':
                 data_conector.log('Log', 'Disconnect request by ' + agent)
-                data_conector.updateLinked(False)
+                # data_conector.updateLinked(False)
                 return 'Ok'
 
             else:
