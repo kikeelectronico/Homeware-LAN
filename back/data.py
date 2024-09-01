@@ -398,8 +398,6 @@ class Data:
 		return token == ddbb_token
 
 	def googleSync(self, username, password):
-		username = headers['user']
-		password = headers['pass']
 		user_data = self.mongo_db["users"].find()[0]
 		ddbb_password_hash = user_data["password"]
 		ddbb_username = user_data["username"]
