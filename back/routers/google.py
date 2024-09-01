@@ -120,6 +120,9 @@ def smarthome(body: dict, authorization: Annotated[str | None, Header()] = None)
     #     agent = 'google'
     agent = "google"
     # Get the access_token
+    print("/smarthomne")
+    print(authorization)
+    print(body)
     tokenClient = authorization.split(' ')[1]
     if data_conector.validateOauthToken('access_token', tokenClient):
         # Anlalyze the inputs
