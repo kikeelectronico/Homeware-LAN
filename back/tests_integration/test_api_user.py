@@ -64,8 +64,8 @@ def test_changePassword():
         "content-type": "application/json"
     }
     body = {
-        "pass": pytest.password,
-        "new_pass": "where-is-perry" 
+        "password": pytest.password,
+        "new_password": "where-is-perry" 
     }
     request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
     assert request.status_code == 200
