@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 from typing import Annotated
 import random
@@ -50,7 +51,8 @@ def auth(client_id: str, redirect_uri: str, state: str):
         # Compose the response URL
         responseURL = redirect_uri + '?code=' + str(code) + '&state=' + state
         data_conector.setResponseURL(responseURL)
-        return redirect("/login/google/", code=302)
+        # return redirect("/login/google/", code=302)
+        return RedirectResponse(url='/login/google/')
         # return '<a href="' + responseURL + '">enlace</a>'
     else:
         data_conector.log(
