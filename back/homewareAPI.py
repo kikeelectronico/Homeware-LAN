@@ -6,7 +6,6 @@ from pydantic import BaseModel
 import json
 import time
 from datetime import datetime
-import random
 import paho.mqtt.publish as publish
 import subprocess
 from gevent import monkey
