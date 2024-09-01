@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Form
+from fastapi import APIRouter, Depends, Form, Header
 from fastapi.responses import JSONResponse
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
@@ -105,7 +105,7 @@ def token(grant_type: Annotated[str, Form()], client_id: Annotated[str | None, F
 
 @router.post("/smarthome")
 @router.post("/smarthome/")
-def smarthome(body: dict):
+def smarthome(body: dict, authorization: Annotated[str | None, Header()] = None):
     if data_conector.deep_logging:
         data_conector.log('Log', 'Request: ' + json.dumps(body))
     # Get the agent
@@ -117,7 +117,7 @@ def smarthome(body: dict):
     #     agent = 'google'
     agent = "google"
     # Get the access_token
-    tokenClient = request.headers['authorization'].split(' ')[1]
+    tokenClient = authorization.split(' ')[1]
     if data_conector.validateOauthToken('access_token', tokenClient):
         # Anlalyze the inputs
         inputs = body['inputs']
