@@ -125,6 +125,7 @@ def smarthome(body: dict, authorization: Annotated[str | None, Header()] = None)
     print(body)
     tokenClient = authorization.split(' ')[1]
     if data_conector.validateOauthToken('access_token', tokenClient):
+        print("/smarthome auth pass")
         # Anlalyze the inputs
         inputs = body['inputs']
         requestId = body['requestId']
@@ -210,6 +211,7 @@ def smarthome(body: dict, authorization: Annotated[str | None, Header()] = None)
             else:
                 data_conector.log('Log', 'Unknown request by ' + agent)
     else:
+        print("/smarthome auth NOT pass")
         data_conector.log('Alert', 'Unauthorized request from ' +
                           agent + '. Maybe the token has expired.')
         return "A"
