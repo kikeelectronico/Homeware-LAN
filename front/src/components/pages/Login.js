@@ -35,9 +35,9 @@ function Login() {
     http.onload = function (e) {
       var response = JSON.parse(http.responseText);
       console.log(response);
-      if(response['status'] === 'in')
-        console.log(response['url'])
-      else {
+      if(response['status'] === 'in') {
+        window.location = response['url']
+      } else {
         setEnableMessage(true)
         setMessage("Incorrect User or Password")
         setTimeout(() => setEnableMessage(false), 5000)
