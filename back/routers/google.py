@@ -78,6 +78,7 @@ def token(grant_type: Annotated[str, Form()], client_id: Annotated[str | None, F
     response = {}
     # Verify the code
     if  data_conector.validateOauthToken(grant_type, token):
+        print("return tokens")
         # Tokens lifetime
         secondsInDay = 86400
         # Create a new token
@@ -96,9 +97,11 @@ def token(grant_type: Annotated[str, Form()], client_id: Annotated[str | None, F
 
         # Response back
         data_conector.log('Warning', 'New token has been created for ' + agent)
+        print(response)
         return response
     else:
         # Response back
+        print("something went wrong")
         response['error'] = 'invalid_grant'
         data_conector.log('Alert', 'Unauthorized token request. The new token hasn\'t been sent.')
         return response
