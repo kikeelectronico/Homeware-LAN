@@ -3,10 +3,12 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import Annotated
 
-from data import data
+from data import Data
+from commands import Commands
 
 router = APIRouter()
 data_conector = Data()
+commands = Commands(data_conector)
 
 def tokenGenerator(agent, type):
     # Generate the token
@@ -96,15 +98,9 @@ def token(grant_type: str, client_id: str, client_secret: str, code: str | None 
         data_conector.log('Alert', 'Unauthorized token request. The new token hasn\'t been sent.')
         return response
 
-class GoogleRequest(BaseModel):
-    inputs: list,
-    requestId: str
-
 @router.post("/smarthome")
 @router.post("/smarthome/")
-def smarthome(body: GoogleRequest):
-    # Get all data
-    body = request.json
+def smarthome(body: dict):
     if data_conector.deep_logging:
         data_conector.log('Log', 'Request: ' + json.dumps(body))
     # Get the agent

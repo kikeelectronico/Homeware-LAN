@@ -12,19 +12,19 @@ import subprocess
 from gevent import monkey
 
 from data import Data
-from commands import Commands
 import hostname
 
-from routers import access, backup, devices, log, users, settings, system
+from routers import access, backup, devices, google, log, users, settings, system
 
 app = FastAPI()
 app.include_router(access.router)
 app.include_router(backup.router)
 app.include_router(devices.router)
+app.include_router(google.router)
 app.include_router(log.router)
-app.include_router(users.router)
 app.include_router(settings.router)
 app.include_router(system.router)
+app.include_router(users.router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -36,8 +36,6 @@ app.add_middleware(
 
 # Init the data managment object
 data_conector = Data()
-# Init command executor
-commands = Commands(data_conector)
 
 @app.get("/test")
 def testEndPoint():
