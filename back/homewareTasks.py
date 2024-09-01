@@ -98,16 +98,11 @@ def clearLogFile():
 	elif hour == 0 and minute == 1:
 		already_run = False
 
-def homewareCoreHearbeat():
-	mqttData = data_conector.getMQTT()
-	publish.single("homeware/alive", "all", hostname=hostname.MQTT_HOST, auth={'username': mqttData['user'], 'password': mqttData['password']})
-
 if __name__ == "__main__":
 	data_conector.log('Log', 'Starting HomewareTask core')
 	while(True):
 		ddnsUpdater()
 		syncDevicesStatus()
 		clearLogFile()
-		homewareCoreHearbeat()
 		data_conector.updateAlive('tasks')
 		time.sleep(1)

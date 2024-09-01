@@ -34,7 +34,6 @@ class Test_data(unittest.TestCase):
 			  "manufacturer": "Homeware",
 			  "model": "Homeware Lamp 2.0"
 			},
-			"_id": "light001",
 			"id": "light001",
 			"name": {
 			  "defaultNames": [

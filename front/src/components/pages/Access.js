@@ -75,8 +75,8 @@ function Access () {
       );
       http.send(
         JSON.stringify({
-          password: current_pass,
-          new_password: new_pass_1,
+          pass: current_pass,
+          new_pass: new_pass_1,
         })
       );
     }

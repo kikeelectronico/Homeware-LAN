@@ -138,7 +138,13 @@ class Data:
 
 # BACKUP
 
-	def getBackup(self):
+	def createBackupFile(self):
+		data = self.getBackupData()
+		file = open('../' + self.homewareFile, 'w')
+		file.write(json.dumps(data))
+		file.close()
+
+	def getBackupData(self):
 		user = self.mongo_db["users"].find()[0]
 		oauth = self.mongo_db["oauth"].find()[0]
 		data = {
@@ -168,7 +174,10 @@ class Data:
 		}
 		return data
 
-	def restoreBackup(self, data):
+	def loadBackupFile(self):
+		file = open('../' + self.homewareFile, 'r')
+		data = json.load(file)
+		file.close()
 		# Load the devices
 		for device in data['devices']:
 			device["_id"] = device["id"]
@@ -394,7 +403,7 @@ class Data:
 		ddbb_token = user_data["token"]
 		return token == ddbb_token
 
-	def googleSync(self, username, password):
+	def googleSync(self, username, password, responseURL):
 		username = headers['user']
 		password = headers['pass']
 		user_data = self.mongo_db["users"].find()[0]
@@ -402,7 +411,7 @@ class Data:
 		ddbb_username = user_data["username"]
 		auth = False
 		if username == ddbb_username and bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
-			return self.redis.get("responseURL")
+			return responseURL
 		else:
 			return "fail"
 
@@ -460,9 +469,6 @@ class Data:
 		if not type in ["client_id", "client_secret"]: return False
 		return self.mongo_db["settings"].find()[0][type] == value
 
-	def setResponseURL(self, url):
-		self.redis.set("responseURL", url)
-
 # SETTINGS
 
 	def getSettings(self):
@@ -497,11 +503,6 @@ class Data:
 
 	def getSyncDevices(self):
 		return self.mongo_db["settings"].find()[0]["sync_devices"]
-
-	def createServiceAccountKeyFile(self, serviceaccountkey):
-		with open("../files/google.json", "w") as file:
-			file.write(json.dumps(serviceaccountkey))
-		self.log('Info', 'A google auth file has been uploaded')
 
 # SYSTEM
 
