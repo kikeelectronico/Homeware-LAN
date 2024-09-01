@@ -402,13 +402,10 @@ class Data:
 		ddbb_password_hash = user_data["password"]
 		ddbb_username = user_data["username"]
 		auth = False
-		print("syncing", username, password)
-		print(username == ddbb_username)
-		print(bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')))
 		if username == ddbb_username and bcrypt.checkpw(password.encode('utf-8'),ddbb_password_hash[2:-1].encode('utf-8')):
 			print("auth")
-			print(self.redis.get("responseURL"))
-			return self.redis.get("responseURL")
+			print(self.redis.get("responseURL"))[2:-1]
+			return self.redis.get("responseURL")[2:-1]
 		else:
 			return "fail"
 
