@@ -23,11 +23,9 @@ def test_get_devices_fail_bad_token():
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/devices/get", headers=headers)
-    assert request.status_code == 200
+    assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 def test_get_devices_fail_no_token_value():
     headers = {
@@ -35,11 +33,9 @@ def test_get_devices_fail_no_token_value():
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/devices/get", headers=headers)
-    assert request.status_code == 200
+    assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 
 def test_get_devices_fail_no_header_value():
@@ -48,22 +44,18 @@ def test_get_devices_fail_no_header_value():
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/devices/get", headers=headers)
-    assert request.status_code == 200
+    assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 def test_get_devices_fail_no_header():
     headers = {
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/devices/get", headers=headers)
-    assert request.status_code == 200
+    assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 def test_get_device():
     headers = {
@@ -85,7 +77,7 @@ def test_get_device_fail_bad_device_id():
     }
     device_id = "whre_is_perry"
     request = requests.get(pytest.host + f"/api/devices/get/{device_id}", headers=headers)
-    assert request.status_code == 200
+    assert request.status_code == 404
     response = request.json()
     assert response["error"] == "Not found"
     assert response["code"] == 404
@@ -172,9 +164,7 @@ def test_create_device_fail_bad_token():
     request = requests.post(pytest.host + "/api/devices/create", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 def test_create_device_fail_no_token_value():
     headers = {
@@ -211,9 +201,7 @@ def test_create_device_fail_no_token_value():
     request = requests.post(pytest.host + "/api/devices/create", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 
 def test_create_device_fail_no_header_value():
@@ -251,9 +239,7 @@ def test_create_device_fail_no_header_value():
     request = requests.post(pytest.host + "/api/devices/create", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 def test_create_device_no_header():
     headers = {
@@ -289,9 +275,7 @@ def test_create_device_no_header():
     request = requests.post(pytest.host + "/api/devices/create", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 def test_update_device():
     headers = {
@@ -374,9 +358,7 @@ def test_update_device_fail_bad_device_id():
     request = requests.post(pytest.host + "/api/devices/update", headers=headers, data=json.dumps(body))
     assert request.status_code == 404
     response = request.json()
-    assert response["error"] == "Not found"
-    assert response["code"] == 404
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 def test_update_device_fail_bad_token():
     headers = {
@@ -413,9 +395,7 @@ def test_update_device_fail_bad_token():
     request = requests.post(pytest.host + "/api/devices/update", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 def test_update_device_fail_no_token_value():
     headers = {
@@ -452,9 +432,7 @@ def test_update_device_fail_no_token_value():
     request = requests.post(pytest.host + "/api/devices/update", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 
 def test_update_device_fail_no_header_value():
@@ -492,9 +470,7 @@ def test_update_device_fail_no_header_value():
     request = requests.post(pytest.host + "/api/devices/update", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 def test_update_device_no_header():
     headers = {
@@ -530,9 +506,7 @@ def test_update_device_no_header():
     request = requests.post(pytest.host + "/api/devices/update", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 def test_delete_device():
     headers = {
@@ -555,9 +529,7 @@ def test_delete_device_fail_bad_device_id():
     request = requests.post(pytest.host + f"/api/devices/delete/{device_id}", headers=headers)
     assert request.status_code == 404
     response = request.json()
-    assert response["error"] == "Not found"
-    assert response["code"] == 404
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 def test_delete_devices_fail_bad_token():
     headers = {
@@ -568,9 +540,7 @@ def test_delete_devices_fail_bad_token():
     request = requests.post(pytest.host + f"/api/devices/delete/{device_id}", headers=headers)
     assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 def test_delete_devices_fail_no_token_value():
     headers = {
@@ -581,9 +551,7 @@ def test_delete_devices_fail_no_token_value():
     request = requests.post(pytest.host + f"/api/devices/delete/{device_id}", headers=headers)
     assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 
 def test_delete_devices_fail_no_header_value():
@@ -595,9 +563,7 @@ def test_delete_devices_fail_no_header_value():
     request = requests.post(pytest.host + f"/api/devices/delete/{device_id}", headers=headers)
     assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 def test_delete_devices_fail_no_header():
     headers = {
@@ -607,6 +573,4 @@ def test_delete_devices_fail_no_header():
     request = requests.post(pytest.host + f"/api/devices/delete/{device_id}", headers=headers)
     assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"

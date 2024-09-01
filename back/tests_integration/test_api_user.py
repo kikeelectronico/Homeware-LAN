@@ -104,9 +104,7 @@ def test_changePassword_fail_bad_token():
     request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 def test_changePassword_fail_no_token_value():
     headers = {
@@ -120,9 +118,7 @@ def test_changePassword_fail_no_token_value():
     request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 
 def test_changePassword_fail_no_header_value():
@@ -137,9 +133,7 @@ def test_changePassword_fail_no_header_value():
     request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
 
 def test_changePassword_fail_no_header():
     headers = {
@@ -152,6 +146,4 @@ def test_changePassword_fail_no_header():
     request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
     response = request.json()
-    assert response["error"] == "Bad authentication"
-    assert response["code"] == 401
-    assert response["note"] == "See the documentation https://homeware.enriquegomez.me/api-docs.html"
+    assert response["detail"] == "A valid token is needed"
