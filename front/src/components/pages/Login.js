@@ -42,8 +42,8 @@ function Login() {
       }
     }
     http.open("GET", root + "api/user/googleSync/");
-    http.setRequestHeader('user', document.getElementById('user').value)
-    http.setRequestHeader('pass', document.getElementById('password').value)
+    http.setRequestHeader('username', document.getElementById('user').value)
+    http.setRequestHeader('password', document.getElementById('password').value)
     http.send();
   }
 
