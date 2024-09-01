@@ -132,11 +132,15 @@ def smarthome(body: dict, authorization: Annotated[str | None, Header()] = None)
         for input in inputs:
             if input['intent'] == 'action.devices.SYNC':
                 print("SYNC request")
+                devices = []
+                for device in data_conector.getDevices():
+                    del device["_id"]
+                    devices.append(device)
                 response = {
                     'requestId': requestId,
                     'payload': {
                         'agentUserId': data_conector.getDDNS()['hostname'],
-                        'devices': data_conector.getDevices()
+                        'devices': devices
                     }
                 }
                 data_conector.log('Log', 'Sync request by ' + agent + ' with ' +
