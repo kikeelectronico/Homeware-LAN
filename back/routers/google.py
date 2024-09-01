@@ -131,6 +131,7 @@ def smarthome(body: dict, authorization: Annotated[str | None, Header()] = None)
         requestId = body['requestId']
         for input in inputs:
             if input['intent'] == 'action.devices.SYNC':
+                print("SYNC request")
                 response = {
                     'requestId': requestId,
                     'payload': {
@@ -140,9 +141,11 @@ def smarthome(body: dict, authorization: Annotated[str | None, Header()] = None)
                 }
                 data_conector.log('Log', 'Sync request by ' + agent + ' with ' +
                                   response['payload']['agentUserId'] + ' as agent user id')
-                data_conector.updateSyncGoogle(True)
+                # data_conector.updateSyncGoogle(True)
                 if data_conector.deep_logging:
                     data_conector.log('Log', 'Response: ' + json.dumps(response))
+                print("respose")
+                print(respose)
                 return response
             elif input['intent'] == 'action.devices.QUERY':
                 response = {

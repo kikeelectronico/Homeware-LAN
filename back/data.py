@@ -458,7 +458,6 @@ class Data:
 	def validateOauthToken(self, type, token):
 		filter = {"_id": "google"}
 		oauth = self.mongo_db["oauth"].find_one(filter)
-		print(oauth)
 		return token == oauth[type]["value"]
 
 	def validateOauthCredentials(self, type, value):
