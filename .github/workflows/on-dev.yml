@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   unit_test_backend:
-    name: Unit testing backend
+    name: Unit test backend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
