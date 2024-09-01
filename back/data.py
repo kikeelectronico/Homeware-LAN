@@ -407,7 +407,7 @@ class Data:
 			print(self.redis.get("responseURL").decode('UTF-8'))
 			return self.redis.get("responseURL").decode('UTF-8')
 		else:
-			return "fail"
+			return None
 
 # APIKEY
 

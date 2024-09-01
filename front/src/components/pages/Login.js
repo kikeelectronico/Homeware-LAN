@@ -33,8 +33,10 @@ function Login() {
   const grantAccess = () => {
     var http = new XMLHttpRequest();
     http.onload = function (e) {
-      if (http.responseText !== 'fail') 
-        console.log(http.responseText)
+      var response = JSON.parse(http.responseText);
+      console.log(response);
+      if(response['status'] === 'in')
+        console.log(response['url'])
       else {
         setEnableMessage(true)
         setMessage("Incorrect User or Password")
