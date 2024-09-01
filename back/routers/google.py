@@ -61,7 +61,7 @@ def auth(client_id: str, redirect_uri: str, state: str):
     
 @router.post("/token")
 @router.post("/token/")
-def token(grant_type: Annotated[str, Form()], client_id: Annotated[str, Form()], client_secret: Annotated[str, Form()], code: Annotated[str | None, Form()] = None, refresh_token: Annotated[str | None, Form()] = None):
+def token(grant_type: Annotated[str | None, Form()] = None, client_id: Annotated[str | None, Form()] = None, client_secret: Annotated[str | None, Form()] = None, code: Annotated[str | None, Form()] = None, refresh_token: Annotated[str | None, Form()] = None):
     # agent = request.headers['User-Agent']
     # # Verify special agents
     # if '+http://www.google.com/bot.html' in agent:
