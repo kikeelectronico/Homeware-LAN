@@ -46,7 +46,10 @@ class Data:
 				subprocess.run(["cp", "../configuration_templates/template_homeware.json", "../homeware.json"],  stdout=subprocess.PIPE)
 				self.log('Warning','Copying the template homeware file')
 			# Load the database using the template
-			self.loadBackupFile()
+			file = open('../' + self.homewareFile, 'r')
+			data = json.load(file)
+			file.close()
+			self.restoreBackup(data)
 			self.log('Warning','Using a template homeware file')
 			# Create db reference
 			self.mongo_db = self.mongo_client["homeware"]
