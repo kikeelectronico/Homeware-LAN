@@ -50,6 +50,18 @@ function Logs () {
     http.send();
   }
 
+  const downloadLog = () => {
+    let log_str = ""
+    for(let i = 0; i < data.length; i++)
+      log_str += formatTimestamp(data[i]["timestamp"]) + "\t" + data[i]["severity"] + "\t" + data[i]["message"] + "\n"
+    const blob = new Blob([log_str], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.download = "homeware " + formatTimestamp(Date.now()/1000) + ".log";
+    link.href = url;
+    link.click();
+  }
+
   const formatTimestamp = (timestamp) => {
     let a = new Date(timestamp * 1000);
     return a.getDate() + '-' + a.getMonth() + '-' + a.getFullYear() + ' ' + a.getHours() + ':' + a.getMinutes() + ':' + a.getSeconds() ;
@@ -80,6 +92,7 @@ function Logs () {
         <div className="page_block_buttons_container">
           <Stack spacing={2} direction="row">
             <Button variant="contained" onClick={loadMore}>Load more</Button>
+            <Button variant="contained" onClick={downloadLog}>Download</Button>
             <Button variant="contained" onClick={deleteLog}>Delete</Button>
           </Stack>
         </div>

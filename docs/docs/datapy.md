@@ -6,25 +6,12 @@ sidebar_label: Back - data.py
 
 Data is a class intended to interact with both the databases and disk files. When an object is created the constructor do tasks related with verifing the database and the data contined in it.
 
-## Method - createBackupFile
 
-Homeware can backup the important data from the database into a file named _Homeware.json_. This method do the job.
-
-`myData.createBackupFile()`
-
-### Arguments
-
-None
-
-### Returns
-
-None
-
-## Method - getBackupData
+## Method - getBackup
 
 Returns the backup data in a JSON format.
 
-`myData.getBackupData()`
+`myData.getBackup()`
 
 ### Arguments
 
@@ -38,11 +25,15 @@ See the file [configuration_template.json](https://github.com/kikeelectronico/Ho
 
 This method restore the database from the Homware.json file.
 
-`myData.loadBackupFile()`
+`myData.loadBackupFile(backup)`
 
 ### Arguments
 
-None
+#### backup
+The content of the backup file as JSON.
+
+- Type: JSON
+- Example: See the file [configuration_template.json](https://github.com/kikeelectronico/Homeware-LAN/blob/master/configuration_templates/template_homeware.json) for reference.
 
 ### Returns
 
