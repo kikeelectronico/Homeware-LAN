@@ -39,7 +39,7 @@ def updateDevices(device: Device):
         if data_conector.updateDevice(device.device, device.status):
             return JSONResponse(status_code=200,
                                 content = {
-                                    "error": "Success",
+                                    "status": "Success",
                                     "code": 200,
                                 })
         else:
@@ -54,7 +54,7 @@ def createDevices(device: Device):
         data_conector.createDevice(device.device, device.status)
         return JSONResponse(status_code=200,
                             content = {
-                                "error": "Success",
+                                "status": "Success",
                                 "code": 200,
                             })
     else:
@@ -67,7 +67,7 @@ def deleteDevices(device_id: str | None = None):
         if data_conector.deleteDevice(device_id):
             return JSONResponse(status_code=200,
                                 content = {
-                                    "error": "Success",
+                                    "status": "Success",
                                     "code": 200,
                                 })
         else:
@@ -99,7 +99,7 @@ def updateStatus(state: State):
         if data_conector.updateParamStatus(state.id, state.param, state.value):
             return JSONResponse(status_code=200,
                                 content = {
-                                    "error": "Success",
+                                    "status": "Success",
                                     "code": 200,
                                 })
         else:
