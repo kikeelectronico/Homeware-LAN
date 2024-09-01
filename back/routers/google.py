@@ -144,8 +144,8 @@ def smarthome(body: dict, authorization: Annotated[str | None, Header()] = None)
                 # data_conector.updateSyncGoogle(True)
                 if data_conector.deep_logging:
                     data_conector.log('Log', 'Response: ' + json.dumps(response))
-                print("respose")
-                print(respose)
+                print("response")
+                print(response)
                 return response
             elif input['intent'] == 'action.devices.QUERY':
                 response = {
