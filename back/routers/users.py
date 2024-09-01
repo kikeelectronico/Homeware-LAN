@@ -54,4 +54,5 @@ def validateUserToken(password: Password | None = None):
 @router.get("/api/user/googleSync/")
 def googleSync(username: Annotated[str | None, Header()] = None,
             password: Annotated[str | None, Header()] = None):
+    print(username, password)
     return data_conector.googleSync(username, password)
