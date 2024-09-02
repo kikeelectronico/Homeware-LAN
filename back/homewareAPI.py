@@ -15,6 +15,8 @@ import hostname
 
 # Init the data managment object
 data_conector = Data()
+data_conector.setup()
+data_conector.migrateToMongodb()
 
 from routers import access, backup, devices, google, log, users, settings, system
 

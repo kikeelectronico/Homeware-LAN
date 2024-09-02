@@ -24,35 +24,26 @@ class Data:
 	"""Access to Homeware's databases and files."""
 
 	version = 'v2.0.0'
-	homewareFile = 'homeware.json'
 
-	def __init__(self):
-		print("HOMEWARE_DOMAIN", HOMEWARE_DOMAIN)
-		
+	def __init__(self):		
 		self.verbose = False
 		self.deep_logging = os.environ.get("DEEP_LOGGING", False) == "True"
 
 		if not os.path.exists("../files"):
 				os.mkdir("../files")
 
-		if not os.path.exists("../logs"):
-				os.mkdir("../logs")
-
 		self.redis = redis.Redis(hostname.REDIS_HOST, hostname.REDIS_PORT)
 		self.mongo_client = pymongo.MongoClient("mongodb://" + hostname.MONGO_HOST + ":" + str(hostname.MONGO_PORT) + "/")
-		try:
-			self.mongo_db = self.mongo_client["homeware"]
-		except:
-			self.log('Warning','The Mongo database must be created')
+		self.mongo_db = self.mongo_client["homeware"]
 
+	def setup(self):
 		if not self.redis.get('transfer'):
 			print("The database must be created")
 			self.log('Warning','The database must be created')
-			if not os.path.exists("../homeware.json"):
-				subprocess.run(["cp", "../configuration_templates/template_homeware.json", "../homeware.json"],  stdout=subprocess.PIPE)
-				self.log('Warning','Copying the template homeware file')
+			# Set alert flags
+			self.redis.set("alert","clear")
 			# Load the database using the template
-			file = open('../' + self.homewareFile, 'r')
+			file = open("../configuration_templates/template_homeware.json", 'r')
 			data = json.load(file)
 			file.close()
 			self.restoreBackup(data)
@@ -81,11 +72,8 @@ class Data:
 			# Set the flag
 			self.redis.set("transfer", "true")
 
-		if self.redis.get("alert") == None:
-			self.redis.set("alert","clear")
-
+	def migrateToMongodb(self):
 		# Move not real time data to MogoDB
-		# Begin
 		if not "homeware" in self.mongo_client.list_database_names():
 			print("moving data")
 			# Create db reference
@@ -149,7 +137,6 @@ class Data:
 				"client_secret": self.redis.get("token/google/client_secret").decode('UTF-8'),
 			}
 			mongo_settings_col.insert_one(settings_data)
-		# End
 
 # BACKUP
 
