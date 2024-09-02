@@ -66,7 +66,7 @@ class Data:
 				"domain": HOMEWARE_DOMAIN,
 				"ddns.hostname": HOMEWARE_DOMAIN
 			}}
-			retsult = self.mongo_db["settings"].update_one(filter, operation)
+			result = self.mongo_db["settings"].update_one(filter, operation)
 			print("result", result.modified_count)
 			# Override user
 			print("HOMEWARE_USER", HOMEWARE_USER)
@@ -76,7 +76,7 @@ class Data:
 				"username": HOMEWARE_USER,
 				"password": str(bcrypt.hashpw(HOMEWARE_PASSWORD.encode('utf-8'), bcrypt.gensalt()))
 			}}
-			retsult = self.mongo_db["users"].update_one(filter, operation)
+			result = self.mongo_db["users"].update_one(filter, operation)
 			print("result", result.modified_count)
 			# Set the flag
 			self.redis.set("transfer", "true")
