@@ -5,6 +5,7 @@ import paho.mqtt.publish as publish
 class Test_data(unittest.TestCase):
 	def setUp(self):
 		self.data = Data()
+		self.data.setup()
 
 # GLOBAL
 
