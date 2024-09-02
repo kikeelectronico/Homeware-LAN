@@ -13,6 +13,9 @@ from gevent import monkey
 from data import Data
 import hostname
 
+# Init the data managment object
+data_conector = Data()
+
 from routers import access, backup, devices, google, log, users, settings, system
 
 app = FastAPI()
@@ -31,10 +34,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-# Init the data managment object
-data_conector = Data()
 
 @app.get("/test")
 def testEndPoint():
