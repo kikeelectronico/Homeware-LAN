@@ -60,12 +60,15 @@ class Data:
 			self.mongo_db = self.mongo_client["homeware"]
 			# Override settings
 			filter = {"_id": "settings"}
+			print("HOMEWARE_DOMAIN", HOMEWARE_DOMAIN)
 			operation = {"$set": {
 				"domain": HOMEWARE_DOMAIN,
 				"ddns.hostname": HOMEWARE_DOMAIN
 			}}
 			self.mongo_db["settings"].update_one(filter, operation)
 			# Override user
+			print("HOMEWARE_USER", HOMEWARE_USER)
+			print("HOMEWARE_PASSWORD", HOMEWARE_PASSWORD)
 			filter = {"_id": "admin"}
 			operation = {"$set": {
 				"username": HOMEWARE_USER,
