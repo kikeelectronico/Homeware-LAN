@@ -37,6 +37,7 @@ class Data:
 		self.mongo_db = self.mongo_client["homeware"]
 
 	def setup(self):
+		self.redis.set("homeware_version", self.version)
 		if not self.redis.get('transfer'):
 			print("The database must be created")
 			self.log('Warning','The database must be created')
