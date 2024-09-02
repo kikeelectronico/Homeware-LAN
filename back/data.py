@@ -27,6 +27,7 @@ class Data:
 	homewareFile = 'homeware.json'
 
 	def __init__(self):
+		print("HOMEWARE_DOMAIN": HOMEWARE_DOMAIN)
 		
 		self.verbose = False
 		self.deep_logging = os.environ.get("DEEP_LOGGING", False) == "True"
