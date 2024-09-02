@@ -87,6 +87,7 @@ class Data:
 		# Move not real time data to MogoDB
 		# Begin
 		if not "homeware" in self.mongo_client.list_database_names():
+			print("moving data")
 			# Create db reference
 			self.mongo_db = self.mongo_client["homeware"]
 			# Create devices collection
