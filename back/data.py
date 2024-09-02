@@ -16,6 +16,10 @@ from homeGraph import HomeGraph
 import hostname
 homegraph = HomeGraph()
 
+HOMEWARE_DOMAIN = os.environ.get("HOMEWARE_DOMAIN", "localhost")
+HOMEWARE_USER = os.environ.get("HOMEWARE_USER", "admin")
+HOMEWARE_PASSWORD = os.environ.get("HOMEWARE_PASSWORD", "admin")
+
 class Data:
 	"""Access to Homeware's databases and files."""
 
@@ -23,7 +27,7 @@ class Data:
 	homewareFile = 'homeware.json'
 
 	def __init__(self):
-
+		
 		self.verbose = False
 		self.deep_logging = os.environ.get("DEEP_LOGGING", False) == "True"
 
@@ -56,15 +60,15 @@ class Data:
 			# Override settings
 			filter = {"_id": "settings"}
 			operation = {"$set": {
-				"domain": os.environ.get("HOMEWARE_DOMAIN", "localhost"),
-				"ddns.hostname": os.environ.get("HOMEWARE_DOMAIN", "localhost")
+				"domain": HOMEWARE_DOMAIN,
+				"ddns.hostname": HOMEWARE_DOMAIN
 			}}
 			self.mongo_db["settings"].update_one(filter, operation)
 			# Override user
 			filter = {"_id": "admin"}
 			operation = {"$set": {
-				"username": os.environ.get("HOMEWARE_USER", "admin"),
-				"password": str(bcrypt.hashpw(os.environ.get("HOMEWARE_PASSWORD", "admin").encode('utf-8'), bcrypt.gensalt()))
+				"username": HOMEWARE_USER,
+				"password": str(bcrypt.hashpw(HOMEWARE_PASSWORD.encode('utf-8'), bcrypt.gensalt()))
 			}}
 			self.mongo_db["users"].update_one(filter, operation)
 			# Set the flag
