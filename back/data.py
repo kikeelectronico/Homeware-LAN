@@ -46,6 +46,7 @@ class Data:
 			self.log('Warning','The Mongo database must be created')
 
 		if not self.redis.get('transfer'):
+			print("The database must be created")
 			self.log('Warning','The database must be created')
 			if not os.path.exists("../homeware.json"):
 				subprocess.run(["cp", "../configuration_templates/template_homeware.json", "../homeware.json"],  stdout=subprocess.PIPE)
