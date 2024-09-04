@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI, Header
+from fastapi.responses import PlainTextResponse
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Annotated
 from pydantic import BaseModel
@@ -37,7 +38,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/test")
+@app.get("/test", response_class=PlainTextResponse)
 def testEndPoint():
     return "Load"
 
