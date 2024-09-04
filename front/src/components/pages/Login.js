@@ -58,6 +58,13 @@ function Login() {
     }
   }
 
+  document.onkeydown = function(evt) {
+    evt = evt || window.event;
+    if (evt.keyCode == 13) {
+      submit()
+    }
+  }
+
   return (
     <div className="login_form_container">
       { window.location.href.includes('google') ? <p>Google request access to Homeware-Lan</p> : '' }
