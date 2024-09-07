@@ -229,7 +229,9 @@ class Data:
 		}
 		filter = {"_id": "google"}
 		operation = {"$set": oauth}
-		self.mongo_db["oauth"].update_one(filter, operation, upsert = True)		
+		self.mongo_db["oauth"].update_one(filter, operation, upsert = True)
+		# Set empty alive
+		self.redis.set("alive", json.dumps({}))
 
 # VERSION
 
