@@ -13,8 +13,8 @@ def test_auth():
     client_id = "123"
     redirect_uri = "localhost"
     state = "where-is-perry"
-    request = requests.get(pytest.host + f"/auth?client_id={client_id}&redirect_uri={redirect_uri}&state={state}")
-    assert request.status_code == 404
+    request = requests.get(pytest.host + f"/auth?client_id={client_id}&redirect_uri={redirect_uri}&state={state}", allow_redirects=False)
+    assert request.status_code == 307
 
 # Google auth by user /api/user/googleSync
 
