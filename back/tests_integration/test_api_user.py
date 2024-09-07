@@ -147,3 +147,41 @@ def test_changePassword_fail_no_header():
     assert request.status_code == 401
     response = request.json()
     assert response["detail"] == "A valid token is needed"
+
+def test_googleSync():
+    headers = {
+        "username": pytest.username,
+        "password": pytest.password
+    }
+    request = requests.get(pytest.host + "/api/user/googleSync", headers=headers)
+    assert request.status_code == 200
+    response = request.json()
+    assert response["status"] == "in"
+    assert response["user"] == pytest.username
+    assert response["url"] != ""
+    # Update token new token
+    pytest.token = response["token"]
+
+def test_googleSync_fail_bad_username():
+    headers = {
+        "username": "where-is-perry",
+        "password": pytest.password
+    }
+    request = requests.get(pytest.host + "/api/user/googleSync", headers=headers)
+    assert request.status_code == 200
+    response = request.json()
+    assert response["status"] == "fail"
+    assert response["user"] == headers["username"]
+    assert response["url"] == ""
+
+def test_googleSync_fail_bad_password():
+    headers = {
+        "username": pytest.username,
+        "password": "PASSWORD"
+    }
+    request = requests.get(pytest.host + "/api/user/googleSync", headers=headers)
+    assert request.status_code == 200
+    response = request.json()
+    assert response["status"] == "fail"
+    assert response["user"] == pytest.username
+    assert response["url"] == ""
