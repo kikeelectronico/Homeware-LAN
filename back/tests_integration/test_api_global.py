@@ -7,7 +7,7 @@ import pytest
 
 def test_get_version():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/global/version", headers=headers)
@@ -19,7 +19,7 @@ def test_get_version():
 
 def test_get_version_fail_bad_token():
     headers = {
-        "authorization": f"baerer whre_is_perry",
+        "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/global/version", headers=headers)
@@ -29,7 +29,7 @@ def test_get_version_fail_bad_token():
 
 def test_get_version_fail_no_token_value():
     headers = {
-        "authorization": f"baerer ",
+        "authorization": f"bearer ",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/global/version", headers=headers)
@@ -59,7 +59,7 @@ def test_get_version_fail_no_header():
 
 def test_get_global():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/global/get", headers=headers)
@@ -71,7 +71,7 @@ def test_get_global():
 
 def test_get_global_fail_bad_token():
     headers = {
-        "authorization": f"baerer whre_is_perry",
+        "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/global/get", headers=headers)
@@ -81,7 +81,7 @@ def test_get_global_fail_bad_token():
 
 def test_get_global_fail_no_token_value():
     headers = {
-        "authorization": f"baerer ",
+        "authorization": f"bearer ",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/global/get", headers=headers)

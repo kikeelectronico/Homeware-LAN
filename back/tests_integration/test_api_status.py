@@ -7,7 +7,7 @@ import pytest
 
 def test_get_status():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/status/get", headers=headers)
@@ -20,7 +20,7 @@ def test_get_status():
 
 def test_get_status_fail_bad_token():
     headers = {
-        "authorization": f"baerer whre_is_perry",
+        "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/status/get", headers=headers)
@@ -30,7 +30,7 @@ def test_get_status_fail_bad_token():
 
 def test_get_status_fail_no_token_value():
     headers = {
-        "authorization": f"baerer ",
+        "authorization": f"bearer ",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/status/get", headers=headers)
@@ -60,7 +60,7 @@ def test_get_status_fail_no_header():
 
 def test_get_status_with_device_id():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     device_id = "light"
@@ -72,7 +72,7 @@ def test_get_status_with_device_id():
 
 def test_get_status_fail_bad_device_id():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     device_id = "whre_is_perry"
@@ -85,7 +85,7 @@ def test_get_status_fail_bad_device_id():
 
 def test_update_status():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     body = {
@@ -108,7 +108,7 @@ def test_update_status():
 
 def test_update_status_fail_bad_device_id():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     body = {
@@ -125,7 +125,7 @@ def test_update_status_fail_bad_device_id():
 
 def test_update_status_fail_bad_token():
     headers = {
-        "authorization": f"baerer whre_is_perry",
+        "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
     }
     body = {
@@ -140,7 +140,7 @@ def test_update_status_fail_bad_token():
 
 def test_update_status_fail_no_token_value():
     headers = {
-        "authorization": f"baerer ",
+        "authorization": f"bearer ",
         "content-type": "application/json"
     }
     body = {

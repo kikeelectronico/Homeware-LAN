@@ -7,7 +7,7 @@ import pytest
 
 def test_get_devices():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/devices/get", headers=headers)
@@ -19,7 +19,7 @@ def test_get_devices():
 
 def test_get_devices_fail_bad_token():
     headers = {
-        "authorization": f"baerer whre_is_perry",
+        "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/devices/get", headers=headers)
@@ -29,7 +29,7 @@ def test_get_devices_fail_bad_token():
 
 def test_get_devices_fail_no_token_value():
     headers = {
-        "authorization": f"baerer ",
+        "authorization": f"bearer ",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/devices/get", headers=headers)
@@ -59,7 +59,7 @@ def test_get_devices_fail_no_header():
 
 def test_get_device():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     device_id = "light"
@@ -72,7 +72,7 @@ def test_get_device():
 
 def test_get_device_fail_bad_device_id():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     device_id = "whre_is_perry"
@@ -85,7 +85,7 @@ def test_get_device_fail_bad_device_id():
 
 def test_create_device():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     body = {
@@ -131,7 +131,7 @@ def test_create_device():
 
 def test_create_device_fail_bad_token():
     headers = {
-        "authorization": f"baerer whre_is_perry",
+        "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
     }
     body = {
@@ -168,7 +168,7 @@ def test_create_device_fail_bad_token():
 
 def test_create_device_fail_no_token_value():
     headers = {
-        "authorization": f"baerer ",
+        "authorization": f"bearer ",
         "content-type": "application/json"
     }
     body = {
@@ -279,7 +279,7 @@ def test_create_device_no_header():
 
 def test_update_device():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     body = {
@@ -325,7 +325,7 @@ def test_update_device():
 
 def test_update_device_fail_bad_device_id():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     body = {
@@ -364,7 +364,7 @@ def test_update_device_fail_bad_device_id():
 
 def test_update_device_fail_bad_token():
     headers = {
-        "authorization": f"baerer whre_is_perry",
+        "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
     }
     body = {
@@ -401,7 +401,7 @@ def test_update_device_fail_bad_token():
 
 def test_update_device_fail_no_token_value():
     headers = {
-        "authorization": f"baerer ",
+        "authorization": f"bearer ",
         "content-type": "application/json"
     }
     body = {
@@ -512,7 +512,7 @@ def test_update_device_no_header():
 
 def test_delete_device():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     device_id = "switch000"
@@ -524,7 +524,7 @@ def test_delete_device():
 
 def test_delete_device_fail_bad_device_id():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     device_id = "switch999"
@@ -537,7 +537,7 @@ def test_delete_device_fail_bad_device_id():
 
 def test_delete_devices_fail_bad_token():
     headers = {
-        "authorization": f"baerer whre_is_perry",
+        "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
     }
     device_id = "switch000"
@@ -548,7 +548,7 @@ def test_delete_devices_fail_bad_token():
 
 def test_delete_devices_fail_no_token_value():
     headers = {
-        "authorization": f"baerer ",
+        "authorization": f"bearer ",
         "content-type": "application/json"
     }
     device_id = "switch000"

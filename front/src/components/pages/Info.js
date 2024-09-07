@@ -36,7 +36,7 @@ function Info() {
         }
       }
       dev.open("GET", root + "api/devices/get/" + id + "/");
-      dev.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+      dev.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
       dev.send();
 
       var sta = new XMLHttpRequest();
@@ -51,7 +51,7 @@ function Info() {
         }
       }
       sta.open("GET", root + "api/status/get/" + id + "/");
-      sta.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+      sta.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
       sta.send();
     }
   }, [id])

@@ -7,7 +7,7 @@ import pytest
 
 def test_get_status():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/system/status", headers=headers)
@@ -23,7 +23,7 @@ def test_get_status():
 
 def test_get_status_fail_bad_token():
     headers = {
-        "authorization": f"baerer whre_is_perry",
+        "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/system/status", headers=headers)
@@ -33,7 +33,7 @@ def test_get_status_fail_bad_token():
 
 def test_get_status_fail_no_token_value():
     headers = {
-        "authorization": f"baerer ",
+        "authorization": f"bearer ",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/system/status", headers=headers)

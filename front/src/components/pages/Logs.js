@@ -26,7 +26,7 @@ function Logs () {
       }
     }
     http.open("GET", root + "api/log/get/");
-    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send();
   }, [])
 
@@ -46,7 +46,7 @@ function Logs () {
       }
     }
     http.open("GET", root + "api/log/delete/");
-    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send();
   }
 

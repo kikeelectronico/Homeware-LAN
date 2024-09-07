@@ -30,7 +30,7 @@ function Backup() {
       }
     }
     http.open("GET", root + "api/backup/get/");
-    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send();
   }
 
@@ -51,7 +51,7 @@ function Backup() {
         }
         http.open("PUT", root + "api/backup");
         http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+        http.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
         http.send(backup);
       }
       fileReader.readAsText(e.target.files[0]);

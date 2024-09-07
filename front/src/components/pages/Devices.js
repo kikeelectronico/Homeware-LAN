@@ -73,7 +73,7 @@ function Devices() {
       }
     }
     http.open("GET", root + "api/global/get/");
-    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send();
   }
 

@@ -82,7 +82,7 @@ class App extends React.Component {
       }
     }.bind(this);
     vers.open("GET", root + "api/global/version/");
-    vers.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    vers.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
     vers.send();
 
     var git = new XMLHttpRequest();
@@ -128,7 +128,7 @@ class App extends React.Component {
       }
     }.bind(this);
     vers.open("GET", root + "api/log/alert/");
-    vers.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    vers.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
     vers.send();
   }
 

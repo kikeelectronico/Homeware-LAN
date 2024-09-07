@@ -66,10 +66,10 @@
             "description": "Authorization code: API Key or admin Token.",
             "required": true,
             "type": "string",
-            "example": "baerer {yor-API-Key}",
+            "example": "bearer {yor-API-Key}",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           }
         ],
@@ -125,7 +125,7 @@
             "type": "string",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           },
           {
@@ -209,7 +209,7 @@
             "type": "string",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           },
           {
@@ -306,7 +306,7 @@
             "type": "string",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           },
          {
@@ -389,7 +389,7 @@
             "type": "string",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           },
          {
@@ -484,10 +484,10 @@
             "description": "Authorization code: API Key or admin Token.",
             "required": true,
             "type": "string",
-            "example": "baerer {yor-API-Key}",
+            "example": "bearer {yor-API-Key}",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           }
         ],
@@ -565,7 +565,7 @@
             "type": "string",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           },
           {
@@ -652,7 +652,7 @@
             "type": "string",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           },
          {
@@ -736,10 +736,10 @@
             "description": "Authorization code: API Key or admin Token.",
             "required": true,
             "type": "string",
-            "example": "baerer {yor-API-Key}",
+            "example": "bearer {yor-API-Key}",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           }
         ],
@@ -795,7 +795,7 @@
             "type": "string",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           },
           {
@@ -879,7 +879,7 @@
             "type": "string",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           },
           {
@@ -976,7 +976,7 @@
             "type": "string",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           },
          {
@@ -1056,7 +1056,7 @@
             "type": "string",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           },
          {
@@ -1155,10 +1155,10 @@
             "description": "Authorization code: API Key or admin Token.",
             "required": true,
             "type": "string",
-            "example": "baerer {yor-API-Key}",
+            "example": "bearer {yor-API-Key}",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           }
         ],
@@ -1215,10 +1215,10 @@
             "description": "Authorization code: API Key or admin Token.",
             "required": true,
             "type": "string",
-            "example": "baerer {yor-API-Key}",
+            "example": "bearer {yor-API-Key}",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           }
         ],
@@ -1339,10 +1339,10 @@
             "description": "Authorization code: API Key or admin Token.",
             "required": true,
             "type": "string",
-            "example": "baerer {yor-API-Key}",
+            "example": "bearer {yor-API-Key}",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           },
           {
@@ -1535,7 +1535,7 @@
             "type": "string",
             "schema": {
               "type": "string",
-              "example": "baerer {admin-session-token}"
+              "example": "bearer {admin-session-token}"
             }
           }
         ],
@@ -1594,7 +1594,7 @@
             "type": "string",
             "schema": {
               "type": "string",
-              "example": "baerer {admin-session-token}"
+              "example": "bearer {admin-session-token}"
             }
           }
         ],
@@ -1647,7 +1647,7 @@
             "type": "string",
             "schema": {
               "type": "string",
-              "example": "baerer {admin-session-token}"
+              "example": "bearer {admin-session-token}"
             }
           },
           {
@@ -1821,10 +1821,10 @@
             "description": "Authorization code: API Key or admin Token.",
             "required": true,
             "type": "string",
-            "example": "baerer {yor-API-Key}",
+            "example": "bearer {yor-API-Key}",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           }
         ],
@@ -1876,10 +1876,10 @@
             "description": "Authorization code: API Key or admin Token.",
             "required": true,
             "type": "string",
-            "example": "baerer {yor-API-Key}",
+            "example": "bearer {yor-API-Key}",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           }
         ],
@@ -1931,10 +1931,10 @@
             "description": "Authorization code: API Key or admin Token.",
             "required": true,
             "type": "string",
-            "example": "baerer {yor-API-Key}",
+            "example": "bearer {yor-API-Key}",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           }
         ],
@@ -1986,10 +1986,10 @@
             "description": "Authorization code: API Key or admin Token.",
             "required": true,
             "type": "string",
-            "example": "baerer {yor-API-Key}",
+            "example": "bearer {yor-API-Key}",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           }
         ],
@@ -2041,10 +2041,10 @@
             "description": "Authorization code: API Key or admin Token.",
             "required": true,
             "type": "string",
-            "example": "baerer {yor-API-Key}",
+            "example": "bearer {yor-API-Key}",
             "schema": {
               "type": "string",
-              "example": "baerer {yor-API-Key}"
+              "example": "bearer {yor-API-Key}"
             }
           }
         ],

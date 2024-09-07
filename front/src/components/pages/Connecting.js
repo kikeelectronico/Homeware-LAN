@@ -35,7 +35,7 @@ function Connecting() {
       }
     }
     dev.open("GET", root + "api/devices/get/" + id + "/");
-    dev.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+    dev.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
     dev.send();
   }, [id])
 

@@ -60,7 +60,7 @@ def test_valiteToken_fail_bad_token():
     
 def test_changePassword():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     body = {
@@ -80,7 +80,7 @@ def test_changePassword():
 
 def test_changePassword_fail_bad_password():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     body = {
@@ -94,7 +94,7 @@ def test_changePassword_fail_bad_password():
 
 def test_changePassword_fail_bad_token():
     headers = {
-        "authorization": f"baerer whre_is_perry",
+        "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
     }
     body = {
@@ -108,7 +108,7 @@ def test_changePassword_fail_bad_token():
 
 def test_changePassword_fail_no_token_value():
     headers = {
-        "authorization": f"baerer ",
+        "authorization": f"bearer ",
         "content-type": "application/json"
     }
     body = {

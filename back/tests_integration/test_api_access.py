@@ -9,7 +9,7 @@ apikey = ""
 
 def test_create_access():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/access/create", headers=headers)
@@ -24,7 +24,7 @@ def test_create_access():
 
 def test_create_access_fail_bad_token():
     headers = {
-        "authorization": f"baerer whre_is_perry",
+        "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/access/create", headers=headers)
@@ -34,7 +34,7 @@ def test_create_access_fail_bad_token():
 
 def test_create_access_fail_no_token_value():
     headers = {
-        "authorization": f"baerer ",
+        "authorization": f"bearer ",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/access/create", headers=headers)
@@ -64,7 +64,7 @@ def test_create_access_fail_no_header():
 
 def test_get_access():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/access/get", headers=headers)
@@ -78,7 +78,7 @@ def test_get_access():
 
 def test_get_access_fail_bad_token():
     headers = {
-        "authorization": f"baerer whre_is_perry",
+        "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/access/get", headers=headers)
@@ -88,7 +88,7 @@ def test_get_access_fail_bad_token():
 
 def test_get_access_fail_no_token_value():
     headers = {
-        "authorization": f"baerer ",
+        "authorization": f"bearer ",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/access/get", headers=headers)

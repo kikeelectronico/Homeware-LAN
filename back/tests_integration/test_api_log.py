@@ -7,7 +7,7 @@ import pytest
 
 def test_get_log():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/log/get", headers=headers)
@@ -17,7 +17,7 @@ def test_get_log():
 
 def test_get_log_fail_bad_token():
     headers = {
-        "authorization": f"baerer whre_is_perry",
+        "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/log/get", headers=headers)
@@ -27,7 +27,7 @@ def test_get_log_fail_bad_token():
 
 def test_get_log_fail_no_token_value():
     headers = {
-        "authorization": f"baerer ",
+        "authorization": f"bearer ",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/log/get", headers=headers)
@@ -57,7 +57,7 @@ def test_get_log_fail_no_header():
 
 def test_get_alert():
     headers = {
-        "authorization": f"baerer {pytest.token}",
+        "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/log/alert", headers=headers)
@@ -67,7 +67,7 @@ def test_get_alert():
 
 def test_get_alert_fail_bad_token():
     headers = {
-        "authorization": f"baerer whre_is_perry",
+        "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/log/alert", headers=headers)
@@ -77,7 +77,7 @@ def test_get_alert_fail_bad_token():
 
 def test_get_alert_fail_no_token_value():
     headers = {
-        "authorization": f"baerer ",
+        "authorization": f"bearer ",
         "content-type": "application/json"
     }
     request = requests.get(pytest.host + "/api/log/alert", headers=headers)

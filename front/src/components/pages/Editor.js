@@ -60,7 +60,7 @@ function Editor() {
       http.open("GET", root + "api/devices/get/" + id + "/");
       http.setRequestHeader(
         "authorization",
-        "baerer " + getCookieValue("token")
+        "bearer " + getCookieValue("token")
       );
       http.send();
 
@@ -78,7 +78,7 @@ function Editor() {
       sta.open("GET", root + "api/status/get/" + id + "/");
       sta.setRequestHeader(
         "authorization",
-        "baerer " + getCookieValue("token")
+        "bearer " + getCookieValue("token")
       );
       sta.send();
     }
@@ -180,7 +180,7 @@ function Editor() {
         http.open("POST", root + "api/devices/update/");
       }
       http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-      http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+      http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
       http.send(JSON.stringify(payload));
     } else {
       ToastsStore.error("Verify the mandatory data");
@@ -209,7 +209,7 @@ function Editor() {
       );
       http.setRequestHeader(
         "authorization",
-        "baerer " + getCookieValue("token")
+        "bearer " + getCookieValue("token")
       );
       http.send();
     } else {

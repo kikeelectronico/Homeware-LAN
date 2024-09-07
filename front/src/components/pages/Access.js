@@ -25,7 +25,7 @@ function Access () {
       }
     }
     http.open("GET", root + "api/access/get/");
-    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send();
   }, [])
 
@@ -46,7 +46,7 @@ function Access () {
       }
     };
     http.open("GET", root + "api/access/create/");
-    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send();
   }
 
@@ -71,7 +71,7 @@ function Access () {
       http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       http.setRequestHeader(
         "authorization",
-        "baerer " + getCookieValue("token")
+        "bearer " + getCookieValue("token")
       );
       http.send(
         JSON.stringify({

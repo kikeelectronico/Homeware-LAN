@@ -36,7 +36,7 @@ function Settings() {
     http.open("GET", root + "api/settings/get/");
     http.setRequestHeader(
       "authorization",
-      "baerer " + getCookieValue("token")
+      "bearer " + getCookieValue("token")
     );
     http.send();
   }, [])
@@ -96,7 +96,7 @@ function Settings() {
     };
     http.open("POST", root + "api/settings/update/");
     http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send(JSON.stringify(settings));
   }
 
@@ -117,7 +117,7 @@ function Settings() {
         }
         http.open("PUT", root + "api/settings/serviceaccountkey");
         http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        http.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
+        http.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
         http.send(backup);
       }
       fileReader.readAsText(e.target.files[0]);

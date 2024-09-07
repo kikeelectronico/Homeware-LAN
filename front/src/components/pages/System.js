@@ -35,7 +35,7 @@ function System(props) {
       }
     }
     comp.open("GET", root + "api/system/status/");
-    comp.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    comp.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     comp.send();
   }
 
