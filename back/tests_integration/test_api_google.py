@@ -3,6 +3,8 @@ import os
 import json
 import pytest
 
+auth_code = ""
+
 # /auth*
 
 def test_auth():
@@ -25,6 +27,8 @@ def test_googleSync():
     assert response["status"] == "in"
     assert response["user"] == pytest.username
     assert response["url"] != ""
+    global auth_code
+    auth_code = response["url"].split("code=")[1].split("&state")[0]
 
 def test_googleSync_fail_bad_username():
     headers = {
