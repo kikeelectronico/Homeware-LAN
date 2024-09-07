@@ -135,8 +135,7 @@ def test_get_tokens_with_refresh_token_fail_bad_refresh_token():
 
 def test_sync_smarthome():
     headers = {
-        "authorization": f"bearer {access_token}",
-        "content-type": "application/json"
+        "authorization": f"bearer {access_token}"
     }
     body = {
         "requestId": "a-request-id",
@@ -146,9 +145,10 @@ def test_sync_smarthome():
             }
         ]
     }
-    request = requests.post(pytest.host + "/smarthome", headers=headers, data=body)
+    request = requests.post(pytest.host + "/smarthome", headers=headers, data=json.dumps(body))
     assert request.status_code == 200
     response = request.json()
     assert response["requestId"] == body["requestId"]
     assert "agentUserId" in response["payload"]
     assert len(response["payload"]["devices"]) == 1
+    assert response["payload"]["devices"][0]["id"] == "light"
