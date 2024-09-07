@@ -159,8 +159,6 @@ def test_googleSync():
     assert response["status"] == "in"
     assert response["user"] == pytest.username
     assert response["url"] != ""
-    # Update token new token
-    pytest.token = response["token"]
 
 def test_googleSync_fail_bad_username():
     headers = {
