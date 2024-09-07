@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, Form, Header
-from fastapi.responses import JSONResponse
-from fastapi.responses import RedirectResponse
+from fastapi.responses import JSONResponse, RedirectResponse, PlainTextResponse
 from pydantic import BaseModel
 from typing import Annotated
 import random
@@ -203,11 +202,11 @@ def smarthome(body: dict, authorization: Annotated[str | None, Header()] = None)
             elif input['intent'] == 'action.devices.DISCONNECT':
                 data_conector.log('Log', 'Disconnect request by ' + agent)
                 # data_conector.updateLinked(False)
-                return 'Ok'
+                return PlainTextResponse('Ok')
 
             else:
                 data_conector.log('Log', 'Unknown request by ' + agent)
     else:
         data_conector.log('Alert', 'Unauthorized request from ' +
                           agent + '. Maybe the token has expired.')
-        return "A"
+        return PlainTextResponse('A')
