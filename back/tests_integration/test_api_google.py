@@ -130,3 +130,25 @@ def test_get_tokens_with_refresh_token_fail_bad_refresh_token():
     assert request.status_code == 200
     response = request.json()
     assert response["error"] == "invalid_grant"
+
+# /smarthome
+
+def test_sync_smarthome():
+    headers = {
+        "authorization": f"bearer {access_token}",
+        "content-type": "application/json"
+    }
+    body = {
+        "requestId": "a-request-id",
+        "inputs": [
+            {
+                "intent": "action.devices.SYNC"
+            }
+        ]
+    }
+    request = requests.post(pytest.host + "/smarthome", headers=headers, data=body)
+    assert request.status_code == 200
+    response = request.json()
+    assert response["requestId"] == body["requestId"]
+    assert "agentUserId" in response["payload"]
+    assert len(response["payload"]["devices"]) == 1
