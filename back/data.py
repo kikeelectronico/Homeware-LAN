@@ -340,17 +340,7 @@ class Data:
 			# Send the messagees
 			mqttData = self.getMQTT()
 			publish.multiple(msgs, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
-
-			# Inform Google HomeGraph
-			if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
-				states = {}
-				states[device_id] = {}
-				states[device_id][param] = value
-				try:
-					homegraph.reportState(self.redis.get("domain").decode('UTF-8'),states)
-				except:
-					self.log("Warning", "Unable to communicate with homegraph")
-
+			
 			return True
 		else:
 			return False
@@ -501,6 +491,9 @@ class Data:
 
 	def getSyncDevices(self):
 		return self.mongo_db["settings"].find()[0]["sync_devices"]
+	
+	def getSyncGoogle(self):
+		return self.mongo_db["settings"].find()[0]["sync_google"]
 
 	def createServiceAccountKeyFile(self, serviceaccountkey):
 		with open("../files/google.json", "w") as file:

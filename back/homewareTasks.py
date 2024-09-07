@@ -4,11 +4,16 @@ import json
 import hostname
 import paho.mqtt.publish as publish
 import requests
+import os
+
 from data import Data
+from homeGraph import HomeGraph
 
 #Init the data managment object
 data_conector = Data()
+homegraph = HomeGraph()
 already_run = False
+last_status = {}
 
 def ddnsUpdater():
 	ddns = data_conector.getDDNS()
@@ -102,6 +107,18 @@ def homewareCoreHearbeat():
 	mqttData = data_conector.getMQTT()
 	publish.single("homeware/alive", "all", hostname=hostname.MQTT_HOST, auth={'username': mqttData['user'], 'password': mqttData['password']})
 
+def syncGoogleState():
+	if pickle.loads(data_conector.getSyncGoogle()):
+		if os.path.exists("../files/google.json"):
+			status = data_conector.getStatus()
+			if not status == last_status:
+				try:
+					homegraph.reportState(data_conector.getSettings("domain"),status)
+				except:
+					self.log("Warning", "Unable to communicate with homegraph")
+				global last_status
+				last_status = status
+
 if __name__ == "__main__":
 	data_conector.log('Log', 'Starting HomewareTask core')
 	while(True):
@@ -109,5 +126,6 @@ if __name__ == "__main__":
 		syncDevicesStatus()
 		clearLogFile()
 		homewareCoreHearbeat()
+		syncDevicesStatus()
 		data_conector.updateAlive('tasks')
 		time.sleep(1)
