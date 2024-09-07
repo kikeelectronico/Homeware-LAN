@@ -111,12 +111,12 @@ def syncGoogleState():
 	if pickle.loads(data_conector.getSyncGoogle()):
 		if os.path.exists("../files/google.json"):
 			status = data_conector.getStatus()
+			global last_status
 			if not status == last_status:
 				try:
 					homegraph.reportState(data_conector.getSettings("domain"),status)
 				except:
 					self.log("Warning", "Unable to communicate with homegraph")
-				global last_status
 				last_status = status
 
 if __name__ == "__main__":
