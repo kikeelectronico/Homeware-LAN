@@ -152,3 +152,61 @@ def test_sync_smarthome():
     assert "agentUserId" in response["payload"]
     assert len(response["payload"]["devices"]) == 1
     assert response["payload"]["devices"][0]["id"] == "light"
+
+def test_query_smarthome():
+    headers = {
+        "authorization": f"bearer {access_token}"
+    }
+    body = {
+        "requestId": "a-request-id",
+        "inputs": [
+            {
+                "intent": "action.devices.QUERY"
+            }
+        ]
+    }
+    request = requests.post(pytest.host + "/smarthome", headers=headers, data=json.dumps(body))
+    assert request.status_code == 200
+    response = request.json()
+    assert response["requestId"] == body["requestId"]
+    assert len(response["payload"]["devices"]) == 1
+    assert response["payload"]["devices"]["light"]["online"] == True
+    assert response["payload"]["devices"]["light"]["on"] == False
+
+def test_execute_smarthome():
+    headers = {
+        "authorization": f"bearer {access_token}"
+    }
+    body = {
+        "requestId": "a-request-id",
+        "inputs": [
+            {
+                "intent": "action.devices.EXECUTE",
+                "payload": {
+                    "commands": []
+                }
+            }
+        ]
+    }
+    request = requests.post(pytest.host + "/smarthome", headers=headers, data=json.dumps(body))
+    assert request.status_code == 200
+    response = request.json()
+    assert response["requestId"] == body["requestId"]
+    assert len(response["payload"]["commands"]) == len(body["inputs"][0]["payload"]["commands"])
+    
+def test_disconnect_smarthome():
+    headers = {
+        "authorization": f"bearer {access_token}"
+    }
+    body = {
+        "requestId": "a-request-id",
+        "inputs": [
+            {
+                "intent": "action.devices.DISCONNECT"
+            }
+        ]
+    }
+    request = requests.post(pytest.host + "/smarthome", headers=headers, data=json.dumps(body))
+    assert request.status_code == 200
+    response = request.text
+    assert response == "Ok"
