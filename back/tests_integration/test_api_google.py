@@ -210,3 +210,74 @@ def test_disconnect_smarthome():
     assert request.status_code == 200
     response = request.text
     assert response == "Ok"
+
+def test_sync_smarthome_fail_bad_token():
+    headers = {
+        "authorization": f"bearer whre_is_perry",
+        "content-type": "application/json"
+    }
+    body = {
+        "requestId": "a-request-id",
+        "inputs": [
+            {
+                "intent": "action.devices.SYNC"
+            }
+        ]
+    }
+    request = requests.post(pytest.host + "/smarthome", headers=headers, data=json.dumps(body))
+    assert request.status_code == 200
+    response = request.text
+    assert response == "A"
+
+# def test_sync_smarthome_fail_no_token_value():
+#     headers = {
+#         "authorization": f"bearer ",
+#         "content-type": "application/json"
+#     }
+#     body = {
+#         "requestId": "a-request-id",
+#         "inputs": [
+#             {
+#                 "intent": "action.devices.SYNC"
+#             }
+#         ]
+#     }
+#     request = requests.post(pytest.host + "/smarthome", headers=headers, data=json.dumps(body))
+#     assert request.status_code == 200
+#     response = request.text
+#     assert response == "A"
+# 
+# def test_sync_smarthome_fail_no_header_value():
+#     headers = {
+#         "authorization": f"",
+#         "content-type": "application/json"
+#     }
+#     body = {
+#         "requestId": "a-request-id",
+#         "inputs": [
+#             {
+#                 "intent": "action.devices.SYNC"
+#             }
+#         ]
+#     }
+#     request = requests.post(pytest.host + "/smarthome", headers=headers, data=json.dumps(body))
+#     assert request.status_code == 200
+#     response = request.text
+#     assert response == "A"
+
+# def test_sync_smarthome_fail_no_header():
+#     headers = {
+#         "content-type": "application/json"
+#     }
+#     body = {
+#         "requestId": "a-request-id",
+#         "inputs": [
+#             {
+#                 "intent": "action.devices.SYNC"
+#             }
+#         ]
+#     }
+#     request = requests.post(pytest.host + "/smarthome", headers=headers, data=json.dumps(body))
+#     assert request.status_code == 200
+#     response = request.text
+#     assert response == "A"
