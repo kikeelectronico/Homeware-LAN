@@ -112,7 +112,7 @@ jobs:
           project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
       - name: "Create VM"
         run: |
-          gcloud compute instances create homeware-integration-test --source-instance-template=homeware-test-dev --zone=europe-southwest1-a 
+          gcloud compute instances create homeware-integration-test-dev --source-instance-template=homeware-test-dev --zone=europe-southwest1-a 
   wait_for_homware:
     name: Wait for homeware to boot
     runs-on: ubuntu-latest
@@ -162,6 +162,6 @@ jobs:
           project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
       - name: "Delete VM"
         run: |
-          gcloud compute instances delete homeware-integration-test --zone=europe-north1-a
+          gcloud compute instances delete homeware-integration-test-dev --zone=europe-southwest1-a
 
   
