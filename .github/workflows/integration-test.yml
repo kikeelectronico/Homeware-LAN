@@ -112,7 +112,7 @@ jobs:
           project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
       - name: "Create VM"
         run: |
-          gcloud compute instances create homeware-integration-test --source-instance-template=${{ secrets.GCLOUD_MACHINE_TEMPLATE }} --zone=europe-north1-a 
+          gcloud compute instances create homeware-integration-test --source-instance-template=homeware-test-dev --zone=europe-southwest1-a 
   wait_for_homware:
     name: Wait for homeware to boot
     runs-on: ubuntu-latest
