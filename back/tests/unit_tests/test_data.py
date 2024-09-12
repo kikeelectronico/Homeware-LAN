@@ -9,38 +9,39 @@ def test_version():
 
 # DEVICES
 
-# def test_getDevice():
-# 	data = Data()
-# 	data.setup()
-# 	device = {
-# 		"attributes": {
-# 			"commandOnlyOnOff": True,
-# 			"queryOnlyOnOff": True,
-# 			"commandOnlyBrightness": True
-# 		},
-# 		"deviceInfo": {
-# 			"hwVersion": "1.0",
-# 			"swVersion": "1.0",
-# 			"manufacturer": "Homeware",
-# 			"model": "Homeware Lamp"
-# 		},
-# 		"id": "light",
-# 		"name": {
-# 			"defaultNames": [
-# 				"Lamp"
-# 			],
-# 			"nicknames": [
-# 				"Lamp"
-# 			],
-# 			"name": "Lamp"
-# 		},
-# 		"traits": [
-# 			"action.devices.traits.OnOff",
-# 			"action.devices.traits.Brightness"
-# 		],
-# 		"type": "action.devices.types.LIGHT"
-# 	}
-# 	assert device == data.getDevices()[1]
+def test_getDevice():
+	data = Data()
+	data.setup()
+	device = {		
+		"_id": "light",
+		"id": "light",
+		"attributes": {
+			"commandOnlyOnOff": True,
+			"queryOnlyOnOff": True,
+			"commandOnlyBrightness": True
+		},
+		"deviceInfo": {
+			"hwVersion": "1.0",
+			"swVersion": "1.0",
+			"manufacturer": "Homeware",
+			"model": "Homeware Lamp"
+		},
+		"name": {
+			"defaultNames": [
+				"Lamp"
+			],
+			"nicknames": [
+				"Lamp"
+			],
+			"name": "Lamp"
+		},
+		"traits": [
+			"action.devices.traits.OnOff",
+			"action.devices.traits.Brightness"
+		],
+		"type": "action.devices.types.LIGHT"
+	}
+	assert device == data.getDevices()[0]
 
 	# def test_updateDevice(self):
 	# 	device = {
