@@ -2,7 +2,7 @@ from data import Data
 
 # VERSION
 
-def test_version():
+def test_getVersion():
 	data = Data()
 	# data.setup()
 	assert 'v' == data.getVersion()['version'][0]
