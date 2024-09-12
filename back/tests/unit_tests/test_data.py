@@ -6,6 +6,7 @@ def test_version():
 	data = Data()
 	# data.setup()
 	assert 'v' == data.getVersion()['version'][0]
+	del data
 
 # DEVICES
 
@@ -42,6 +43,7 @@ def test_getDevice():
 		"type": "action.devices.types.LIGHT"
 	}
 	assert device == data.getDevices()[0]
+	del data
 
 	# def test_updateDevice(self):
 	# 	device = {
