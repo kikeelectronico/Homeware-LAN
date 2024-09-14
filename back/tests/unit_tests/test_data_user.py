@@ -30,3 +30,5 @@ def test_validateUserToken():
 	assert data.validateUserToken(token) == True
 	assert data.validateUserToken("token") == False
 	del data
+
+# googleSync is tested in test_data_oauth
