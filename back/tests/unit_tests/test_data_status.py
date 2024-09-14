@@ -11,6 +11,7 @@ def test_getStatus():
 	}
 	# Update the device status
 	assert data.getStatus()[device_id] == status
+	del data
 
 def test_updateStatus():
 	data = Data()
@@ -27,3 +28,4 @@ def test_updateStatus():
 	assert data.updateParamStatus(device_id,"on",True)
 	assert data.getStatus()[device_id] == status
 	assert data.updateParamStatus(device_id,"on",False)
+	del data
