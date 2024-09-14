@@ -86,6 +86,46 @@ def test_updateDevice():
 	assert data.getStatus()[device["id"]] == status 
 	del data
 
+def test_updateDevice_fail_bad_device_id():
+	data = Data()
+	data.setup()
+	device = {
+		"_id": "where-is-perry",
+		"id": "where-is-perry",
+		"attributes": {
+			"commandOnlyOnOff": True,
+			"queryOnlyOnOff": True,
+			"commandOnlyBrightness": True
+		},
+		"deviceInfo": {
+			"hwVersion": "1.0",
+			"swVersion": "1.0",
+			"manufacturer": "Homeware",
+			"model": "Homeware Lamp"
+		},
+		"name": {
+			"defaultNames": [
+				"Lamp"
+			],
+			"nicknames": [
+				"Lamp"
+			],
+			"name": "Lamp"
+		},
+		"traits": [
+			"action.devices.traits.OnOff",
+			"action.devices.traits.Brightness"
+		],
+		"type": "action.devices.types.LIGHT"
+	}
+	status = {
+		"online": True,
+		"on": False,
+		"brightness": 80
+	}
+	assert data.updateDevice(device, status) == False
+	del data
+
 def test_createDevice():
 	data = Data()
 	data.setup()
@@ -132,43 +172,10 @@ def test_createDevice():
 def test_deleteDevice():
 	data = Data()
 	data.setup()
-	device = {
-		"attributes": {
-			"commandOnlyOnOff": True,
-			"queryOnlyOnOff": True,
-			"commandOnlyBrightness": True
-		},
-		"deviceInfo": {
-			"hwVersion": "1.0",
-			"swVersion": "1.0",
-			"manufacturer": "Homeware",
-			"model": "Homeware Lamp 2.0"
-		},
-		"_id": "light001",
-		"id": "light001",
-		"name": {
-			"defaultNames": [
-			"Lamp"
-			],
-			"nicknames": [
-			"Lamp"
-			],
-			"name": "Test Lamp"
-		},
-		"traits": [
-			"action.devices.traits.OnOff",
-			"action.devices.traits.Brightness"
-		],
-		"type": "action.devices.types.LIGHT"
-	}
-	status = {
-		"online": True,
-		"on": False,
-		"brightness": 80
-	}
-	# Crate a new device
-	# self.data.createDevice(device, status)
-	# Delete a device that doesn't exists
-	assert data.deleteDevice('charger') == False
-	# Delete the device
 	assert data.deleteDevice('light001') == True
+
+def test_deleteDevice_fail_bad_device_id():
+	data = Data()
+	data.setup()
+	assert data.deleteDevice('charger') == False
+
