@@ -24,7 +24,7 @@ def test_getSettings():
 		"sync_google": False,
 		"sync_devices": False,
 		"log": {
-			"days": "0"
+			"days": 0
 		},
 		"client_id": "123",
 		"client_secret": "456"
@@ -56,7 +56,7 @@ def test_updateSettingss():
 		"sync_google": False,
 		"sync_devices": False,
 		"log": {
-			"days": "0"
+			"days": 0
 		},
 		"client_id": "123",
 		"client_secret": "456"
