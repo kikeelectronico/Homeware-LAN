@@ -44,7 +44,7 @@ jobs:
         run: pip install -r requirements.txt
         working-directory: ./back
       - name: Test
-        run: python -m unittest discover
+        run: pytest -v -s tests/unit_tests
         working-directory: ./back
   build_and_push_backend:
     name: Build and push backend
