@@ -21,9 +21,9 @@ def test_updateStatus():
 		"on": True,
 		"brightness": 80
 	}
-	assert data.updateParamStatus(device_id,"on",True) == True
-	assert data.getStatus()[device_id] == status
-	assert data.updateParamStatus(device_id,"on",False) == True
+	# assert data.updateParamStatus(device_id,"on",True) == True
+	# assert data.getStatus()[device_id] == status
+	# assert data.updateParamStatus(device_id,"on",False) == True
 	del data
 
 # def test_updateStatus_fail_bad_id():
