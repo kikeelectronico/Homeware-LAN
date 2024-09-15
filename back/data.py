@@ -341,7 +341,7 @@ class Data:
 			]
 			# Send the messagees
 			mqttData = self.getMQTT()
-			# publish.multiple(msgs, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
+			publish.multiple(msgs, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
 			
 			return True
 		else:
