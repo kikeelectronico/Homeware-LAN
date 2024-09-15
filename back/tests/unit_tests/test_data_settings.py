@@ -5,10 +5,10 @@ def test_getSettings():
 	data.setup()
 	settings = {
 		"_id": "settings",
-		"domain": "",
+		"domain": "localhost",
 		"ddns": {
 			"enabled": False,
-			"hostname": "",
+			"hostname": "localhost",
 			"password": "",
 			"provider": "noip",
 			"username": "",
@@ -37,10 +37,10 @@ def test_updateSettingss():
 	data.setup()
 	settings = {
 		"_id": "settings",
-		"domain": "",
+		"domain": "localhost",
 		"ddns": {
 			"enabled": False,
-			"hostname": "",
+			"hostname": "localhost",
 			"password": "",
 			"provider": "noip",
 			"username": "",
