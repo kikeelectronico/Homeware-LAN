@@ -74,7 +74,7 @@ def test_getDDNS():
 	data.setup()
 	ddns = {
 		"enabled": False,
-		"hostname": "",
+		"hostname": "localhost",
 		"password": "",
 		"provider": "noip",
 		"username": "",
@@ -91,7 +91,7 @@ def test_updateDDNSstatus():
 	data.setup()
 	ddns = {
 		"enabled": False,
-		"hostname": "",
+		"hostname": "localhost",
 		"password": "",
 		"provider": "noip",
 		"username": "",
@@ -104,7 +104,7 @@ def test_updateDDNSstatus():
 	assert data.getDDNS() == ddns
 	ddns = {
 		"enabled": False,
-		"hostname": "",
+		"hostname": "localhost",
 		"password": "",
 		"provider": "noip",
 		"username": "",
