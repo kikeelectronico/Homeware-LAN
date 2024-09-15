@@ -37,3 +37,5 @@ def test_isThereAnAlert():
 	alerts = data.isThereAnAlert()
 	assert "alert" in alerts
 	assert alerts["alert"] == "clear"
+
+# ToDo: force an alert and test if the flag is raised
