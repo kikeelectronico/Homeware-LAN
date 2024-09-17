@@ -50,11 +50,12 @@ function Settings() {
 
   const update = (event) => {
     const id = event.target.id.split("/");
+    const value = (event.target.id === "log/days" ? parseInt(event.target.value) : event.target.value)
     var _settings = settings;
     if (id.length === 1) {
-      _settings[id[0]] = event.target.value;
+      _settings[id[0]] = value;
     } else if (id.length === 2) {
-      _settings[id[0]][id[1]] = event.target.value;
+      _settings[id[0]][id[1]] = value;
     }
     setSettings(_settings)
   }
