@@ -36,6 +36,7 @@ jobs:
         with:
           version: ${{env.MOSQUITTO_VERSION}}
           ports: '1883:1883'
+          password-file: ${{ github.workspace }}/configuration_templates/mosquitto_passwd
       - name: Set up Python ${{env.PYTHON_VERSION}}
         uses: actions/setup-python@v3
         with:
@@ -43,8 +44,11 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
         working-directory: ./back
+      - name: Install Pytest
+        run: pip install pytest
+        working-directory: ./back
       - name: Test
-        run: python -m unittest discover
+        run: pytest -v -s tests/unit_tests
         working-directory: ./back
   build_and_push_backend:
     name: Build and push backend
