@@ -36,6 +36,7 @@ jobs:
         with:
           version: ${{env.MOSQUITTO_VERSION}}
           ports: '1883:1883'
+          password-file: ${{ github.workspace }}/configuration_templates/mosquitto_passwd
       - name: Set up Python ${{env.PYTHON_VERSION}}
         uses: actions/setup-python@v3
         with:
