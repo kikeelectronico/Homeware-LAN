@@ -269,7 +269,7 @@ class Data:
 					if db_param_key.decode("utf-8").split("/")[2] not in list(params):
 						self.redis.delete(db_param_key)
 				# Inform Google Home Graph
-				if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
+				if os.path.exists("../files/google.json") and self.getSyncGoogle():
 					homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
 				return True
 		return False
@@ -285,7 +285,7 @@ class Data:
 			for param in params:
 				self.redis.set("status/" + device_id + "/" + param, pickle.dumps(status[param]))
 			# Inform Google Home Graph
-			if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
+			if os.path.exists("../files/google.json") and self.getSyncGoogle():
 				homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
 
 	def deleteDevice(self, device_id):
@@ -298,7 +298,7 @@ class Data:
 				for param in params:
 					self.redis.delete(param)
 				# Inform Google Home Graph
-				if os.path.exists("../files/google.json") and pickle.loads(self.redis.get("sync_google")):
+				if os.path.exists("../files/google.json") and self.getSyncGoogle():
 					homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
 			return True
 		return False
