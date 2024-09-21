@@ -410,7 +410,6 @@ class Data:
 		data = {
 			"apikey": apikey
 		}
-
 		return data
 
 	def createAPIKey(self):
@@ -438,6 +437,8 @@ class Data:
 # OAUTH
 
 	def updateOauthToken(self, agent, type, token, timestamp):
+		if not type in ["authorization_code", "access_token", "refresh_token"]:
+			return False
 		filter = {"_id": "google"}
 		data = {}
 		data[type] = {
@@ -446,17 +447,22 @@ class Data:
 		}
 		operation = {"$set": data}
 		result = self.mongo_db["oauth"].update_one(filter, operation)
-
 		return result.modified_count == 1
 
 	def validateOauthToken(self, type, token):
+		if not type in ["authorization_code", "access_token", "refresh_token"]:
+			return False
 		filter = {"_id": "google"}
 		oauth = self.mongo_db["oauth"].find_one(filter)
+		if not type in oauth:
+			return False
 		return token == oauth[type]["value"]
 
 	def validateOauthCredentials(self, type, value):
-		if not type in ["client_id", "client_secret"]: return False
-		return self.mongo_db["settings"].find()[0][type] == value
+		if not type in ["client_id", "client_secret"]:
+			return False
+		creds = self.mongo_db["settings"].find()[0]
+		return creds[type] == value
 
 	def setResponseURL(self, url):
 		return self.redis.set("responseURL", url) == True
