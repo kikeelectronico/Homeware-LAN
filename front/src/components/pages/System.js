@@ -14,7 +14,11 @@ function System(props) {
 
   useEffect(() => {
     loadComponents();
-    setInterval(loadComponents, COMPONENTS_CHECK_INTERVAL * 1000);
+    const load_componentes_interval = setInterval(loadComponents, COMPONENTS_CHECK_INTERVAL * 1000);
+
+    return () => {
+      clearInterval(load_componentes_interval)
+    }
   }, [])
 
   const loadComponents = () => {
