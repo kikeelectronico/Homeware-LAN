@@ -359,8 +359,8 @@ class Data:
 			# Update password hash
 			filter = {"username": user_data["username"]}
 			operation = {"$set": {"password": new_hash}}
-			self.mongo_db["users"].update_one(filter, operation)
-			return True
+			result = self.mongo_db["users"].update_one(filter, operation)
+			return result.modified_count == 1
 		else:
 			return False
 
@@ -379,9 +379,9 @@ class Data:
 			# Saved the new token
 			filter = {"username": ddbb_username}
 			operation = {"$set": {"token": token}}
-			self.mongo_db["users"].update_one(filter, operation)
+			result = self.mongo_db["users"].update_one(filter, operation)
 			self.log('Log',username + ' has login')
-			return token	
+			return token if result.modified_count == 1 else None	
 		else:
 			self.log('Alert','Login failed, user: ' + username)
 			return None
