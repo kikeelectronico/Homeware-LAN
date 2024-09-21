@@ -258,7 +258,7 @@ class Data:
 		filter = {"_id": device_id}
 		if self.mongo_db["devices"].count_documents(filter) == 1:
 			result = self.mongo_db["devices"].replace_one(filter, device)
-			if result.modified_count == 1:
+			if result.acknowledged:
 				# Update the received params
 				params = status.keys()
 				for param in params:
@@ -361,7 +361,7 @@ class Data:
 			filter = {"username": user_data["username"]}
 			operation = {"$set": {"password": new_hash}}
 			result = self.mongo_db["users"].update_one(filter, operation)
-			return result.modified_count == 1
+			return result.acknowledged
 		else:
 			return False
 
@@ -382,7 +382,7 @@ class Data:
 			operation = {"$set": {"token": token}}
 			result = self.mongo_db["users"].update_one(filter, operation)
 			self.log('Log',username + ' has login')
-			return token if result.modified_count == 1 else None	
+			return token if result.acknowledged else None	
 		else:
 			self.log('Alert','Login failed, user: ' + username)
 			return None
@@ -447,7 +447,7 @@ class Data:
 		}
 		operation = {"$set": data}
 		result = self.mongo_db["oauth"].update_one(filter, operation)
-		return result.modified_count == 1
+		return result.acknowledged
 
 	def validateOauthToken(self, type, token):
 		if not type in ["authorization_code", "access_token", "refresh_token"]:
@@ -476,7 +476,7 @@ class Data:
 		filter = {"_id": "settings"}
 		operation = {"$set": settings}
 		result = self.mongo_db["settings"].update_one(filter, operation)
-		return result.modified_count == 1
+		return result.acknowledged
 
 	def getDDNS(self):
 		return self.mongo_db["settings"].find()[0]["ddns"]
@@ -491,7 +491,7 @@ class Data:
 		filter = {"_id": "settings"}
 		operation = {"$set": {"ddns": ddns}}
 		result = self.mongo_db["settings"].update_one(filter, operation)
-		return result.modified_count == 1
+		return result.acknowledged
 
 	def getMQTT(self):
 		return self.mongo_db["settings"].find()[0]["mqtt"]
@@ -500,7 +500,7 @@ class Data:
 		filter = {"_id": "settings"}
 		operation = {"$set": {"sync_google": status}}
 		result = self.mongo_db["settings"].update_one(filter, operation)
-		return result.modified_count == 1
+		return result.acknowledged
 
 	def getSyncDevices(self):
 		return self.mongo_db["settings"].find()[0]["sync_devices"]
