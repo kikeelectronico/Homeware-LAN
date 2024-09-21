@@ -279,14 +279,16 @@ class Data:
 		filter = {"_id": device_id}
 		if self.mongo_db["devices"].count_documents(filter) == 0:
 			device["_id"] = device_id
-			self.mongo_db["devices"].insert_one(device)
-
-			params = status.keys()
-			for param in params:
-				self.redis.set("status/" + device_id + "/" + param, pickle.dumps(status[param]))
-			# Inform Google Home Graph
-			if os.path.exists("../files/google.json") and self.getSyncGoogle():
-				homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
+			operation = self.mongo_db["devices"].insert_one(device)
+			if operation.inserted_id == device_id:
+				params = status.keys()
+				for param in params:
+					self.redis.set("status/" + device_id + "/" + param, pickle.dumps(status[param]))
+				# Inform Google Home Graph
+				if os.path.exists("../files/google.json") and self.getSyncGoogle():
+					homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
+				return True
+		return False 
 
 	def deleteDevice(self, device_id):
 		filter = {"_id": device_id}
