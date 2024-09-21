@@ -50,12 +50,10 @@ This method returns the current Homeware installation version.
 None
 
 ### Returns
-The system version object.
+The system version string.
 
 ```
-{
-  version: '1.5.1'
-}
+v1.5.1
 ```
 
 ## Method - getGlobal

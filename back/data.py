@@ -236,7 +236,7 @@ class Data:
 # VERSION
 
 	def getVersion(self):
-		return {'version': self.version}
+		return self.version
 
 # DEVICES
 

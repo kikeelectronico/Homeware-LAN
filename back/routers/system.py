@@ -12,7 +12,7 @@ data_conector = Data()
 @router.get("/api/global/version", dependencies=[Depends(allowAuthenticated)])
 @router.get("/api/global/version/", dependencies=[Depends(allowAuthenticated)])
 def getVersion():
-    return data_conector.getVersion()
+    return {'version': data_conector.getVersion()}
 
 @router.get("/api/system/status", dependencies=[Depends(allowUser)])
 @router.get("/api/system/status/", dependencies=[Depends(allowUser)])

@@ -38,7 +38,7 @@ def ddnsUpdater():
 					user = ddns['username'] + ':' + ddns['password']
 					userEncoded = str(b64encode(bytes(user, 'utf-8')))
 					headers = {
-						'User-Agent': 'Homeware Homeware/v{} hola@rinconingenieril.es'.format(data_conector.getVersion()['version']),
+						'User-Agent': 'Homeware Homeware/{} test@test.es'.format(data_conector.getVersion()),
 						'Authorization': 'Basic ' + userEncoded[2:len(userEncoded)-1]
 					}
 					noipRequest = requests.get(url= noipServer, params=params, headers=headers)
