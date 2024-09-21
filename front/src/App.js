@@ -52,89 +52,96 @@ class App extends React.Component {
   }
 
   checkoutVersion() {
-    var vers = new XMLHttpRequest();
-    vers.onload = function (e) {
-      if (vers.readyState === 4) {
-        if (vers.status === 200) {
-          var version = JSON.parse(vers.responseText);
-          this.setState({ version: version.version });
-        } else {
-          console.error(vers.statusText);
+    if (this.state.session) {
+      var vers = new XMLHttpRequest();
+      vers.onload = function (e) {
+        if (vers.readyState === 4) {
+          if (vers.status === 200) {
+            var version = JSON.parse(vers.responseText);
+            this.setState({ version: version.version });
+          } else {
+            console.error(vers.statusText);
+          }
         }
-      }
-    }.bind(this);
-    vers.open("GET", root + "api/global/version/");
-    vers.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
-    vers.send();
+      }.bind(this);
+      vers.open("GET", root + "api/global/version/");
+      vers.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
+      vers.send();
 
-    var git = new XMLHttpRequest();
-    git.onload = function (e) {
-      if (git.readyState === 4) {
-        if (git.status === 200) {
-          const latestRelease = JSON.parse(git.responseText);
-          this.setState({ git: {
-            version: latestRelease.tag_name,
-            description: latestRelease.body,
-            code: 200
+      var git = new XMLHttpRequest();
+      git.onload = function (e) {
+        if (git.readyState === 4) {
+          if (git.status === 200) {
+            const latestRelease = JSON.parse(git.responseText);
+            this.setState({ git: {
+              version: latestRelease.tag_name,
+              description: latestRelease.body,
+              code: 200
+              }
+            });
+          } else if (git.status === 403) {
+          this.setState({
+            git: {
+              code: "",
+              description: "",
+              version: 403
             }
           });
-        } else if (git.status === 403) {
-        this.setState({
-          git: {
-            code: "",
-            description: "",
-            version: 403
+          } else {
+            console.error(git.statusText);
           }
-        });
-        } else {
-          console.error(git.statusText);
         }
-      }
-    }.bind(this);
-    git.open("GET", 'https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest');
-    git.send();
+      }.bind(this);
+      git.open("GET", 'https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest');
+      git.send();
+    }
   }
 
   checkoutLog() {
-    var vers = new XMLHttpRequest();
-    vers.onload = function (e) {
-      if (vers.readyState === 4) {
-        if (vers.status === 200) {
-          const alert = JSON.parse(vers.responseText)
-          this.setState({
-            "alert": alert.alert
-          });
-        } else {
-          console.error(vers.statusText);
+    if (this.state.session) {
+      var vers = new XMLHttpRequest();
+      vers.onload = function (e) {
+        if (vers.readyState === 4) {
+          if (vers.status === 200) {
+            const alert = JSON.parse(vers.responseText)
+            this.setState({
+              "alert": alert.alert
+            });
+          } else {
+            console.error(vers.statusText);
+          }
         }
-      }
-    }.bind(this);
-    vers.open("GET", root + "api/log/alert/");
-    vers.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
-    vers.send();
+      }.bind(this);
+      vers.open("GET", root + "api/log/alert/");
+      vers.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
+      vers.send();
+    }
   }
 
   validateSession() {
-    var http = new XMLHttpRequest();
-    http.onload = function (e) {
-      if (http.readyState === 4) {
-        if (http.status === 200) {
-          var data = JSON.parse(http.responseText);
-          if (data.status !== 'in' && !window.location.href.includes('login'))
-            window.location.href = '/login/'
-          else if (data.status === 'in')
-            this.setState({
-              session: true
-            });
-        } else {
-          console.error(http.statusText);
+    if (getCookieValue('token') !== "") {
+      var http = new XMLHttpRequest();
+      http.onload = function (e) {
+        if (http.readyState === 4) {
+          if (http.status === 200) {
+            var data = JSON.parse(http.responseText);
+            if (data.status !== 'in' && !window.location.href.includes('login'))
+              window.location.href = '/login/'
+            else if (data.status === 'in')
+              this.setState({
+                session: true
+              });
+              this.checkoutVersion()
+          } else {
+            console.error(http.statusText);
+          }
         }
-      }
-    }.bind(this);
-    http.open("GET", root + "api/user/validateToken/");
-    http.setRequestHeader('token', getCookieValue('token'))
-    http.setRequestHeader('user', getCookieValue('user'))
-    http.send();
+      }.bind(this);
+      http.open("GET", root + "api/user/validateToken/");
+      http.setRequestHeader('token', getCookieValue('token'))
+      http.setRequestHeader('user', getCookieValue('user'))
+      http.send();
+    }
   }
 
   logout() {
