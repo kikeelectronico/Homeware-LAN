@@ -20,6 +20,7 @@ import Login from './components/pages/Login'
 
 const GIT_CHECKOUT_INTERVAL = 600;
 const LOG_CHECKOUT_INTERVAL = 5
+const SESION_CHECKOUT_INTERVAL = 5;
 
 class App extends React.Component {
   constructor(props) {
@@ -36,32 +37,14 @@ class App extends React.Component {
     }
     this.checkoutVersion = this.checkoutVersion.bind(this);
     this.checkoutLog = this.checkoutLog.bind(this);
+    this.validateSession = this.validateSession.bind(this);
     this.logout = this.logout.bind(this);
     this.menu = this.menu.bind(this);
   }
 
   componentDidMount() {
-    var http = new XMLHttpRequest();
-    http.onload = function (e) {
-      if (http.readyState === 4) {
-        if (http.status === 200) {
-          var data = JSON.parse(http.responseText);
-          if (data.status !== 'in' && !window.location.href.includes('login'))
-            window.location.href = '/login/'
-          else if (data.status === 'in')
-            this.setState({
-              session: true
-            });
-        } else {
-          console.error(http.statusText);
-        }
-      }
-    }.bind(this);
-    http.open("GET", root + "api/user/validateToken/");
-    http.setRequestHeader('token', getCookieValue('token'))
-    http.setRequestHeader('user', getCookieValue('user'))
-    http.send();
-
+    this.validateSession();
+    window.setInterval(this.validateSession,SESION_CHECKOUT_INTERVAL*1000)
     this.checkoutVersion();
     window.setInterval(this.checkoutVersion,GIT_CHECKOUT_INTERVAL*1000)
     this.checkoutLog();
@@ -69,7 +52,6 @@ class App extends React.Component {
   }
 
   checkoutVersion() {
-
     var vers = new XMLHttpRequest();
     vers.onload = function (e) {
       if (vers.readyState === 4) {
@@ -130,6 +112,29 @@ class App extends React.Component {
     vers.open("GET", root + "api/log/alert/");
     vers.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
     vers.send();
+  }
+
+  validateSession() {
+    var http = new XMLHttpRequest();
+    http.onload = function (e) {
+      if (http.readyState === 4) {
+        if (http.status === 200) {
+          var data = JSON.parse(http.responseText);
+          if (data.status !== 'in' && !window.location.href.includes('login'))
+            window.location.href = '/login/'
+          else if (data.status === 'in')
+            this.setState({
+              session: true
+            });
+        } else {
+          console.error(http.statusText);
+        }
+      }
+    }.bind(this);
+    http.open("GET", root + "api/user/validateToken/");
+    http.setRequestHeader('token', getCookieValue('token'))
+    http.setRequestHeader('user', getCookieValue('user'))
+    http.send();
   }
 
   logout() {
