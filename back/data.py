@@ -582,12 +582,13 @@ class Data:
 		log = self.mongo_db["settings"].find()[0]["log"]
 		days = int(log['days'])
 
-		if not days == 0:
-			reference_timestamp = time.time() - (days * 24 * 60 * 60)
-			filter = {"timestamp": {"$lt": reference_timestamp}}
-			result = self.mongo_db["log"].delete_many(filter)
-
-			return result.acknowledged
+		if days == 0:
+			return False
+			 
+		reference_timestamp = time.time() - (days * 24 * 60 * 60)
+		filter = {"timestamp": {"$lt": reference_timestamp}}
+		result = self.mongo_db["log"].delete_many(filter)
+		return result.acknowledged
 
 	def setVerbose(self, verbose):
 		self.verbose = verbose
