@@ -54,7 +54,7 @@ function Devices() {
 
   useEffect(() => {
     loadData();
-    const get_devices_interval = setInterval(loadData, 3000);
+    const get_devices_interval = setInterval(loadData, 1000);
 
     return () => {
       clearInterval(get_devices_interval)
