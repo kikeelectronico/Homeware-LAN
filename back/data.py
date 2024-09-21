@@ -458,7 +458,7 @@ class Data:
 		return self.mongo_db["settings"].find()[0][type] == value
 
 	def setResponseURL(self, url):
-		self.redis.set("responseURL", url)
+		return self.redis.set("responseURL", url) == True
 
 # SETTINGS
 
