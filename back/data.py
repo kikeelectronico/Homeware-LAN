@@ -257,8 +257,8 @@ class Data:
 		device_id = device['id']
 		filter = {"_id": device_id}
 		if self.mongo_db["devices"].count_documents(filter) == 1:
-			operation = self.mongo_db["devices"].replace_one(filter, device)
-			if operation.modified_count == 1:
+			result = self.mongo_db["devices"].replace_one(filter, device)
+			if result.modified_count == 1:
 				# Update the received params
 				params = status.keys()
 				for param in params:
@@ -279,8 +279,9 @@ class Data:
 		filter = {"_id": device_id}
 		if self.mongo_db["devices"].count_documents(filter) == 0:
 			device["_id"] = device_id
-			operation = self.mongo_db["devices"].insert_one(device)
-			if operation.inserted_id == device_id:
+			result = self.mongo_db["devices"].insert_one(device)
+			if result.inserted_id == device_id:
+				# Create status
 				params = status.keys()
 				for param in params:
 					self.redis.set("status/" + device_id + "/" + param, pickle.dumps(status[param]))
@@ -293,8 +294,8 @@ class Data:
 	def deleteDevice(self, device_id):
 		filter = {"_id": device_id}
 		if self.mongo_db["devices"].count_documents(filter) == 1:
-			operation = self.mongo_db["devices"].delete_one(filter)
-			if operation.deleted_count == 1:
+			result = self.mongo_db["devices"].delete_one(filter)
+			if result.deleted_count == 1:
 				# Delete status
 				params = self.redis.keys('status/' + device_id + '/*')
 				for param in params:
@@ -302,7 +303,7 @@ class Data:
 				# Inform Google Home Graph
 				if os.path.exists("../files/google.json") and self.getSyncGoogle():
 					homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
-			return True
+				return True
 		return False
 
 # STATUS
