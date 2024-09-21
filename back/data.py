@@ -475,7 +475,8 @@ class Data:
 	def updateSettings(self, settings):
 		filter = {"_id": "settings"}
 		operation = {"$set": settings}
-		self.mongo_db["settings"].update_one(filter, operation)
+		result = self.mongo_db["settings"].update_one(filter, operation)
+		return result.modified_count == 1
 
 	def getDDNS(self):
 		return self.mongo_db["settings"].find()[0]["ddns"]
@@ -489,7 +490,8 @@ class Data:
 		ddns['last'] = last
 		filter = {"_id": "settings"}
 		operation = {"$set": {"ddns": ddns}}
-		self.mongo_db["settings"].update_one(filter, operation)
+		result = self.mongo_db["settings"].update_one(filter, operation)
+		return result.modified_count == 1
 
 	def getMQTT(self):
 		return self.mongo_db["settings"].find()[0]["mqtt"]
@@ -497,7 +499,8 @@ class Data:
 	def updateSyncGoogle(self, status):
 		filter = {"_id": "settings"}
 		operation = {"$set": {"sync_google": status}}
-		self.mongo_db["settings"].update_one(filter, operation)
+		result = self.mongo_db["settings"].update_one(filter, operation)
+		return result.modified_count == 1
 
 	def getSyncDevices(self):
 		return self.mongo_db["settings"].find()[0]["sync_devices"]
@@ -509,6 +512,7 @@ class Data:
 		with open("../files/google.json", "w") as file:
 			file.write(json.dumps(serviceaccountkey))
 		self.log('Info', 'A google auth file has been uploaded')
+		return os.path.exists("../files/google.json")
 
 # SYSTEM
 
