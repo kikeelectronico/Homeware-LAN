@@ -148,4 +148,10 @@ def test_updateSyncGoogle():
 	assert data.getSyncGoogle() == False
 	del data
 
-# ToDo: test createServiceAccountKeyFile
+def test_createServiceAccountKeyFile():
+	data = Data()
+	data.setup()
+	assert data.createServiceAccountKeyFile({}) == True
+	data.updateSyncGoogle(False)
+	assert data.getSyncGoogle() == False
+	del data
