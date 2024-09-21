@@ -567,13 +567,15 @@ class Data:
 			"message": message,
 			"timestamp": timestamp
 		}
-		self.mongo_db["log"].insert_one(register)
+		result = self.mongo_db["log"].insert_one(register)
 
 		if (severity == "Alert"):
 			self.redis.set('alert','set')
 
 		if (self.verbose):
 			print(log_register)
+
+		return result.inserted_id == register["_id"]
 
 	def deleteLog(self):
 		# Get the days to delete
@@ -583,7 +585,9 @@ class Data:
 		if not days == 0:
 			reference_timestamp = time.time() - (days * 24 * 60 * 60)
 			filter = {"timestamp": {"$lt": reference_timestamp}}
-			self.mongo_db["log"].delete_many(filter)
+			result = self.mongo_db["log"].delete_many(filter)
+
+			return result.acknowledged
 
 	def setVerbose(self, verbose):
 		self.verbose = verbose
@@ -604,4 +608,4 @@ class Data:
 		except:
 			alive = {}
 		alive[core] = ts
-		self.redis.set('alive', json.dumps(alive))
+		return self.redis.set('alive', json.dumps(alive))
