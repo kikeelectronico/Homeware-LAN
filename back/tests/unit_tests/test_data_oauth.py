@@ -25,11 +25,11 @@ def test_validateOauthToken():
 	assert data.validateOauthToken("access_token", token) == True
 	del data
 
-# def test_validateOauthToken_fail_bad_type():
-# 	data = Data()
-# 	data.setup()
-# 	assert data.validateOauthToken("where-is-perry", "my-token") == False
-# 	del data
+def test_validateOauthToken_fail_bad_type():
+	data = Data()
+	data.setup()
+	assert data.validateOauthToken("where-is-perry", "my-token") == False
+	del data
 
 def test_validateOauthToken_fail_bad_token():
 	data = Data()
@@ -56,11 +56,11 @@ def test_validateOauthCredentials_fail_bad_client_id():
 	assert data.validateOauthCredentials("client_secret", "where-is-perry") == False
 	del data
 
-# def test_setResponseURL():
-# 	data = Data()
-# 	data.setup()
-# 	assert data.setResponseURL("a-url") == True
-# 	del data
+def test_setResponseURL():
+	data = Data()
+	data.setup()
+	assert data.setResponseURL("a-url") == True
+	del data
 
 def test_googleSync():
 	data = Data()

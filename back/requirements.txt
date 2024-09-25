@@ -1,4 +1,4 @@
-fastapi==0.114.0
+fastapi==0.115.0
 uvicorn==0.30.6
 paho-mqtt==1.6.1
 python-dateutil==2.9.0.post0
@@ -6,7 +6,7 @@ requests==2.32.3
 redis==5.0.8
 flask_cors==4.0.1
 bcrypt==4.2.0
-google-auth==2.34.0
+google-auth==2.35.0
 gevent
 pymongo==4.9.1
-python-multipart==0.0.9
+python-multipart==0.0.10

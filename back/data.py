@@ -236,7 +236,7 @@ class Data:
 # VERSION
 
 	def getVersion(self):
-		return {'version': self.version}
+		return self.version
 
 # DEVICES
 
@@ -257,8 +257,8 @@ class Data:
 		device_id = device['id']
 		filter = {"_id": device_id}
 		if self.mongo_db["devices"].count_documents(filter) == 1:
-			operation = self.mongo_db["devices"].replace_one(filter, device)
-			if operation.modified_count == 1:
+			result = self.mongo_db["devices"].replace_one(filter, device)
+			if result.acknowledged:
 				# Update the received params
 				params = status.keys()
 				for param in params:
@@ -279,20 +279,23 @@ class Data:
 		filter = {"_id": device_id}
 		if self.mongo_db["devices"].count_documents(filter) == 0:
 			device["_id"] = device_id
-			self.mongo_db["devices"].insert_one(device)
-
-			params = status.keys()
-			for param in params:
-				self.redis.set("status/" + device_id + "/" + param, pickle.dumps(status[param]))
-			# Inform Google Home Graph
-			if os.path.exists("../files/google.json") and self.getSyncGoogle():
-				homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
+			result = self.mongo_db["devices"].insert_one(device)
+			if result.inserted_id == device_id:
+				# Create status
+				params = status.keys()
+				for param in params:
+					self.redis.set("status/" + device_id + "/" + param, pickle.dumps(status[param]))
+				# Inform Google Home Graph
+				if os.path.exists("../files/google.json") and self.getSyncGoogle():
+					homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
+				return True
+		return False 
 
 	def deleteDevice(self, device_id):
 		filter = {"_id": device_id}
 		if self.mongo_db["devices"].count_documents(filter) == 1:
-			operation = self.mongo_db["devices"].delete_one(filter)
-			if operation.deleted_count == 1:
+			result = self.mongo_db["devices"].delete_one(filter)
+			if result.deleted_count == 1:
 				# Delete status
 				params = self.redis.keys('status/' + device_id + '/*')
 				for param in params:
@@ -300,7 +303,7 @@ class Data:
 				# Inform Google Home Graph
 				if os.path.exists("../files/google.json") and self.getSyncGoogle():
 					homegraph.requestSync(self.redis.get("domain").decode('UTF-8'))
-			return True
+				return True
 		return False
 
 # STATUS
@@ -357,8 +360,8 @@ class Data:
 			# Update password hash
 			filter = {"username": user_data["username"]}
 			operation = {"$set": {"password": new_hash}}
-			self.mongo_db["users"].update_one(filter, operation)
-			return True
+			result = self.mongo_db["users"].update_one(filter, operation)
+			return result.acknowledged
 		else:
 			return False
 
@@ -377,9 +380,9 @@ class Data:
 			# Saved the new token
 			filter = {"username": ddbb_username}
 			operation = {"$set": {"token": token}}
-			self.mongo_db["users"].update_one(filter, operation)
+			result = self.mongo_db["users"].update_one(filter, operation)
 			self.log('Log',username + ' has login')
-			return token	
+			return token if result.acknowledged else None	
 		else:
 			self.log('Alert','Login failed, user: ' + username)
 			return None
@@ -407,7 +410,6 @@ class Data:
 		data = {
 			"apikey": apikey
 		}
-
 		return data
 
 	def createAPIKey(self):
@@ -435,6 +437,8 @@ class Data:
 # OAUTH
 
 	def updateOauthToken(self, agent, type, token, timestamp):
+		if not type in ["authorization_code", "access_token", "refresh_token"]:
+			return False
 		filter = {"_id": "google"}
 		data = {}
 		data[type] = {
@@ -443,20 +447,25 @@ class Data:
 		}
 		operation = {"$set": data}
 		result = self.mongo_db["oauth"].update_one(filter, operation)
-
-		return result.modified_count == 1
+		return result.acknowledged
 
 	def validateOauthToken(self, type, token):
+		if not type in ["authorization_code", "access_token", "refresh_token"]:
+			return False
 		filter = {"_id": "google"}
 		oauth = self.mongo_db["oauth"].find_one(filter)
+		if not type in oauth:
+			return False
 		return token == oauth[type]["value"]
 
 	def validateOauthCredentials(self, type, value):
-		if not type in ["client_id", "client_secret"]: return False
-		return self.mongo_db["settings"].find()[0][type] == value
+		if not type in ["client_id", "client_secret"]:
+			return False
+		creds = self.mongo_db["settings"].find()[0]
+		return creds[type] == value
 
 	def setResponseURL(self, url):
-		self.redis.set("responseURL", url)
+		return self.redis.set("responseURL", url) == True
 
 # SETTINGS
 
@@ -466,7 +475,8 @@ class Data:
 	def updateSettings(self, settings):
 		filter = {"_id": "settings"}
 		operation = {"$set": settings}
-		self.mongo_db["settings"].update_one(filter, operation)
+		result = self.mongo_db["settings"].update_one(filter, operation)
+		return result.acknowledged
 
 	def getDDNS(self):
 		return self.mongo_db["settings"].find()[0]["ddns"]
@@ -480,7 +490,8 @@ class Data:
 		ddns['last'] = last
 		filter = {"_id": "settings"}
 		operation = {"$set": {"ddns": ddns}}
-		self.mongo_db["settings"].update_one(filter, operation)
+		result = self.mongo_db["settings"].update_one(filter, operation)
+		return result.acknowledged
 
 	def getMQTT(self):
 		return self.mongo_db["settings"].find()[0]["mqtt"]
@@ -488,7 +499,8 @@ class Data:
 	def updateSyncGoogle(self, status):
 		filter = {"_id": "settings"}
 		operation = {"$set": {"sync_google": status}}
-		self.mongo_db["settings"].update_one(filter, operation)
+		result = self.mongo_db["settings"].update_one(filter, operation)
+		return result.acknowledged
 
 	def getSyncDevices(self):
 		return self.mongo_db["settings"].find()[0]["sync_devices"]
@@ -500,6 +512,7 @@ class Data:
 		with open("../files/google.json", "w") as file:
 			file.write(json.dumps(serviceaccountkey))
 		self.log('Info', 'A google auth file has been uploaded')
+		return os.path.exists("../files/google.json")
 
 # SYSTEM
 
@@ -554,7 +567,7 @@ class Data:
 			"message": message,
 			"timestamp": timestamp
 		}
-		self.mongo_db["log"].insert_one(register)
+		result = self.mongo_db["log"].insert_one(register)
 
 		if (severity == "Alert"):
 			self.redis.set('alert','set')
@@ -562,15 +575,20 @@ class Data:
 		if (self.verbose):
 			print(log_register)
 
+		return result.inserted_id == register["_id"]
+
 	def deleteLog(self):
 		# Get the days to delete
 		log = self.mongo_db["settings"].find()[0]["log"]
 		days = int(log['days'])
 
-		if not days == 0:
-			reference_timestamp = time.time() - (days * 24 * 60 * 60)
-			filter = {"timestamp": {"$lt": reference_timestamp}}
-			self.mongo_db["log"].delete_many(filter)
+		if days == 0:
+			return False
+			 
+		reference_timestamp = time.time() - (days * 24 * 60 * 60)
+		filter = {"timestamp": {"$lt": reference_timestamp}}
+		result = self.mongo_db["log"].delete_many(filter)
+		return result.acknowledged
 
 	def setVerbose(self, verbose):
 		self.verbose = verbose
@@ -591,4 +609,4 @@ class Data:
 		except:
 			alive = {}
 		alive[core] = ts
-		self.redis.set('alive', json.dumps(alive))
+		return self.redis.set('alive', json.dumps(alive))

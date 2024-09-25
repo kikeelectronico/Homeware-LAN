@@ -51,7 +51,7 @@ function Settings() {
   const update = (event) => {
     const id = event.target.id.split("/");
     const value = (event.target.id === "log/days" ? parseInt(event.target.value) : event.target.value)
-    var _settings = settings;
+    var _settings = {...settings};
     if (id.length === 1) {
       _settings[id[0]] = value;
     } else if (id.length === 2) {
@@ -61,21 +61,21 @@ function Settings() {
   }
 
   const enableSyncGoogle = (checked) => {
-    var _settings = settings;
+    var _settings = {...settings};
     _settings.sync_google = checked;
     setSettings(_settings)
     save();
   }
 
   const enableSyncDevices = (checked) => {
-    var _settings = settings;
+    var _settings = {...settings};
     _settings.sync_devices = checked;
     setSettings(_settings)
     save();
   }
 
   const enableDdnsProvider = (checked) => {
-    var _settings = settings;
+    var _settings = {...settings};
     _settings.ddns.enabled = checked;
     setSettings(_settings)
   }

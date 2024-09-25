@@ -148,7 +148,7 @@ jobs:
         working-directory: ./back
       - name: Test
         run: pytest -v --host=${{ secrets.HOMEWARE_HOST }} --username=${{ secrets.HOMEWARE_USERNAME }} --password=${{ secrets.HOMEWARE_PASSWORD }}
-        working-directory: ./back/tests_integration
+        working-directory: ./back/tests/integration_tests
   delete_gcloud_vm:
     name: Delete VM
     runs-on: ubuntu-latest

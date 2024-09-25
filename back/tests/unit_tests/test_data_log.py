@@ -28,7 +28,12 @@ def test_log():
 	assert log[-1]["message"] == entry["message"]
 	del data
 
-# ToDo: test deleteLog
+def test_deleteLog():
+	data = Data()
+	data.setup()
+	assert data.deleteLog() == False
+	del data
+
 # ToDo: test setVerbose
 
 def test_isThereAnAlert():

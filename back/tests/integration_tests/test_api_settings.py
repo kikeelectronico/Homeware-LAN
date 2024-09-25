@@ -84,7 +84,7 @@ def test_update_settings():
             "user": "mosquitto",
             "password": "homewarelan123"
         },
-        "sync_google": True,
+        "sync_google": False,
         "sync_devices": False,
         "log": {
             "days": "0"
@@ -116,7 +116,7 @@ def test_update_settings_fail_bad_token():
             "user": "mosquitto",
             "password": "homewarelan123"
         },
-        "sync_google": True,
+        "sync_google": False,
         "sync_devices": False,
         "log": {
             "days": "0"
@@ -148,7 +148,7 @@ def test_update_settings_fail_no_token_value():
             "user": "mosquitto",
             "password": "homewarelan123"
         },
-        "sync_google": True,
+        "sync_google": False,
         "sync_devices": False,
         "log": {
             "days": "0"
@@ -181,7 +181,7 @@ def test_update_settings_fail_no_header_value():
             "user": "mosquitto",
             "password": "homewarelan123"
         },
-        "sync_google": True,
+        "sync_google": False,
         "sync_devices": False,
         "log": {
             "days": "0"
@@ -212,7 +212,7 @@ def test_update_settings_fail_no_header():
             "user": "mosquitto",
             "password": "homewarelan123"
         },
-        "sync_google": True,
+        "sync_google": False,
         "sync_devices": False,
         "log": {
             "days": "0"
