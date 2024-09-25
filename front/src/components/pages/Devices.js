@@ -54,7 +54,11 @@ function Devices() {
 
   useEffect(() => {
     loadData();
-    setInterval(loadData, 3000);
+    const get_devices_interval = setInterval(loadData, 1000);
+
+    return () => {
+      clearInterval(get_devices_interval)
+    }
   }, [])
 
   const loadData = () => {
@@ -73,7 +77,7 @@ function Devices() {
       }
     }
     http.open("GET", root + "api/global/get/");
-    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send();
   }
 

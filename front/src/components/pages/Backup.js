@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {Button} from '@mui/material';
 import { ToastsContainer, ToastsStore } from "react-toasts";
 import getCookieValue from "../../functions";
@@ -6,17 +6,56 @@ import { root } from "../../constants";
 
 function Backup() {
 
-  useEffect(() => {
-    var url = new URL(window.location);
-    var _status = url.searchParams.get("status");
-    if(_status === "Success")
-      ToastsStore.success("Uploaded correctly");
-  }, [])
+  const formatTimestamp = (timestamp) => {
+    let a = new Date(timestamp * 1000);
+    return a.getDate() + '-' + a.getMonth() + '-' + a.getFullYear() + ' ' + a.getHours() + ':' + a.getMinutes() + ':' + a.getSeconds() ;
+  }
 
   const backup = () => {
     ToastsStore.warning("Downloading");
-    const url = root + "files/buckup/homeware/" + getCookieValue("token") + "?code=" + String(Math.random());
-    window.open(url, '_blank')
+    var http = new XMLHttpRequest();
+    http.onload = function (e) {
+      if (http.readyState === 4) {
+        if (http.status === 200) {
+          const blob = new Blob([http.responseText], { type: "text/plain" });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.download = "homeware " + formatTimestamp(Date.now()/1000) + ".json";
+          link.href = url;
+          link.click();
+        } else {
+          console.error(http.statusText);
+          ToastsStore.error("Something went wrong");
+        }
+      }
+    }
+    http.open("GET", root + "api/backup/get/");
+    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
+    http.send();
+  }
+
+  const restore = (e) => {
+    if (e.target.files) {
+      var fileReader = new FileReader();
+      fileReader.onload=function(){
+        const backup = fileReader.result
+        var http = new XMLHttpRequest();
+        http.onload = function (e) {
+          if (http.readyState === 4) {
+            if (http.status === 200) {
+              ToastsStore.success("Uploaded correctly");
+            } else {
+              ToastsStore.error("Something went wrong");
+            }
+          }
+        }
+        http.open("PUT", root + "api/backup");
+        http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        http.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
+        http.send(backup);
+      }
+      fileReader.readAsText(e.target.files[0]);
+    }
   }
 
   return (
@@ -38,15 +77,7 @@ function Backup() {
         </div>
         <hr />
         <div className="page_block_content_container">
-          <form
-            id="restore-form"
-            method="post"
-            encType="multipart/form-data"
-            action={root + "files/restore/homeware/" + getCookieValue("token") + "/"}
-          >
-            <input type="file" name="file" />
-            <Button variant="contained" onClick={() => {document.getElementById("restore-form").submit()}}>Restore</Button>
-          </form>
+          <input id="file" type="file" onChange={restore} />
         </div>
       </div>
       <ToastsContainer store={ToastsStore} />

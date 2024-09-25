@@ -1,174 +1,302 @@
-import React from 'react';
+import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
 
-class TemperatureSetting extends React.Component {
-  constructor(props) {
-    super(props);
-    this.update = this.update.bind(this);
-    this.updateNumber = this.updateNumber.bind(this);
-    this.updateMode = this.updateMode.bind(this);
-    this.addMode = this.addMode.bind(this);
-    this.updateCheckbox = this.updateCheckbox.bind(this);
-  }
-
-  update(event){
-    this.props.update('attributes/' + event.target.id,event.target.value);
-  }
-
-  updateNumber(event){
-    this.props.update('attributes/' + event.target.id,parseInt(event.target.value));
-  }
-
-  updateMode(event){
-    const id = event.target.id.split('_')
-    const mode_id = id[1]
-    var temp_availableThermostatModes = this.props.attributes.availableThermostatModes.split(',')
-
-    if (event.target.value === 'delete'){
-      temp_availableThermostatModes.splice(mode_id, 1)
-    } else if (event.target.value !== 'select') {
-      temp_availableThermostatModes[mode_id] = event.target.value;
-    }
-
-    this.props.update('attributes/availableThermostatModes', temp_availableThermostatModes.join(','));
-  }
-
-  addMode(){
-    var temp_availableThermostatModes = this.props.attributes.availableThermostatModes
-    temp_availableThermostatModes += ","
-    this.props.update('attributes/availableThermostatModes', temp_availableThermostatModes);
-  }
-
-  updateCheckbox(checked, attribute){
-    this.props.update('attributes/' + attribute,checked);
-  }
-
-
-  render() {
-
-    const modes = this.props.attributes.availableThermostatModes.split(',').map((mode, i) => {
-
-      return (
-          <div key={i}>
-            <div className="two_table_row">
-              <div className="two_table_cel">
-              </div>
-              <div className="two_table_cel">
-                <label>
-                  <span>Mode: </span>
-                  <select name="type" id={"mode_" + i} value={mode} onChange={this.updateMode}>
-                    <option value="select">Select a mode</option>
-                    <option value="delete">Delete this mode</option>
-                    <option value="off">Off</option>
-                    <option value="heat">Heat</option>
-                    <option value="cool">Cool</option>
-                    <option value="on">On</option>
-                    <option value="heatcool">Heatcool</option>
-                    <option value="auto">Auto</option>
-                    <option value="fan-only">Fan only</option>
-                    <option value="purifier">Purifier</option>
-                    <option value="eco">Eco</option>
-                    <option value="dry">Dry</option>
-                  </select>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          )
-    });
-
-    return (
-      <div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            Add a thermostat mode
-          </div>
-          <div className="three_table_cel">
-            <button type="button" className="add_attribute_button" onClick={ this.addMode }>Add</button>
-          </div>
-        </div>
-
-        {modes}
-
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            <i>commandOnlyTemperatureSetting</i>
-          </div>
-          <div className="three_table_cel">
-            <Switch onChange={(checked) => {this.updateCheckbox(checked,"commandOnlyTemperatureSetting")}} checked={this.props.attributes.commandOnlyTemperatureSetting} />
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the temperature.</span>
-          </div>
-        </div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            <i>queryOnlyTemperatureSetting</i>
-          </div>
-          <div className="three_table_cel">
-            <Switch onChange={(checked) => {this.updateCheckbox(checked,"queryOnlyTemperatureSetting")}} checked={this.props.attributes.queryOnlyTemperatureSetting} />
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Enable it if Google shouldn't change the device temperature settings.</span>
-          </div>
-        </div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            Minimum temperature
-          </div>
-          <div className="three_table_cel">
-            <input type="number" id="thermostatTemperatureRange/minThresholdCelsius" defaultValue={ this.props.attributes.thermostatTemperatureRange ? this.props.attributes.thermostatTemperatureRange.minThresholdCelsius : 0} min="0" max="50" onChange={this.updateNumber} className="int_input"/>
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Minimum temperature (in Celsius) supported by the device.</span>
-          </div>
-        </div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            Maximum temperature
-          </div>
-          <div className="three_table_cel">
-            <input type="number" id="thermostatTemperatureRange/maxThresholdCelsius" defaultValue={this.props.attributes.thermostatTemperatureRange ? this.props.attributes.thermostatTemperatureRange.maxThresholdCelsius : 0} min="0" max="50" onChange={this.updateNumber} className="int_input"/>
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Maximum temperature (in Celsius) supported by the device.</span>
-          </div>
-        </div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            Range
-          </div>
-          <div className="three_table_cel">
-            <input type="number" id="bufferRangeCelsius" defaultValue={this.props.attributes.bufferRangeCelsius} min="0" max="50" onChange={this.updateNumber} className="int_input"/>
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Specifies the minimum offset between heat-cool setpoints in Celsius.</span>
-          </div>
-        </div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            Units
-          </div>
-          <div className="three_table_cel">
-            <select name="type" id="thermostatTemperatureUnit" className="table_input" value={this.props.attributes.thermostatTemperatureUnit} onChange={this.update}>
-              <option value="C">Celsius</option>
-              <option value="F">Fahrenheit</option>
-            </select>
-          </div>
-        </div>
-
-
-
-      </div>
-    );
-  }
+const attributes = {
+  availableThermostatModes: ["off"],
+  thermostatTemperatureRange: {
+    minThresholdCelsius: 18,
+    maxThresholdCelsius: 22,
+  },
+  thermostatTemperatureUnit: "C",
+  bufferRangeCelsius: 2,
+  commandOnlyTemperatureSetting: false,
+  queryOnlyTemperatureSetting: false
 }
+
+const states = {
+  activeThermostatMode: "off",
+  thermostatMode: "off",
+  thermostatTemperatureAmbient: 22,
+  thermostatTemperatureSetpoint: 22
+}
+
+const TemperatureSetting = forwardRef((props, ref) => {
+  
+  const [availableThermostatModes, setAvailableThermostatModes] = useState(attributes.availableThermostatModes)
+  const [commandOnlyTemperatureSetting, setCommandOnlyTemperatureSetting] = useState(attributes.commandOnlyTemperatureSetting)
+  const [queryOnlyTemperatureSetting, setQueryOnlyTemperatureSetting] = useState(attributes.queryOnlyTemperatureSetting)
+  const [thermostatTemperatureUnit, setThermostatTemperatureUnit] = useState(attributes.thermostatTemperatureUnit)
+  const [thermostatTemperatureRange, setThermostatTemperatureRange] = useState(attributes.thermostatTemperatureRange)
+  const [bufferRangeCelsius, setBufferRangeCelsius] = useState(attributes.bufferRangeCelsius)
+  
+  useEffect(() => {
+    if ("commandOnlyTemperatureSetting" in props.attributes) {
+      setAvailableThermostatModes(props.attributes.availableThermostatModes)
+      setCommandOnlyTemperatureSetting(props.attributes.commandOnlyTemperatureSetting)
+      setQueryOnlyTemperatureSetting(props.attributes.queryOnlyTemperatureSetting)
+      setThermostatTemperatureUnit(props.attributes.thermostatTemperatureUnit)
+      setThermostatTemperatureRange(props.attributes.thermostatTemperatureRange)
+      setBufferRangeCelsius(props.attributes.bufferRangeCelsius)
+    } else {
+      props.updateStatus(null, states, "insert")
+      props.updateAttributes(null, attributes, "insert")
+    }
+  }, [])
+
+  useImperativeHandle(ref, () => ({
+    deleteAttributes() {
+      props.updateStatus(null, states, "drop")
+      props.updateAttributes(null, attributes, "drop")
+    }
+  }))
+
+  const switchMode = (mode, checked) => {
+    let _availableThermostatModes = [...availableThermostatModes]
+    if (checked && !_availableThermostatModes.includes(mode)) {
+      _availableThermostatModes.push(mode)
+    } else if (!checked && _availableThermostatModes.includes(mode)) {
+      let index = _availableThermostatModes.indexOf(mode);
+      _availableThermostatModes.splice(index, 1);
+    }
+    setAvailableThermostatModes(_availableThermostatModes)
+    props.updateAttributes("availableThermostatModes", _availableThermostatModes, "update")
+  }
+
+  const updateRange = (key, value) => {
+    let _thermostatTemperatureRange = {...thermostatTemperatureRange}
+    _thermostatTemperatureRange[key] = value
+    setThermostatTemperatureRange(_thermostatTemperatureRange)
+    props.updateAttributes("thermostatTemperatureRange", _thermostatTemperatureRange, "update")
+  }
+
+  return (
+    <>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          <i>commandOnlyTemperatureSetting</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              setCommandOnlyTemperatureSetting(checked)
+              props.updateAttributes("commandOnlyTemperatureSetting", checked, "update")
+            }}
+            checked={commandOnlyTemperatureSetting}
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          <i>queryOnlyTemperatureSetting</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              setQueryOnlyTemperatureSetting(checked)
+              props.updateAttributes("queryOnlyTemperatureSetting", checked, "update")
+            }}
+            checked={queryOnlyTemperatureSetting}
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          Thermostat modes
+        </div>
+        <div className="three_table_cel">
+          <i>heat</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              switchMode("heat", checked)
+            }}
+            checked={availableThermostatModes.includes("heat")}
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right"></div>
+        <div className="three_table_cel">
+          <i>cool</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              switchMode("cool", checked)
+            }}
+            checked={availableThermostatModes.includes("cool")}
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right"></div>
+        <div className="three_table_cel">
+          <i>on</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              switchMode("on", checked)
+            }}
+            checked={availableThermostatModes.includes("on")}
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right"></div>
+        <div className="three_table_cel">
+          <i>heatcool</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              switchMode("heatcool", checked)
+            }}
+            checked={availableThermostatModes.includes("heatcool")}
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right"></div>
+        <div className="three_table_cel">
+          <i>auto</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              switchMode("auto", checked)
+            }}
+            checked={availableThermostatModes.includes("auto")}
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right"></div>
+        <div className="three_table_cel">
+          <i>fan-only</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              switchMode("fan-only", checked)
+            }}
+            checked={availableThermostatModes.includes("fan-only")}
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right"></div>
+        <div className="three_table_cel">
+          <i>purifier</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              switchMode("purifier", checked)
+            }}
+            checked={availableThermostatModes.includes("purifier")}
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right"></div>
+        <div className="three_table_cel">
+          <i>eco</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              switchMode("eco", checked)
+            }}
+            checked={availableThermostatModes.includes("eco")}
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right"></div>
+        <div className="three_table_cel">
+          <i>dry</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              switchMode("dry", checked)
+            }}
+            checked={availableThermostatModes.includes("dry")}
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          <i>thermostatTemperatureUnit</i>
+        </div>
+        <div className="three_table_cel">
+          <select 
+            name="type"
+            onChange={(event) => {
+              setThermostatTemperatureUnit(event.target.value)
+              props.updateAttributes("thermostatTemperatureUnit", event.target.value, "update")
+            }}
+            className="table_input"
+            value={thermostatTemperatureUnit}
+          >
+            <option value="C">Celsius</option>
+            <option value="F">Fahrenheit</option>
+          </select>
+        </div>
+      </div>      
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          Minimum temperature
+        </div>
+        <div className="three_table_cel">
+          <input
+            type="number"
+            onChange={event => {
+              if (event.target.value < thermostatTemperatureRange.maxThresholdCelsius)
+                updateRange("minThresholdCelsius", parseInt(event.target.value))
+            }}
+            value={thermostatTemperatureRange.minThresholdCelsius}
+            min="-273" max="10000" className="int_input"
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          Maximum temperature
+        </div>
+        <div className="three_table_cel">
+          <input
+            type="number"
+            onChange={event => {
+              if (event.target.value > thermostatTemperatureRange.minThresholdCelsius)
+                updateRange("maxThresholdCelsius", parseInt(event.target.value))
+            }}
+            value={thermostatTemperatureRange.maxThresholdCelsius}
+            min="-273" max="10000" className="int_input"
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          Range
+        </div>
+        <div className="three_table_cel">
+          <input
+            type="number"
+            onChange={event => {
+              setBufferRangeCelsius(parseInt(event.target.value))
+              props.updateAttributes("bufferRangeCelsius", parseInt(event.target.value), "update")
+            }}
+            value={bufferRangeCelsius}
+            min="0" max="10000" className="int_input"
+          />
+        </div>
+      </div>
+    </>
+  );
+  
+})
 
 export default TemperatureSetting

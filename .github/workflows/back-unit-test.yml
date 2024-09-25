@@ -31,11 +31,14 @@ jobs:
         uses: supercharge/redis-github-action@1.1.0
         with:
           redis-version: ${{ matrix.redis-version }}
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.6.0
       - name: Start Mosquitto broker
         uses: Namoshek/mosquitto-github-action@v1
         with:
           version: ${{ matrix.mosquitto-version }}
           ports: '1883:1883'
+          password-file: ${{ github.workspace }}/configuration_templates/mosquitto_passwd
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
         with:
@@ -43,6 +46,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
         working-directory: ./back
+      - name: Install Pytest
+        run: pip install pytest
+        working-directory: ./back
       - name: Test
-        run: python -m unittest discover
+        run: pytest -v -s tests/unit_tests
         working-directory: ./back

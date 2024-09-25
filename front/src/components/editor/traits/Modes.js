@@ -1,142 +1,252 @@
-import React from 'react';
+import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
+import {InputLabel, Button, Select, MenuItem, Box, TextField, FormControl, IconButton, Stack} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-class Modes extends React.Component {
-  constructor(props) {
-    super(props);
-    this.updateCheckbox = this.updateCheckbox.bind(this);
-    this.updateMode = this.updateMode.bind(this);
-    this.addMode = this.addMode.bind(this);
-  }
-
-
-  updateCheckbox(checked, attribute){
-    this.props.update('attributes/' + attribute,checked);
-  }
-
-  updateMode(event){
-    const id = event.target.id.split('_')
-    const mode_id = id[1]
-    var temp_availableModes = this.props.attributes.availableModes
-
-    if(id[0] === 'lang'){
-      temp_availableModes[mode_id].name_values[0].lang = event.target.value;
-    } else if (id[0] === 'names'){
-      temp_availableModes[mode_id].name_values[0].name_synonym = event.target.value.split(',');
-      temp_availableModes[mode_id].name = event.target.value.split(',')[0]
-    } else if (id[0] === 'settings'){
-      var values = event.target.value.split(',')
-      var settings = []
-      for ( var i = 0; i < values.length; i ++){
-        settings.push({
-          setting_name: values[i],
-            setting_values: [{
-              setting_synonym: [values[i]],
-              lang: this.props.attributes.availableModes[mode_id].name_values[0].lang
-             }]
-        })
-      }
-      temp_availableModes[mode_id].settings = settings
-    }
-    this.props.update('attributes/availableModes', temp_availableModes);
-  }
-
-  addMode(){
-    var temp_availableModes = this.props.attributes.availableModes
-    temp_availableModes.push({
-      "name": "",
-      "name_values": [
-        {
-          "name_synonym": [""],
-          "lang": "en"
-        }
-      ],
-      "settings": [
-        {
-          "setting_name": "",
-            "setting_values": [{
-              "setting_synonym": [""],
-              "lang": "en"
-             }]
-        }
-      ]
-    });
-    this.props.update('attributes/availableModes', temp_availableModes);
-  }
-
-  render() {
-
-    const names_box = {
-      width: '150px'
-    }
-
-    const settings_box = {
-      width: '230px'
-    }
-
-
-    const modes = this.props.attributes.availableModes.map((mode, i) => {
-      const settings = mode.settings.map((setting,i) => {return setting.setting_name});
-
-      return (
-              <div key={i}>
-                <div className="two_table_row">
-                  <div className="two_table_cel">
-                  </div>
-                  <div className="two_table_cel">
-                    <label>
-                      <span>Languaje: </span>
-                      <select name="type" id={"lang_" + i} value={mode.name_values[0].lang} onChange={this.updateMode}>
-                        <option value="es">es</option>
-                        <option value="en">en</option>
-                      </select>
-                    </label>
-                    <label>
-                      <span>Mode name: </span>
-                      <input type="text" id={"names_" + i} style={names_box} defaultValue={mode.name_values[0].name_synonym} placeholder="Mode name" onChange={this.updateMode}/>
-                    </label>
-                    <label>
-                      <span>Mode settings: </span>
-                      <input type="text" id={"settings_" + i} style={settings_box} defaultValue={settings} placeholder="Separated by commas" onChange={this.updateMode}/>
-                    </label>
-                  </div>
-                </div>
-
-
-              </div>
-
-              )
-    });
-
-    return (
-      <div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            <i>commandOnlyModes</i>
-          </div>
-          <div className="three_table_cel">
-            <Switch onChange={(checked) => {this.updateCheckbox(checked,"commandOnlyModes")}} checked={this.props.attributes.commandOnlyModes} />
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the modes.</span>
-          </div>
-        </div>
-
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            Add a mode
-          </div>
-          <div className="three_table_cel">
-            <button type="button" className="add_attribute_button" onClick={ this.addMode }>Add</button>
-          </div>
-        </div>
-
-        {modes}
-
-      </div>
-    );
-  }
+const attributes = {
+  commandOnlyModes: false,
+  queryOnlyModes: false,
+  availableModes: []
 }
+
+const states = {
+  currentModeSettings: []
+}
+
+const mode_template = {
+  "name": "",
+  "name_values": [
+    {
+      "name_synonym": [""],
+      "lang": "en"
+    }
+  ],
+  "settings": []
+}
+
+const Modes = forwardRef((props, ref) => {
+
+  const [commandOnlyModes, setCommandOnlyModes] = useState(attributes.commandOnlyModes)
+  const [queryOnlyModes, setQueryOnlyModes] = useState(attributes.queryOnlyModes)
+  const [availableModes, setAvailableModes] = useState(attributes.availableModes)
+
+  useEffect(() => {
+    if ("commandOnlyModes" in props.attributes) {
+      setCommandOnlyModes(props.attributes.commandOnlyModes)
+      setQueryOnlyModes(props.attributes.queryOnlyModes)
+      setAvailableModes(props.attributes.availableModes)
+    } else {
+      props.updateStatus(null, states, "insert")
+      props.updateAttributes(null, attributes, "insert")
+    }
+  }, [])
+
+  useImperativeHandle(ref, () => ({
+    deleteAttributes() {
+      props.updateStatus(null, states, "drop")
+      props.updateAttributes(null, attributes, "drop")
+    }
+  }))
+
+  const getSettingsStr = (index) => {
+    let settings = [...availableModes[index]["settings"]]
+    let settings_str = ""
+    for (let i = 0; i < settings.length; i++) {
+      settings_str += settings[i]["setting_name"]
+      if (i < settings.length-1)
+        settings_str += ","
+    }
+    return settings_str
+  }
+
+  const addMode = () => {
+    let _availableModes = [...availableModes]
+    _availableModes.push({...mode_template})
+    setAvailableModes(_availableModes)
+    props.updateAttributes("availableModes", _availableModes, "update")
+  }
+
+  const removeMode = (index) => {
+    let _availableModes = [...availableModes]
+    let _name = _availableModes[index]["name"]
+    _availableModes.splice(index, 1)
+    setAvailableModes(_availableModes)
+    props.updateAttributes("availableModes", _availableModes, "update")
+    // Update status
+    let _currentModeSettings = {...props.status.currentModeSettings}
+    if (_name in _currentModeSettings)
+      delete _currentModeSettings[_name]
+    props.updateStatus("currentModeSettings", _currentModeSettings, "update")
+  }
+
+  const updateName = (index, name) => {
+    let _availableModes = [...availableModes]
+    let _prev_name = _availableModes[index]["name"]
+    _availableModes[index]["name"] = name
+    _availableModes[index]["name_values"]= [
+      {
+        "name_synonym":  [name],
+        "lang": _availableModes[index]["name_values"][0]["lang"]
+      }
+    ]
+    setAvailableModes(_availableModes)
+    props.updateAttributes("availableModes", _availableModes, "update")
+    // Update status
+    let _currentModeSettings = {...props.status._currentModeSettings}
+    if (_prev_name in _currentModeSettings)
+      delete _currentModeSettings[_prev_name]
+    _currentModeSettings[name] = ""
+    props.updateStatus("currentModeSettings", _currentModeSettings, "update")
+  }
+
+  const updatesettings = (index, settings_str) => {
+    let _availableModes = [...availableModes]
+    let settings = settings_str.split(",")
+    _availableModes[index]["settings"] = []
+    for (let i = 0; i < settings.length; i++) {
+      _availableModes[index]["settings"].push(
+        {
+          "setting_name": settings[i],
+          "setting_values": [
+            {
+              "setting_synonym": [
+                settings[i]
+              ],
+              "lang": _availableModes[index]["name_values"][0]["lang"]
+            }
+          ]
+        },
+      )
+    }
+    setAvailableModes(_availableModes)
+    props.updateAttributes("availableModes", _availableModes, "update")
+  }
+
+  const updatelanguaje = (index, lang) => {
+    let _availableModes = [...availableModes]
+    _availableModes[index]["name_values"]= [
+      {
+        "name_synonym":  _availableModes[index]["name_values"][0]["name_synonym"],
+        "lang": lang
+      }
+    ]
+    for (let i = 0; i < _availableModes[index]["settings"].length; i++) {
+      _availableModes[index]["settings"][i]["setting_values"][0]["lang"] = lang
+      
+    }
+    setAvailableModes(_availableModes)
+    props.updateAttributes("availableModes", _availableModes, "update")
+  }
+
+  return (
+    <>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          <i>commandOnlyModes</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              setCommandOnlyModes(checked)
+              props.updateAttributes("commandOnlyModes", checked, "update")
+            }}
+            checked={commandOnlyModes}
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          <i>queryOnlyModes</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              setQueryOnlyModes(checked)
+              props.updateAttributes("queryOnlyModes", checked, "update")
+            }}
+            checked={queryOnlyModes}
+          />
+        </div>
+      </div>
+
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          <i>availableModes</i>
+        </div>
+        <div className="three_table_cel">
+          {
+            availableModes.map((mode, index) => {
+              return (
+                <Box className="attribute_table_subattribute" key={index}>
+                  <Box className="attribute_table_subattribute_row">
+                    <TextField
+                      data-test="mode_name"
+                      label="Mode name"
+                      className="attribute_table_subattribute_input"
+                      type="text"
+                      variant="outlined"
+                      value={mode.name}
+                      onChange={(event) => {
+                        updateName(index, event.target.value)
+                      }}
+                    />
+                  </Box>
+                  <Box className="attribute_table_subattribute_row">
+                    <TextField
+                      data-test="settings"
+                      label="Settings - Separated by commas"
+                      className="attribute_table_subattribute_input"
+                      type="text"
+                      variant="outlined"
+                      value={getSettingsStr(index)}
+                      onChange={(event) => {
+                        updatesettings(index, event.target.value)
+                      }}
+                    />
+                  </Box>
+                  <Box className="attribute_table_subattribute_row">
+                    <FormControl fullWidth>
+                      <InputLabel id="occupancySensorType-label">
+                        Languaje
+                      </InputLabel>
+                      <Select
+                        id="lang"
+                        data-test="lang"
+                        label="Languaje"
+                        className="attribute_table_subattribute_input"
+                        value={mode.name_values[0].lang}
+                        onChange={(event) => {
+                          updatelanguaje(index, event.target.value)
+                        }}
+                      >
+                        <MenuItem value="en">en</MenuItem>
+                        <MenuItem value="es">es</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Box>
+                  <Stack direction="row" spacing={1}>
+                    <IconButton size="large" onClick={() => removeMode(index)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Stack>
+                </Box>
+              )
+            })
+          }
+          <Box className="attribute_table_form_add_button">
+            <Button
+              variant="contained"
+              className="attribute_table_form_add_button"
+              onClick={addMode}
+            >
+              Add
+            </Button>
+          </Box>
+        </div>
+      </div>
+    </>
+  );
+  
+})
 
 export default Modes

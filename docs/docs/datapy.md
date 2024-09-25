@@ -4,11 +4,44 @@ title: Data.py file
 sidebar_label: Back - data.py
 ---
 
-Data is a class intended to interact with both the database and disk files. When an object is created the constructor do task related with verify the database and the data contined in it.
+Data is a class intended to interact with both the databases and disk files. When an object is created the constructor do tasks related with verifing the database and the data contined in it.
+
+
+## Method - getBackup
+
+Returns the backup data in a JSON format.
+
+`myData.getBackup()`
+
+### Arguments
+
+None
+
+### Returns
+
+See the file [configuration_template.json](https://github.com/kikeelectronico/Homeware-LAN/blob/master/configuration_templates/template_homeware.json) for reference.
+
+## Method - loadBackupFile
+
+This method restore the database from the Homware.json file.
+
+`myData.loadBackupFile(backup)`
+
+### Arguments
+
+#### backup
+The content of the backup file as JSON.
+
+- Type: JSON
+- Example: See the file [configuration_template.json](https://github.com/kikeelectronico/Homeware-LAN/blob/master/configuration_templates/template_homeware.json) for reference.
+
+### Returns
+
+None
 
 ## Method - getVersion
 
-This method returns the Homeware version.
+This method returns the current Homeware installation version.
 
 `myData.getVersion()`
 
@@ -17,17 +50,15 @@ This method returns the Homeware version.
 None
 
 ### Returns
-The system version object.
+The system version string.
 
 ```
-{
-  version: '1.5.1'
-}
+v1.5.1
 ```
 
 ## Method - getGlobal
 
-The method returns all the devices data and all tasks.
+The method returns all the devices data.
 
 `myData.getGlobal()`
 
@@ -36,53 +67,78 @@ The method returns all the devices data and all tasks.
 None
 
 ### Returns
-An object containing devices, status and tasks.
+An object containing devices and status.
 
 ```
 {
   devices: [...],
-  status: {...},
-  tasks: [...]
+  status: {...}
 }
 ```
 
-## Method - createFile
+## Method - getDevices
+This method returns the definition of all the devices or the definition of the indicated device.
 
-Homeware can backup the important data from the database into a file named _Homeware.json_. This method do the task.
-
-`myData.createFile()`
+`myData.getStatus(device_id)`
 
 ### Arguments
 
-None
+#### device_id
+The id of the device whose definition is requiered.
+
+- Type: string
+- Example: 'lamp_001'
+- Optional
 
 ### Returns
+If id is not indicated: a list of definitions.
+```
+[
+  {...},
+  {...},
+]
+```
+If id is indicated: the definition of the indicated device.
+```
+{
+  "attributes": {
+    "commandOnlyOnOff": true,
+    "queryOnlyOnOff": true,
+    "commandOnlyBrightness": true
+  },
+  "deviceInfo": {
+    "hwVersion": "1.0",
+    "swVersion": "1.0",
+    "manufacturer": "Homeware",
+    "model": "Homeware Lamp"
+  },
+  "id": "light",
+  "name": {
+    "defaultNames": [
+      "Lamp"
+    ],
+    "nicknames": [
+      "Lamp"
+    ],
+    "name": "Lamp"
+  },
+  "traits": [
+    "action.devices.traits.OnOff",
+    "action.devices.traits.Brightness"
+  ],
+  "type": "action.devices.types.LIGHT"
+}
+```
 
-None
+## Method - updateDevice
 
-## Method - load
+The method updates an existing device.
 
-This method restore the database from the Homware.json file.
-
-`myData.load()`
+`myData.updateDevice(device, status)`
 
 ### Arguments
 
-None
-
-### Returns
-
-None
-
-## Method - createDevice
-
-The method creates a new device.
-
-`myData.createDevice(device_data)`
-
-### Arguments
-
-#### device_data
+#### device
 It is the definition of the device that want to be created.
 
 - Type: json
@@ -90,12 +146,111 @@ It is the definition of the device that want to be created.
 
 ```
 {
-  device: {
-    ...
+  "attributes": {
+    "commandOnlyOnOff": true,
+    "queryOnlyOnOff": true,
+    "commandOnlyBrightness": true
   },
-  status: {
-    ...
-  }
+  "deviceInfo": {
+    "hwVersion": "1.0",
+    "swVersion": "1.0",
+    "manufacturer": "Homeware",
+    "model": "Homeware Lamp"
+  },
+  "id": "light",
+  "name": {
+    "defaultNames": [
+      "Lamp"
+    ],
+    "nicknames": [
+      "Lamp"
+    ],
+    "name": "Lamp"
+  },
+  "traits": [
+    "action.devices.traits.OnOff",
+    "action.devices.traits.Brightness"
+  ],
+  "type": "action.devices.types.LIGHT"
+}
+```
+
+#### status
+It is the status of the device that want to be created.
+
+- Type: json
+- Example: 
+
+```
+{
+  "online": true,
+  "on": false,
+  "brightness": 80
+}
+```
+
+Check the device defition and status definition at <a href='https://developers.google.com/assistant/smarthome/overview'>Google Smart Home guide</a>
+
+### Returns
+
+`True` if the device was found and updated. `False` if the device was not found.
+
+## Method - createDevice
+
+The method creates a new device.
+
+`myData.createDevice(device, status)`
+
+### Arguments
+
+#### device
+It is the definition of the device that want to be created.
+
+- Type: json
+- Example: 
+
+```
+{
+  "attributes": {
+    "commandOnlyOnOff": true,
+    "queryOnlyOnOff": true,
+    "commandOnlyBrightness": true
+  },
+  "deviceInfo": {
+    "hwVersion": "1.0",
+    "swVersion": "1.0",
+    "manufacturer": "Homeware",
+    "model": "Homeware Lamp"
+  },
+  "id": "light",
+  "name": {
+    "defaultNames": [
+      "Lamp"
+    ],
+    "nicknames": [
+      "Lamp"
+    ],
+    "name": "Lamp"
+  },
+  "traits": [
+    "action.devices.traits.OnOff",
+    "action.devices.traits.Brightness"
+  ],
+  "type": "action.devices.types.LIGHT"
+}
+```
+
+#### status
+It is the status of the device that want to be created.
+
+- Type: json
+- Example: 
+
+```
+{
+  "online": true,
+  "on": false,
+  "brightness": 80
 }
 ```
 
@@ -121,30 +276,43 @@ It is the id of the device that want to be deleted.
 `True` if the device was found and deleted. `False` if the device was not found.
 
 ## Method - getStatus
-This method returns the status of all the devices.
+This method returns the status of all the devices or the status of the indicated device.
 
-`myData.getStatus()`
+`myData.getStatus(device_id)`
 
 ### Arguments
-None
+
+#### device_id
+The id of the device whose status is requiered.
+
+- Type: string
+- Example: 'lamp_001'
+- Optional
 
 ### Returns
-A list of devices with its status as a json object.
+If id is not indicated: a list of devices with its status as a json object.
 ```
 {
   device1: {...},
   device2: {...},
 }
 ```
+If id is indicated: the status as a json object.
+```
+{
+  param1: "value",
+  param2: "value"
+}
+```
 
-## Method - updateStatus
+## Method - updateParamStatus
 This method updates the value of a param for a device.
 
-`myData.updateStatus(device,param,value)`
+`myData.updateParamStatus(device_id, param, value)`
 
 ### Arguments
 
-#### device
+#### device_id
 It is the id of the device.
 
 - Type: string
@@ -165,262 +333,48 @@ It is the new value
 ### Returns
 `True` if the device was found and updated. `False` if the device was not found.
 
-## Method - getTasks
-This method returns a list with all the tasks.
-
-`myData.getTasks()`
-
-### Arguments
-None
-
-### Returns
-A list of taks. In example:
-
-```
-[
-  {
-    title: "A title",
-    description: " A description",
-    triggers: {
-      trigger: {
-        type: "or",
-        parent: "triggers",
-        operation: [
-          1602355786257
-        ]
-      },
-      "1602355786257": {
-        operation: "22:0:1234560",
-        parent: "trigger",
-        type: "time"
-      }
-    },
-    target: [
-      {
-        device: "night_scene",
-        param: "enable",
-        value: false
-      }
-    ]
-  },
-  ...
-]
-```
-
-## Method - getTask
-This method returns a task.
-
-`myData.getTask(task_id)`
-
-### Arguments
-
-#### task_id
-Identifies the task that will be returned.
-
-- Type: int
-- Example: 4
-
-### Returns
-A task object. In example:
-
-```
-{
-  title: "A title",
-  description: " A description",
-  triggers: {
-    trigger: {
-      type: "or",
-      parent: "triggers",
-      operation: [
-        1602355786257
-      ]
-    },
-    "1602355786257": {
-      operation: "22:0:1234560",
-      parent: "trigger",
-      type: "time"
-    }
-  },
-  target: [
-    {
-      device: "night_scene",
-      param: "enable",
-      value: false
-    }
-  ]
-}
-```
-
-## Method - updateTask
-This method updates the definition of a task.
-
-`myData.updateTask(task)`
-
-### Arguments
-
-#### task
-The definition of the task and its id.
-
-- Type: json
-- Example: 
-```
-{
-  id: 5,
-  task: {
-    title: "A title",
-    description: " A description",
-    triggers: {
-      trigger: {
-        type: "or",
-        parent: "triggers",
-        operation: [
-          1602355786257
-        ]
-      },
-      "1602355786257": {
-        operation: "22:0:1234560",
-        parent: "trigger",
-        type: "time"
-      }
-    },
-    target: [
-      {
-        device: "night_scene",
-        param: "enable",
-        value: false
-      }
-    ]
-  }
-}
-```
-
-### Returns
-`True` if the task was found and updated. `False` if the task was not found.
-
-## Method - createTask
-This method creates a new task with the definition received.
-
-`mydata.createTask(task)`
-
-### Arguments
-
-#### task
-The definition of the task and its id.
-
-- Type: json
-- Example: 
-```
-{
-  id: 5,
-  task: {
-    title: "A title",
-    description: " A description",
-    triggers: {
-      trigger: {
-        type: "or",
-        parent: "triggers",
-        operation: [
-          1602355786257
-        ]
-      },
-      "1602355786257": {
-        operation: "22:0:1234560",
-        parent: "trigger",
-        type: "time"
-      }
-    },
-    target: [
-      {
-        device: "night_scene",
-        param: "enable",
-        value: false
-      }
-    ]
-  }
-}
-```
-
-### Returns
-None
-
-## Method - deleteTask
-This method deletes a task.
-
-`myData.deleteTask(task_id)`
-
-### Arguments
-
-#### task_id
-The id of the task that wnat to be deleted.
-
-- Type: int
-- Example: 3
-
-### Returns
-`True` if the task was found and deleted. `False` if the task was not found.
-
-## Method  - setUser
-This method set the username and password for the first time. It only can be call once.
-
-`myData.setUser(incomming_data)`
-
-### Arguments
-
-#### incomming_data
-The username and password in plain text.
-
-- Type: json
-- Example: 
-```
-{
-  user: 'my-username',
-  pass: 'my-password'
-}
-```
-
-### Returns
-`Saved correctly!` if it is the first time. `Your user has been set in the past` if the username was set in the past.
-
 ## Method - updatePassword
 This method updates the user's password.
 
-`myData.updatePassword(incomming_data)`
+`myData.updatePassword(password, new_password)`
 
 ### Arguments
 
-#### incomming_data
-Both the current and new passwords in plain text.
+#### password
+The current password in plain text.
 
-- Type: json
-- Example:
-```
-{
-  pass: 'my-password',
-  new_pass: 'my-new-password'
-}
-```
+- Type: string
+- Example: 'my-password'
+
+#### new_password
+The new password in plain text.
+
+- Type: string
+- Example: 'my-new-password'
+
 
 ### Returns
-`Updated` if the password is set. `Fail, the password hasn't been changed` if the process fails.
+`True` if the password is set. `False` if the process fails.
 
 ## Method - login
 This method login the user and returns an access token. Only one token can be active, so the current token will be deleted once a new one is created.
 
-`myData.login(incomming_data)`
+`myData.login(username, password)`
 
 ### Arguments
 
-#### incomming_data
-The username and password in plain text.
+#### password
+The username.
 
-- Type: json
-- Example: 
-```
-{
-  user: 'my-username',
-  pass: 'my-password'
-}
-```
+- Type: string
+- Example: 'my-username'
+
+#### new_password
+The password in plain text.
+
+- Type: string
+- Example: 'my-password'
+
 
 ### Returns
 Both the login data and login status object:
@@ -444,38 +398,19 @@ or the login status object:
 ## Method - validateUserToken
 This method validates the user's token.
 
-`myData.validateUserToken(incomming_data)`
+`myData.validateUserToken(token)`
 
 ### Arguments
 
-#### incomming_data
-The username and password in plain text.
+#### token
+The user's token.
 
-- Type: json
-- Example: 
-```
-{
-  user: 'my-username',
-  token: 'the-access-token'
-}
-```
+- Type: string
+- Example: 'the-access-token'
+
 
 ### Returns
-The the login success status object :
-
-```
-{
-  status: 'in'
-}
-```
-
-or the login failed status object fail:
-
-```
-{
-  status: 'fail'
-}
-```
+`True` if the token is valid. `False` if the token is invalid.
 
 ## Method - getAPIKey
 This method returns the active apiakey.
@@ -494,10 +429,10 @@ An object containing the apikey.
 }
 ```
 
-## Method - generateAPIKey
+## Method - createAPIKey
 This method generates a new apiakey. Only one apikey can be active. When a new apikey is generated, the older one will be deleted.
 
-`myData.generateAPIKey()`
+`myData.createAPIKey()`
 
 ### Arguments
 None
@@ -511,45 +446,27 @@ An object containing the apikey.
 }
 ```
 
-## Method - getToken
-Get an oauth2 active token's obeject by the service name. Note: This method will be deprecated.
+## Method - validateAPIKey
+This method validates the apikey.
 
-`myData.getToken(agent)`
+`myData.validateAPIKey(apikey)`
 
 ### Arguments
 
-#### agent
-The service name (agent). Only Google is supported by now.
+#### incomming_data
+The apikey.
 
 - Type: string
-- Possible values: 'google'
+- Example: 'the-apikey'
+
 
 ### Returns
-An string containing the token or a token object.
+`True` if the apikey is valid. `False` if the apikey is invalid.
 
-```
-{
-  access_token: {
-    timestamp: 1579452782954,
-    value: '-'
-  },
-  authorization_code: {
-    timestamp: 1579452777875,
-    value: '-'
-  },
-  client_id: '123',
-  client_secret: '456',
-  refresh_token: {
-    timestamp: 1579452782954,
-    value: '-'
-  }
-}
-```
-
-## Method - updateToken
+## Method - updateOauthToken
 Update an oauth2 token of a service by type. Note: This method will be deprecated.
 
-`myData.updateToken(agent, type, value, timestamp)`
+`myData.updateOauthToken(agent, type, value, timestamp)`
 
 ### Arguments
 
@@ -578,10 +495,55 @@ The timestamp when the new token was generated.
 - Example: 1579452777875
 
 ### Returns
-None
+
+`True` if the token has been updated. `False` if the token hasn't been updated.
+
+## Method - validateOauthToken
+This method validates an oauth token.
+
+`myData.validateOauthToken(type, token)`
+
+### Arguments
+
+#### type
+The type of token.
+
+- Type: string
+- Example: '"access_token"'
+- 
+#### token
+The token.
+
+- Type: string
+- Example: 'the-token'
+
+### Returns
+`True` if the token is valid. `False` if the token is invalid.
+
+## Method - validateOauthCredentials
+This method validates an oauth credential.
+
+`myData.validateOauthCredentials(type, value)`
+
+### Arguments
+
+#### type
+The type of token.
+
+- Type: string
+- Example: 'client_id'
+- 
+#### value
+The value.
+
+- Type: string
+- Example: 'the-client-id'
+
+### Returns
+`True` if the credential is valid. `False` if the credential is invalid.
 
 ## Method - getSettings
-This method returns the read settings object.
+This method returns the settings.
 
 `myData.getSettings()`
 
@@ -589,14 +551,12 @@ This method returns the read settings object.
 None
 
 ### Returns
-The read settings object.
+The settings object.
 
 ```
 {
-  google: {
-    client_id: '1234',
-    client_secret: '56789'
-  },
+  client_id: '1234',
+  client_secret: '56789'
   'ddns': {
     'enabled': false,
     'status': 'Unknown',
@@ -614,29 +574,28 @@ The read settings object.
   }
   sync_google: true,
   sync_devices: true,
+  log: {
+    days: 30
+  }
 }
 ```
 
 ## Method - updateSettings
 This method updates the settings object.
 
-`myData.updateSettings(incomming_data)`
+`myData.updateSettings(settings)`
 
 ### Arguments
 
-#### incomming_data
+#### settings
 An object with the settings to save.
 
 - Type: json
 - Example:
 ```
 {
-  token: {
-    google: {
-      client_id: '1234',
-      client_secret: '56789'
-    }
-  }
+  client_id: '1234',
+  client_secret: '56789'
   'ddns': {
     'provider': 'noip',
     'hostname': '',
@@ -649,75 +608,17 @@ An object with the settings to save.
   }
   sync_google: true,
   sync_devices: true,
+  log: {
+    days: 30
+  }
 }
 ```
 
 ### Returns
 None
-
-## Method - setDomain
-This method sets the domain name. It only can be called once.
-
-`myData.setDomain(domain)`
-
-### Arguments
-
-#### domain
-The domain name.
-
-- Type: string
-- Example: 'www.mydomain.com'
-
-### Returns
-`Saved correctly!` if it is the first time. `Your domain has been set in the past` if the domain was set in the past.
-
-## Method - setSyncDevices
-This method sets the sync_devices setting.
-
-`myData.setSyncDevices(status)`
-
-### Arguments
-
-#### status
-The new value for the setting.
-
-- Type: bool
-- Example: true
-
-### Returns
-None
-
-## Method - getSyncDevices
-This method returns the sync_devices setting.
-
-`myData.getSyncDevices()`
-
-### Arguments
-None
-
-### Returns
-`True` if sync_devices is enabled. `false` if it is not enabled.
-
-## Method - getMQTT
-This method returns the MQTT user and password.
-
-`myData.getMQTT()`
-
-### Arguments
-None
-
-### Returns
-An object that contains the username and the password.
-
-```
-{
-  user: 'mosquitto',
-  password: 'homewarelan123'
-}
-```
 
 ## Method - getDDNS
-This method returns the both the DDNS settings and the DDNS status.
+This method returns both the DDNS settings and the DDNS status.
 
 `myData.getDDNS()`
 
@@ -741,10 +642,10 @@ An object that contains both the DDNS settings and the DDNS status.
 }
 ```
 
-## Method - updateDDNS
+## Method - updateDDNSstatus
 This method updates the DDNS status.
 
-`myData.updateDDNS(ip, status, code, enabled, last)`
+`myData.updateDDNSstatus(ip, status, code, enabled, last)`
 
 ### Arguments
 
@@ -781,10 +682,55 @@ Last request timestap.
 ### Returns
 None
 
-## Method - redisStatus
+## Method - getMQTT
+This method returns the MQTT user and password.
+
+`myData.getMQTT()`
+
+### Arguments
+None
+
+### Returns
+An object that contains the username and the password.
+
+```
+{
+  user: 'mosquitto',
+  password: 'homewarelan123'
+}
+```
+
+## Method - updateSyncGoogle
+This method updates the setting `updateSyncGoogle`.
+
+`myData.updateSyncGoogle(status)`
+
+### Arguments
+
+#### status
+The new value.
+
+- Type: bool
+- Example: True
+
+### Returns
+None
+
+## Method - getSyncDevices
+This method returns the sync_devices setting.
+
+`myData.getSyncDevices()`
+
+### Arguments
+None
+
+### Returns
+`True` if sync_devices is enabled. `false` if it is not enabled.
+
+## Method - getRedisStatus
 This method returns the status availability of the Redis server.
 
-`myData.redisStatus()`
+`myData.getRedisStatus()`
 
 ### Arguments
 None
@@ -810,59 +756,34 @@ or a stopped system status object:
 }
 ```
 
-## Method - updateSyncGoogle
-This method sets the sync_google setting. This method will be deprecated.
+## Method - getMongoStatus
+This method returns the status availability of the MongoDB server.
 
-`myData.updateSyncGoogle(status)`
-
-### Arguments
-
-#### status
-The new value for the setting.
-
-- Type: bool
-- Example: true
-
-### Returns
-None
-
-## Method - log
-This method creates a new register in the systems log and raise the Alert flag if necessary.
-
-`myData.log(severity, message)`
+`myData.getMongoStatus()`
 
 ### Arguments
-
-#### severity
-The severity.
-
-- Type: string
-- Possible values: 'Alert' || 'Warning' || 'Log'
-
-#### message
-The message to log.
-
-- Type: string
-- Example: 'The dog opened the door'
-
-### Returns
 None
 
-## Method - setVerbose
-This method enables verbose debugging.
-
-`myData.setVerbose(verbose)`
-
-### Arguments
-
-#### verbose
-The verbose value.
-
-- Type: boolean
-- Example: true
-
 ### Returns
-None
+A running system status object.
+
+```
+{
+  enable: True,
+  status: 'Running',
+  title: 'Mongo database'
+}
+```
+
+or a stopped system status object:
+
+```
+{
+  enable: True,
+  status: 'Stopped',
+  title: 'Mongo database'
+}
+```
 
 ## Method - getLog
 This method returns the system log.
@@ -886,6 +807,55 @@ A list of registers.
 ]
 ```
 
+## Method - log
+This method creates a new register in the systems log and raise the Alert flag if necessary.
+
+`myData.log(severity, message)`
+
+### Arguments
+
+#### severity
+The severity.
+
+- Type: string
+- Possible values: 'Alert' || 'Warning' || 'Log'
+
+#### message
+The message to log.
+
+- Type: string
+- Example: 'The dog opened the door'
+
+### Returns
+None
+
+## Method - deleteLog
+This method all registers older than the ammount of days set in the log settings.
+
+`myData.deleteLog()`
+
+### Arguments
+None
+
+### Returns
+None
+
+## Method - setVerbose
+This method enables verbose debugging.
+
+`myData.setVerbose(verbose)`
+
+### Arguments
+
+#### verbose
+The verbose value.
+
+- Type: boolean
+- Example: true
+
+### Returns
+None
+
 ## Method - isThereAnAlert
 This method returns the alert flag.
 
@@ -903,22 +873,6 @@ An alert flag object
 }
 ```
 
-## Method - updateAlive
-This method updates the alive timestamp of some homeware's core element.
-
-`myData.updateAlive(core)`
-
-### Arguments
-
-#### core
-The core name.
-
-- Type: string
-- Possible values: 'tasks' || 'mqtt'
-
-### Returns
-None
-
 ## Method - getAlive
 This method returns the alive timestamps of some homeware's core elements.
 
@@ -931,7 +885,22 @@ A system alive object.
 
 ```
 {
-  tasks: 1579452782954,
   mqtt: 1579452782954
 }
 ```
+
+## Method - updateAlive
+This method updates the alive timestamp of some homeware's core element.
+
+`myData.updateAlive(core)`
+
+### Arguments
+
+#### core
+The core name.
+
+- Type: string
+- Possible values: 'mqtt'
+
+### Returns
+None

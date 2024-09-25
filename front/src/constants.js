@@ -203,12 +203,9 @@ const deviceReference = {
       ]
     },
     "action.devices.types.FREEZER": {
-      name: "Fireplace",
+      name: "Freezer",
       traits: [
-        "action.devices.traits.Modes",
-        "action.devices.traits.OnOff",
         "action.devices.traits.TemperatureControl",
-        "action.devices.traits.Toggles"
       ]
     },
     "action.devices.types.FRYER": {
@@ -842,7 +839,7 @@ const deviceReference = {
       commands: []
     },
     "action.devices.traits.Rotation": {
-      name: 'Rotation - Google doesn\'t respond',
+      name: 'Rotation',
       attributes: {
         commandOnlyRotation: {
           type: "bool",
@@ -897,7 +894,7 @@ const deviceReference = {
       commands: []
     },
     "action.devices.traits.SensorState": {
-      name: 'Sesnor - Google doesn\'t respond',
+      name: 'Sesnor',
       attributes: {
         sensorStatesSupported: {
           type: 'object',
@@ -1029,7 +1026,7 @@ const deviceReference = {
       commands: []
     },
     "action.devices.traits.Timer": {
-      name: 'Timer - Google doesn\'t respond',
+      name: 'Timer',
       attributes: {
         maxTimerLimitSec: {
           type: "int",

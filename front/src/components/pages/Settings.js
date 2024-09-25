@@ -8,7 +8,6 @@ import { root } from "../../constants";
 function Settings() {
 
   const [settings, setSettings] = useState({
-      google: {},
       ddns: {
         enabled: false,
       },
@@ -16,7 +15,9 @@ function Settings() {
       apikey: "",
       sync_google: false,
       sync_devices: false,
-      log: {}
+      log: {},
+      client_id: "",
+      client_secret: ""
     })
 
   useEffect(() => {
@@ -35,7 +36,7 @@ function Settings() {
     http.open("GET", root + "api/settings/get/");
     http.setRequestHeader(
       "authorization",
-      "baerer " + getCookieValue("token")
+      "bearer " + getCookieValue("token")
     );
     http.send();
   }, [])
@@ -49,31 +50,32 @@ function Settings() {
 
   const update = (event) => {
     const id = event.target.id.split("/");
-    var _settings = settings;
+    const value = (event.target.id === "log/days" ? parseInt(event.target.value) : event.target.value)
+    var _settings = {...settings};
     if (id.length === 1) {
-      _settings[id[0]] = event.target.value;
+      _settings[id[0]] = value;
     } else if (id.length === 2) {
-      _settings[id[0]][id[1]] = event.target.value;
+      _settings[id[0]][id[1]] = value;
     }
     setSettings(_settings)
   }
 
   const enableSyncGoogle = (checked) => {
-    var _settings = settings;
+    var _settings = {...settings};
     _settings.sync_google = checked;
     setSettings(_settings)
     save();
   }
 
   const enableSyncDevices = (checked) => {
-    var _settings = settings;
+    var _settings = {...settings};
     _settings.sync_devices = checked;
     setSettings(_settings)
     save();
   }
 
   const enableDdnsProvider = (checked) => {
-    var _settings = settings;
+    var _settings = {...settings};
     _settings.ddns.enabled = checked;
     setSettings(_settings)
   }
@@ -95,8 +97,32 @@ function Settings() {
     };
     http.open("POST", root + "api/settings/update/");
     http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send(JSON.stringify(settings));
+  }
+
+  const uploadServiceAccountKey = (e) => {
+    if (e.target.files) {
+      var fileReader = new FileReader();
+      fileReader.onload=function(){
+        const backup = fileReader.result
+        var http = new XMLHttpRequest();
+        http.onload = function (e) {
+          if (http.readyState === 4) {
+            if (http.status === 200) {
+              ToastsStore.success("Uploaded correctly");
+            } else {
+              ToastsStore.error("Something went wrong");
+            }
+          }
+        }
+        http.open("PUT", root + "api/settings/serviceaccountkey");
+        http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        http.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
+        http.send(backup);
+      }
+      fileReader.readAsText(e.target.files[0]);
+    }
   }
 
   return (
@@ -116,8 +142,8 @@ function Settings() {
               <input
                 type="text"
                 className="two_input"
-                id="google/client_id"
-                defaultValue={settings.google.client_id}
+                id="client_id"
+                defaultValue={settings.client_id}
                 onChange={update}
               />
             </div>
@@ -128,8 +154,8 @@ function Settings() {
               <input
                 type="text"
                 className="two_input"
-                id="google/client_secret"
-                defaultValue={settings.google.client_secret}
+                id="client_secret"
+                defaultValue={settings.client_secret}
                 onChange={update}
               />
             </div>
@@ -140,7 +166,7 @@ function Settings() {
               <input
                 type="text"
                 className="two_input"
-                defaultValue={"https://" + settings.ddns.hostname + "/auth/"}
+                value={"https://" + settings.ddns.hostname + "/auth/"}
                 disabled
               />
             </div>
@@ -151,7 +177,7 @@ function Settings() {
               <input
                 type="text"
                 className="two_input"
-                defaultValue={"https://" + settings.ddns.hostname + "/token/"}
+                value={"https://" + settings.ddns.hostname + "/token/"}
                 disabled
               />
             </div>
@@ -162,7 +188,7 @@ function Settings() {
               <input
                 type="text"
                 className="two_input"
-                defaultValue={"https://" + settings.ddns.hostname + "/smarthome/"}
+                value={"https://" + settings.ddns.hostname + "/smarthome/"}
                 disabled
               />
             </div>
@@ -198,15 +224,7 @@ function Settings() {
           </div>
         </div>
         <div className="page_block_content_container">
-          <form
-            id="google-auth"
-            method="post"
-            encType="multipart/form-data"
-            action={root + "files/upload/google/" + getCookieValue("token") + "/"}
-          >
-            <input type="file" name="file" />
-            <Button variant="contained" onClick={() => {document.getElementById("google-auth").submit()}}>Upload</Button>
-          </form>
+          <input id="file" type="file" onChange={uploadServiceAccountKey} />
         </div>
       </div>
 

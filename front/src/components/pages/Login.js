@@ -25,34 +25,45 @@ function Login() {
       }
     }
     http.open("GET", root + "api/user/login/");
-    http.setRequestHeader('user', document.getElementById('user').value)
-    http.setRequestHeader('pass', document.getElementById('password').value)
+    http.setRequestHeader('username', document.getElementById('user').value)
+    http.setRequestHeader('password', document.getElementById('password').value)
     http.send();
   }
 
   const grantAccess = () => {
     var http = new XMLHttpRequest();
     http.onload = function (e) {
-      if (http.responseText !== 'fail')
-        window.location = http.responseText;
-      else {
+      var response = JSON.parse(http.responseText);
+      console.log(response);
+      if(response['status'] === 'in') {
+        window.location = response['url']
+      } else {
         setEnableMessage(true)
         setMessage("Incorrect User or Password")
         setTimeout(() => setEnableMessage(false), 5000)
       }
     }
     http.open("GET", root + "api/user/googleSync/");
-    http.setRequestHeader('user', document.getElementById('user').value)
-    http.setRequestHeader('pass', document.getElementById('password').value)
+    http.setRequestHeader('username', document.getElementById('user').value)
+    http.setRequestHeader('password', document.getElementById('password').value)
     http.send();
   }
 
-  const submit = (event) => {
-    event.preventDefault()
-    if(!window.location.href.includes('google')) {
-      login()
-    } else {
-      grantAccess()
+  const submit = () => {
+    if (document.getElementById('user').value.length > 0
+        && document.getElementById('password').value.length > 0) {
+      if(!window.location.href.includes('google')) {
+        login()
+      } else {
+        grantAccess()
+      }
+    }
+  }
+
+  document.onkeydown = function(evt) {
+    evt = evt || window.event;
+    if (evt.keyCode == 13) {
+      submit()
     }
   }
 

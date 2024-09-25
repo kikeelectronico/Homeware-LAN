@@ -25,11 +25,11 @@ function Access () {
       }
     }
     http.open("GET", root + "api/access/get/");
-    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send();
   }, [])
 
-  const generateAPIKey = () => {
+  const createAPIKey = () => {
     ToastsStore.warning("Generating API key");
     var http = new XMLHttpRequest();
     http.onload = function (e) {
@@ -46,7 +46,7 @@ function Access () {
       }
     };
     http.open("GET", root + "api/access/create/");
-    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send();
   }
 
@@ -71,12 +71,12 @@ function Access () {
       http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       http.setRequestHeader(
         "authorization",
-        "baerer " + getCookieValue("token")
+        "bearer " + getCookieValue("token")
       );
       http.send(
         JSON.stringify({
-          pass: current_pass,
-          new_pass: new_pass_1,
+          password: current_pass,
+          new_password: new_pass_1,
         })
       );
     }
@@ -106,7 +106,7 @@ function Access () {
           </div>
         </div>
         <div className="page_block_buttons_container">
-          <Button variant="contained" onClick={generateAPIKey}>Generate</Button>
+          <Button variant="contained" onClick={createAPIKey}>Generate</Button>
         </div>
       </div>
 

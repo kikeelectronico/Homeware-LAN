@@ -31,7 +31,7 @@ const Scene = forwardRef((props, ref) => {
 
 
   return (
-    <div>
+    <>
       <div className="three_table_row">
         <div className="three_table_cel align_right">
           <i>sceneReversible</i>
@@ -45,11 +45,8 @@ const Scene = forwardRef((props, ref) => {
             checked={sceneReversible}
           />
         </div>
-        <div className="three_table_cel">
-          <span className="attribute_advise">Enable it if the scene can be desabled.</span>
-        </div>
       </div>
-    </div>
+    </>
   );
   
 })

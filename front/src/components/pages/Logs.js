@@ -26,18 +26,12 @@ function Logs () {
       }
     }
     http.open("GET", root + "api/log/get/");
-    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send();
   }, [])
 
   const loadMore = () => {
     if (page < data.length/10 - 1) setPage(page + 1)
-  }
-
-  const downloadLog = () => {
-    ToastsStore.warning("Downloading");
-    const url = root + "files/download/log/" + getCookieValue("token");
-    window.open(url, '_blank')
   }
 
   const deleteLog = () => {
@@ -52,8 +46,25 @@ function Logs () {
       }
     }
     http.open("GET", root + "api/log/delete/");
-    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send();
+  }
+
+  const downloadLog = () => {
+    let log_str = ""
+    for(let i = 0; i < data.length; i++)
+      log_str += formatTimestamp(data[i]["timestamp"]) + "\t" + data[i]["severity"] + "\t" + data[i]["message"] + "\n"
+    const blob = new Blob([log_str], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.download = "homeware " + formatTimestamp(Date.now()/1000) + ".log";
+    link.href = url;
+    link.click();
+  }
+
+  const formatTimestamp = (timestamp) => {
+    let a = new Date(timestamp * 1000);
+    return a.getDate() + '-' + a.getMonth() + '-' + a.getFullYear() + ' ' + a.getHours() + ':' + a.getMinutes() + ':' + a.getSeconds() ;
   }
 
   return (
@@ -71,7 +82,7 @@ function Logs () {
                 {register.severity === "Log" ? <b>{register.severity}</b> : <></>}
                 {register.severity === "Warning" ? <b className="logs_yellow">{register.severity}</b> : <></>}
                 {register.severity === "Alert" ? <b className="logs_red">{register.severity}</b> : <></>}
-                - {register.time}
+                - {formatTimestamp(register.timestamp)}
                 <br />
                 {register.message}
               </div>

@@ -1,0 +1,171 @@
+name: Integration test
+on:
+  workflow_dispatch:
+
+env:
+  REDIS_VERSION: 6
+  PYTHON_VERSION: 3.8
+  MOSQUITTO_VERSION: 2.0
+    
+concurrency: 
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  unit_test_backend:
+    name: Unit test backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Start Redis ${{env.REDIS_VERSION}}
+        uses: supercharge/redis-github-action@1.1.0
+        with:
+          redis-version: ${{env.REDIS_VERSION}}
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.6.0
+      - name: Start Mosquitto broker ${{env.MOSQUITTO_VERSION}}
+        uses: Namoshek/mosquitto-github-action@v1
+        with:
+          version: ${{env.MOSQUITTO_VERSION}}
+          ports: '1883:1883'
+          password-file: ${{ github.workspace }}/configuration_templates/mosquitto_passwd
+      - name: Set up Python ${{env.PYTHON_VERSION}}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{env.PYTHON_VERSION}}
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        working-directory: ./back
+      - name: Install Pytest
+        run: pip install pytest
+        working-directory: ./back
+      - name: Test
+        run: pytest -v -s tests/unit_tests
+        working-directory: ./back
+  build_and_push_backend:
+    name: Build and push backend
+    runs-on: ubuntu-latest
+    needs: unit_test_backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.PACKAGES_TOKEN }}
+      - name: Build and push BE
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./docker/Dockerfile-back
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/homewarelan-back:dev
+  build_push_frontend:
+    name: Build and push frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.PACKAGES_TOKEN }}
+      - name: Build and push FE
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./docker/Dockerfile-nginx
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/homewarelan-nginx:dev
+  create_gcloud_vm:
+    name: Create VM
+    runs-on: ubuntu-latest
+    needs: [
+      build_and_push_backend,
+      build_push_frontend
+    ]
+    steps:
+      - uses: "actions/checkout@v3"
+      - uses: "google-github-actions/auth@v1"
+        with:
+          credentials_json: ${{ secrets.GCLOUD_SERVICE_ACCOUNT }}
+      - name: Setup Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          version: ">= 363.0.0"
+          project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
+      - name: "Create VM"
+        run: |
+          gcloud compute instances create homeware-integration-test-dev --source-instance-template=homeware-test-dev --zone=europe-southwest1-a 
+  wait_for_homware:
+    name: Wait for homeware to boot
+    runs-on: ubuntu-latest
+    needs: create_gcloud_vm
+    steps:
+      - uses: "actions/checkout@v3"
+      - name: "Wait until Homeware is ready"
+        uses: cygnetdigital/wait_for_response@v2.0.0
+        with:
+          url: ${{ secrets.HOMEWARE_HOST }}
+          responseCode: '200'
+          timeout: 240000
+          interval: 5000
+  integration_test:
+    name: Integration test
+    runs-on: ubuntu-latest
+    needs: wait_for_homware
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{env.PYTHON_VERSION}}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{env.PYTHON_VERSION}}
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        working-directory: ./back
+      - name: Install dependencies
+        run: pip install pytest
+        working-directory: ./back
+      - name: Test
+        run: pytest -v --host=${{ secrets.HOMEWARE_HOST }} --username=${{ secrets.HOMEWARE_USERNAME }} --password=${{ secrets.HOMEWARE_PASSWORD }}
+        working-directory: ./back/tests/integration_tests
+  delete_gcloud_vm:
+    name: Delete VM
+    runs-on: ubuntu-latest
+    needs: integration_test
+    if: ${{ always() }}
+    steps:
+      - uses: "actions/checkout@v3"
+      - uses: "google-github-actions/auth@v1"
+        with:
+          credentials_json: ${{ secrets.GCLOUD_SERVICE_ACCOUNT }}
+      - name: Setup Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          version: ">= 363.0.0"
+          project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
+      - name: "Delete VM"
+        run: |
+          gcloud compute instances delete homeware-integration-test-dev --zone=europe-southwest1-a
+
+  
