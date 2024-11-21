@@ -3,7 +3,7 @@
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
+    "@emotion/styled": "^11.13.5",
     "@mui/icons-material": "^6.1.1",
     "@testing-library/jest-dom": "^6.5.0",
     "@mui/material": "^6.0.2",
