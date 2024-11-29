@@ -9,4 +9,4 @@ bcrypt==4.2.0
 google-auth==2.35.0
 gevent
 pymongo==4.9.1
-python-multipart==0.0.10
+python-multipart==0.0.18
