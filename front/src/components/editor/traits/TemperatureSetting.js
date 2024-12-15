@@ -111,7 +111,7 @@ const TemperatureSetting = forwardRef((props, ref) => {
             onChange={(checked) => {
               switchMode("off", checked)
             }}
-            checked={availableThermostatModes.includes("heat")}
+            checked={availableThermostatModes.includes("off")}
           />
         </div>
       </div>
