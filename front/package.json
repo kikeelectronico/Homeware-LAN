@@ -20,7 +20,7 @@
     "react-router": "^6.26.2",
     "react-router-link": "^2.0.2",
     "react-scripts": "^5.0.1",
-    "react-switch": "^7.0.0",
+    "react-switch": "^7.1.0",
     "react-toasts": "^3.0.6",
     "reactjs-popup": "^2.0.6"
   },
