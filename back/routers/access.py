@@ -12,7 +12,7 @@ data_conector = Data()
 def getAccess():
     return data_conector.getAPIKey()
 
-@router.post("/api/access", dependencies=[Depends(allowUser)])
+@router.patch("/api/access", dependencies=[Depends(allowUser)])
 def createAccess():
     return data_conector.createAPIKey()
 
