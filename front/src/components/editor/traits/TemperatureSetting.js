@@ -104,6 +104,20 @@ const TemperatureSetting = forwardRef((props, ref) => {
           Thermostat modes
         </div>
         <div className="three_table_cel">
+          <i>off</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              switchMode("off", checked)
+            }}
+            checked={availableThermostatModes.includes("off")}
+          />
+        </div>
+      </div>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right"></div>
+        <div className="three_table_cel">
           <i>heat</i>
         </div>
         <div className="three_table_cel">

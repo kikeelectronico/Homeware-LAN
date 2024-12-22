@@ -5,7 +5,7 @@ import json
 
 # /api/user/*
 
-def test_login():
+def test_legacy_login():
     headers = {
         "username": pytest.username,
         "password": pytest.password
@@ -18,7 +18,7 @@ def test_login():
     # Update token new token
     pytest.token = response["token"]
 
-def test_login_fail_bad_username():
+def test_legacy_login_fail_bad_username():
     headers = {
         "username": "where-is-perry",
         "password": pytest.password
@@ -28,7 +28,7 @@ def test_login_fail_bad_username():
     response = request.json()
     assert response["status"] == "fail"
 
-def test_login_fail_bad_password():
+def test_legacy_login_fail_bad_password():
     headers = {
         "username": pytest.username,
         "password": "PASSWORD"
@@ -38,7 +38,7 @@ def test_login_fail_bad_password():
     response = request.json()
     assert response["status"] == "fail"
 
-def test_valiteToken():
+def test_legacy_valiteToken():
     headers = {
         "username": pytest.username,
         "token": pytest.token
@@ -48,7 +48,7 @@ def test_valiteToken():
     response = request.json()
     assert response["status"] == "in"
 
-def test_valiteToken_fail_bad_token():
+def test_legacy_valiteToken_fail_bad_token():
     headers = {
         "username": pytest.username,
         "token": "where-is-perry"
@@ -58,7 +58,7 @@ def test_valiteToken_fail_bad_token():
     response = request.json()
     assert response["status"] == "fail"
     
-def test_changePassword():
+def test_legacy_changePassword():
     headers = {
         "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
@@ -78,7 +78,7 @@ def test_changePassword():
     }
     request = requests.post(pytest.host + "/api/user/password", headers=headers, data=json.dumps(body))
 
-def test_changePassword_fail_bad_password():
+def test_legacy_changePassword_fail_bad_password():
     headers = {
         "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
@@ -92,7 +92,7 @@ def test_changePassword_fail_bad_password():
     response = request.json()
     assert response["message"] == "Fail, the password hasn't been changed"
 
-def test_changePassword_fail_bad_token():
+def test_legacy_changePassword_fail_bad_token():
     headers = {
         "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
@@ -106,7 +106,7 @@ def test_changePassword_fail_bad_token():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_changePassword_fail_no_token_value():
+def test_legacy_changePassword_fail_no_token_value():
     headers = {
         "authorization": f"bearer ",
         "content-type": "application/json"
@@ -121,7 +121,7 @@ def test_changePassword_fail_no_token_value():
     assert response["detail"] == "A valid token is needed"
 
 
-def test_changePassword_fail_no_header_value():
+def test_legacy_changePassword_fail_no_header_value():
     headers = {
         "authorization": f"",
         "content-type": "application/json"
@@ -135,7 +135,7 @@ def test_changePassword_fail_no_header_value():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_changePassword_fail_no_header():
+def test_legacy_changePassword_fail_no_header():
     headers = {
         "content-type": "application/json"
     }
