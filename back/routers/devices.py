@@ -135,7 +135,7 @@ def getDevices(device_id: str | None = None):
     else:
         return data_conector.getDevices()
 
-@router.post("/api/devices/update/", dependencies=[Depends(allowAuthenticated)])
+@router.post("/api/devices/update", dependencies=[Depends(allowAuthenticated)])
 @router.post("/api/devices/update/", dependencies=[Depends(allowAuthenticated)])
 def updateDevices(device: Device):
     if device:
@@ -150,7 +150,7 @@ def updateDevices(device: Device):
     else:
         return errorResponses.FOUR_O_O
 
-@router.post("/api/devices/create/", dependencies=[Depends(allowAuthenticated)])
+@router.post("/api/devices/create", dependencies=[Depends(allowAuthenticated)])
 @router.post("/api/devices/create/", dependencies=[Depends(allowAuthenticated)])
 def createDevices(device: Device):
     if device:
@@ -195,7 +195,7 @@ class State(BaseModel):
     param: str
     value: str | int | bool | float
 
-@router.post("/api/status/update/", dependencies=[Depends(allowAuthenticated)])
+@router.post("/api/status/update", dependencies=[Depends(allowAuthenticated)])
 @router.post("/api/status/update/", dependencies=[Depends(allowAuthenticated)])
 def updateStatus(state: State):
     if state:
