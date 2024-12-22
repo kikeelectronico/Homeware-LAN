@@ -5,7 +5,7 @@ import pytest
 
 # /api/settings/*
 
-def test_get_settings():
+def test_legacy_get_settings():
     headers = {
         "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
@@ -25,7 +25,7 @@ def test_get_settings():
     assert "client_id" in keys
     assert "client_secret" in keys
 
-def test_get_settings_fail_bad_token():
+def test_legacy_get_settings_fail_bad_token():
     headers = {
         "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
@@ -35,7 +35,7 @@ def test_get_settings_fail_bad_token():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_get_settings_fail_no_token_value():
+def test_legacy_get_settings_fail_no_token_value():
     headers = {
         "authorization": f"bearer ",
         "content-type": "application/json"
@@ -46,7 +46,7 @@ def test_get_settings_fail_no_token_value():
     assert response["detail"] == "A valid token is needed"
 
 
-def test_get_settings_fail_no_header_value():
+def test_legacy_get_settings_fail_no_header_value():
     headers = {
         "authorization": f"",
         "content-type": "application/json"
@@ -56,7 +56,7 @@ def test_get_settings_fail_no_header_value():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_get_settings_fail_no_header():
+def test_legacy_get_settings_fail_no_header():
     headers = {
         "content-type": "application/json"
     }
@@ -65,7 +65,7 @@ def test_get_settings_fail_no_header():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_update_settings():
+def test_legacy_update_settings():
     headers = {
         "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
@@ -97,7 +97,7 @@ def test_update_settings():
     response = request.json()
     assert response == body
 
-def test_update_settings_fail_bad_token():
+def test_legacy_update_settings_fail_bad_token():
     headers = {
         "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
@@ -129,7 +129,7 @@ def test_update_settings_fail_bad_token():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_update_settings_fail_no_token_value():
+def test_legacy_update_settings_fail_no_token_value():
     headers = {
         "authorization": f"bearer ",
         "content-type": "application/json"
@@ -162,7 +162,7 @@ def test_update_settings_fail_no_token_value():
     assert response["detail"] == "A valid token is needed"
 
 
-def test_update_settings_fail_no_header_value():
+def test_legacy_update_settings_fail_no_header_value():
     headers = {
         "authorization": f"",
         "content-type": "application/json"
@@ -194,7 +194,7 @@ def test_update_settings_fail_no_header_value():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_update_settings_fail_no_header():
+def test_legacy_update_settings_fail_no_header():
     headers = {
         "content-type": "application/json"
     }

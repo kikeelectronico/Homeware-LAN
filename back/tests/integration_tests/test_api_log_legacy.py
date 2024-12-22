@@ -5,7 +5,7 @@ import pytest
 
 # /api/log/*
 
-def test_get_log():
+def test_legacy_get_log():
     headers = {
         "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
@@ -15,7 +15,7 @@ def test_get_log():
     response = request.json()
     assert isinstance(response, list)
 
-def test_get_log_fail_bad_token():
+def test_legacy_get_log_fail_bad_token():
     headers = {
         "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
@@ -25,7 +25,7 @@ def test_get_log_fail_bad_token():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_get_log_fail_no_token_value():
+def test_legacy_get_log_fail_no_token_value():
     headers = {
         "authorization": f"bearer ",
         "content-type": "application/json"
@@ -36,7 +36,7 @@ def test_get_log_fail_no_token_value():
     assert response["detail"] == "A valid token is needed"
 
 
-def test_get_log_fail_no_header_value():
+def test_legacy_get_log_fail_no_header_value():
     headers = {
         "authorization": f"",
         "content-type": "application/json"
@@ -46,7 +46,7 @@ def test_get_log_fail_no_header_value():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_get_log_fail_no_header():
+def test_legacy_get_log_fail_no_header():
     headers = {
         "content-type": "application/json"
     }
@@ -55,7 +55,7 @@ def test_get_log_fail_no_header():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_get_alert():
+def test_legacy_get_alert():
     headers = {
         "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
@@ -65,7 +65,7 @@ def test_get_alert():
     response = request.json()
     assert "alert" in response
 
-def test_get_alert_fail_bad_token():
+def test_legacy_get_alert_fail_bad_token():
     headers = {
         "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
@@ -75,7 +75,7 @@ def test_get_alert_fail_bad_token():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_get_alert_fail_no_token_value():
+def test_legacy_get_alert_fail_no_token_value():
     headers = {
         "authorization": f"bearer ",
         "content-type": "application/json"
@@ -86,7 +86,7 @@ def test_get_alert_fail_no_token_value():
     assert response["detail"] == "A valid token is needed"
 
 
-def test_get_alert_fail_no_header_value():
+def test_legacy_get_alert_fail_no_header_value():
     headers = {
         "authorization": f"",
         "content-type": "application/json"
@@ -96,7 +96,7 @@ def test_get_alert_fail_no_header_value():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_get_alert_fail_no_header():
+def test_legacy_get_alert_fail_no_header():
     headers = {
         "content-type": "application/json"
     }

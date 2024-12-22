@@ -5,7 +5,7 @@ import pytest
 
 # /api/devices/*
 
-def test_get_devices():
+def test_legacy_get_devices():
     headers = {
         "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
@@ -17,7 +17,7 @@ def test_get_devices():
     # assert response[0]["_id"] == "light"
     assert response[0]["id"] == "light"
 
-def test_get_devices_fail_bad_token():
+def test_legacy_get_devices_fail_bad_token():
     headers = {
         "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
@@ -27,7 +27,7 @@ def test_get_devices_fail_bad_token():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_get_devices_fail_no_token_value():
+def test_legacy_get_devices_fail_no_token_value():
     headers = {
         "authorization": f"bearer ",
         "content-type": "application/json"
@@ -38,7 +38,7 @@ def test_get_devices_fail_no_token_value():
     assert response["detail"] == "A valid token is needed"
 
 
-def test_get_devices_fail_no_header_value():
+def test_legacy_get_devices_fail_no_header_value():
     headers = {
         "authorization": f"",
         "content-type": "application/json"
@@ -48,7 +48,7 @@ def test_get_devices_fail_no_header_value():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_get_devices_fail_no_header():
+def test_legacy_get_devices_fail_no_header():
     headers = {
         "content-type": "application/json"
     }
@@ -57,7 +57,7 @@ def test_get_devices_fail_no_header():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_get_device():
+def test_legacy_get_device():
     headers = {
         "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
@@ -70,7 +70,7 @@ def test_get_device():
     assert response["id"] == "light"
     assert response["type"] == "action.devices.types.LIGHT"
 
-def test_get_device_fail_bad_device_id():
+def test_legacy_get_device_fail_bad_device_id():
     headers = {
         "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
@@ -83,7 +83,7 @@ def test_get_device_fail_bad_device_id():
     assert response["code"] == 404
     assert response["note"] == "See the documentation https://homeware.enriquegomez.me/"
 
-def test_create_device():
+def test_legacy_create_device():
     headers = {
         "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
@@ -129,7 +129,7 @@ def test_create_device():
     assert response["id"] == "switch000"
     assert response["type"] == "action.devices.types.SWITCH"
 
-def test_create_device_fail_bad_token():
+def test_legacy_create_device_fail_bad_token():
     headers = {
         "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
@@ -166,7 +166,7 @@ def test_create_device_fail_bad_token():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_create_device_fail_no_token_value():
+def test_legacy_create_device_fail_no_token_value():
     headers = {
         "authorization": f"bearer ",
         "content-type": "application/json"
@@ -204,7 +204,7 @@ def test_create_device_fail_no_token_value():
     assert response["detail"] == "A valid token is needed"
 
 
-def test_create_device_fail_no_header_value():
+def test_legacy_create_device_fail_no_header_value():
     headers = {
         "authorization": f"",
         "content-type": "application/json"
@@ -241,7 +241,7 @@ def test_create_device_fail_no_header_value():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_create_device_no_header():
+def test_legacy_create_device_no_header():
     headers = {
         "content-type": "application/json"
     }
@@ -277,7 +277,7 @@ def test_create_device_no_header():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_update_device():
+def test_legacy_update_device():
     headers = {
         "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
@@ -323,7 +323,7 @@ def test_update_device():
     assert response["id"] == "switch000"
     assert response["name"]["name"] == "Switch updated"
 
-def test_update_device_fail_bad_device_id():
+def test_legacy_update_device_fail_bad_device_id():
     headers = {
         "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
@@ -362,7 +362,7 @@ def test_update_device_fail_bad_device_id():
     assert response["code"] == 404
     assert response["note"] == "See the documentation https://homeware.enriquegomez.me/"
 
-def test_update_device_fail_bad_token():
+def test_legacy_update_device_fail_bad_token():
     headers = {
         "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
@@ -399,7 +399,7 @@ def test_update_device_fail_bad_token():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_update_device_fail_no_token_value():
+def test_legacy_update_device_fail_no_token_value():
     headers = {
         "authorization": f"bearer ",
         "content-type": "application/json"
@@ -437,7 +437,7 @@ def test_update_device_fail_no_token_value():
     assert response["detail"] == "A valid token is needed"
 
 
-def test_update_device_fail_no_header_value():
+def test_legacy_update_device_fail_no_header_value():
     headers = {
         "authorization": f"",
         "content-type": "application/json"
@@ -474,7 +474,7 @@ def test_update_device_fail_no_header_value():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_update_device_no_header():
+def test_legacy_update_device_no_header():
     headers = {
         "content-type": "application/json"
     }
@@ -510,7 +510,7 @@ def test_update_device_no_header():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_delete_device():
+def test_legacy_delete_device():
     headers = {
         "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
@@ -522,7 +522,7 @@ def test_delete_device():
     assert response["status"] == "Success"
     assert response["code"] == 200
 
-def test_delete_device_fail_bad_device_id():
+def test_legacy_delete_device_fail_bad_device_id():
     headers = {
         "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
@@ -535,7 +535,7 @@ def test_delete_device_fail_bad_device_id():
     assert response["code"] == 404
     assert response["note"] == "See the documentation https://homeware.enriquegomez.me/"
 
-def test_delete_devices_fail_bad_token():
+def test_legacy_delete_devices_fail_bad_token():
     headers = {
         "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
@@ -546,7 +546,7 @@ def test_delete_devices_fail_bad_token():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_delete_devices_fail_no_token_value():
+def test_legacy_delete_devices_fail_no_token_value():
     headers = {
         "authorization": f"bearer ",
         "content-type": "application/json"
@@ -558,7 +558,7 @@ def test_delete_devices_fail_no_token_value():
     assert response["detail"] == "A valid token is needed"
 
 
-def test_delete_devices_fail_no_header_value():
+def test_legacy_delete_devices_fail_no_header_value():
     headers = {
         "authorization": f"",
         "content-type": "application/json"
@@ -569,7 +569,7 @@ def test_delete_devices_fail_no_header_value():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_delete_devices_fail_no_header():
+def test_legacy_delete_devices_fail_no_header():
     headers = {
         "content-type": "application/json"
     }

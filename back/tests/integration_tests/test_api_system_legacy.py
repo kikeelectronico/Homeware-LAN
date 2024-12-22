@@ -5,7 +5,7 @@ import pytest
 
 # /api/system/*
 
-def test_get_status():
+def test_legacy_get_status():
     headers = {
         "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
@@ -21,7 +21,7 @@ def test_get_status():
     assert "redis" in keys
     assert "mongo" in keys
 
-def test_get_status_fail_bad_token():
+def test_legacy_get_status_fail_bad_token():
     headers = {
         "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
@@ -31,7 +31,7 @@ def test_get_status_fail_bad_token():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_get_status_fail_no_token_value():
+def test_legacy_get_status_fail_no_token_value():
     headers = {
         "authorization": f"bearer ",
         "content-type": "application/json"
@@ -42,7 +42,7 @@ def test_get_status_fail_no_token_value():
     assert response["detail"] == "A valid token is needed"
 
 
-def test_get_status_fail_no_header_value():
+def test_legacy_get_status_fail_no_header_value():
     headers = {
         "authorization": f"",
         "content-type": "application/json"
@@ -52,7 +52,7 @@ def test_get_status_fail_no_header_value():
     response = request.json()
     assert response["detail"] == "A valid token is needed"
 
-def test_get_status_fail_no_header():
+def test_legacy_get_status_fail_no_header():
     headers = {
         "content-type": "application/json"
     }
