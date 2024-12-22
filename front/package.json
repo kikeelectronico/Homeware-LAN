@@ -2,7 +2,7 @@
   "name": "Homeware",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.13.3",
+    "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.2.1",
     "@testing-library/jest-dom": "^6.5.0",
