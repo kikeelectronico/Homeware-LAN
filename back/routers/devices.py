@@ -121,16 +121,19 @@ def updateStatus(device_id: str, state: dict | None = None):
     
     if state is None:
         return errorResponses.FOUR_O_O
+    
+    response = data_conector.getStatus(device_id)
+    if not response:
+        return errorResponses.FOUR_O_FOUR
 
     success = True
     for param in state:
-        success = success & data_conector.updateParamStatus(device_id, param, state(param))
+        success = success & data_conector.updateParamStatus(device_id, param, state[param])
 
-    JSONResponse(status_code=200,
-                content = {
-                    "status": "Success" if success else "Fail",
-                    "code": 200,
-                })  
+    return {
+                "status": "Success" if success else "Fail",
+                "code": 200,
+            } 
 
 
 # Legacy
