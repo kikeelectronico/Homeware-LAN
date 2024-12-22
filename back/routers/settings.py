@@ -11,19 +11,18 @@ import errorResponses
 router = APIRouter()
 data_conector = Data()
 
-@router.get("/api/settings/get", dependencies=[Depends(allowUser)])
-@router.get("/api/settings/get/", dependencies=[Depends(allowUser)])
+@router.get("/api/settings", dependencies=[Depends(allowUser)])
 def getSettings():
     return data_conector.getSettings()
     
-@router.post("/api/settings/update/", dependencies=[Depends(allowUser)])
-@router.post("/api/settings/update/", dependencies=[Depends(allowUser)])
+@router.put("/api/settings", dependencies=[Depends(allowUser)])
 def updateSettings(settings: dict | None = None):
-    if settings:
-        data_conector.updateSettings(settings)
-        return data_conector.getSettings()
-    else:
+    if settings is None:
         return errorResponses.FOUR_O_O
+    
+    data_conector.updateSettings(settings)
+    return data_conector.getSettings()
+
 
 class ServiceAccountKey(BaseModel):
     type: str
@@ -40,12 +39,31 @@ class ServiceAccountKey(BaseModel):
 
 @router.put("/api/settings/serviceaccountkey", dependencies=[Depends(allowUser)])
 def restoreBackup(serviceaccountkey: ServiceAccountKey | None = None):
-    if serviceaccountkey:
-        data_conector.createServiceAccountKeyFile(jsonable_encoder(serviceaccountkey))
-        return JSONResponse(status_code=200,
-                            content = {
-                                "error": "Success",
-                                "code": 200,
-                            })
+    if serviceaccountkey is None:
+        return errorResponses.FOUR_O_O
+    
+    data_conector.createServiceAccountKeyFile(jsonable_encoder(serviceaccountkey))
+    return JSONResponse(status_code=200,
+                        content = {
+                            "error": "Success",
+                            "code": 200,
+                        })
+   
+
+# Legacy
+
+@router.get("/api/settings/get", dependencies=[Depends(allowUser)])
+@router.get("/api/settings/get/", dependencies=[Depends(allowUser)])
+def getSettings():
+    return data_conector.getSettings()
+    
+@router.post("/api/settings/update/", dependencies=[Depends(allowUser)])
+@router.post("/api/settings/update/", dependencies=[Depends(allowUser)])
+def updateSettings(settings: dict | None = None):
+    if settings:
+        data_conector.updateSettings(settings)
+        return data_conector.getSettings()
     else:
-        return errorResponses,FOUR_O_O
+        return errorResponses.FOUR_O_O
+
+

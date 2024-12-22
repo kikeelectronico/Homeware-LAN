@@ -8,6 +8,16 @@ from data import Data
 router = APIRouter()
 data_conector = Data()
 
+@router.get("/api/access", dependencies=[Depends(allowUser)])
+def getAccess():
+    return data_conector.getAPIKey()
+
+@router.post("/api/access", dependencies=[Depends(allowUser)])
+def createAccess():
+    return data_conector.createAPIKey()
+
+# Legacy
+
 @router.get("/api/access/get", dependencies=[Depends(allowUser)])
 @router.get("/api/access/get/", dependencies=[Depends(allowUser)])
 def getAccess():
