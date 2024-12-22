@@ -9,13 +9,12 @@ from data import Data
 router = APIRouter()
 data_conector = Data()
 
-@router.get("/api/global/version", dependencies=[Depends(allowAuthenticated)])
-@router.get("/api/global/version/", dependencies=[Depends(allowAuthenticated)])
+@router.get("/api/system/version", dependencies=[Depends(allowAuthenticated)])
 def getVersion():
     return {'version': data_conector.getVersion()}
 
 @router.get("/api/system/status", dependencies=[Depends(allowUser)])
-@router.get("/api/system/status/", dependencies=[Depends(allowUser)])
+@router.get("/api/system/status/", dependencies=[Depends(allowUser)]) # Legacy
 def getSystemStatus():
     response = {
         'api': {
@@ -51,3 +50,10 @@ def getSystemStatus():
         data_conector.log("Log", "Fail to get Tasks core timestamp")
 
     return response
+
+# Legacy
+
+@router.get("/api/global/version", dependencies=[Depends(allowAuthenticated)])
+@router.get("/api/global/version/", dependencies=[Depends(allowAuthenticated)])
+def getVersion():
+    return {'version': data_conector.getVersion()}
