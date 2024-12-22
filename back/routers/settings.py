@@ -15,7 +15,7 @@ data_conector = Data()
 def getSettings():
     return data_conector.getSettings()
     
-@router.put("/api/settings", dependencies=[Depends(allowUser)])
+@router.patch("/api/settings", dependencies=[Depends(allowUser)])
 def updateSettings(settings: dict | None = None):
     if settings is None:
         return errorResponses.FOUR_O_O
@@ -57,7 +57,7 @@ def restoreBackup(serviceaccountkey: ServiceAccountKey | None = None):
 def getSettings():
     return data_conector.getSettings()
     
-@router.post("/api/settings/update/", dependencies=[Depends(allowUser)])
+@router.post("/api/settings/update", dependencies=[Depends(allowUser)])
 @router.post("/api/settings/update/", dependencies=[Depends(allowUser)])
 def updateSettings(settings: dict | None = None):
     if settings:
