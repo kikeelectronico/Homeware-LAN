@@ -56,7 +56,7 @@ function Editor() {
             setLoading(false)
           } else {
             console.error(http.statusText);
-            setAlert({severity: "error", text: "Something went wrong."})
+            setAlert({severity: "error", text: "Unable to load the data."})
           }
         }
       }
@@ -147,18 +147,18 @@ function Editor() {
 
   const saveDevice = () => {
     if(true) {
-      setAlert({severity: "warning", text: "Saving"})
+      setAlert({severity: "warning", text: "Saving the device."})
       var http = new XMLHttpRequest();
       http.onload = function (e) {
         if (http.readyState === 4) {
           if (http.status === 200) {
-            setAlert({severity: "success", text: "Saved correctly."})
+            setAlert({severity: "success", text: "Device saved."})
             if (create) {
               window.location.href = "/devices";
             }
           } else {
             console.error(http.statusText);
-            setAlert({severity: "error", text: "The changes haven't been saved"})
+            setAlert({severity: "error", text: "Something went wrong."})
           }
         }
       }
@@ -191,19 +191,20 @@ function Editor() {
   }
 
   const deleteDevice = () => {
-    setAlert({severity: "warning", text: "Deleting."})
+    setAlert({severity: "warning", text: "Deleting the device."})
     if (window.confirm("Do you want to delete the device?")) {
       var http = new XMLHttpRequest();
       http.onload = function (e) {
         if (http.readyState === 4) {
           if (http.status === 200) {
+            // setAlert({severity: "success", text: "Device deleted."})
             window.location.href = "/devices/";
           } else {
             console.error(http.statusText);
-            setAlert({severity: "error", text: "The device hasn't been deleted."})
+            setAlert({severity: "error", text: "Something went wrong."})
           }
         } else {
-          setAlert({severity: "error", text: "The device hasn't been deleted."})
+          setAlert({severity: "error", text: "Something went wrong."})
         }
       };
       http.open(

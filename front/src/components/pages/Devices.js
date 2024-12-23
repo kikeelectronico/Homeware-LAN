@@ -74,7 +74,7 @@ function Devices() {
           setOrderBy("az")
         } else {
           console.error(http.statusText);
-          setAlert({severity: "error", text: "Something went wrong"})
+          setAlert({severity: "error", text: "Unable to load the data."})
         }
       }
     }

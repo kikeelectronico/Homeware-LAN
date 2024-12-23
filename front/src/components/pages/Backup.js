@@ -15,7 +15,7 @@ function Backup() {
   }
 
   const backup = () => {
-    setAlert({severity: "warning", text: "Downloading backup."})
+    setAlert({severity: "warning", text: "Downloading the backup file."})
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       if (http.readyState === 4) {
@@ -41,12 +41,13 @@ function Backup() {
     if (e.target.files) {
       var fileReader = new FileReader();
       fileReader.onload=function(){
+        setAlert({severity: "warning", text: "Uploading the file."})
         const backup = fileReader.result
         var http = new XMLHttpRequest();
         http.onload = function (e) {
           if (http.readyState === 4) {
             if (http.status === 200) {
-              setAlert({severity: "success", text: "Uploaded correctly."})
+              setAlert({severity: "success", text: "File uploaded."})
             } else {
               setAlert({severity: "error", text: "Something went wrong."})
             }

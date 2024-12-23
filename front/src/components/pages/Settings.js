@@ -31,7 +31,7 @@ function Settings() {
           setSettings(data)
         } else {
           console.error(http.statusText);
-          setAlert({severity: "error", text: "Something went wrong."})
+          setAlert({severity: "error", text: "Unable to load the data."})
         }
       }
     }
@@ -83,7 +83,7 @@ function Settings() {
   }
 
   const save = () => {
-    setAlert({severity: "warning", text: "Saving."})
+    setAlert({severity: "warning", text: "Saving the settings."})
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       if (http.readyState === 4) {
@@ -91,10 +91,10 @@ function Settings() {
           //JSON.parse(http.responseText);
           setAlert({severity: "success", text: "Saved correctly."})
         } else {
-          setAlert({severity: "error", text: "The changes haven't been saved."})
+          setAlert({severity: "error", text: "Something went wrong."})
         }
       } else {
-        setAlert({severity: "error", text: "The changes haven't been saved."})
+        setAlert({severity: "error", text: "Something went wrong."})
       }
     };
     http.open("PATCH", root + "api/settings");
@@ -107,6 +107,7 @@ function Settings() {
     if (e.target.files) {
       var fileReader = new FileReader();
       fileReader.onload=function(){
+        setAlert({severity: "warning", text: "Uploading the file."})
         const backup = fileReader.result
         var http = new XMLHttpRequest();
         http.onload = function (e) {

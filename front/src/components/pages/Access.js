@@ -22,7 +22,7 @@ function Access () {
           setData(data[0])
         } else {
           console.error(http.statusText);
-          setAlert({severity: "error", text: "Something went wrong. Unable to load the data."})
+          setAlert({severity: "error", text: "Unable to load the data."})
         }
       }
     }

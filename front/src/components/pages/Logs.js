@@ -23,7 +23,7 @@ function Logs () {
           setData(data.reverse())
         } else {
           console.error(http.statusText);
-          setAlert({severity: "error", text: "Something went wrong"})
+          setAlert({severity: "error", text: "Unable to load the data."})
         }
       }
     }
@@ -37,11 +37,12 @@ function Logs () {
   }
 
   const deleteLog = () => {
+    setAlert({severity: "warning", text: "Deleting the old registers."})
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       if (http.readyState === 4) {
         if (http.status === 200) {
-          setAlert({severity: "success", text: "Deleted"})
+          setAlert({severity: "success", text: "Old logs deleted."})
         } else {
           setAlert({severity: "error", text: "Something went wrong"})
         }
@@ -53,6 +54,7 @@ function Logs () {
   }
 
   const downloadLog = () => {
+    setAlert({severity: "warning", text: "Downloading the log file."})
     let log_str = ""
     for(let i = 0; i < data.length; i++)
       log_str += formatTimestamp(data[i]["timestamp"]) + "\t" + data[i]["severity"] + "\t" + data[i]["message"] + "\n"
