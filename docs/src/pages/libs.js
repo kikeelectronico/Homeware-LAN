@@ -170,11 +170,6 @@ function Libs() {
             </a>
           </li>
           <li>
-            <a href="https://github.com/Vashnak/react-toasts" target="_blanck">
-              react-toasts
-            </a>
-          </li>
-          <li>
             <a href="https://github.com/yjose/reactjs-popup" target="_blanck">
               reactjs-popup
             </a>
