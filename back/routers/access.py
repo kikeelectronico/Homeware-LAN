@@ -10,9 +10,9 @@ data_conector = Data()
 
 @router.get("/api/access", dependencies=[Depends(allowUser)])
 def getAccess():
-    return data_conector.getAPIKey()
+    return [data_conector.getAPIKey()]
 
-@router.patch("/api/access", dependencies=[Depends(allowUser)])
+@router.patch("/api/access/", dependencies=[Depends(allowUser)])
 def createAccess():
     return data_conector.createAPIKey()
 
