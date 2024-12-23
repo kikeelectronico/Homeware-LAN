@@ -61,7 +61,7 @@ function App() {
           }
         }
       }
-      vers.open("GET", root + "api/global/version/");
+      vers.open("GET", root + "api/system/version/");
       vers.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
       vers.send();
 
@@ -104,7 +104,7 @@ function App() {
           }
         }
       }
-      vers.open("GET", root + "api/log/alert/");
+      vers.open("GET", root + "api/alerts/");
       vers.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
       vers.send();
     }

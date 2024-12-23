@@ -29,7 +29,7 @@ function Backup() {
         }
       }
     }
-    http.open("GET", root + "api/backup/get/");
+    http.open("GET", root + "api/backup");
     http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send();
   }

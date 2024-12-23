@@ -25,7 +25,7 @@ function Logs () {
         }
       }
     }
-    http.open("GET", root + "api/log/get/");
+    http.open("GET", root + "api/logs");
     http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send();
   }, [])
@@ -45,7 +45,7 @@ function Logs () {
         }
       }
     }
-    http.open("GET", root + "api/log/delete/");
+    http.open("DELETE", root + "api/logs");
     http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send();
   }

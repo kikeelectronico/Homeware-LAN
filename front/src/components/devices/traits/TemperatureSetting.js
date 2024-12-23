@@ -25,14 +25,12 @@ const TemperatureSetting = (props) => {
         }
       }
     }
-    http.open("POST", root + "api/status/update/");
+    http.open("PATCH", root + "api/devices/" + props.id + "/status");
     http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send(
       JSON.stringify({
-        id: props.id,
-        param: "thermostatTemperatureSetpoint",
-        value: temperature,
+        "thermostatTemperatureSetpoint": temperature,
       })
     );
   }

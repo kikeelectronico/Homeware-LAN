@@ -24,7 +24,7 @@ function Login() {
         setTimeout(() => setEnableMessage(false), 5000)
       }
     }
-    http.open("GET", root + "api/user/login/");
+    http.open("GET", root + "api/user/login");
     http.setRequestHeader('username', document.getElementById('user').value)
     http.setRequestHeader('password', document.getElementById('password').value)
     http.send();
@@ -43,7 +43,7 @@ function Login() {
         setTimeout(() => setEnableMessage(false), 5000)
       }
     }
-    http.open("GET", root + "api/user/googleSync/");
+    http.open("GET", root + "api/user/googleSync");
     http.setRequestHeader('username', document.getElementById('user').value)
     http.setRequestHeader('password', document.getElementById('password').value)
     http.send();

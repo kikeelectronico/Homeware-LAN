@@ -17,14 +17,14 @@ function Access () {
       if (http.readyState === 4) {
         if (http.status === 200) {
           var data = JSON.parse(http.responseText);
-          setData(data)
+          setData(data[0])
         } else {
           console.error(http.statusText);
           ToastsStore.error("Something went wrong. Unable to load the data.");
         }
       }
     }
-    http.open("GET", root + "api/access/get/");
+    http.open("GET", root + "api/access");
     http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send();
   }, [])
@@ -45,7 +45,7 @@ function Access () {
         ToastsStore.error("Something went wrong");
       }
     };
-    http.open("GET", root + "api/access/create/");
+    http.open("PATCH", root + "api/access/");
     http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send();
   }
@@ -67,7 +67,7 @@ function Access () {
           ToastsStore.success("Error, the changes haven't been saved.");
         }
       };
-      http.open("POST", root + "api/user/password/");
+      http.open("POST", root + "api/user/password");
       http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       http.setRequestHeader(
         "authorization",

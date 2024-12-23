@@ -33,7 +33,7 @@ function Settings() {
         }
       }
     }
-    http.open("GET", root + "api/settings/get/");
+    http.open("GET", root + "api/settings");
     http.setRequestHeader(
       "authorization",
       "bearer " + getCookieValue("token")
@@ -95,7 +95,7 @@ function Settings() {
         ToastsStore.error("Error, the changes haven't been saved");
       }
     };
-    http.open("POST", root + "api/settings/update/");
+    http.open("PATCH", root + "api/settings");
     http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send(JSON.stringify(settings));
