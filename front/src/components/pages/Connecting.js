@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from "react";
-import ReactJson from 'react-json-view'
+// import ReactJson from 'react-json-view'
+
+import Toast from "../web/Toast";
 import getCookieValue from '../../functions'
 import { root, deviceReference } from '../../constants'
 
@@ -10,6 +12,7 @@ function Connecting() {
   const [id, setId] = useState("")
   const [params, setParams] = useState([])
   const [commands, setCommands] = useState([])
+  const [alert, setAlert] = useState(null)
   
   useEffect(() => {
     setId(window.location.pathname.split('/')[3])
@@ -31,6 +34,7 @@ function Connecting() {
           setCommands(_commands)
         } else {
           console.error(dev.statusText)
+          setAlert({severity: "error", text: "Unable to load the data."})
         }
       }
     }
@@ -81,7 +85,7 @@ function Connecting() {
               <div className="advise" style={{textAlign: "left"}}>
                 <hr/>
                 <p>The device can change the value of any param sending an execute request to "device/control" topic as follow</p>
-                <ReactJson src={{"id":"light001","param":"brightness","value":"80","intent":"execute"}}/>
+                {/* <ReactJson src={{"id":"light001","param":"brightness","value":"80","intent":"execute"}}/> */}
               </div>
             </>
         }
@@ -120,6 +124,7 @@ function Connecting() {
             </>
         }
       </div>
+      <Toast alert={alert}/>
     </div>
   )  
 }

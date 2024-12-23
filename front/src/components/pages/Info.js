@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from "react";
-import ReactJson from 'react-json-view'
+// import ReactJson from 'react-json-view'
+
+import Toast from "../web/Toast";
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
@@ -18,6 +20,7 @@ function Info() {
       traits: [],
       type: ""
     })
+  const [alert, setAlert] = useState(null)
 
   useEffect(() => setId(window.location.pathname.split('/')[3]), [])
 
@@ -31,6 +34,7 @@ function Info() {
             setDevice(data)
           } else {
             console.error(dev.statusText);
+            setAlert({severity: "error", text: "Unable to load the data."})
           }
         }
       }
@@ -49,7 +53,7 @@ function Info() {
         </div>
         <hr/>
         <div className="page_block_buttons_container">
-          <ReactJson src={device.description} />
+          {/* <ReactJson src={device.description} /> */}
         </div>
       </div>
       <div className="page_block_container">
@@ -59,9 +63,10 @@ function Info() {
         </div>
         <hr/>
         <div className="page_block_buttons_container">
-          <ReactJson src={device.status} />
+          {/* <ReactJson src={device.status} /> */}
         </div>
       </div>
+      <Toast alert={alert}/>
     </div>
   );
 }
