@@ -9,7 +9,7 @@ import './Connecting.css';
 
 function Connecting() {
 
-  const [id, setId] = useState("")
+  const [id, setId] = useState(null)
   const [params, setParams] = useState([])
   const [commands, setCommands] = useState([])
   const [alert, setAlert] = useState(null)
@@ -19,28 +19,30 @@ function Connecting() {
   }, [])
 
   useEffect(() => {
-    var dev = new XMLHttpRequest();
-    dev.onload = function (e) {
-      if (dev.readyState === 4) {
-        if (dev.status === 200) {
-          const data = JSON.parse(dev.responseText);
-          var _params = []
-          var _commands = []
-          data.traits.forEach((trait) => {
-            _params = _params.concat(deviceReference.traits[trait].params);
-            _commands = _commands.concat(deviceReference.traits[trait].commands);
-          });
-          setParams(_params)
-          setCommands(_commands)
-        } else {
-          console.error(dev.statusText)
-          setAlert({severity: "error", text: "Unable to load the data."})
+    if (id) {
+      var dev = new XMLHttpRequest();
+      dev.onload = function (e) {
+        if (dev.readyState === 4) {
+          if (dev.status === 200) {
+            const data = JSON.parse(dev.responseText);
+            var _params = []
+            var _commands = []
+            data.description.traits.forEach((trait) => {
+              _params = _params.concat(deviceReference.traits[trait].params);
+              _commands = _commands.concat(deviceReference.traits[trait].commands);
+            });
+            setParams(_params)
+            setCommands(_commands)
+          } else {
+            console.error(dev.statusText)
+            setAlert({severity: "error", text: "Unable to load the data."})
+          }
         }
       }
+      dev.open("GET", root + "api/devices/" + id);
+      dev.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
+      dev.send();
     }
-    dev.open("GET", root + "api/devices/get/" + id + "/");
-    dev.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
-    dev.send();
   }, [id])
 
   return (
