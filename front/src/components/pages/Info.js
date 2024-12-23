@@ -18,7 +18,6 @@ function Info() {
       traits: [],
       type: ""
     })
-  const [status, setStatus] = useState({online: true})
 
   useEffect(() => setId(window.location.pathname.split('/')[3]), [])
 
@@ -35,24 +34,9 @@ function Info() {
           }
         }
       }
-      dev.open("GET", root + "api/devices/get/" + id + "/");
+      dev.open("GET", root + "api/devices/" + id);
       dev.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
       dev.send();
-
-      var sta = new XMLHttpRequest();
-      sta.onload = function (e) {
-        if (sta.readyState === 4) {
-          if (sta.status === 200) {
-            var data = JSON.parse(sta.responseText);
-            setStatus(data)
-          } else {
-            console.error(sta.statusText);
-          }
-        }
-      }
-      sta.open("GET", root + "api/status/get/" + id + "/");
-      sta.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
-      sta.send();
     }
   }, [id])
 
@@ -65,7 +49,7 @@ function Info() {
         </div>
         <hr/>
         <div className="page_block_buttons_container">
-          <ReactJson src={device} />
+          <ReactJson src={device.description} />
         </div>
       </div>
       <div className="page_block_container">
@@ -75,7 +59,7 @@ function Info() {
         </div>
         <hr/>
         <div className="page_block_buttons_container">
-          <ReactJson src={status} />
+          <ReactJson src={device.status} />
         </div>
       </div>
     </div>
