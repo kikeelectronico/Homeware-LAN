@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {Button, Stack} from '@mui/material';
-import { ToastsContainer, ToastsStore } from "react-toasts";
+
+import Toast from "../web/Toast";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
 
@@ -11,6 +12,7 @@ function Logs () {
 
   const [data, setData] = useState([])
   const [page, setPage] = useState(1)
+  const [alert, setAlert] = useState(null)
 
   useEffect(() => {
     var http = new XMLHttpRequest();
@@ -21,7 +23,7 @@ function Logs () {
           setData(data.reverse())
         } else {
           console.error(http.statusText);
-          ToastsStore.error("Something went wrong");
+          setAlert({severity: "error", text: "Something went wrong"})
         }
       }
     }
@@ -39,9 +41,9 @@ function Logs () {
     http.onload = function (e) {
       if (http.readyState === 4) {
         if (http.status === 200) {
-          ToastsStore.success("Deleted");
+          setAlert({severity: "success", text: "Deleted"})
         } else {
-          ToastsStore.error("Something went wrong");
+          setAlert({severity: "error", text: "Something went wrong"})
         }
       }
     }
@@ -97,7 +99,8 @@ function Logs () {
           </Stack>
         </div>
       </div>
-      <ToastsContainer store={ToastsStore} />
+      
+      <Toast alert={alert}/>
     </div>
   );
   

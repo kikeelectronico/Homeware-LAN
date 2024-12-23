@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from "react";
 import {Button, Stack, Select, MenuItem} from '@mui/material';
-import { ToastsContainer, ToastsStore } from "react-toasts";
+
+import Toast from "../web/Toast";
 import getCookieValue from "../../functions";
 import { root, deviceReference } from "../../constants";
 import Trait from "../editor/Trait";
@@ -24,6 +25,8 @@ function Editor() {
 
   const [traits_to_show, setTraitsToShow] = useState([])
   const [not_recomended_traits, setNonRecomendedTraits] = useState(false)
+
+  const [alert, setAlert] = useState(null)
 
   useEffect(() => {
     let _id = window.location.pathname.split("/")[3]
@@ -53,7 +56,7 @@ function Editor() {
             setLoading(false)
           } else {
             console.error(http.statusText);
-            ToastsStore.error("Something went wrong");
+            setAlert({severity: "error", text: "Something went wrong."})
           }
         }
       }
@@ -144,18 +147,18 @@ function Editor() {
 
   const saveDevice = () => {
     if(true) {
-      ToastsStore.warning("Saving");
+      setAlert({severity: "warning", text: "Saving"})
       var http = new XMLHttpRequest();
       http.onload = function (e) {
         if (http.readyState === 4) {
           if (http.status === 200) {
-            ToastsStore.success("Saved correctly");
+            setAlert({severity: "success", text: "Saved correctly."})
             if (create) {
               window.location.href = "/devices";
             }
           } else {
             console.error(http.statusText);
-            ToastsStore.error("Error, the changes haven't been saved");
+            setAlert({severity: "error", text: "The changes haven't been saved"})
           }
         }
       }
@@ -183,12 +186,12 @@ function Editor() {
       http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
       http.send(JSON.stringify(payload));
     } else {
-      ToastsStore.error("Verify the mandatory data");
+      setAlert({severity: "error", text: "Verify the mandatory data."})
     }
   }
 
   const deleteDevice = () => {
-    ToastsStore.warning("Deleting");
+    setAlert({severity: "warning", text: "Deleting."})
     if (window.confirm("Do you want to delete the device?")) {
       var http = new XMLHttpRequest();
       http.onload = function (e) {
@@ -197,10 +200,10 @@ function Editor() {
             window.location.href = "/devices/";
           } else {
             console.error(http.statusText);
-            ToastsStore.error("Error, the device hasn't been deleted");
+            setAlert({severity: "error", text: "The device hasn't been deleted."})
           }
         } else {
-          ToastsStore.error("Error, the device hasn't been deleted");
+          setAlert({severity: "error", text: "The device hasn't been deleted."})
         }
       };
       http.open(
@@ -213,7 +216,7 @@ function Editor() {
       );
       http.send();
     } else {
-      ToastsStore.warning("Ok. The device is save");
+      setAlert({severity: "seccess", text: "Saved."})
     }
   }
 
@@ -339,7 +342,7 @@ function Editor() {
         }
       </div>
 
-      <ToastsContainer store={ToastsStore} />
+      <Toast alert={alert}/>
     </div>
   );
   

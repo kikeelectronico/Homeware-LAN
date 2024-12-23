@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
-import { ToastsContainer, ToastsStore } from "react-toasts";
+
+import Toast from "../web/Toast";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
 import {Button} from '@mui/material';
@@ -10,6 +11,7 @@ function Access () {
   const [current_pass, setCurrentPass] = useState("")
   const [new_pass_1, setNewPass1] = useState("")
   const [new_pass_2, setNewPass2] = useState("")
+  const [alert, setAlert] = useState(null)
 
   useEffect(() => {
     var http = new XMLHttpRequest();
@@ -20,7 +22,7 @@ function Access () {
           setData(data[0])
         } else {
           console.error(http.statusText);
-          ToastsStore.error("Something went wrong. Unable to load the data.");
+          setAlert({severity: "error", text: "Something went wrong. Unable to load the data."})
         }
       }
     }
@@ -30,19 +32,19 @@ function Access () {
   }, [])
 
   const createAPIKey = () => {
-    ToastsStore.warning("Generating API key");
+    setAlert({severity: "warning", text: "Generating API key."})
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       if (http.readyState === 4) {
         if (http.status === 200) {
           window.location.href = "/access";
-          ToastsStore.success("Generated");
+          setAlert({severity: "success", text: "API key generated."})
         } else {
           console.error(http.statusText);
-          ToastsStore.error("Something went wrong.");
+          setAlert({severity: "error", text: "Something went wrong."})
         }
       } else {
-        ToastsStore.error("Something went wrong");
+        setAlert({severity: "error", text: "Something went wrong."})
       }
     };
     http.open("PATCH", root + "api/access/");
@@ -52,19 +54,19 @@ function Access () {
 
   const changePassword = () => {    
     if (new_pass_1 !== new_pass_2) {
-      ToastsStore.warning("The passwords are not equal");
+      setAlert({severity: "warning", text: "The passwords are not equal."})
     } else {
-      ToastsStore.warning("Changing");
+      setAlert({severity: "warning", text: "Changing password."})
       var http = new XMLHttpRequest();
       http.onload = function (e) {
         if (http.readyState === 4) {
           if (http.status === 200) {
-            ToastsStore.success("Changed");
+            setAlert({severity: "success", text: "Password changed."})
           } else {
-            ToastsStore.success("Error, the changes haven't been saved.");
+            setAlert({severity: "error", text: "The changes haven't been saved."})
           }
         } else {
-          ToastsStore.success("Error, the changes haven't been saved.");
+          setAlert({severity: "error", text: "The changes haven't been saved."})
         }
       };
       http.open("POST", root + "api/user/password");
@@ -168,7 +170,7 @@ function Access () {
             </Button>
         </div>
       </div>
-      <ToastsContainer store={ToastsStore} />
+      <Toast alert={alert}/>
     </div>
   );
   

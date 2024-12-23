@@ -1,10 +1,13 @@
-import React from "react";
+import React, {useState} from "react";
 import {Button} from '@mui/material';
-import { ToastsContainer, ToastsStore } from "react-toasts";
+
+import Toast from "../web/Toast";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
 
 function Backup() {
+
+  const [alert, setAlert] = useState(null)
 
   const formatTimestamp = (timestamp) => {
     let a = new Date(timestamp * 1000);
@@ -12,7 +15,7 @@ function Backup() {
   }
 
   const backup = () => {
-    ToastsStore.warning("Downloading");
+    setAlert({severity: "warning", text: "Downloading backup."})
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       if (http.readyState === 4) {
@@ -25,7 +28,7 @@ function Backup() {
           link.click();
         } else {
           console.error(http.statusText);
-          ToastsStore.error("Something went wrong");
+          setAlert({severity: "error", text: "Something went wrong."})
         }
       }
     }
@@ -43,9 +46,9 @@ function Backup() {
         http.onload = function (e) {
           if (http.readyState === 4) {
             if (http.status === 200) {
-              ToastsStore.success("Uploaded correctly");
+              setAlert({severity: "success", text: "Uploaded correctly."})
             } else {
-              ToastsStore.error("Something went wrong");
+              setAlert({severity: "error", text: "Something went wrong."})
             }
           }
         }
@@ -80,7 +83,7 @@ function Backup() {
           <input id="file" type="file" onChange={restore} />
         </div>
       </div>
-      <ToastsContainer store={ToastsStore} />
+      <Toast alert={alert}/>
     </div>
   );
   

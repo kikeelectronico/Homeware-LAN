@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from "react";
 import {Button} from '@mui/material';
 import Switch from "react-switch";
-import { ToastsContainer, ToastsStore } from "react-toasts";
+
+import Toast from "../web/Toast";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
 
@@ -19,6 +20,7 @@ function Settings() {
       client_id: "",
       client_secret: ""
     })
+  const [alert, setAlert] = useState(null)
 
   useEffect(() => {
     var http = new XMLHttpRequest();
@@ -29,7 +31,7 @@ function Settings() {
           setSettings(data)
         } else {
           console.error(http.statusText);
-          ToastsStore.error("Something went wrong");
+          setAlert({severity: "error", text: "Something went wrong."})
         }
       }
     }
@@ -45,7 +47,7 @@ function Settings() {
     var url = new URL(window.location);
     var status = url.searchParams.get("status");
     if(status === "Success")
-      ToastsStore.success("Saved correctly");
+      setAlert({severity: "success", text: "Saved correctly."})
   }, [])
 
   const update = (event) => {
@@ -81,18 +83,18 @@ function Settings() {
   }
 
   const save = () => {
-    ToastsStore.warning("Saving");
+    setAlert({severity: "warning", text: "Saving."})
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       if (http.readyState === 4) {
         if (http.status === 200) {
           //JSON.parse(http.responseText);
-          ToastsStore.success("Saved correctly");
+          setAlert({severity: "success", text: "Saved correctly."})
         } else {
-          ToastsStore.error("Error, the changes haven't been saved");
+          setAlert({severity: "error", text: "The changes haven't been saved."})
         }
       } else {
-        ToastsStore.error("Error, the changes haven't been saved");
+        setAlert({severity: "error", text: "The changes haven't been saved."})
       }
     };
     http.open("PATCH", root + "api/settings");
@@ -110,9 +112,9 @@ function Settings() {
         http.onload = function (e) {
           if (http.readyState === 4) {
             if (http.status === 200) {
-              ToastsStore.success("Uploaded correctly");
+              setAlert({severity: "success", text: "Uploaded correctly."})
             } else {
-              ToastsStore.error("Something went wrong");
+              setAlert({severity: "error", text: "Something went wrong."})
             }
           }
         }
@@ -440,7 +442,7 @@ function Settings() {
         </div>
       </div>
 
-      <ToastsContainer store={ToastsStore} />
+      <Toast alert={alert}/>
     </div>
   );
   

@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from "react";
 import {Button} from '@mui/material';
 import { Link } from "react-router-dom";
-import { ToastsContainer, ToastsStore } from "react-toasts";
+
+import Toast from "../web/Toast";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
 
@@ -50,6 +51,7 @@ function Devices() {
   const [processed_scenes, setProcesedScenes] = useState([])
   const [order_by, setOrderBy] = useState("az")
   const [search_phrase, setSearchPhrase] = useState("")
+  const [alert, setAlert] = useState(null)
 
 
   useEffect(() => {
@@ -72,7 +74,7 @@ function Devices() {
           setOrderBy("az")
         } else {
           console.error(http.statusText);
-          ToastsStore.error("Something went wrong");
+          setAlert({severity: "error", text: "Something went wrong"})
         }
       }
     }
@@ -199,7 +201,8 @@ function Devices() {
           <Button variant="contained">New</Button>
         </Link>
       </div>
-      <ToastsContainer store={ToastsStore} />
+
+      <Toast alert={alert}/>
     </div>
   );
   
