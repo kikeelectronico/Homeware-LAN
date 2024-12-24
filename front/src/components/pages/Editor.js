@@ -216,7 +216,7 @@ function Editor() {
         <hr/>
         { loading ? <></> : 
           <div className="page_block_content_container">
-            <Text name="Nick names*" data="id"
+            <Text name="Unique id*" data="id"
               value={id}
               update={setId}
               disabled={create ? false : true}
