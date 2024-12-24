@@ -62,7 +62,7 @@ function Login() {
 
   document.onkeydown = function(evt) {
     evt = evt || window.event;
-    if (evt.keyCode == 13) {
+    if (evt.keyCode === 13) {
       submit()
     }
   }
