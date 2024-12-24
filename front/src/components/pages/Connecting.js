@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-// import ReactJson from 'react-json-view'
+import ReactJsonView from '@microlink/react-json-view'
 
 import Toast from "../web/Toast";
 import getCookieValue from '../../functions'
@@ -87,7 +87,7 @@ function Connecting() {
               <div className="advise" style={{textAlign: "left"}}>
                 <hr/>
                 <p>The device can change the value of any param sending an execute request to "device/control" topic as follow</p>
-                {/* <ReactJson src={{"id":"light001","param":"brightness","value":"80","intent":"execute"}}/> */}
+                <ReactJsonView src={{"id":"light001","param":"brightness","value":"80","intent":"execute"}}/>
               </div>
             </>
         }

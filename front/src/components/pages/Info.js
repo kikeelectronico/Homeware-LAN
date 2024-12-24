@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-// import ReactJson from 'react-json-view'
+import ReactJsonView from '@microlink/react-json-view'
 
 import Toast from "../web/Toast";
 import getCookieValue from '../../functions'
@@ -53,7 +53,7 @@ function Info() {
         </div>
         <hr/>
         <div className="page_block_buttons_container">
-          {/* <ReactJson src={device.description} /> */}
+          <ReactJsonView src={device.description} />
         </div>
       </div>
       <div className="page_block_container">
@@ -63,7 +63,7 @@ function Info() {
         </div>
         <hr/>
         <div className="page_block_buttons_container">
-          {/* <ReactJson src={device.status} /> */}
+          <ReactJsonView src={device.status} />
         </div>
       </div>
       <Toast alert={alert}/>

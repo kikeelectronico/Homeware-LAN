@@ -4,6 +4,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@microlink/react-json-view": "^1.23.4",
     "@mui/icons-material": "^6.2.1",
     "@mui/material": "^6.2.1",
     "json-schema": "^0.4.0",
@@ -12,8 +13,8 @@
     "react-bootstrap": "^2.10.7",
     "react-dom": "^19.0.0",
     "react-markdown": "^9.0.1",
-    "react-router-dom": "^7.1.0",
     "react-router": "^7.1.0",
+    "react-router-dom": "^7.1.0",
     "react-router-link": "^2.0.2",
     "react-scripts": "^5.0.1",
     "react-switch": "^7.1.0",
