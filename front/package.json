@@ -13,7 +13,7 @@
     "react-bootstrap": "^2.10.7",
     "react-dom": "^19.0.0",
     "react-markdown": "^9.0.1",
-    "react-router": "^7.1.0",
+    "react-router": "^7.1.1",
     "react-router-dom": "^7.1.0",
     "react-router-link": "^2.0.2",
     "react-scripts": "^5.0.1",
