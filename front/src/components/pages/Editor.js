@@ -149,7 +149,7 @@ function Editor() {
         }
       }
       var payload = {
-        device: {
+        description: {
           id: id,
           type: type,
           deviceInfo: device_info,
@@ -166,7 +166,7 @@ function Editor() {
       if (create) {
         http.open("POST", root + "api/devices");
       } else {
-        http.open("PUT", root + "api/devices");
+        http.open("PUT", root + "api/devices/" + id);
       }
       http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
