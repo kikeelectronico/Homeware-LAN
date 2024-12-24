@@ -42,17 +42,18 @@ function Editor() {
         if (http.readyState === 4) {
           if (http.status === 200) {
             var data = JSON.parse(http.responseText);
-            setType(data.type)
-            setNicknames(data.name.nicknames)
-            setTraits(data.traits)
+            setType(data.description.type)
+            setNicknames(data.description.name.nicknames)
+            setTraits(data.description.traits)
             let _traits_to_show = []
             const all_traits = Object.keys(deviceReference.traits)
             for (let i = 0; i < all_traits.length; i++)
-              if (data.traits.includes(all_traits[i]) || deviceReference.devices[data.type].traits.includes(all_traits[i]))
+              if (data.description.traits.includes(all_traits[i]) || deviceReference.devices[data.type].traits.includes(all_traits[i]))
                 _traits_to_show.push(all_traits[i])
             setTraitsToShow(_traits_to_show)
-            setDeviceInfo(data.deviceInfo)
-            attributes.current = data.attributes
+            setDeviceInfo(data.description.deviceInfo)
+            attributes.current = data.description.attributes
+            status.current = data.status
             setLoading(false)
           } else {
             console.error(http.statusText);
@@ -60,30 +61,12 @@ function Editor() {
           }
         }
       }
-      http.open("GET", root + "api/devices/get/" + id + "/");
+      http.open("GET", root + "api/devices/" + id);
       http.setRequestHeader(
         "authorization",
         "bearer " + getCookieValue("token")
       );
       http.send();
-
-      var sta = new XMLHttpRequest();
-      sta.onload = function (e) {
-        if (sta.readyState === 4) {
-          if (sta.status === 200) {
-            var data = JSON.parse(sta.responseText);
-            status.current = data
-          } else {
-            console.error(sta.statusText);
-          }
-        }
-      }
-      sta.open("GET", root + "api/status/get/" + id + "/");
-      sta.setRequestHeader(
-        "authorization",
-        "bearer " + getCookieValue("token")
-      );
-      sta.send();
     }
   }, [id, create])
 
@@ -178,9 +161,9 @@ function Editor() {
         status: status.current,
       };
       if (create) {
-        http.open("POST", root + "api/devices/create/");
+        http.open("POST", root + "api/devices");
       } else {
-        http.open("POST", root + "api/devices/update/");
+        http.open("PUT", root + "api/devices");
       }
       http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
@@ -207,9 +190,7 @@ function Editor() {
           setAlert({severity: "error", text: "Something went wrong."})
         }
       };
-      http.open(
-        "POST",
-        root + "api/devices/delete/" + id + "/"
+      http.open("DELETE", root + "api/devices/" + id
       );
       http.setRequestHeader(
         "authorization",
