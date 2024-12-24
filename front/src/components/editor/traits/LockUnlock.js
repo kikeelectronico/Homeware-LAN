@@ -13,7 +13,7 @@ const LockUnlock = forwardRef((props, ref) => {
     } else {
       props.updateStatus(null, states, "insert")
     }
-  }, [])
+  }, [props])
 
   useImperativeHandle(ref, () => ({
     deleteAttributes() {

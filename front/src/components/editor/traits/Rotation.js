@@ -37,7 +37,7 @@ const Rotation = forwardRef((props, ref) => {
       props.updateStatus(null, states, "insert")
       props.updateAttributes(null, attributes, "insert")
     }
-  }, [])
+  }, [props])
 
   useImperativeHandle(ref, () => ({
     deleteAttributes() {
