@@ -12,7 +12,7 @@ import "./Editor.css";
 
 function Editor() {
   
-  const [id, setId] = useState("")
+  const [id, setId] = useState(null)
   const [create, setCreate] = useState(true)
   const [loading, setLoading] = useState(true)
   const [type, setType] = useState("")
@@ -37,36 +37,39 @@ function Editor() {
 
   useEffect(() => {
     if (!create) {
-      var http = new XMLHttpRequest();
-      http.onload = function (e) {
-        if (http.readyState === 4) {
-          if (http.status === 200) {
-            var data = JSON.parse(http.responseText);
-            setType(data.description.type)
-            setNicknames(data.description.name.nicknames)
-            setTraits(data.description.traits)
-            let _traits_to_show = []
-            const all_traits = Object.keys(deviceReference.traits)
-            for (let i = 0; i < all_traits.length; i++)
-              if (data.description.traits.includes(all_traits[i]) || deviceReference.devices[data.type].traits.includes(all_traits[i]))
-                _traits_to_show.push(all_traits[i])
-            setTraitsToShow(_traits_to_show)
-            setDeviceInfo(data.description.deviceInfo)
-            attributes.current = data.description.attributes
-            status.current = data.status
-            setLoading(false)
-          } else {
-            console.error(http.statusText);
-            setAlert({severity: "error", text: "Unable to load the data."})
+      if (id) {
+        var http = new XMLHttpRequest();
+        http.onload = function (e) {
+          if (http.readyState === 4) {
+            if (http.status === 200) {
+              var data = JSON.parse(http.responseText);
+              console.log(data)
+              setType(data.description.type)
+              setNicknames(data.description.name.nicknames)
+              setTraits(data.description.traits)
+              let _traits_to_show = []
+              const all_traits = Object.keys(deviceReference.traits)
+              for (let i = 0; i < all_traits.length; i++)
+                if (data.description.traits.includes(all_traits[i]) || deviceReference.devices[data.description.type].traits.includes(all_traits[i]))
+                  _traits_to_show.push(all_traits[i])
+              setTraitsToShow(_traits_to_show)
+              setDeviceInfo(data.description.deviceInfo)
+              attributes.current = data.description.attributes
+              status.current = data.status
+              setLoading(false)
+            } else {
+              console.error(http.statusText);
+              setAlert({severity: "error", text: "Unable to load the data."})
+            }
           }
         }
+        http.open("GET", root + "api/devices/" + id);
+        http.setRequestHeader(
+          "authorization",
+          "bearer " + getCookieValue("token")
+        );
+        http.send();
       }
-      http.open("GET", root + "api/devices/" + id);
-      http.setRequestHeader(
-        "authorization",
-        "bearer " + getCookieValue("token")
-      );
-      http.send();
     }
   }, [id, create])
 
