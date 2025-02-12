@@ -6,7 +6,7 @@
     "@emotion/styled": "^11.14.0",
     "@microlink/react-json-view": "^1.23.4",
     "@mui/icons-material": "^6.3.0",
-    "@mui/material": "^6.2.1",
+    "@mui/material": "^6.4.4",
     "json-schema": "^0.4.0",
     "link": "^2.1.1",
     "react": "^19.0.0",
