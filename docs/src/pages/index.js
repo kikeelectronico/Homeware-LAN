@@ -1,10 +1,12 @@
-import React from 'react';
 import clsx from 'clsx';
-import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import Layout from '@theme/Layout';
+import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import styles from './styles.module.css';
+
+import Heading from '@theme/Heading';
+import styles from './index.module.css';
 
 const features = [
   {
@@ -63,9 +65,8 @@ function Feature({imageUrl, title, description, url}) {
   );
 }
 
-function Home() {
-  const context = useDocusaurusContext();
-  const {siteConfig = {}} = context;
+export default function Home() {
+  const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
       title="Home"
@@ -102,5 +103,3 @@ function Home() {
     </Layout>
   );
 }
-
-export default Home;
