@@ -25,7 +25,7 @@ const TemperatureSetting = (props) => {
         }
       }
     }
-    http.open("PATCH", root + "api/devices/" + props.id + "/status");
+    http.open("PATCH", root + "api/devices/" + props.id + "/states");
     http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send(
