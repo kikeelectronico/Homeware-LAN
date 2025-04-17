@@ -327,6 +327,16 @@ class Data:
 				param_key = param_key_string.decode().split("/")
 				status[param_key[2]] = pickle.loads(self.redis.get(param_key_string))
 			return status
+		
+	def getStatusParam(self, device_id=None, param=None):
+		if device_id is None and param is None:
+			return None
+		else:
+			param_key_string = "status/" + str(device_id) + "/" + str(param)
+			param = self.redis.get(param_key_string)
+			if param is None:
+				return None
+			return pickle.loads(param)
 
 	def updateParamStatus(self, device_id, param, value):
 		if len(self.redis.keys('status/' + device_id + '/' + param)) == 1:

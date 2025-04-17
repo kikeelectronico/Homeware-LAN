@@ -113,6 +113,15 @@ def getStatus(device_id: str | None = None):
         return errorResponses.FOUR_O_FOUR
     return response
 
+@router.get("/api/devices/{device_id}/status/{param_name}", dependencies=[Depends(allowAuthenticated)])
+def getStatus(device_id: str | None = None, param_name: str | None = None):
+    if device_id is None or param_name is None:
+        return errorResponses.FOUR_O_O
+    
+    response = data_conector.getStatusParam(device_id, param_name)
+    if response is None:
+        return errorResponses.FOUR_O_FOUR
+    return response
 
 @router.patch("/api/devices/{device_id}/status", dependencies=[Depends(allowAuthenticated)])
 def updateStatus(device_id: str, state: dict | None = None):
