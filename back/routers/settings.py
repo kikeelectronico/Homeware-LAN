@@ -12,11 +12,11 @@ router = APIRouter()
 data_conector = Data()
 
 @router.get("/api/settings", dependencies=[Depends(allowUser)])
-def getSettings():
+def get_settings():
     return data_conector.getSettings()
     
 @router.patch("/api/settings", dependencies=[Depends(allowUser)])
-def updateSettings(settings: dict | None = None):
+def update_settings(settings: dict | None = None):
     if settings is None:
         return errorResponses.FOUR_O_O
     
@@ -38,7 +38,7 @@ class ServiceAccountKey(BaseModel):
     universe_domain: str
 
 @router.put("/api/settings/serviceaccountkey", dependencies=[Depends(allowUser)])
-def restoreBackup(serviceaccountkey: ServiceAccountKey | None = None):
+def set_service_account_key(serviceaccountkey: ServiceAccountKey | None = None):
     if serviceaccountkey is None:
         return errorResponses.FOUR_O_O
     
@@ -52,14 +52,14 @@ def restoreBackup(serviceaccountkey: ServiceAccountKey | None = None):
 
 # Legacy
 
-@router.get("/api/settings/get", dependencies=[Depends(allowUser)])
-@router.get("/api/settings/get/", dependencies=[Depends(allowUser)])
-def getSettings():
+@router.get("/api/settings/get", dependencies=[Depends(allowUser)], include_in_schema=False)
+@router.get("/api/settings/get/", dependencies=[Depends(allowUser)], include_in_schema=False)
+def get_settings():
     return data_conector.getSettings()
     
-@router.post("/api/settings/update", dependencies=[Depends(allowUser)])
-@router.post("/api/settings/update/", dependencies=[Depends(allowUser)])
-def updateSettings(settings: dict | None = None):
+@router.post("/api/settings/update", dependencies=[Depends(allowUser)], include_in_schema=False)
+@router.post("/api/settings/update/", dependencies=[Depends(allowUser)], include_in_schema=False)
+def update_settings(settings: dict | None = None):
     if settings:
         data_conector.updateSettings(settings)
         return data_conector.getSettings()
