@@ -103,8 +103,8 @@ def delete_a_device(device_id: str | None = None):
 
 # Status
 
-@router.get("/api/devices/{device_id}/status", dependencies=[Depends(allowAuthenticated)])
-def get_the_status_of_a_device(device_id: str | None = None):
+@router.get("/api/devices/{device_id}/states", dependencies=[Depends(allowAuthenticated)])
+def get_the_states_of_a_device(device_id: str | None = None):
     if device_id is None:
         return errorResponses.FOUR_O_O
     
@@ -113,8 +113,8 @@ def get_the_status_of_a_device(device_id: str | None = None):
         return errorResponses.FOUR_O_FOUR
     return response
 
-@router.get("/api/devices/{device_id}/status/param/{param_name}", dependencies=[Depends(allowAuthenticated)])
-def get_a_param_of_a_device(device_id: str | None = None, param_name: str | None = None):
+@router.get("/api/devices/{device_id}/states/{param_name}", dependencies=[Depends(allowAuthenticated)])
+def get_a_state_of_a_device(device_id: str | None = None, param_name: str | None = None):
     if device_id is None or param_name is None:
         return errorResponses.FOUR_O_O
     
@@ -123,8 +123,8 @@ def get_a_param_of_a_device(device_id: str | None = None, param_name: str | None
         return errorResponses.FOUR_O_FOUR
     return response
 
-@router.patch("/api/devices/{device_id}/status", dependencies=[Depends(allowAuthenticated)])
-def update_the_status_of_a_device(device_id: str, state: dict | None = None):
+@router.patch("/api/devices/{device_id}/states", dependencies=[Depends(allowAuthenticated)])
+def update_the_states_of_a_device(device_id: str, state: dict | None = None):
     if device_id is None:
         return errorResponses.FOUR_O_O
     
