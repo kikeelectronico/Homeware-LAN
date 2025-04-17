@@ -39,9 +39,6 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
         blog: {
           showReadingTime: true,
@@ -50,9 +47,6 @@ const config: Config = {
             xslt: true,
           },
           // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -71,7 +65,7 @@ const config: Config = {
           // Pass it a path to a local OpenAPI YAML file
           {
             // Redocusaurus will automatically bundle your spec into a single file during the build
-            spec: 'https://raw.githubusercontent.com/kikeelectronico/Homeware-LAN/refs/heads/dev/docs/openapi.json',
+            spec: 'https://raw.githubusercontent.com/kikeelectronico/Homeware-LAN/refs/heads/dev/docs/static/openapi.json',
             route: '/api/',
           },
         ],
