@@ -66,14 +66,12 @@ function Settings() {
     var _settings = {...settings};
     _settings.sync_google = checked;
     setSettings(_settings)
-    save();
   }
 
   const enableSyncDevices = (checked) => {
     var _settings = {...settings};
     _settings.sync_devices = checked;
     setSettings(_settings)
-    save();
   }
 
   const enableDdnsProvider = (checked) => {
@@ -229,6 +227,9 @@ function Settings() {
         <div className="page_block_content_container">
           <input id="file" type="file" onChange={uploadServiceAccountKey} />
         </div>
+        <div className="page_block_buttons_container">
+          <Button variant="contained" onClick={save}>Save</Button>
+        </div>
       </div>
 
       <div className="page_block_container">
@@ -294,6 +295,9 @@ function Settings() {
           <span>
             
           </span>
+        </div>
+        <div className="page_block_buttons_container">
+          <Button variant="contained" onClick={save}>Save</Button>
         </div>
       </div>
 
