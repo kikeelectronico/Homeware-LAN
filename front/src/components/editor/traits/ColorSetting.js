@@ -28,14 +28,14 @@ const ColorSetting = forwardRef((props, ref) => {
       setColorModel("colorModel" in props.attributes ? props.attributes.colorModel : "")
       setColorTemperatureRange("colorTemperatureRange" in props.attributes ? props.attributes.colorTemperatureRange : undefined)
     } else {
-      props.updateStatus(null, states, "insert")
+      props.updateStates(null, states, "insert")
       props.updateAttributes(null, attributes, "insert")
     }
   }, [props])
 
   useImperativeHandle(ref, () => ({
     deleteAttributes() {
-      props.updateStatus(null, states, "drop")
+      props.updateStates(null, states, "drop")
       props.updateAttributes(null, attributes, "drop")
     }
   }))
@@ -46,17 +46,17 @@ const ColorSetting = forwardRef((props, ref) => {
       props.updateAttributes("colorModel", null, "delete")
       setColorTemperatureRange(attributes.colorTemperatureRange)
       props.updateAttributes("colorTemperatureRange", attributes.colorTemperatureRange, "update")
-      props.updateStatus("color", {temperatureK: 3000}, "update")
+      props.updateStates("color", {temperatureK: 3000}, "update")
     } else if (type === "hsv") {
       props.updateAttributes("colorModel", type, "update")
       setColorTemperatureRange(undefined)
       props.updateAttributes("colorTemperatureRange", null, "delete")
-      props.updateStatus("color", {spectrumHSV: {hue: 300, saturation: 1, value: 1}}, "update")
+      props.updateStates("color", {spectrumHSV: {hue: 300, saturation: 1, value: 1}}, "update")
     } else {
       props.updateAttributes("colorModel", type, "update")
       setColorTemperatureRange(undefined)
       props.updateAttributes("colorTemperatureRange", null, "delete")
-      props.updateStatus("color", states.color, "update")
+      props.updateStates("color", states.color, "update")
     }
   }
 

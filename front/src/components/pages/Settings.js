@@ -66,14 +66,12 @@ function Settings() {
     var _settings = {...settings};
     _settings.sync_google = checked;
     setSettings(_settings)
-    save();
   }
 
   const enableSyncDevices = (checked) => {
     var _settings = {...settings};
     _settings.sync_devices = checked;
     setSettings(_settings)
-    save();
   }
 
   const enableDdnsProvider = (checked) => {
@@ -229,6 +227,9 @@ function Settings() {
         <div className="page_block_content_container">
           <input id="file" type="file" onChange={uploadServiceAccountKey} />
         </div>
+        <div className="page_block_buttons_container">
+          <Button variant="contained" onClick={save}>Save</Button>
+        </div>
       </div>
 
       <div className="page_block_container">
@@ -277,7 +278,7 @@ function Settings() {
         <div className="page_block_content_container">
           <div className="three_table_row">
             <div className="three_table_cel align_right">
-              Automatic status sync
+              Automatic state sync
             </div>
             <div className="three_table_cel">
               <Switch
@@ -286,7 +287,7 @@ function Settings() {
               />
             </div>
             <div className="advise three_table_cel">
-              <span >Send the status to the devices proactively.</span>
+              <span >Send the states to the devices proactively.</span>
             </div>
           </div>
         </div>
@@ -294,6 +295,9 @@ function Settings() {
           <span>
             
           </span>
+        </div>
+        <div className="page_block_buttons_container">
+          <Button variant="contained" onClick={save}>Save</Button>
         </div>
       </div>
 

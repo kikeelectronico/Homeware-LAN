@@ -15,7 +15,7 @@ def pytest_configure(config):
     request = requests.get(config.getoption("host") + "/api/user/login", headers=headers)
     if request.status_code == 200:
         response = request.json()
-        if response["status"] == "in":
+        if response["valid"]:
             pytest.token = response["token"]
 
 def pytest_addoption(parser):

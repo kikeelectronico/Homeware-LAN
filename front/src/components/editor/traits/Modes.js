@@ -36,14 +36,14 @@ const Modes = forwardRef((props, ref) => {
       setQueryOnlyModes(props.attributes.queryOnlyModes)
       setAvailableModes(props.attributes.availableModes)
     } else {
-      props.updateStatus(null, states, "insert")
+      props.updateStates(null, states, "insert")
       props.updateAttributes(null, attributes, "insert")
     }
   }, [props])
 
   useImperativeHandle(ref, () => ({
     deleteAttributes() {
-      props.updateStatus(null, states, "drop")
+      props.updateStates(null, states, "drop")
       props.updateAttributes(null, attributes, "drop")
     }
   }))
@@ -72,11 +72,11 @@ const Modes = forwardRef((props, ref) => {
     _availableModes.splice(index, 1)
     setAvailableModes(_availableModes)
     props.updateAttributes("availableModes", _availableModes, "update")
-    // Update status
-    let _currentModeSettings = {...props.status.currentModeSettings}
+    // Update states
+    let _currentModeSettings = {...props.states.currentModeSettings}
     if (_name in _currentModeSettings)
       delete _currentModeSettings[_name]
-    props.updateStatus("currentModeSettings", _currentModeSettings, "update")
+    props.updateStates("currentModeSettings", _currentModeSettings, "update")
   }
 
   const updateName = (index, name) => {
@@ -91,12 +91,12 @@ const Modes = forwardRef((props, ref) => {
     ]
     setAvailableModes(_availableModes)
     props.updateAttributes("availableModes", _availableModes, "update")
-    // Update status
-    let _currentModeSettings = {...props.status._currentModeSettings}
+    // Update states
+    let _currentModeSettings = {...props.states._currentModeSettings}
     if (_prev_name in _currentModeSettings)
       delete _currentModeSettings[_prev_name]
     _currentModeSettings[name] = ""
-    props.updateStatus("currentModeSettings", _currentModeSettings, "update")
+    props.updateStates("currentModeSettings", _currentModeSettings, "update")
   }
 
   const updatesettings = (index, settings_str) => {

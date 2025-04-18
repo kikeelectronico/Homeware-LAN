@@ -38,14 +38,14 @@ const TemperatureSetting = forwardRef((props, ref) => {
       setThermostatTemperatureRange(props.attributes.thermostatTemperatureRange)
       setBufferRangeCelsius(props.attributes.bufferRangeCelsius)
     } else {
-      props.updateStatus(null, states, "insert")
+      props.updateStates(null, states, "insert")
       props.updateAttributes(null, attributes, "insert")
     }
   }, [props])
 
   useImperativeHandle(ref, () => ({
     deleteAttributes() {
-      props.updateStatus(null, states, "drop")
+      props.updateStates(null, states, "drop")
       props.updateAttributes(null, attributes, "drop")
     }
   }))

@@ -11,31 +11,31 @@ const Light = (props) => {
 
   useEffect(() => {
     var _color = 'yellow';
-    if (props.device.traits.includes("action.devices.traits.ColorSetting" && Object.keys(props.status).includes("color"))){
-      if (Object.keys(props.status.color).includes("spectrumRgb"))
-      _color = "#" + props.status.color.spectrumRgb.toString(16);
+    if (props.device.traits.includes("action.devices.traits.ColorSetting" && Object.keys(props.states).includes("color"))){
+      if (Object.keys(props.states.color).includes("spectrumRgb"))
+      _color = "#" + props.states.color.spectrumRgb.toString(16);
       else
-      _color = "#" + props.status.color.spectrumRGB.toString(16);
+      _color = "#" + props.states.color.spectrumRGB.toString(16);
     }
     setColor(_color)
-  }, [props.status, props.device.traits])
+  }, [props.states, props.device.traits])
 
   return (
     <div>
       <div className="device_card">
-        <div className="device_card_color_strip" style={{backgroundColor: color, opacity: props.status.on ? "1" : "0.4"}}></div>
+        <div className="device_card_color_strip" style={{backgroundColor: color, opacity: props.states.on ? "1" : "0.4"}}></div>
         <h2 className="device_card_title">{ props.device.name.name }</h2>
         <hr className="device_card_divider"/>
         <div style={{paddingLeft: "35px"}}>
           {
-            Object.keys(props.status).includes("on") ?
-              <OnOff id={ props.device.id } on={ props.status.on } reload={ props.reload }/>
+            Object.keys(props.states).includes("on") ?
+              <OnOff id={ props.device.id } on={ props.states.on } reload={ props.reload }/>
             :
             <></>
           }
           {
-            Object.keys(props.status).includes("brightness") ?
-              <Brightness id={ props.device.id } brightness={ props.status.brightness }/>
+            Object.keys(props.states).includes("brightness") ?
+              <Brightness id={ props.device.id } brightness={ props.states.brightness }/>
             :
             <></>
           }

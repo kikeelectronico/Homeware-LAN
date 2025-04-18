@@ -13,8 +13,8 @@ def test_legacy_login():
     request = requests.get(pytest.host + "/api/user/login", headers=headers)
     assert request.status_code == 200
     response = request.json()
-    assert response["status"] == "in"
-    assert response["user"] == pytest.username
+    assert response["valid"]
+    assert response["username"] == pytest.username
     # Update token new token
     pytest.token = response["token"]
 
@@ -26,7 +26,7 @@ def test_legacy_login_fail_bad_username():
     request = requests.get(pytest.host + "/api/user/login", headers=headers)
     assert request.status_code == 200
     response = request.json()
-    assert response["status"] == "fail"
+    assert not response["valid"]
 
 def test_legacy_login_fail_bad_password():
     headers = {
@@ -36,7 +36,7 @@ def test_legacy_login_fail_bad_password():
     request = requests.get(pytest.host + "/api/user/login", headers=headers)
     assert request.status_code == 200
     response = request.json()
-    assert response["status"] == "fail"
+    assert not response["valid"]
 
 def test_legacy_valiteToken():
     headers = {
@@ -46,7 +46,7 @@ def test_legacy_valiteToken():
     request = requests.get(pytest.host + "/api/user/validateToken", headers=headers)
     assert request.status_code == 200
     response = request.json()
-    assert response["status"] == "in"
+    assert response["valid"]
 
 def test_legacy_valiteToken_fail_bad_token():
     headers = {
@@ -56,7 +56,7 @@ def test_legacy_valiteToken_fail_bad_token():
     request = requests.get(pytest.host + "/api/user/validateToken", headers=headers)
     assert request.status_code == 200
     response = request.json()
-    assert response["status"] == "fail"
+    assert not response["valid"]
     
 def test_legacy_changePassword():
     headers = {

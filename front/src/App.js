@@ -61,7 +61,7 @@ function App() {
           }
         }
       }
-      vers.open("GET", root + "api/system/version/");
+      vers.open("GET", root + "api/system/version");
       vers.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
       vers.send();
 
@@ -104,7 +104,7 @@ function App() {
           }
         }
       }
-      vers.open("GET", root + "api/alerts/");
+      vers.open("GET", root + "api/alerts");
       vers.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
       vers.send();
     }
@@ -117,9 +117,9 @@ function App() {
         if (http.readyState === 4) {
           if (http.status === 200) {
             var data = JSON.parse(http.responseText);
-            if (data.status !== 'in' && !window.location.href.includes('login')) {
+            if (!data.valid && !window.location.href.includes('login')) {
               window.location.href = '/login/'
-            } else if (data.status === 'in') {
+            } else if (data.valid) {
               setSession(true)
             }
           } else {
@@ -127,7 +127,7 @@ function App() {
           }
         }
       }
-      http.open("GET", root + "api/user/validateToken/");
+      http.open("GET", root + "api/user/validateToken");
       http.setRequestHeader('token', getCookieValue('token'))
       http.setRequestHeader('user', getCookieValue('user'))
       http.send();

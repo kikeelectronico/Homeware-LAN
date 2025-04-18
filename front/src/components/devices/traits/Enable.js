@@ -15,18 +15,18 @@ const Enable = (props) => {
         }
       }
     }
-    http.open("PATCH", root + "api/devices/" + props.id + "/status");
+    http.open("PATCH", root + "api/devices/" + props.id + "/states");
     http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     http.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
     http.send(JSON.stringify({
-      "enable": !props.status.enable
+      "enable": !props.states.enable
     }));
   }
 
 
   return (
     <div style={{float: 'left', marginLeft: '5px', height: "30px"}}>
-      <img src={ props.status.enable ? '/devices/onoff_on_true.png' : '/devices/onoff_on_false.png'} onClick={ toggle } alt={ props.image } style={{width: '30px'}}/>
+      <img src={ props.states.enable ? '/devices/onoff_on_true.png' : '/devices/onoff_on_false.png'} onClick={ toggle } alt={ props.image } style={{width: '30px'}}/>
     </div>
   );
   

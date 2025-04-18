@@ -20,14 +20,14 @@ const OnOff = forwardRef((props, ref) => {
       setCommandOnlyOnOff(props.attributes.commandOnlyOnOff)
       setQueryOnlyOnOff(props.attributes.queryOnlyOnOff)
     } else {
-      props.updateStatus(null, states, "insert")
+      props.updateStates(null, states, "insert")
       props.updateAttributes(null, attributes, "insert")
     }
   }, [props])
 
   useImperativeHandle(ref, () => ({
     deleteAttributes() {
-      props.updateStatus(null, states, "drop")
+      props.updateStates(null, states, "drop")
       props.updateAttributes(null, attributes, "drop")
     }
   }))

@@ -13,7 +13,7 @@ const SecuritySystem = (props) => {
         <h2 className="device_card_title">{ props.device.name.name }</h2>
         <hr className="device_card_divider"/>
         <div style={{paddingLeft: "35px"}}>
-          <ArmDisarm id={ props.device.id } status={ props.status }/>
+          <ArmDisarm id={ props.device.id } states={ props.states }/>
           <Information id={ props.device.id }/>
           <Connecting id={ props.device.id }/>
           <Edit id={ props.device.id }/>

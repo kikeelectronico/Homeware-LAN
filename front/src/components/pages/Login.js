@@ -14,18 +14,18 @@ function Login() {
     http.onload = function (e) {
       var response = JSON.parse(http.responseText);
       console.log(response);
-      if(response['status'] === 'in'){
-        document.cookie = "user=" + response['user'] + "; path=/";
+      if(response['valid']){
+        // document.cookie = "user=" + response['user'] + "; path=/";
         document.cookie = "token=" + response['token'] + "; path=/";
         window.location = '/';
-      } else if (response['status'] === 'fail'){
+      } else {
         setEnableMessage(true)
         setMessage("Incorrect User or Password")
         setTimeout(() => setEnableMessage(false), 5000)
       }
     }
     http.open("GET", root + "api/user/login");
-    http.setRequestHeader('username', document.getElementById('user').value)
+    http.setRequestHeader('username', document.getElementById('username').value)
     http.setRequestHeader('password', document.getElementById('password').value)
     http.send();
   }
@@ -35,7 +35,7 @@ function Login() {
     http.onload = function (e) {
       var response = JSON.parse(http.responseText);
       console.log(response);
-      if(response['status'] === 'in') {
+      if(response['valid']) {
         window.location = response['url']
       } else {
         setEnableMessage(true)
@@ -50,7 +50,7 @@ function Login() {
   }
 
   const submit = () => {
-    if (document.getElementById('user').value.length > 0
+    if (document.getElementById('username').value.length > 0
         && document.getElementById('password').value.length > 0) {
       if(!window.location.href.includes('google')) {
         login()
@@ -72,7 +72,7 @@ function Login() {
       { window.location.href.includes('google') ? <p>Google request access to Homeware-Lan</p> : '' }
       <br/>
       <span className="login_element">Username</span>
-      <input type="text" name="user" id="user" className="login_input"/>
+      <input type="text" name="username" id="username" className="login_input"/>
       <span className="login_element">Password</span>
       <input type="password" name="password" id="password" className="login_input"/>
       <Button variant="contained" onClick={submit}>

@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from typing import Annotated
 
@@ -10,27 +11,47 @@ import errorResponses
 router = APIRouter()
 data_conector = Data()
 
+class DeviceInfo(BaseModel):
+    hwVersion: str
+    manufacturer: str
+    model: str
+    swVersion: str
+
+class DeviceName(BaseModel):
+    defaultNames: list[str]
+    name: str
+    nicknames: list[str]
+
+class DeviceDescription(BaseModel):
+    _id: str
+    id: str
+    attributes: dict
+    deviceInfo: DeviceInfo
+    name: DeviceName
+    traits: list[str]
+    type: str
+
+class Device(BaseModel):
+    description: DeviceDescription
+    states: dict
+
 @router.get("/api/devices", dependencies=[Depends(allowAuthenticated)])
-def getDevices():
+def get_devices() -> list[Device]:
     devices_description = data_conector.getDevices()
     devices = []
     for device_description in devices_description:
         devices.append({
             "description": device_description,
-            "status": data_conector.getStatus(device_description["_id"])
+            "states": data_conector.getStatus(device_description["_id"])
         })
     return devices
 
-class Device(BaseModel):
-    description: dict
-    status: dict
-
 @router.post("/api/devices", dependencies=[Depends(allowAuthenticated)])
-def createDevices(device: Device):
-    if device is None:
-        return errorResponses.FOUR_O_O
+def create_a_device(device: Device):
+
+    device = jsonable_encoder(device)
     
-    data_conector.createDevice(device.description, device.status)
+    data_conector.createDevice(device["description"], device["states"])
     return JSONResponse(status_code=200,
                         content = {
                             "status": "Success",
@@ -39,11 +60,11 @@ def createDevices(device: Device):
 
 # Start legacy
 
-@router.get("/api/devices/get", dependencies=[Depends(allowAuthenticated)])
-@router.get("/api/devices/get/", dependencies=[Depends(allowAuthenticated)])
-@router.get("/api/devices/get/{device_id}", dependencies=[Depends(allowAuthenticated)])
-@router.get("/api/devices/get/{device_id}/", dependencies=[Depends(allowAuthenticated)])
-def getDevices(device_id: str | None = None):
+@router.get("/api/devices/get", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+@router.get("/api/devices/get/", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+@router.get("/api/devices/get/{device_id}", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+@router.get("/api/devices/get/{device_id}/", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+def get_devices_deprecated(device_id: str | None = None):
     if device_id:
         response = data_conector.getDevices(device_id)
         if not response: return errorResponses.FOUR_O_FOUR
@@ -54,8 +75,8 @@ def getDevices(device_id: str | None = None):
 # End legacy
 
 @router.get("/api/devices/{device_id}", dependencies=[Depends(allowAuthenticated)])
-def getDevices(device_id: str | None = None):
-    if device_id is None:
+def get_a_device(device_id: str = "") -> Device:
+    if device_id == "":
         return errorResponses.FOUR_O_O
     
     device_description = data_conector.getDevices(device_id)
@@ -63,21 +84,20 @@ def getDevices(device_id: str | None = None):
     if not device_description:
         return errorResponses.FOUR_O_FOUR
     
-    device_status = data_conector.getStatus(device_id)
+    device_states = data_conector.getStatus(device_id)
     return {
         "description": device_description,
-        "status": device_status
+        "states": device_states
     }
 
 @router.put("/api/devices/{device_id}", dependencies=[Depends(allowAuthenticated)])
-def updateDevices(device_id: str | None, device: Device):
-    if device_id is None:
+def update_a_device(device: Device, device_id: str = ""):
+    if device_id == "":
         return errorResponses.FOUR_O_O
     
-    if device is None:
-        return errorResponses.FOUR_O_O
+    device = jsonable_encoder(device)
     
-    if data_conector.updateDevice(device.description, device.status):
+    if data_conector.updateDevice(device["description"], device["states"]):
         return JSONResponse(status_code=200,
                             content = {
                                 "status": "Success",
@@ -88,10 +108,10 @@ def updateDevices(device_id: str | None, device: Device):
 
     
 @router.delete("/api/devices/{device_id}", dependencies=[Depends(allowAuthenticated)])
-def deleteDevices(device_id: str | None = None):
-    if device_id is None:
+def delete_a_device(device_id: str = ""):
+    if device_id == "":
         return errorResponses.FOUR_O_O
-    
+
     if data_conector.deleteDevice(device_id):
         return JSONResponse(status_code=200,
                             content = {
@@ -101,11 +121,11 @@ def deleteDevices(device_id: str | None = None):
     else:
         return errorResponses.FOUR_O_FOUR
 
-# Status
+# States
 
-@router.get("/api/devices/{device_id}/status", dependencies=[Depends(allowAuthenticated)])
-def getStatus(device_id: str | None = None):
-    if device_id is None:
+@router.get("/api/devices/{device_id}/states", dependencies=[Depends(allowAuthenticated)])
+def get_states_of_a_device(device_id: str = "") -> dict:
+    if device_id == "":
         return errorResponses.FOUR_O_O
     
     response = data_conector.getStatus(device_id)
@@ -113,13 +133,19 @@ def getStatus(device_id: str | None = None):
         return errorResponses.FOUR_O_FOUR
     return response
 
-
-@router.patch("/api/devices/{device_id}/status", dependencies=[Depends(allowAuthenticated)])
-def updateStatus(device_id: str, state: dict | None = None):
-    if device_id is None:
+@router.get("/api/devices/{device_id}/states/{state_name}", dependencies=[Depends(allowAuthenticated)])
+def get_a_state_of_a_device(device_id: str = "", state_name: str = ""):
+    if device_id == "" or state_name == "":
         return errorResponses.FOUR_O_O
     
-    if state is None:
+    response = data_conector.getStatusParam(device_id, state_name)
+    if response is None:
+        return errorResponses.FOUR_O_FOUR
+    return response
+
+@router.patch("/api/devices/{device_id}/states", dependencies=[Depends(allowAuthenticated)])
+def update_states_of_a_device(states: dict, device_id: str = ""):
+    if device_id == "":
         return errorResponses.FOUR_O_O
     
     response = data_conector.getStatus(device_id)
@@ -127,8 +153,8 @@ def updateStatus(device_id: str, state: dict | None = None):
         return errorResponses.FOUR_O_FOUR
 
     success = True
-    for param in state:
-        success = success & data_conector.updateParamStatus(device_id, param, state[param])
+    for param in states:
+        success = success & data_conector.updateParamStatus(device_id, param, states[param])
 
     return {
                 "status": "Success" if success else "Fail",
@@ -138,9 +164,9 @@ def updateStatus(device_id: str, state: dict | None = None):
 
 # Legacy
 
-@router.get("/api/global/get", dependencies=[Depends(allowAuthenticated)])
-@router.get("/api/global/get/", dependencies=[Depends(allowAuthenticated)])
-def getDevicesGlobal():
+@router.get("/api/global/get", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+@router.get("/api/global/get/", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+def get_devices_global_deprecated():
     response = data_conector.getGlobal()
     return response
 
@@ -148,9 +174,9 @@ class DeviceLegacy(BaseModel):
     device: dict
     status: dict
 
-@router.post("/api/devices/update", dependencies=[Depends(allowAuthenticated)])
-@router.post("/api/devices/update/", dependencies=[Depends(allowAuthenticated)])
-def updateDevices(device: DeviceLegacy):
+@router.post("/api/devices/update", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+@router.post("/api/devices/update/", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+def update_devices_deprecated(device: DeviceLegacy):
     if device:
         if data_conector.updateDevice(device.device, device.status):
             return JSONResponse(status_code=200,
@@ -163,9 +189,9 @@ def updateDevices(device: DeviceLegacy):
     else:
         return errorResponses.FOUR_O_O
 
-@router.post("/api/devices/create", dependencies=[Depends(allowAuthenticated)])
-@router.post("/api/devices/create/", dependencies=[Depends(allowAuthenticated)])
-def createDevices(device: DeviceLegacy):
+@router.post("/api/devices/create", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+@router.post("/api/devices/create/", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+def create_devices_deprecated(device: DeviceLegacy):
     if device:
         data_conector.createDevice(device.device, device.status)
         return JSONResponse(status_code=200,
@@ -176,9 +202,9 @@ def createDevices(device: DeviceLegacy):
     else:
         return errorResponses.FOUR_O_O
 
-@router.post("/api/devices/delete/{device_id}", dependencies=[Depends(allowAuthenticated)])
-@router.post("/api/devices/delete/{device_id}/", dependencies=[Depends(allowAuthenticated)])
-def deleteDevices(device_id: str | None = None):
+@router.post("/api/devices/delete/{device_id}", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+@router.post("/api/devices/delete/{device_id}/", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+def delete_devices_deprecated(device_id: str | None = None):
     if device_id:
         if data_conector.deleteDevice(device_id):
             return JSONResponse(status_code=200,
@@ -191,11 +217,11 @@ def deleteDevices(device_id: str | None = None):
     else:
         return errorResponses.FOUR_O_O
 
-@router.get("/api/status/get", dependencies=[Depends(allowAuthenticated)])
-@router.get("/api/status/get/", dependencies=[Depends(allowAuthenticated)])
-@router.get("/api/status/get/{device_id}", dependencies=[Depends(allowAuthenticated)])
-@router.get("/api/status/get/{device_id}/", dependencies=[Depends(allowAuthenticated)])
-def getStatus(device_id: str | None = None):
+@router.get("/api/status/get", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+@router.get("/api/status/get/", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+@router.get("/api/status/get/{device_id}", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+@router.get("/api/status/get/{device_id}/", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+def get_status_deprecated(device_id: str | None = None):
     if device_id:
         response = data_conector.getStatus(device_id)
         if not response: return errorResponses.FOUR_O_FOUR
@@ -208,9 +234,9 @@ class State(BaseModel):
     param: str
     value: str | int | bool | float
 
-@router.post("/api/status/update", dependencies=[Depends(allowAuthenticated)])
-@router.post("/api/status/update/", dependencies=[Depends(allowAuthenticated)])
-def updateStatus(state: State):
+@router.post("/api/status/update", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+@router.post("/api/status/update/", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+def update_status_deprecated(state: State):
     if state:
         if data_conector.updateParamStatus(state.id, state.param, state.value):
             return JSONResponse(status_code=200,

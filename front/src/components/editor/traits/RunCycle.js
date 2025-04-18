@@ -9,16 +9,16 @@ const states = {
 const RunCycle = forwardRef((props, ref) => {
 
   useEffect(() => {
-    if ("currentRunCycle" in props.status) {
+    if ("currentRunCycle" in props.states) {
       
     } else {
-      props.updateStatus(null, states, "insert")
+      props.updateStates(null, states, "insert")
     }
   }, [props])
 
   useImperativeHandle(ref, () => ({
     deleteAttributes() {
-      props.updateStatus(null, states, "drop")
+      props.updateStates(null, states, "drop")
     }
   }))
 
