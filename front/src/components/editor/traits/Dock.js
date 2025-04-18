@@ -7,16 +7,16 @@ const states = {
 const Dock = forwardRef((props, ref) => {
 
   useEffect(() => {
-    if ("isDocked" in props.status) {
+    if ("isDocked" in props.states) {
       
     } else {
-      props.updateStatus(null, states, "insert")
+      props.updateStates(null, states, "insert")
     }
   }, [props])
 
   useImperativeHandle(ref, () => ({
     deleteAttributes() {
-      props.updateStatus(null, states, "drop")
+      props.updateStates(null, states, "drop")
     }
   }))
 

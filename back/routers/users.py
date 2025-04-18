@@ -9,9 +9,12 @@ from security.authentication import allowUser
 router = APIRouter()
 data_conector = Data()
 
+class TokenValidation(BaseModel):
+    status: str
+
 @router.get("/api/user/validateToken")
 @router.get("/api/user/validateToken/", include_in_schema=False) # Legacy
-def validate_user_token(token: Annotated[str | None, Header()] = None):
+def validate_user_token(token: Annotated[str | None, Header()] = None) -> TokenValidation:
     if token:
         return {
             "status": "in" if data_conector.validateUserToken(token) else "fail"
@@ -21,9 +24,14 @@ def validate_user_token(token: Annotated[str | None, Header()] = None):
             "status": "fail"
         }
 
+class UserSesion(BaseModel):
+    status: str
+    user: str
+    token: str
+
 @router.get("/api/user/login")
 @router.get("/api/user/login/", include_in_schema=False) # Legacy
-def user_login(username: Annotated[str | None, Header()] = None, password: Annotated[str | None, Header()] = None):
+def user_login(username: Annotated[str | None, Header()] = None, password: Annotated[str | None, Header()] = None) -> UserSesion:
     if username is None or password is None:
         return errorResponses.FOUR_O_O
 

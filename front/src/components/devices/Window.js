@@ -14,8 +14,8 @@ const Window = (props) => {
         <h2 className="device_card_title">{ props.device.name.name }</h2>
         <hr className="device_card_divider"/>
         <div style={{paddingLeft: "35px"}}>
-          <LockUnlock id={ props.device.id } status={ props.status }/>
-          <Open id={ props.device.id } openPercent={ props.status.openPercent }/>
+          <LockUnlock id={ props.device.id } states={ props.states }/>
+          <Open id={ props.device.id } openPercent={ props.states.openPercent }/>
           <Information id={ props.device.id }/>
           <Connecting id={ props.device.id }/>
           <Edit id={ props.device.id }/>

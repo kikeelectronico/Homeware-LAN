@@ -25,14 +25,14 @@ const OccupancySensing = forwardRef((props, ref) => {
         if ("occupancySensorConfiguration" in props.attributes) {
             setOccupancySensorConfiguration(props.attributes.occupancySensorConfiguration)
         } else {
-          props.updateStatus(null, states, "insert")
+          props.updateStates(null, states, "insert")
           props.updateAttributes(null, attributes, "insert")
         }
       }, [props])
     
       useImperativeHandle(ref, () => ({
         deleteAttributes() {
-          props.updateStatus(null, states, "drop")
+          props.updateStates(null, states, "drop")
           props.updateAttributes(null, attributes, "drop")
         }
       }))

@@ -38,29 +38,29 @@ const FanSpeed = forwardRef((props, ref) => {
       if ("availableFanSpeeds" in props.attributes)
         setAvailableFanSpeeds(props.attributes.availableFanSpeeds)
     } else {
-      props.updateStatus(null, states, "insert")
+      props.updateStates(null, states, "insert")
       props.updateAttributes(null, attributes, "insert")
     }
   }, [props])
 
   useImperativeHandle(ref, () => ({
     deleteAttributes() {
-      props.updateStatus(null, states, "drop")
+      props.updateStates(null, states, "drop")
       props.updateAttributes(null, attributes, "drop")
       props.updateAttributes("availableFanSpeeds", null, "delete")
-      props.updateStatus("currentFanSpeedSetting", null, "delete")
+      props.updateStates("currentFanSpeedSetting", null, "delete")
     }
   }))
 
   useEffect(() => {
     if (!supportsFanSpeedPercent) {
       props.updateAttributes("availableFanSpeeds", availableFanSpeeds, "update")
-      props.updateStatus("currentFanSpeedPercent", null, "delete")
-      props.updateStatus("currentFanSpeedSetting", "", "update")
+      props.updateStates("currentFanSpeedPercent", null, "delete")
+      props.updateStates("currentFanSpeedSetting", "", "update")
     } else {
       props.updateAttributes("availableFanSpeeds", null, "delete")
-      props.updateStatus("currentFanSpeedPercent", 0, "update")
-      props.updateStatus("currentFanSpeedSetting", null, "delete")
+      props.updateStates("currentFanSpeedPercent", 0, "update")
+      props.updateStates("currentFanSpeedSetting", null, "delete")
     }
   }, [supportsFanSpeedPercent, availableFanSpeeds, props])
 

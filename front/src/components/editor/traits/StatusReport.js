@@ -7,16 +7,16 @@ const states = {
 const StatusReport = forwardRef((props, ref) => {
 
   useEffect(() => {
-    if ("currentStatusReport" in props.status) {
+    if ("currentStatusReport" in props.states) {
       
     } else {
-      props.updateStatus(null, states, "insert")
+      props.updateStates(null, states, "insert")
     }
   }, [props])
 
   useImperativeHandle(ref, () => ({
     deleteAttributes() {
-      props.updateStatus(null, states, "drop")
+      props.updateStates(null, states, "drop")
     }
   }))
 

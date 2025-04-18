@@ -17,7 +17,7 @@ const Brightness = forwardRef((props, ref) => {
     if ("commandOnlyBrightness" in props.attributes) {
       setCommandOnlyBrightness(props.attributes.commandOnlyBrightness)
     } else {
-      props.updateStatus(null, states, "insert")
+      props.updateStates(null, states, "insert")
       props.updateAttributes(null, attributes, "insert")
     }
   }, [props])
@@ -25,7 +25,7 @@ const Brightness = forwardRef((props, ref) => {
   useImperativeHandle(ref, () => ({
     deleteAttributes() {
       props.updateAttributes(null, attributes, "drop")
-      props.updateStatus(null, states, "drop")
+      props.updateStates(null, states, "drop")
     }
   }))
 

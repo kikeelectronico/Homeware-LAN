@@ -277,7 +277,7 @@ function Settings() {
         <div className="page_block_content_container">
           <div className="three_table_row">
             <div className="three_table_cel align_right">
-              Automatic status sync
+              Automatic state sync
             </div>
             <div className="three_table_cel">
               <Switch
@@ -286,7 +286,7 @@ function Settings() {
               />
             </div>
             <div className="advise three_table_cel">
-              <span >Send the status to the devices proactively.</span>
+              <span >Send the states to the devices proactively.</span>
             </div>
           </div>
         </div>

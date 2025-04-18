@@ -35,14 +35,14 @@ const Toggles = forwardRef((props, ref) => {
       setQueryOnlyToggles(props.attributes.queryOnlyToggles)
       setAvailableToggles(props.attributes.availableToggles) 
     } else {
-      props.updateStatus(null, states, "insert")
+      props.updateStates(null, states, "insert")
       props.updateAttributes(null, attributes, "insert")
     }
   }, [props])
 
   useImperativeHandle(ref, () => ({
     deleteAttributes() {
-      props.updateStatus(null, states, "drop")
+      props.updateStates(null, states, "drop")
       props.updateAttributes(null, attributes, "drop")
     }
   }))
@@ -60,11 +60,11 @@ const Toggles = forwardRef((props, ref) => {
     _availableToggles.splice(index, 1)
     setAvailableToggles(_availableToggles)
     props.updateAttributes("availableToggles", _availableToggles, "update")
-    // Update status
-    let _currentToggleSettings = {...props.status.currentToggleSettings}
+    // Update states
+    let _currentToggleSettings = {...props.states.currentToggleSettings}
     if (_name in _currentToggleSettings)
       delete _currentToggleSettings[_name]
-    props.updateStatus("currentToggleSettings", _currentToggleSettings, "update")
+    props.updateStates("currentToggleSettings", _currentToggleSettings, "update")
   }
 
   const updateName = (index, name) => {
@@ -79,12 +79,12 @@ const Toggles = forwardRef((props, ref) => {
     ]
     setAvailableToggles(_availableToggles)
     props.updateAttributes("availableToggles", _availableToggles, "update")
-    // Update status
-    let _currentToggleSettings = {...props.status.currentToggleSettings}
+    // Update states
+    let _currentToggleSettings = {...props.states.currentToggleSettings}
     if (_prev_name in _currentToggleSettings)
       delete _currentToggleSettings[_prev_name]
     _currentToggleSettings[name] = false
-    props.updateStatus("currentToggleSettings", _currentToggleSettings, "update")
+    props.updateStates("currentToggleSettings", _currentToggleSettings, "update")
   }
 
   const updateLang = (index, value) => {
