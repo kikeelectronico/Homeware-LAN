@@ -26,7 +26,7 @@ class DeviceDescription(BaseModel):
     _id: str
     id: str
     attributes: dict
-    deviceInfo: DeviceInfo
+    deviceInfo: dict # DeviceInfo
     name: DeviceName
     traits: list[str]
     type: str
