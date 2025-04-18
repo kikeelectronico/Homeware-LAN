@@ -40,8 +40,8 @@ def tokenGenerator(agent, type):
         data_conector.log('Warning', 'Try to create an incorrect type of token')
         return 'Something goes wrong'
 
-@router.get("/auth")
-@router.get("/auth/")
+@router.get("/auth", include_in_schema=False)
+@router.get("/auth/", include_in_schema=False)
 def auth(client_id: str, redirect_uri: str, state: str):
     if data_conector.validateOauthCredentials("client_id", client_id):
         data_conector.log('Warning', 'A new Google account has been linked from auth endpoint')
@@ -58,8 +58,8 @@ def auth(client_id: str, redirect_uri: str, state: str):
             'Alert', 'Unauthorized try to link a Google Account. Verify the client id and client secret')
         return 'Algo ha ido mal en la autorización'
     
-@router.post("/token")
-@router.post("/token/")
+@router.post("/token", include_in_schema=False)
+@router.post("/token/", include_in_schema=False)
 def token(grant_type: Annotated[str, Form()], client_id: Annotated[str | None, Form()] = None, client_secret: Annotated[str | None, Form()] = None, code: Annotated[str | None, Form()] = None, refresh_token: Annotated[str | None, Form()] = None):
     # agent = request.headers['User-Agent']
     # # Verify special agents
@@ -102,8 +102,8 @@ def token(grant_type: Annotated[str, Form()], client_id: Annotated[str | None, F
         data_conector.log('Alert', 'Unauthorized token request. The new token hasn\'t been sent.')
         return response
 
-@router.post("/smarthome")
-@router.post("/smarthome/")
+@router.post("/smarthome", include_in_schema=False)
+@router.post("/smarthome/", include_in_schema=False)
 def smarthome(body: dict, authorization: Annotated[str | None, Header()] = None):
     if data_conector.deep_logging:
         data_conector.log('Log', 'Request: ' + json.dumps(body))

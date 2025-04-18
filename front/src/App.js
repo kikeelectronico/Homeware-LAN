@@ -61,7 +61,7 @@ function App() {
           }
         }
       }
-      vers.open("GET", root + "api/system/version/");
+      vers.open("GET", root + "api/system/version");
       vers.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
       vers.send();
 
@@ -104,7 +104,7 @@ function App() {
           }
         }
       }
-      vers.open("GET", root + "api/alerts/");
+      vers.open("GET", root + "api/alerts");
       vers.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
       vers.send();
     }
@@ -127,7 +127,7 @@ function App() {
           }
         }
       }
-      http.open("GET", root + "api/user/validateToken/");
+      http.open("GET", root + "api/user/validateToken");
       http.setRequestHeader('token', getCookieValue('token'))
       http.setRequestHeader('user', getCookieValue('user'))
       http.send();

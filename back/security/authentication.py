@@ -8,7 +8,7 @@ data_conector = Data()
 
 def allowUser(request: Request, authorization: Annotated[str | None, Header()] = None):
     if authorization:
-        if not "bearer " in authorization:
+        if not "earer " in authorization:
             data_conector.log('Alert', f'Request to API endpoint {request.url.path} without authentication')
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                                 detail="A valid token is needed")
@@ -26,7 +26,7 @@ def allowUser(request: Request, authorization: Annotated[str | None, Header()] =
 
 def allowAPIkey(request: Request, authorization: Annotated[str | None, Header()] = None):
     if authorization:
-        if not "bearer " in authorization:
+        if not "earer " in authorization:
             data_conector.log('Alert', f'Request to API endpoint {request.url.path} without authentication')
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                                 detail="A valid token is needed")
@@ -44,7 +44,7 @@ def allowAPIkey(request: Request, authorization: Annotated[str | None, Header()]
 
 def allowAuthenticated(request: Request, authorization: Annotated[str | None, Header()] = None):
     if authorization:
-        if not "bearer " in authorization:
+        if not "earer " in authorization:
             data_conector.log('Alert', f'Request to API endpoint {request.url.path} without authentication')
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                                 detail="A valid token is needed")
