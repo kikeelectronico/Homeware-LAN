@@ -10,7 +10,7 @@ router = APIRouter()
 data_conector = Data()
 
 class TokenValidation(BaseModel):
-    valid: str
+    valid: bool
 
 @router.get("/api/user/validateToken")
 @router.get("/api/user/validateToken/", include_in_schema=False) # Legacy
@@ -27,7 +27,7 @@ def validate_user_token(token: Annotated[str | None, Header()] = None) -> TokenV
 class UserSesion(BaseModel):
     username: str
     token: str
-    valid: str
+    valid: bool
 
 @router.get("/api/user/login")
 @router.get("/api/user/login/", include_in_schema=False) # Legacy
