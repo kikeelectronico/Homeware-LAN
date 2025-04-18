@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
-from typing import Annotated
+from typing import Optional
 
 from security.authentication import allowAuthenticated
 from data import Data
@@ -12,10 +12,10 @@ router = APIRouter()
 data_conector = Data()
 
 class DeviceInfo(BaseModel):
-    hwVersion: str
-    manufacturer: str
-    model: str
-    swVersion: str
+    hwVersion: Optional[str]
+    manufacturer: Optional[str]
+    model: Optional[str]
+    swVersion: Optional[str]
 
 class DeviceName(BaseModel):
     defaultNames: list[str]
@@ -26,7 +26,7 @@ class DeviceDescription(BaseModel):
     _id: str
     id: str
     attributes: dict
-    deviceInfo: dict # DeviceInfo
+    deviceInfo: DeviceInfo
     name: DeviceName
     traits: list[str]
     type: str
