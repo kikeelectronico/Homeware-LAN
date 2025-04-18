@@ -39,12 +39,12 @@ app.add_middleware(
 )
 
 @app.get("/test", response_class=PlainTextResponse)
-def testEndPoint():
+def test_endpoint():
     return "Load"
 
 @app.get("/api/clock")
-@app.get("/api/clock/")
-def clock():
+@app.get("/api/clock/", include_in_schema=False)
+def system_clock():
     ts = time.localtime(time.time())
     h = ts.tm_hour
     m = ts.tm_min

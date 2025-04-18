@@ -11,11 +11,11 @@ router = APIRouter()
 data_conector = Data()
 
 @router.get("/api/backup", dependencies=[Depends(allowAuthenticated)])
-def getBackup():
+def get_backup():
     return data_conector.getBackup()
 
 @router.put("/api/backup", dependencies=[Depends(allowUser)])
-def restoreBackup(backup: dict | None = None):
+def restore_backup(backup: dict | None = None):
     if backup is None:
         return errorResponses.FOUR_O_O
     
@@ -29,8 +29,8 @@ def restoreBackup(backup: dict | None = None):
 
 # Legacy
 
-@router.get("/api/backup/get", dependencies=[Depends(allowAuthenticated)])
-@router.get("/api/backup/get/", dependencies=[Depends(allowAuthenticated)])
-def getBackup():
+@router.get("/api/backup/get", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+@router.get("/api/backup/get/", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+def get_backup_deprecated():
     return data_conector.getBackup()
 

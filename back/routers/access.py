@@ -9,21 +9,21 @@ router = APIRouter()
 data_conector = Data()
 
 @router.get("/api/access", dependencies=[Depends(allowUser)])
-def getAccess():
+def get_access():
     return [data_conector.getAPIKey()]
 
 @router.patch("/api/access/", dependencies=[Depends(allowUser)])
-def createAccess():
+def update_access():
     return data_conector.createAPIKey()
 
 # Legacy
 
-@router.get("/api/access/get", dependencies=[Depends(allowUser)])
-@router.get("/api/access/get/", dependencies=[Depends(allowUser)])
-def getAccess():
+@router.get("/api/access/get", dependencies=[Depends(allowUser)], include_in_schema=False)
+@router.get("/api/access/get/", dependencies=[Depends(allowUser)], include_in_schema=False)
+def get_access_deprecated():
     return data_conector.getAPIKey()
 
-@router.get("/api/access/create", dependencies=[Depends(allowUser)])
-@router.get("/api/access/create/", dependencies=[Depends(allowUser)])
-def createAccess():
+@router.get("/api/access/create", dependencies=[Depends(allowUser)], include_in_schema=False)
+@router.get("/api/access/create/", dependencies=[Depends(allowUser)], include_in_schema=False)
+def create_access_deprecated():
     return data_conector.createAPIKey()

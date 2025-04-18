@@ -10,8 +10,8 @@ router = APIRouter()
 data_conector = Data()
 
 @router.get("/api/user/validateToken")
-@router.get("/api/user/validateToken/") # Legacy
-def validateUserToken(token: Annotated[str | None, Header()] = None):
+@router.get("/api/user/validateToken/", include_in_schema=False) # Legacy
+def validate_user_token(token: Annotated[str | None, Header()] = None):
     if token:
         return {
             "status": "in" if data_conector.validateUserToken(token) else "fail"
@@ -22,8 +22,8 @@ def validateUserToken(token: Annotated[str | None, Header()] = None):
         }
 
 @router.get("/api/user/login")
-@router.get("/api/user/login/") # Legacy
-def login(username: Annotated[str | None, Header()] = None, password: Annotated[str | None, Header()] = None):
+@router.get("/api/user/login/", include_in_schema=False) # Legacy
+def user_login(username: Annotated[str | None, Header()] = None, password: Annotated[str | None, Header()] = None):
     if username is None or password is None:
         return errorResponses.FOUR_O_O
 
@@ -35,8 +35,8 @@ def login(username: Annotated[str | None, Header()] = None, password: Annotated[
     }
 
     
-@router.get("/api/user/googleSync")
-@router.get("/api/user/googleSync/") # Legacy
+@router.get("/api/user/googleSync", include_in_schema=False)
+@router.get("/api/user/googleSync/", include_in_schema=False) # Legacy
 def googleSync(username: Annotated[str | None, Header()] = None, password: Annotated[str | None, Header()] = None):
     if username is None or password is None:
         return errorResponses.FOUR_O_O
@@ -53,9 +53,9 @@ class Password(BaseModel):
     new_password: str
 
 @router.put("/api/user/password", dependencies=[Depends(allowUser)])
-@router.post("/api/user/password", dependencies=[Depends(allowUser)]) # Legacy
-@router.post("/api/user/password/", dependencies=[Depends(allowUser)]) # Legacy
-def validateUserToken(password: Password | None = None):
+@router.post("/api/user/password", dependencies=[Depends(allowUser)], include_in_schema=False) # Legacy
+@router.post("/api/user/password/", dependencies=[Depends(allowUser)], include_in_schema=False) # Legacy
+def change_user_password(password: Password | None = None):
     if password is None:
         return errorResponses.FOUR_O_O
     

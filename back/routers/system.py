@@ -10,12 +10,12 @@ router = APIRouter()
 data_conector = Data()
 
 @router.get("/api/system/version", dependencies=[Depends(allowAuthenticated)])
-def getVersion():
+def get_system_version():
     return {'version': data_conector.getVersion()}
 
 @router.get("/api/system/status", dependencies=[Depends(allowUser)])
-@router.get("/api/system/status/", dependencies=[Depends(allowUser)]) # Legacy
-def getSystemStatus():
+@router.get("/api/system/status/", dependencies=[Depends(allowUser)], include_in_schema=False) # Legacy
+def get_system_status():
     response = {
         'api': {
             'enable': True,
@@ -53,7 +53,7 @@ def getSystemStatus():
 
 # Legacy
 
-@router.get("/api/global/version", dependencies=[Depends(allowAuthenticated)])
-@router.get("/api/global/version/", dependencies=[Depends(allowAuthenticated)])
-def getVersion():
+@router.get("/api/global/version", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+@router.get("/api/global/version/", dependencies=[Depends(allowAuthenticated)], include_in_schema=False)
+def get_version_deprecated():
     return {'version': data_conector.getVersion()}
