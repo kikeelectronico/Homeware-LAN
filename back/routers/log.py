@@ -13,6 +13,7 @@ class Severity(str, Enum):
     warning = "Warning"
     log = "Log"
     alert = "Alert"
+    info = "Info"
 
 class LogRegistry(BaseModel):
     agent: str
