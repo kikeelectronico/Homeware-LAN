@@ -14,9 +14,9 @@ def test_get_settings():
     assert request.status_code == 200
     response = request.json()
     keys = list(response.keys())
-    assert len(keys) == 9
-    # assert "domain" in keys
-    assert "_id" in keys
+    assert len(keys) == 8
+    assert "domain" in keys
+    # assert "_id" in keys
     assert "ddns" in keys
     assert "mqtt" in keys
     assert "sync_google" in keys
@@ -71,7 +71,6 @@ def test_update_settings():
         "content-type": "application/json"
     }
     body = {
-        "_id": "settings",
         "domain": "localhost",
         "ddns": {
             "enabled": False,
@@ -87,7 +86,7 @@ def test_update_settings():
         "sync_google": False,
         "sync_devices": False,
         "log": {
-            "days": "0"
+            "days": 0
         },
         "client_id": "123",
         "client_secret": "456"
@@ -119,7 +118,7 @@ def test_update_settings_fail_bad_token():
         "sync_google": False,
         "sync_devices": False,
         "log": {
-            "days": "0"
+            "days": 0
         },
         "client_id": "123",
         "client_secret": "456"
@@ -151,7 +150,7 @@ def test_update_settings_fail_no_token_value():
         "sync_google": False,
         "sync_devices": False,
         "log": {
-            "days": "0"
+            "days": 0
         },
         "client_id": "123",
         "client_secret": "456"
@@ -184,7 +183,7 @@ def test_update_settings_fail_no_header_value():
         "sync_google": False,
         "sync_devices": False,
         "log": {
-            "days": "0"
+            "days": 0
         },
         "client_id": "123",
         "client_secret": "456"
@@ -215,7 +214,7 @@ def test_update_settings_fail_no_header():
         "sync_google": False,
         "sync_devices": False,
         "log": {
-            "days": "0"
+            "days": 0
         },
         "client_id": "123",
         "client_secret": "456"

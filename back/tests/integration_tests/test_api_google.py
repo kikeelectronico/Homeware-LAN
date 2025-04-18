@@ -26,8 +26,8 @@ def test_googleSync():
     request = requests.get(pytest.host + "/api/user/googleSync", headers=headers)
     assert request.status_code == 200
     response = request.json()
-    assert response["status"] == "in"
-    assert response["user"] == pytest.username
+    assert response["valid"]
+    assert response["username"] == pytest.username
     assert response["url"] != ""
     global auth_code
     auth_code = response["url"].split("code=")[1].split("&state")[0]
@@ -40,8 +40,8 @@ def test_googleSync_fail_bad_username():
     request = requests.get(pytest.host + "/api/user/googleSync", headers=headers)
     assert request.status_code == 200
     response = request.json()
-    assert response["status"] == "fail"
-    assert response["user"] == headers["username"]
+    assert not response["valid"]
+    assert response["username"] == headers["username"]
     assert response["url"] == ""
 
 def test_googleSync_fail_bad_password():
@@ -52,8 +52,8 @@ def test_googleSync_fail_bad_password():
     request = requests.get(pytest.host + "/api/user/googleSync", headers=headers)
     assert request.status_code == 200
     response = request.json()
-    assert response["status"] == "fail"
-    assert response["user"] == pytest.username
+    assert not response["valid"]
+    assert response["username"] == pytest.username
     assert response["url"] == ""
 
 # /token
