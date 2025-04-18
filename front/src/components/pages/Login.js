@@ -50,7 +50,7 @@ function Login() {
   }
 
   const submit = () => {
-    if (document.getElementById('user').value.length > 0
+    if (document.getElementById('username').value.length > 0
         && document.getElementById('password').value.length > 0) {
       if(!window.location.href.includes('google')) {
         login()
