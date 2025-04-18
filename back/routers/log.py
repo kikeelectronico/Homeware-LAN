@@ -29,8 +29,12 @@ def get_log() -> list[LogRegistry]:
 def delete_log() -> bool:
     return data_conector.deleteLog()
 
+class AlertState(str, Enum):
+    set = "set"
+    clear = "clear"
+
 class Alerts(BaseModel):
-    alert: str
+    alert: AlertState
 
 @router.get("/api/alerts", dependencies=[Depends(allowUser)])
 def get_alerts() -> Alerts:
