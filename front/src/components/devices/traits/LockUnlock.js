@@ -6,17 +6,17 @@ const LockUnlock = (props) => {
   const [title, setTitle] = useState("")
 
   useEffect(() => {
-    if (props.status.isJammed) {
+    if (props.states.isJammed) {
       setIcon('lock_alert')
       setTitle('It is jammed')
-    } else if (props.status.isLocked) {
+    } else if (props.states.isLocked) {
       setIcon('lock_close')
       setTitle('It is close')
-    } else if (!props.status.isLocked) {
+    } else if (!props.states.isLocked) {
       setIcon('lock_open')
       setTitle('It is open')
     }
-  }, [props.status])
+  }, [props.states])
     
 
     return (

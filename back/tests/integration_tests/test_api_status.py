@@ -3,7 +3,7 @@ import os
 import json
 import pytest
 
-# /api/status/*
+# /api/states/*
 
 def test_get_status_with_device_id():
     headers = {
@@ -11,7 +11,7 @@ def test_get_status_with_device_id():
         "content-type": "application/json"
     }
     device_id = "light"
-    request = requests.get(pytest.host + f"/api/devices/{device_id}/status", headers=headers)
+    request = requests.get(pytest.host + f"/api/devices/{device_id}/states", headers=headers)
     assert request.status_code == 200
     response = request.json()
     assert response["on"] == False
@@ -23,7 +23,7 @@ def test_get_status_fail_bad_device_id():
         "content-type": "application/json"
     }
     device_id = "whre_is_perry"
-    request = requests.get(pytest.host + f"/api/devices/{device_id}/status", headers=headers)
+    request = requests.get(pytest.host + f"/api/devices/{device_id}/states", headers=headers)
     assert request.status_code == 404
     response = request.json()
     assert response["error"] == "Not found"
@@ -39,7 +39,7 @@ def test_update_status():
         "on": True
     }
     device_id = "light"
-    request = requests.patch(pytest.host + f"/api/devices/{device_id}/status", headers=headers, data=json.dumps(body))
+    request = requests.patch(pytest.host + f"/api/devices/{device_id}/states", headers=headers, data=json.dumps(body))
     assert request.status_code == 200
     response = request.json()
     assert response["status"] == "Success"
@@ -48,7 +48,7 @@ def test_update_status():
     body = {
         "on": False
     }
-    request = requests.patch(pytest.host + f"/api/devices/{device_id}/status", headers=headers, data=json.dumps(body))
+    request = requests.patch(pytest.host + f"/api/devices/{device_id}/states", headers=headers, data=json.dumps(body))
 
 def test_update_status_fail_bad_device_id():
     headers = {
@@ -59,7 +59,7 @@ def test_update_status_fail_bad_device_id():
         "on": True
     }
     device_id = "where-is-perry"
-    request = requests.patch(pytest.host + f"/api/devices/{device_id}/status", headers=headers, data=json.dumps(body))
+    request = requests.patch(pytest.host + f"/api/devices/{device_id}/states", headers=headers, data=json.dumps(body))
     assert request.status_code == 404
     response = request.json()
     assert response["error"] == "Not found"
@@ -75,7 +75,7 @@ def test_update_status_fail_bad_token():
         "on": True
     }
     device_id = "light"
-    request = requests.patch(pytest.host + f"/api/devices/{device_id}/status", headers=headers, data=json.dumps(body))
+    request = requests.patch(pytest.host + f"/api/devices/{device_id}/states", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
     response = request.json()
     assert response["detail"] == "A valid token is needed"
@@ -89,7 +89,7 @@ def test_update_status_fail_no_token_value():
         "on": True
     }
     device_id = "light"
-    request = requests.patch(pytest.host + f"/api/devices/{device_id}/status", headers=headers, data=json.dumps(body))
+    request = requests.patch(pytest.host + f"/api/devices/{device_id}/states", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
     response = request.json()
     assert response["detail"] == "A valid token is needed"
@@ -103,7 +103,7 @@ def test_update_status_fail_no_header_value():
         "on": True
     }
     device_id = "light"
-    request = requests.patch(pytest.host + f"/api/devices/{device_id}/status", headers=headers, data=json.dumps(body))
+    request = requests.patch(pytest.host + f"/api/devices/{device_id}/states", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
     response = request.json()
     assert response["detail"] == "A valid token is needed"
@@ -116,7 +116,7 @@ def test_update_status_fail_no_header():
         "on": True
     }
     device_id = "light"
-    request = requests.patch(pytest.host + f"/api/devices/{device_id}/status", headers=headers, data=json.dumps(body))
+    request = requests.patch(pytest.host + f"/api/devices/{device_id}/states", headers=headers, data=json.dumps(body))
     assert request.status_code == 401
     response = request.json()
     assert response["detail"] == "A valid token is needed"

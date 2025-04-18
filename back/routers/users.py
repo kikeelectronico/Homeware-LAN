@@ -9,29 +9,37 @@ from security.authentication import allowUser
 router = APIRouter()
 data_conector = Data()
 
+class TokenValidation(BaseModel):
+    valid: bool
+
 @router.get("/api/user/validateToken")
 @router.get("/api/user/validateToken/", include_in_schema=False) # Legacy
-def validate_user_token(token: Annotated[str | None, Header()] = None):
+def validate_user_token(token: Annotated[str | None, Header()] = None) -> TokenValidation:
     if token:
         return {
-            "status": "in" if data_conector.validateUserToken(token) else "fail"
+            "valid": data_conector.validateUserToken(token)
         }
     else:
         return {
-            "status": "fail"
+            "valid": False
         }
+
+class UserSesion(BaseModel):
+    username: str
+    token: str
+    valid: bool
 
 @router.get("/api/user/login")
 @router.get("/api/user/login/", include_in_schema=False) # Legacy
-def user_login(username: Annotated[str | None, Header()] = None, password: Annotated[str | None, Header()] = None):
+def user_login(username: Annotated[str | None, Header()] = None, password: Annotated[str | None, Header()] = None) -> UserSesion:
     if username is None or password is None:
         return errorResponses.FOUR_O_O
 
     token = data_conector.login(username, password)
     return {
-        'status': 'in' if token is not None else "fail",
-        'user': username,
-        'token': token if token is not None else ""
+        'username': username,
+        'token': token if token is not None else "",
+        'valid': token is not None
     }
 
     
@@ -43,9 +51,9 @@ def googleSync(username: Annotated[str | None, Header()] = None, password: Annot
     
     url = data_conector.googleSync(username, password)
     return {
-            'status': 'in' if url is not None else "fail",
-            'user': username,
-            'url': url if url is not None else ""
+            'username': username,
+            'url': url if url is not None else "",
+            'valid': url is not None
         }
 
 class Password(BaseModel):

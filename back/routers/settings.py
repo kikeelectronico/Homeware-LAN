@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
-from typing import Annotated
+from typing import Optional
 
 from security.authentication import allowUser
 from data import Data
@@ -11,16 +11,49 @@ import errorResponses
 router = APIRouter()
 data_conector = Data()
 
+class DDNS(BaseModel):
+    enabled: bool
+    hostname: str
+    password: str
+    provider: str
+    username: str
+
+class Log(BaseModel):
+    days: int
+
+class MQTT(BaseModel):
+    user: str
+    password: str
+
+class Settings(BaseModel):
+    client_id: str
+    client_secret: str
+    ddns: DDNS
+    domain: str
+    log: Log
+    mqtt: MQTT
+    sync_devices: bool
+    sync_google: bool
+
 @router.get("/api/settings", dependencies=[Depends(allowUser)])
-def get_settings():
+def get_settings() -> Settings:
     return data_conector.getSettings()
-    
+
+class PatchSettings(BaseModel):
+    client_id: Optional[str]
+    client_secret: Optional[str]
+    ddns: Optional[DDNS]
+    domain: Optional[str]
+    log: Optional[Log]
+    mqtt: Optional[MQTT]
+    sync_devices: Optional[bool]
+    sync_google: Optional[bool]
+
+
 @router.patch("/api/settings", dependencies=[Depends(allowUser)])
-def update_settings(settings: dict | None = None):
-    if settings is None:
-        return errorResponses.FOUR_O_O
-    
-    data_conector.updateSettings(settings)
+def update_settings(settings: PatchSettings) -> Settings:
+
+    data_conector.updateSettings(jsonable_encoder(settings))
     return data_conector.getSettings()
 
 
@@ -38,9 +71,7 @@ class ServiceAccountKey(BaseModel):
     universe_domain: str
 
 @router.put("/api/settings/serviceaccountkey", dependencies=[Depends(allowUser)])
-def set_service_account_key(serviceaccountkey: ServiceAccountKey | None = None):
-    if serviceaccountkey is None:
-        return errorResponses.FOUR_O_O
+def set_service_account_key(serviceaccountkey: ServiceAccountKey):
     
     data_conector.createServiceAccountKeyFile(jsonable_encoder(serviceaccountkey))
     return JSONResponse(status_code=200,

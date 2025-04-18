@@ -57,13 +57,13 @@ function Info() {
         </div>
       </div>
       <div className="page_block_container">
-        <h2>Device status</h2>
+        <h2>Device states</h2>
         <div className="advise">
-          <span>Status of the device.</span>
+          <span>States of the device.</span>
         </div>
         <hr/>
         <div className="page_block_buttons_container">
-          <ReactJsonView src={device.status} />
+          <ReactJsonView src={device.states} />
         </div>
       </div>
       <Toast alert={alert}/>

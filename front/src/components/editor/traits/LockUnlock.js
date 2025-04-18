@@ -8,16 +8,16 @@ const states = {
 const LockUnlock = forwardRef((props, ref) => {
 
   useEffect(() => {
-    if ("isLocked" in props.status) {
+    if ("isLocked" in props.states) {
       
     } else {
-      props.updateStatus(null, states, "insert")
+      props.updateStates(null, states, "insert")
     }
   }, [props])
 
   useImperativeHandle(ref, () => ({
     deleteAttributes() {
-      props.updateStatus(null, states, "drop")
+      props.updateStates(null, states, "drop")
     }
   }))
 

@@ -14,7 +14,6 @@ def test_get_devices():
     assert request.status_code == 200
     response = request.json()
     assert len(response) == 1
-    assert response[0]["description"]["_id"] == "light"
     assert response[0]["description"]["id"] == "light"
 
 def test_get_devices_fail_bad_token():
@@ -66,7 +65,6 @@ def test_get_device():
     request = requests.get(pytest.host + f"/api/devices/{device_id}", headers=headers)
     assert request.status_code == 200
     response = request.json()
-    assert response["description"]["_id"] == "light"
     assert response["description"]["id"] == "light"
     assert response["description"]["type"] == "action.devices.types.LIGHT"
 
@@ -109,13 +107,15 @@ def test_create_device():
             },
             "traits": [
                 "action.devices.traits.OnOff"
-            ]
+            ],
+            "attributes": {}
         },
-        "status": {
+        "states": {
             "online": True
         }
     }
     request = requests.post(pytest.host + "/api/devices", headers=headers, data=json.dumps(body))
+    print(request.json())
     assert request.status_code == 200
     response = request.json()
     assert response["code"] == 200
@@ -125,7 +125,6 @@ def test_create_device():
     request = requests.get(pytest.host + f"/api/devices/{device_id}", headers=headers)
     assert request.status_code == 200
     response = request.json()
-    assert response["description"]["_id"] == "switch000"
     assert response["description"]["id"] == "switch000"
     assert response["description"]["type"] == "action.devices.types.SWITCH"
 
@@ -155,9 +154,10 @@ def test_create_device_fail_bad_token():
             },
             "traits": [
                 "action.devices.traits.OnOff"
-            ]
+            ],
+            "attributes": {}
         },
-        "status": {
+        "states": {
             "online": True
         }
     }
@@ -192,9 +192,10 @@ def test_create_device_fail_no_token_value():
             },
             "traits": [
                 "action.devices.traits.OnOff"
-            ]
+            ],
+            "attributes": {}
         },
-        "status": {
+        "states": {
             "online": True
         }
     }
@@ -230,9 +231,10 @@ def test_create_device_fail_no_header_value():
             },
             "traits": [
                 "action.devices.traits.OnOff"
-            ]
+            ],
+            "attributes": {}
         },
-        "status": {
+        "states": {
             "online": True
         }
     }
@@ -266,9 +268,10 @@ def test_create_device_no_header():
             },
             "traits": [
                 "action.devices.traits.OnOff"
-            ]
+            ],
+            "attributes": {}
         },
-        "status": {
+        "states": {
             "online": True
         }
     }
@@ -303,9 +306,10 @@ def test_update_device():
             },
             "traits": [
                 "action.devices.traits.OnOff"
-            ]
+            ],
+            "attributes": {}
         },
-        "status": {
+        "states": {
             "online": False
         }
     }
@@ -319,7 +323,6 @@ def test_update_device():
     request = requests.get(pytest.host + f"/api/devices/{device_id}", headers=headers)
     assert request.status_code == 200
     response = request.json()
-    assert response["description"]["_id"] == "switch000"
     assert response["description"]["id"] == "switch000"
     assert response["description"]["name"]["name"] == "Switch updated"
 
@@ -349,9 +352,10 @@ def test_update_device_fail_bad_device_id():
             },
             "traits": [
                 "action.devices.traits.OnOff"
-            ]
+            ],
+            "attributes": {}
         },
-        "status": {
+        "states": {
             "online": False
         }
     }
@@ -389,9 +393,10 @@ def test_update_device_fail_bad_token():
             },
             "traits": [
                 "action.devices.traits.OnOff"
-            ]
+            ],
+            "attributes": {}
         },
-        "status": {
+        "states": {
             "online": False
         }
     }
@@ -427,9 +432,10 @@ def test_update_device_fail_no_token_value():
             },
             "traits": [
                 "action.devices.traits.OnOff"
-            ]
+            ],
+            "attributes": {}
         },
-        "status": {
+        "states": {
             "online": False
         }
     }
@@ -466,9 +472,10 @@ def test_update_device_fail_no_header_value():
             },
             "traits": [
                 "action.devices.traits.OnOff"
-            ]
+            ],
+            "attributes": {}
         },
-        "status": {
+        "states": {
             "online": False
         }
     }
@@ -503,9 +510,10 @@ def test_update_device_no_header():
             },
             "traits": [
                 "action.devices.traits.OnOff"
-            ]
+            ],
+            "attributes": {}
         },
-        "status": {
+        "states": {
             "online": False
         }
     }

@@ -33,14 +33,14 @@ const TemperatureControl = forwardRef((props, ref) => {
       setTemperatureUnitForUX(props.attributes.temperatureUnitForUX)
       setTemperatureRange(props.attributes.temperatureRange)
     } else {
-      props.updateStatus(null, states, "insert")
+      props.updateStates(null, states, "insert")
       props.updateAttributes(null, attributes, "insert")
     }
   }, [props])
 
   useImperativeHandle(ref, () => ({
     deleteAttributes() {
-      props.updateStatus(null, states, "drop")
+      props.updateStates(null, states, "drop")
       props.updateAttributes(null, attributes, "drop")
     }
   }))

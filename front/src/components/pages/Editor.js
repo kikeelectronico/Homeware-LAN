@@ -21,7 +21,7 @@ function Editor() {
   const [device_info, setDeviceInfo] = useState({})
 
   const attributes = useRef({})
-  const status = useRef({online: true})
+  const states = useRef({online: true})
 
   const [traits_to_show, setTraitsToShow] = useState([])
   const [not_recomended_traits, setNonRecomendedTraits] = useState(false)
@@ -55,7 +55,7 @@ function Editor() {
               setTraitsToShow(_traits_to_show)
               setDeviceInfo(data.description.deviceInfo)
               attributes.current = data.description.attributes
-              status.current = data.status
+              states.current = data.states
               setLoading(false)
             } else {
               console.error(http.statusText);
@@ -111,22 +111,22 @@ function Editor() {
     }
   }
 
-  const updateStatus = (_key, _value, _action) => {
+  const updateStates = (_key, _value, _action) => {
     if (_action === "insert") {
-      let _status_keys = Object.keys(_value)
-      for(let i = 0; i < _status_keys.length; i++) {
-        status.current[_status_keys[i]] = _value[_status_keys[i]]
+      let _states_keys = Object.keys(_value)
+      for(let i = 0; i < _states_keys.length; i++) {
+        states.current[_states_keys[i]] = _value[_states_keys[i]]
       }
     } else if (_action === "drop") {
-      let _status_keys = Object.keys(_value)
-      for(let i = 0; i < _status_keys.length; i++) {
-        delete status.current[_status_keys[i]]
+      let _states_keys = Object.keys(_value)
+      for(let i = 0; i < _states_keys.length; i++) {
+        delete states.current[_states_keys[i]]
       }
     } else if (_action === "update") {
-      status.current[_key] = _value
+      states.current[_key] = _value
     } else if (_action === "delete") {
-      if (_key in status.current) {
-        delete status.current[_key]
+      if (_key in states.current) {
+        delete states.current[_key]
       }
     }
   }
@@ -161,7 +161,7 @@ function Editor() {
             name: nicknames[0]
           }
         },
-        status: status.current,
+        states: states.current,
       };
       if (create) {
         http.open("POST", root + "api/devices");
@@ -299,10 +299,10 @@ function Editor() {
                   trait={trait}
                   device_traits={traits}
                   attributes={attributes.current}
-                  status={status.current}
+                  states={states.current}
                   updateTraits={updateTraits}
                   updateAttributes={updateAttributes}
-                  updateStatus={updateStatus}
+                  updateStates={updateStates}
                   key={trait}
                 />
               ))
