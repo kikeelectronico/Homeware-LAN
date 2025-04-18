@@ -117,9 +117,9 @@ function App() {
         if (http.readyState === 4) {
           if (http.status === 200) {
             var data = JSON.parse(http.responseText);
-            if (data.status !== 'in' && !window.location.href.includes('login')) {
+            if (!data.valid && !window.location.href.includes('login')) {
               window.location.href = '/login/'
-            } else if (data.status === 'in') {
+            } else if (data.valid) {
               setSession(true)
             }
           } else {
