@@ -6,10 +6,7 @@ sidebar_label: Installation
 
 # Dependencies
 
-1. Install docker and docker-compose.
-```bash
-sudo apt install -y docker docker-compose-plugin
-```
+1. Install docker and docker-compose following the instructions for your OS https://docs.docker.com/compose/install/linux/.
 2. Install git.
 ```bash
 sudo apt install -y git
