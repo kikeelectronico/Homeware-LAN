@@ -62,7 +62,7 @@ class Data:
 			print("result", result.modified_count)
 			# Override user
 			print("HOMEWARE_USER", HOMEWARE_USER)
-			print("HOMEWARE_PASSWORD", HOMEWARE_PASSWORD)
+			print("HOMEWARE_PASSWORD length", len(HOMEWARE_PASSWORD))
 			filter = {"_id": "admin"}
 			operation = {"$set": {
 				"username": HOMEWARE_USER,
