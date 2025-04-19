@@ -10,3 +10,9 @@
 .separator {
   width: 70%;
 }
+
+.no_attributes_message {
+  margin-bottom: 20px;
+  text-align: left;
+  color: #aaa;
+}

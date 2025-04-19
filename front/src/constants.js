@@ -1,4 +1,4 @@
-var root = window.location.href.includes('localhost') ? "http://homeware.local/" : "/"
+var root = window.location.href.includes('localhost') ? "http://localhost:5001/" : "/"
 
 const deviceReference = {
   devices: {
@@ -203,12 +203,9 @@ const deviceReference = {
       ]
     },
     "action.devices.types.FREEZER": {
-      name: "Fireplace",
+      name: "Freezer",
       traits: [
-        "action.devices.traits.Modes",
-        "action.devices.traits.OnOff",
         "action.devices.traits.TemperatureControl",
-        "action.devices.traits.Toggles"
       ]
     },
     "action.devices.types.FRYER": {
@@ -398,7 +395,8 @@ const deviceReference = {
       name: "Sensor",
       traits: [
         "action.devices.traits.SensorState",
-        "action.devices.traits.EnergyStorage"
+        "action.devices.traits.EnergyStorage",
+        "action.devices.traits.OccupancySensing"
       ]
     },
     "action.devices.types.SECURITYSYSTEM": {
@@ -790,6 +788,18 @@ const deviceReference = {
         }
       ]
     },
+    "action.devices.traits.OccupancySensing": {
+      name: 'Occupancy sensing',
+      attributes: {
+        occupancySensorConfiguration: {
+          type: "objects-list",
+          default: [],
+          content: []
+        }
+      },
+      params: ['occupancy'],
+      commands: []
+    },
     "action.devices.traits.OnOff": {
       name: 'Power control',
       attributes: {
@@ -829,7 +839,7 @@ const deviceReference = {
       commands: []
     },
     "action.devices.traits.Rotation": {
-      name: 'Rotation - Google doesn\'t respond',
+      name: 'Rotation',
       attributes: {
         commandOnlyRotation: {
           type: "bool",
@@ -884,7 +894,7 @@ const deviceReference = {
       commands: []
     },
     "action.devices.traits.SensorState": {
-      name: 'Sesnor - Google doesn\'t respond',
+      name: 'Sesnor',
       attributes: {
         sensorStatesSupported: {
           type: 'object',
@@ -1016,7 +1026,7 @@ const deviceReference = {
       commands: []
     },
     "action.devices.traits.Timer": {
-      name: 'Timer - Google doesn\'t respond',
+      name: 'Timer',
       attributes: {
         maxTimerLimitSec: {
           type: "int",
@@ -1315,6 +1325,12 @@ const deviceReference = {
       name: 'Is plugged in',
       commanded: false,
       default: false
+    },
+    occupancy: {
+      type: "string",
+      name: "Occupancy",
+      commanded: false,
+      default: "UNKNOWN_OCCUPANCY_STATE"
     }
   }
 }

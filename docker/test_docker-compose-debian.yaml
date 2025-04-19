@@ -1,0 +1,116 @@
+version: "3"
+
+services:
+  # API
+  homeware-lan-back-api:
+    image: ghcr.io/kikeelectronico/homewarelan-back
+    restart: always
+    hostname: backend
+    command: "uvicorn homewareAPI:app --host=0.0.0.0 --port=5001 --workers 1" 
+    environment:
+      - REDIS_HOST=redis
+      - MONGO_HOST=mongodb
+      - MQTT_HOST=mosquitto
+      - HOMEWARE_USER=${HOMEWARE_USER}
+      - HOMEWARE_PASSWORD=${HOMEWARE_PASSWORD}
+      - HOMEWARE_DOMAIN=${DOMAIN}
+    expose:
+      - "5001"
+    depends_on:
+      - redis
+      - mongodb
+      - mosquitto
+    volumes:
+      - homeware-logs:/app/logs
+      - homeware-files:/app/files
+
+  # tasks
+  homeware-lan-back-tasks:
+    image: ghcr.io/kikeelectronico/homewarelan-back
+    restart: always
+    hostname: backend-tasks
+    command: "python homewareTasks.py"
+    environment:
+      - REDIS_HOST=redis
+      - MONGO_HOST=mongodb
+      - MQTT_HOST=mosquitto
+    depends_on:
+      - redis
+      - mosquitto
+      - homeware-lan-back-api
+    volumes:
+      - homeware-logs:/app/logs
+      - homeware-files:/app/files
+
+  # MQTT
+  homeware-lan-back-mqtt:
+    image: ghcr.io/kikeelectronico/homewarelan-back
+    restart: always
+    hostname: backend-mqtt
+    command: "python homewareMQTT.py"
+    environment:
+      - REDIS_HOST=redis
+      - MONGO_HOST=mongodb
+      - MQTT_HOST=mosquitto
+    depends_on:
+      - redis
+      - mosquitto
+      - homeware-lan-back-api
+    volumes:
+      - homeware-logs:/app/logs
+      - homeware-files:/app/files
+
+  # redis
+  redis:
+    image: redis:6.0
+    restart: always
+    hostname: redis
+    expose:
+      - "6379"
+    volumes:
+      - redis-data:/data
+
+  # mongoDB
+  mongodb:
+    image: mongo
+    restart: always
+    hostname: mongodb
+    expose:
+      - '27017'
+    volumes:
+      - mongo-data:/data/db
+    
+  # mosquitto
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    restart: always
+    hostname: mosquitto
+    expose:
+      - "1883"
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./configuration_templates/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./configuration_templates/mosquitto_passwd:/mosquitto/config/passwd:ro
+      - mosquitto-data:/mosquitto/data
+
+  # nginx proxy for API & FE
+  nginx:
+    image: ghcr.io/kikeelectronico/homewarelan-nginx
+    restart: always
+    ports:
+      - "80:80"
+    environment:
+      VIRTUAL_HOST: ${DOMAIN}
+      VIRTUAL_PORT: 80
+      LETSENCRYPT_HOST: ${DOMAIN}
+      LETSENCRYPT_EMAIL: ${EMAIL}
+    depends_on:
+      - homeware-lan-back-api
+
+volumes:
+  mosquitto-data:
+  redis-data:
+  mongo-data:
+  homeware-logs:
+  homeware-files:

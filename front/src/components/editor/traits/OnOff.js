@@ -1,45 +1,69 @@
-import React from 'react';
+import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
 
-class OnOff extends React.Component {
-  constructor(props) {
-    super(props);
-    this.updateCheckbox = this.updateCheckbox.bind(this);
-  }
+const attributes = {
+  commandOnlyOnOff: false,
+  queryOnlyOnOff: false
+}
 
+const states = {
+  on: false
+}
 
-  updateCheckbox(checked, attribute){
-    this.props.update('attributes/' + attribute,checked);
-  }
+const OnOff = forwardRef((props, ref) => {
 
-  render() {
-    return (
-      <div>
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            <i>commandOnlyOnOff</i>
-          </div>
-          <div className="three_table_cel">
-            <Switch onChange={(checked) => {this.updateCheckbox(checked,"commandOnlyOnOff")}} checked={this.props.attributes.commandOnlyOnOff} />
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the state.</span>
-          </div>
+  const [commandOnlyOnOff, setCommandOnlyOnOff] = useState(false)
+  const [queryOnlyOnOff, setQueryOnlyOnOff] = useState(false)
+
+  useEffect(() => {
+    if ("commandOnlyOnOff" in props.attributes) {
+      setCommandOnlyOnOff(props.attributes.commandOnlyOnOff)
+      setQueryOnlyOnOff(props.attributes.queryOnlyOnOff)
+    } else {
+      props.updateStates(null, states, "insert")
+      props.updateAttributes(null, attributes, "insert")
+    }
+  }, [props])
+
+  useImperativeHandle(ref, () => ({
+    deleteAttributes() {
+      props.updateStates(null, states, "drop")
+      props.updateAttributes(null, attributes, "drop")
+    }
+  }))
+
+  return (
+    <>
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          <i>commandOnlyOnOff</i>
         </div>
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            <i>queryOnlyOnOff</i>
-          </div>
-          <div className="three_table_cel">
-            <Switch onChange={(checked) => {this.updateCheckbox(checked,"queryOnlyOnOff")}} checked={this.props.attributes.queryOnlyOnOff} />
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Enable it if Google shouldn't change the device state.</span>
-          </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              setCommandOnlyOnOff(checked)
+              props.updateAttributes("commandOnlyOnOff", checked, "update")
+            }}
+            checked={commandOnlyOnOff}
+          />
         </div>
       </div>
-    );
-  }
-}
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          <i>queryOnlyOnOff</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              setQueryOnlyOnOff(checked)
+              props.updateAttributes("queryOnlyOnOff", checked, "update")
+            }}
+            checked={queryOnlyOnOff}
+          />
+        </div>
+      </div>
+    </>
+  )
+})
 
 export default OnOff

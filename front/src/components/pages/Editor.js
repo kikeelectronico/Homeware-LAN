@@ -1,626 +1,336 @@
-import React from "react";
-import Switch from "react-switch";
-import { ToastsContainer, ToastsStore } from "react-toasts";
-import Text from "../editor/Text";
-import Scene from "../editor/traits/Scene";
-import OnOff from "../editor/traits/OnOff";
-import Brightness from "../editor/traits/Brightness";
-import FanSpeed from "../editor/traits/FanSpeed";
-import ColorSetting from "../editor/traits/ColorSetting";
-import TemperatureSetting from "../editor/traits/TemperatureSetting";
-import Toggles from "../editor/traits/Toggles";
-import Modes from "../editor/traits/Modes";
-import HumiditySetting from "../editor/traits/HumiditySetting";
-import OpenClose from "../editor/traits/OpenClose";
-import Rotation from "../editor/traits/Rotation";
-import Fill from "../editor/traits/Fill";
-import ArmDisarm from "../editor/traits/ArmDisarm";
-import StartStop from "../editor/traits/StartStop";
-import Timer from "../editor/traits/Timer";
-import TemperatureControl from "../editor/traits/TemperatureControl";
-import Cook from "../editor/traits/Cook";
-import SensorState from "../editor/traits/SensorState";
-import EnergyStorage from "../editor/traits/EnergyStorage";
+import React, {useState, useEffect, useRef} from "react";
+import {Button, Stack, Select, MenuItem} from '@mui/material';
+
+import Toast from "../web/Toast";
 import getCookieValue from "../../functions";
 import { root, deviceReference } from "../../constants";
+import Trait from "../editor/Trait";
+import Text from "../editor/Text";
 
 import "./Editor.css";
 
-let MANDATORY_CONTENT_LINES = 3
 
-class Editor extends React.Component {
-  constructor(props) {
-    super(props);
-    const id = window.location.pathname.split("/")[3];
-    var create = false;
-    if (id === "") create = true;
-    this.state = {
-      id: id,
-      create: create,
-      device: {
-        attributes: {},
-        deviceInfo: {},
-        id: "",
-        name: {
-          defaultNames: [],
-          nicknames: [],
-          name: "",
-        },
-        traits: [],
-        type: "",
-      },
-      status: {
-        online: true,
-      },
-      device_tratis: [],
-      not_recomended_traits: false,
-      mandatory_content: 0,
-    };
-    this.updateNames = this.updateNames.bind(this);
-    this.update = this.update.bind(this);
-    this.updateId = this.updateId.bind(this);
-    this.updateType = this.updateType.bind(this);
-    this.updateTraits = this.updateTraits.bind(this);
-    this.notRecomendedTraits = this.notRecomendedTraits.bind(this);
-    this.save = this.save.bind(this);
-    this.delete = this.delete.bind(this);
-    this.renderAttrinutes = this.renderAttrinutes.bind(this);
+function Editor() {
+  
+  const [id, setId] = useState(null)
+  const [create, setCreate] = useState(true)
+  const [loading, setLoading] = useState(true)
+  const [type, setType] = useState("")
+  const [nicknames, setNicknames] = useState([])
+  const [traits, setTraits] = useState([])
+  const [device_info, setDeviceInfo] = useState({})
+
+  const attributes = useRef({})
+  const states = useRef({online: true})
+
+  const [traits_to_show, setTraitsToShow] = useState([])
+  const [not_recomended_traits, setNonRecomendedTraits] = useState(false)
+
+  const [alert, setAlert] = useState(null)
+
+  useEffect(() => {
+    let _id = window.location.pathname.split("/")[3]
+    setId(_id)
+    setCreate(_id === "")
+    setLoading(_id !== "")
+  },[])
+
+  useEffect(() => {
+    if (!create) {
+      if (id) {
+        var http = new XMLHttpRequest();
+        http.onload = function (e) {
+          if (http.readyState === 4) {
+            if (http.status === 200) {
+              var data = JSON.parse(http.responseText);
+              console.log(data)
+              setType(data.description.type)
+              setNicknames(data.description.name.nicknames)
+              setTraits(data.description.traits)
+              let _traits_to_show = []
+              const all_traits = Object.keys(deviceReference.traits)
+              for (let i = 0; i < all_traits.length; i++)
+                if (data.description.traits.includes(all_traits[i]) || deviceReference.devices[data.description.type].traits.includes(all_traits[i]))
+                  _traits_to_show.push(all_traits[i])
+              setTraitsToShow(_traits_to_show)
+              setDeviceInfo(data.description.deviceInfo)
+              attributes.current = data.description.attributes
+              states.current = data.states
+              setLoading(false)
+            } else {
+              console.error(http.statusText);
+              setAlert({severity: "error", text: "Unable to load the data."})
+            }
+          }
+        }
+        http.open("GET", root + "api/devices/" + id);
+        http.setRequestHeader(
+          "authorization",
+          "bearer " + getCookieValue("token")
+        );
+        http.send();
+      }
+    }
+  }, [id, create])
+
+  const updateDeviceInfo = (_key, _value) => {
+    let _device_info = {...device_info}
+    _device_info[_key] = _value
+    setDeviceInfo(_device_info)
   }
 
-  componentDidMount() {
-    if (!this.state.create) {
+  const updateTraits = (_trait, _action) => {
+    if (_action === "insert") {
+      let _traits = [...traits]
+      _traits.push(_trait)
+      setTraits(_traits)
+    } else if (_action === "delete") {
+      let _traits = [...traits]
+      _traits.splice(_traits.indexOf(_trait),1)
+      setTraits(_traits)
+    }
+  }
+
+  const updateAttributes = (_key, _value, _action) => {
+    if (_action === "insert") {
+      let _attributes_keys = Object.keys(_value)
+      for(let i = 0; i < _attributes_keys.length; i++) {
+        attributes.current[_attributes_keys[i]] = _value[_attributes_keys[i]]
+      }
+    } else if (_action === "drop") {
+      let _attributes_keys = Object.keys(_value)
+      for(let i = 0; i < _attributes_keys.length; i++) {
+        delete attributes.current[_attributes_keys[i]]
+      }
+    } else if (_action === "update") {
+      attributes.current[_key] = _value
+    } else if (_action === "delete") {
+      if (_key in attributes.current) {
+        delete attributes.current[_key]
+      }
+    }
+  }
+
+  const updateStates = (_key, _value, _action) => {
+    if (_action === "insert") {
+      let _states_keys = Object.keys(_value)
+      for(let i = 0; i < _states_keys.length; i++) {
+        states.current[_states_keys[i]] = _value[_states_keys[i]]
+      }
+    } else if (_action === "drop") {
+      let _states_keys = Object.keys(_value)
+      for(let i = 0; i < _states_keys.length; i++) {
+        delete states.current[_states_keys[i]]
+      }
+    } else if (_action === "update") {
+      states.current[_key] = _value
+    } else if (_action === "delete") {
+      if (_key in states.current) {
+        delete states.current[_key]
+      }
+    }
+  }
+
+  const saveDevice = () => {
+    if(true) {
+      setAlert({severity: "warning", text: "Saving the device."})
       var http = new XMLHttpRequest();
       http.onload = function (e) {
         if (http.readyState === 4) {
           if (http.status === 200) {
-            var data = JSON.parse(http.responseText);
-            var recomended_tratis = deviceReference.devices[data.type].traits;
-            var device_tratis = data.traits.concat(recomended_tratis);
-            device_tratis = device_tratis.filter((trait, index) => {
-              return device_tratis.indexOf(trait) === index;
-            });
-            this.setState({
-              device: data,
-              device_tratis: device_tratis,
-              mandatory_content: 3,
-            });
-          } else {
-            console.error(http.statusText);
-            ToastsStore.error("Something went wrong");
-          }
-        }
-      }.bind(this);
-      http.open("GET", root + "api/devices/get/" + this.state.id + "/");
-      http.setRequestHeader(
-        "authorization",
-        "baerer " + getCookieValue("token")
-      );
-      http.send();
-
-      var sta = new XMLHttpRequest();
-      sta.onload = function (e) {
-        if (sta.readyState === 4) {
-          if (sta.status === 200) {
-            var data = JSON.parse(sta.responseText);
-            console.log("in");
-            this.setState({
-              status: data,
-            });
-          } else {
-            console.error(sta.statusText);
-          }
-        }
-      }.bind(this);
-      sta.open("GET", root + "api/status/get/" + this.state.id + "/");
-      sta.setRequestHeader(
-        "authorization",
-        "baerer " + getCookieValue("token")
-      );
-      sta.send();
-    }
-  }
-
-  updateNames(dumy_key, value) {
-    if(value.length > 0)
-      this.setState({mandatory_content: this.state.mandatory_content + 1})
-    else
-      this.setState({mandatory_content: this.state.mandatory_content - 1})
-    var names = value.split(",");
-    var temp_device = this.state.device;
-    temp_device.name = {
-      defaultNames: names,
-      nicknames: names,
-      name: names[0],
-    };
-    this.setState({
-      device: temp_device,
-    });
-  }
-
-  update(key, value) {
-    var temp_device = this.state.device;
-    var keys = key.split("/");
-    if (keys.length === 1) {
-      if (value === "")
-        delete temp_device[key]
-      else
-        temp_device[key] = value;
-    } 
-    else if (keys.length === 2) {
-      if (value === "")
-        delete temp_device[keys[0]][keys[1]]
-      else
-        temp_device[keys[0]][keys[1]] = value;
-    }
-    else if (keys.length === 3) {
-      if (value === "")
-        delete temp_device[keys[0]][keys[1]][keys[2]]
-      else
-        temp_device[keys[0]][keys[1]][keys[2]] = value;
-    }
-    this.setState({
-      device: temp_device,
-    });
-  }
-
-  updateId(event) {
-    if(event.target.value.length > 0)
-      this.setState({mandatory_content: this.state.mandatory_content + 1})
-    else
-      this.setState({mandatory_content: this.state.mandatory_content - 1})
-    this.update("id", event.target.value);
-  }
-
-  updateType(event) {
-    if(event.target.value !== 'default')
-      this.setState({mandatory_content: this.state.mandatory_content + 1})
-    else
-      this.setState({mandatory_content: this.state.mandatory_content - 1})
-    this.update("type", event.target.value);
-    this.setState({
-      device_tratis: deviceReference.devices[event.target.value].traits,
-    });
-  }
-
-  updateTraits(checked, trait) {
-    var temp_device = this.state.device;
-    var temp_status = this.state.status;
-    if (checked) {
-      if (this.state.device.traits.includes(trait) === false) {
-        //Push the trait to the device
-        temp_device.traits.push(trait);
-        //Set the default attributes values
-        var attributes = deviceReference.traits[trait].attributes;
-        Object.keys(attributes).forEach((attribute, i) => {
-          if (attributes[attribute].default !== "")
-            temp_device.attributes[attribute] = attributes[attribute].default;
-        });
-        //Set the default status params
-        var params = deviceReference.traits[trait].params;
-        params.forEach((param, i) => {
-          temp_status[param] = deviceReference.params[param].default;
-        });
-      }
-    } else {
-      //Delete the trait from the list
-      if (this.state.device.traits.includes(trait) === true) {
-        temp_device.traits = temp_device.traits.filter(function (
-          value,
-          index,
-          arr
-        ) {
-          return value !== trait;
-        });
-      }
-      //Delete the attributes values
-      attributes = deviceReference.traits[trait].attributes;
-      Object.keys(attributes).forEach((attribute, i) => {
-        if (Object.keys(temp_device.attributes).includes(attribute))
-          delete temp_device.attributes[attribute];
-      });
-      //Delete the status params
-      params = deviceReference.traits[trait].params;
-      params.forEach((param, i) => {
-        if (Object.keys(temp_status).includes(param)) delete temp_status[param];
-      });
-    }
-    this.setState({
-      device: temp_device,
-      status: temp_status,
-    });
-  }
-
-  notRecomendedTraits() {
-    this.setState({
-      device_tratis: Object.keys(deviceReference.traits),
-      not_recomended_traits: true,
-    });
-  }
-
-  save() {
-    if(this.state.mandatory_content >= MANDATORY_CONTENT_LINES) {
-      ToastsStore.warning("Saving");
-      var http = new XMLHttpRequest();
-      http.onload = function (e) {
-        if (http.readyState === 4) {
-          if (http.status === 200) {
-            JSON.parse(http.responseText);
-            ToastsStore.success("Saved correctly");
-            if (this.state.create) {
+            setAlert({severity: "success", text: "Device saved."})
+            if (create) {
               window.location.href = "/devices";
             }
           } else {
             console.error(http.statusText);
-            ToastsStore.error("Error, the changes haven't been saved");
+            setAlert({severity: "error", text: "Something went wrong."})
           }
         }
-      }.bind(this);
+      }
       var payload = {
-        device: this.state.device,
-        status: this.state.status,
+        description: {
+          id: id,
+          type: type,
+          deviceInfo: device_info,
+          traits: traits,
+          attributes: attributes.current,
+          name: {
+            defaultNames: nicknames,
+            nicknames: nicknames,
+            name: nicknames[0]
+          }
+        },
+        states: states.current,
       };
-      if (this.state.create) {
-        http.open("POST", root + "api/devices/create/");
+      if (create) {
+        http.open("POST", root + "api/devices");
       } else {
-        http.open("POST", root + "api/devices/update/");
+        http.open("PUT", root + "api/devices/" + id);
       }
       http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-      http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+      http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
       http.send(JSON.stringify(payload));
     } else {
-      ToastsStore.error("Verify the mandatory data");
+      setAlert({severity: "error", text: "Verify the mandatory data."})
     }
   }
 
-  delete() {
-    ToastsStore.warning("Deleting");
+  const deleteDevice = () => {
+    setAlert({severity: "warning", text: "Deleting the device."})
     if (window.confirm("Do you want to delete the device?")) {
       var http = new XMLHttpRequest();
       http.onload = function (e) {
         if (http.readyState === 4) {
           if (http.status === 200) {
+            // setAlert({severity: "success", text: "Device deleted."})
             window.location.href = "/devices/";
           } else {
             console.error(http.statusText);
-            ToastsStore.error("Error, the device hasn't been deleted");
+            setAlert({severity: "error", text: "Something went wrong."})
           }
         } else {
-          ToastsStore.error("Error, the device hasn't been deleted");
+          setAlert({severity: "error", text: "Something went wrong."})
         }
       };
-      http.open(
-        "POST",
-        root + "api/devices/delete/" + this.state.device.id + "/"
+      http.open("DELETE", root + "api/devices/" + id
       );
       http.setRequestHeader(
         "authorization",
-        "baerer " + getCookieValue("token")
+        "bearer " + getCookieValue("token")
       );
       http.send();
     } else {
-      ToastsStore.warning("Ok. The device is save");
+      setAlert({severity: "seccess", text: "Saved."})
     }
   }
 
-  renderAttrinutes(trait) {
-    if (this.state.device.traits.includes(trait)) {
-      if (trait === "action.devices.traits.Scene")
-        return (
-          <Scene
-            attributes={this.state.device.attributes}
-            update={this.update}
-          />
-        );
-      else if (trait === "action.devices.traits.OnOff")
-        return (
-          <OnOff
-            attributes={this.state.device.attributes}
-            update={this.update}
-          />
-        );
-      else if (trait === "action.devices.traits.Brightness")
-        return (
-          <Brightness
-            commandOnlyBrightness={
-              this.state.device.attributes.commandOnlyBrightness
-            }
-            update={this.update}
-          />
-        );
-      else if (trait === "action.devices.traits.ColorSetting")
-        return (
-          <ColorSetting
-            attributes={this.state.device.attributes}
-            update={this.update}
-          />
-        );
-      else if (trait === "action.devices.traits.FanSpeed")
-        return (
-          <FanSpeed
-            attributes={this.state.device.attributes}
-            update={this.update}
-          />
-        );
-      else if (trait === "action.devices.traits.TemperatureSetting")
-        return (
-          <TemperatureSetting
-            attributes={this.state.device.attributes}
-            update={this.update}
-          />
-        );
-      else if (trait === "action.devices.traits.Toggles")
-        return (
-          <Toggles
-            attributes={this.state.device.attributes}
-            update={this.update}
-          />
-        );
-      else if (trait === "action.devices.traits.Modes")
-        return (
-          <Modes
-            attributes={this.state.device.attributes}
-            update={this.update}
-          />
-        );
-      else if (trait === "action.devices.traits.HumiditySetting")
-        return (
-          <HumiditySetting
-            attributes={this.state.device.attributes}
-            update={this.update}
-          />
-        );
-      else if (trait === "action.devices.traits.OpenClose")
-        return (
-          <OpenClose
-            attributes={this.state.device.attributes}
-            update={this.update}
-          />
-        );
-      else if (trait === "action.devices.traits.Rotation")
-        return (
-          <Rotation
-            attributes={this.state.device.attributes}
-            update={this.update}
-          />
-        );
-      else if (trait === "action.devices.traits.Fill")
-        return (
-          <Fill
-            attributes={this.state.device.attributes}
-            update={this.update}
-          />
-        );
-      else if (trait === "action.devices.traits.ArmDisarm")
-        return (
-          <ArmDisarm
-            attributes={this.state.device.attributes}
-            update={this.update}
-          />
-        );
-      else if (trait === "action.devices.traits.StartStop")
-        return (
-          <StartStop
-            attributes={this.state.device.attributes}
-            update={this.update}
-          />
-        );
-      else if (trait === "action.devices.traits.Timer")
-        return (
-          <Timer
-            attributes={this.state.device.attributes}
-            update={this.update}
-          />
-        );
-      else if (trait === "action.devices.traits.TemperatureControl")
-        return (
-          <TemperatureControl
-            attributes={this.state.device.attributes}
-            update={this.update}
-          />
-        );
-      else if (trait === "action.devices.traits.Cook")
-        return (
-          <Cook
-            attributes={this.state.device.attributes}
-            update={this.update}
-          />
-        );
-      else if (trait === "action.devices.traits.SensorState")
-        return (
-          <SensorState
-            attributes={this.state.device.attributes}
-            update={this.update}
-          />
-        );
-      else if (trait === "action.devices.traits.EnergyStorage")
-        return (
-          <EnergyStorage
-            attributes={this.state.device.attributes}
-            update={this.update}
-          />
-        );
-    }
-  }
-
-  render() {
-    const deleteButton = {
-      backgroundColor: "red",
-    };
-
-    const deleteButtonDisabled = {
-      backgroundColor: "red",
-      opacity: "0.2",
-    };
-
-    const types = Object.keys(deviceReference.devices).map((type) => {
-      return (
-        <option key={type} value={type}>
-          {deviceReference.devices[type].name}
-        </option>
-      );
-    });
-
-    const nicknames = this.state.device.name.nicknames.map((name) => {
-      return name;
-    });
-
-    const traits = this.state.device_tratis.map((trait) => (
-      <div key={trait}>
-        <hr className="separator" />
-        <div className="three_table_row">
-          <div className="three_table_cel">
-            <b>{deviceReference.traits[trait].name}</b>
-          </div>
-          <div className="three_table_cel">
-            <Switch
-              onChange={(checked) => {
-                this.updateTraits(checked, trait);
-              }}
-              checked={this.state.device.traits.includes(trait)}
-            />
-          </div>
-          <div className="three_table_cel">
-            Read Google's{" "}
-            <a
-              href={
-                "https://developers.google.com/assistant/smarthome/traits/" +
-                trait.split(".")[3].toLowerCase()
-              }
-              target="blanck"
-            >
-              documentation
-            </a>
-          </div>
+  return (
+    <div>
+      <div className="page_block_container">
+        <h2>General settings</h2>
+        <div className="advise">
+            <span> Nick names must be separeted by commas.</span>
+            <span> Fields with * are required.</span>
         </div>
-        {this.renderAttrinutes(trait)}
-      </div>
-    ));
-
-    return (
-      <div>
-        <div className="page_block_container">
-          <h2>Global settings</h2>
-          <div className="advise">
-            <span>General settings of the device.</span>
-            <hr />
-          </div>
+        <hr/>
+        { loading ? <></> : 
           <div className="page_block_content_container">
-            <div className="two_table_row">
-              <div className="two_table_cel">Device ID*</div>
-              <div className="two_table_cel">
-                <input
-                  type="text"
-                  className="two_input"
-                  id="id"
-                  defaultValue={this.state.device.id}
-                  onChange={this.updateId}
-                  disabled={this.state.create ? false : true}
-                />
-              </div>
-            </div>
+            <Text name="Unique id*" data="id"
+              value={id}
+              update={setId}
+              disabled={create ? false : true}
+            />
             <div className="two_table_row">
               <div className="two_table_cel">Device Type*</div>
               <div className="two_table_cel">
-                <select
-                  name="type"
-                  className="two_input"
+                <Select
                   id="type"
-                  value={this.state.device.type}
-                  onChange={this.updateType}
-                  disabled={this.state.create ? false : true}
-                >
-                  <option value="default">Select a device</option>
-                  {types}
-                </select>
+                  className="two_input"
+                  value={type}
+                  onChange={(event) => {
+                    setType(event.target.value);
+                    setTraits(deviceReference.devices[event.target.value].traits)
+                    setTraitsToShow(deviceReference.devices[event.target.value].traits)
+                  }}
+                  disabled={!create}
+                >                  
+                  {
+                    Object.keys(deviceReference.devices).map((type) => {
+                      return (
+                        <MenuItem key={type} value={type}>
+                          {deviceReference.devices[type].name}
+                        </MenuItem>
+                      );
+                    })
+                  }
+                </Select>
               </div>
             </div>
-            <Text
-              name="Nick names*"
-              data="nicknames"
-              value={nicknames}
-              update={this.updateNames}
+
+            <Text name="Nick names*" data="nicknames"
+              value={nicknames.map((name) => {return name})}
+              update={(value) => setNicknames(value.split(","))}
             />
-            <Text
-              name="Hardware version"
-              data="deviceInfo/hwVersion"
-              value={
-                this.state.device.deviceInfo
-                  ? this.state.device.deviceInfo.hwVersion
-                  : ""
-              }
-              update={this.update}
+            <Text name="Hardware version" data="deviceInfo/hwVersion"
+              value={device_info ? device_info.hwVersion : "" }
+              update={(value) => updateDeviceInfo("hwVersion", value)}
             />
-            <Text
-              name="Software version"
-              data="deviceInfo/swVersion"
-              value={
-                this.state.device.deviceInfo
-                  ? this.state.device.deviceInfo.swVersion
-                  : ""
-              }
-              update={this.update}
+            <Text name="Software version" data="deviceInfo/swVersion"
+              value={ device_info ? device_info.swVersion : "" }
+              update={(value) => updateDeviceInfo("swVersion", value)}
             />
-            <Text
-              name="Manufacturer"
-              data="deviceInfo/manufacturer"
-              value={
-                this.state.device.deviceInfo
-                  ? this.state.device.deviceInfo.manufacturer
-                  : ""
-              }
-              update={this.update}
+            <Text name="Manufacturer" data="deviceInfo/manufacturer" 
+              value={ device_info ? device_info.manufacturer : "" }
+              update={(value) => updateDeviceInfo("manufacturer", value)}
             />
-            <Text
-              name="Model"
-              data="deviceInfo/model"
-              value={
-                this.state.device.deviceInfo
-                  ? this.state.device.deviceInfo.model
-                  : ""
-              }
-              update={this.update}
+            <Text name="Model" data="deviceInfo/model"
+              value={ device_info ? device_info.model : "" }
+              update={(value) => updateDeviceInfo("model", value)}
             />
-            <div className="advise">
-              <span>
-                Nick names must be separeted by <i>,</i> commas.
-              </span>
-              <br />
-              <span>* data is required.</span>
-            </div>
-            <hr />
-            <h2>Traits</h2>
-            <div className="advise">
-              <span>The traits define what the device can do.</span>
-            </div>
-            {traits}
-            {this.state.not_recomended_traits ? (
-              ""
-            ) : (
-              <button type="button" onClick={this.notRecomendedTraits}>
-                More traits
-              </button>
-            )}
-            <hr />
-            <div className="two_table_cel">
-              <button
-                type="button"
-                style={this.state.create ? deleteButtonDisabled : deleteButton}
-                onClick={this.delete}
-                disabled={this.state.create ? true : false}
-              >
-                Delete
-              </button>
-              <button type="button" onClick={this.save}>
-                Save
-              </button>
+            <div className="page_block_buttons_container">
+              <Stack spacing={2} direction="row">
+                <Button
+                  variant="contained"
+                  onClick={deleteDevice}
+                  style={create ? {backgroundColor: "red", color: "white", opacity: "0.4"} : {backgroundColor: "red"}}
+                  disabled={create}
+                >
+                  Delete
+                </Button>
+                <Button variant="contained" onClick={saveDevice}>Save</Button>
+              </Stack>
             </div>
           </div>
-        </div>
-
-        <ToastsContainer store={ToastsStore} />
+        }
       </div>
-    );
-  }
+
+      <div className="page_block_container">
+        <h2>Traits</h2>
+        <div className="advise">
+          <span>The traits define what the device can do.</span>
+        </div>
+        <hr />
+        { loading ? <></> : 
+          <div className="page_block_content_container">
+            {
+              traits_to_show.map((trait) => (
+                <Trait
+                  trait={trait}
+                  device_traits={traits}
+                  attributes={attributes.current}
+                  states={states.current}
+                  updateTraits={updateTraits}
+                  updateAttributes={updateAttributes}
+                  updateStates={updateStates}
+                  key={trait}
+                />
+              ))
+            }
+            {not_recomended_traits ? <></> : 
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setNonRecomendedTraits(true)
+                  setTraitsToShow(Object.keys(deviceReference.traits))
+                }}
+              >
+                More traits
+              </Button>
+            }
+            <div className="page_block_buttons_container">
+              <Stack spacing={2} direction="row">
+                <Button variant="contained" onClick={saveDevice}>Save</Button>
+              </Stack>
+            </div>
+          </div>
+        }
+      </div>
+
+      <Toast alert={alert}/>
+    </div>
+  );
+  
 }
 
 export default Editor;

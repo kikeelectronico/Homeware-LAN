@@ -6,10 +6,7 @@ sidebar_label: Installation
 
 # Dependencies
 
-1. Install docker and docker-compose.
-```bash
-sudo apt install -y docker docker-compose
-```
+1. Install docker and docker-compose following the instructions for your OS https://docs.docker.com/compose/install/linux/.
 2. Install git.
 ```bash
 sudo apt install -y git
@@ -51,7 +48,7 @@ cp docker/docker-compose-raspberry.yaml docker-compose.yaml
 ```
 7. Start the project.
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 8. Follow this steps to link Homeware with Google Home: https://homeware.enriquegomez.me/docs/connect-with-google
 

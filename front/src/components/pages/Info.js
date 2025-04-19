@@ -1,96 +1,74 @@
-import React from 'react';
-import ReactJson from 'react-json-view'
+import React, {useState, useEffect} from "react";
+import ReactJsonView from '@microlink/react-json-view'
+
+import Toast from "../web/Toast";
 import getCookieValue from '../../functions'
 import { root } from '../../constants'
 
-import './Info.css'
+function Info() {
 
-class Editor extends React.Component {
-  constructor(props) {
-    super(props);
-    const id = window.location.pathname.split('/')[3];
-    this.state = {
-      id: id,
-      device: {
-        attributes: {},
-        deviceInfo: {},
-        id: "",
-        name: {
-          defaultnames: [],
-          nicknames: [],
-          name: ""
-        },
-        traits: [],
-        type: ""
+  const [id, setId] = useState("")
+  const [device, setDevice] = useState({
+      attributes: {},
+      deviceInfo: {},
+      id: "",
+      name: {
+        defaultnames: [],
+        nicknames: [],
+        name: ""
       },
-      status: {
-        online: true
+      traits: [],
+      type: ""
+    })
+  const [alert, setAlert] = useState(null)
+
+  useEffect(() => setId(window.location.pathname.split('/')[3]), [])
+
+  useEffect(() => {
+    if (id !== "") {
+      var dev = new XMLHttpRequest();
+      dev.onload = function (e) {
+        if (dev.readyState === 4) {
+          if (dev.status === 200) {
+            var data = JSON.parse(dev.responseText);
+            setDevice(data)
+          } else {
+            console.error(dev.statusText);
+            setAlert({severity: "error", text: "Unable to load the data."})
+          }
+        }
       }
+      dev.open("GET", root + "api/devices/" + id);
+      dev.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
+      dev.send();
     }
-  }
+  }, [id])
 
-  componentDidMount() {
-    var dev = new XMLHttpRequest();
-    dev.onload = function (e) {
-      if (dev.readyState === 4) {
-        if (dev.status === 200) {
-          var data = JSON.parse(dev.responseText);
-          this.setState({
-             device: data
-           });
-        } else {
-          console.error(dev.statusText);
-        }
-      }
-    }.bind(this);
-    dev.open("GET", root + "api/devices/get/" + this.state.id + "/");
-    dev.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-    dev.send();
-
-    var sta = new XMLHttpRequest();
-    sta.onload = function (e) {
-      if (sta.readyState === 4) {
-        if (sta.status === 200) {
-          var data = JSON.parse(sta.responseText);
-          this.setState({
-             status: data
-           });
-        } else {
-          console.error(sta.statusText);
-        }
-      }
-    }.bind(this);
-    sta.open("GET", root + "api/status/get/" + this.state.id + "/");
-    sta.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-    sta.send();
-  }
-
-  render() {
-    return (
-      <div>
-        <div className="page_block_container">
-          <h2>Device definition</h2>
-          <div className="advise">
-            <span>General settings of the device.</span>
-            <hr/>
-          </div>
-          <div className="json_viewer">
-            <ReactJson src={this.state.device} />
-          </div>
+  return (
+    <div>
+      <div className="page_block_container">
+        <h2>Device definition</h2>
+        <div className="advise">
+          <span>General settings of the device.</span>
         </div>
-        <div className="page_block_container">
-          <h2>Device status</h2>
-          <div className="advise">
-            <span>Status of the device.</span>
-            <hr/>
-          </div>
-          <div className="json_viewer">
-            <ReactJson src={this.state.status} />
-          </div>
+        <hr/>
+        <div className="page_block_buttons_container">
+          <ReactJsonView src={device.description} />
         </div>
       </div>
-    );
-  }
+      <div className="page_block_container">
+        <h2>Device states</h2>
+        <div className="advise">
+          <span>States of the device.</span>
+        </div>
+        <hr/>
+        <div className="page_block_buttons_container">
+          <ReactJsonView src={device.states} />
+        </div>
+      </div>
+      <Toast alert={alert}/>
+    </div>
+  );
 }
 
-export default Editor
+export default Info

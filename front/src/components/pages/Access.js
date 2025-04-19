@@ -1,199 +1,179 @@
-import React from "react";
-import { ToastsContainer, ToastsStore } from "react-toasts";
+import React, {useState, useEffect} from "react";
+
+import Toast from "../web/Toast";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
+import {Button} from '@mui/material';
 
-class Access extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: {
-        apikey: "",
-      },
-      change_password_message: "",
-      new_pass: { new_pass: "", new_pass_2: "d" },
-      equal_passwords: false,
-    };
-  }
+function Access () {
 
-  componentDidMount() {
+  const [data, setData] = useState({apikey: ""})
+  const [current_pass, setCurrentPass] = useState("")
+  const [new_pass_1, setNewPass1] = useState("")
+  const [new_pass_2, setNewPass2] = useState("")
+  const [alert, setAlert] = useState(null)
+
+  useEffect(() => {
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       if (http.readyState === 4) {
         if (http.status === 200) {
           var data = JSON.parse(http.responseText);
-          this.setState({ data: data });
+          setData(data[0])
         } else {
           console.error(http.statusText);
-          ToastsStore.error("Something went wrong. Unable to load the data.");
+          setAlert({severity: "error", text: "Unable to load the data."})
         }
       }
-    }.bind(this);
-    http.open("GET", root + "api/access/get/");
-    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    }
+    http.open("GET", root + "api/access");
+    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send();
-  }
+  }, [])
 
-  generateAPIKey() {
-    ToastsStore.warning("Generating API key");
+  const createAPIKey = () => {
+    setAlert({severity: "warning", text: "Generating API key."})
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       if (http.readyState === 4) {
         if (http.status === 200) {
-          // var data = JSON.parse(http.responseText);
           window.location.href = "/access";
-          ToastsStore.success("Generated");
+          setAlert({severity: "success", text: "API key generated."})
         } else {
           console.error(http.statusText);
-          ToastsStore.error("Something went wrong.");
+          setAlert({severity: "error", text: "Something went wrong."})
         }
       } else {
-        ToastsStore.error("Something went wrong");
+        setAlert({severity: "error", text: "Something went wrong."})
       }
     };
-    http.open("GET", root + "api/access/create/");
-    http.setRequestHeader("authorization", "baerer " + getCookieValue("token"));
+    http.open("PATCH", root + "api/access/");
+    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
     http.send();
   }
 
-  checkEqualPassword = (event) => {
-    let new_pass = this.state.new_pass;
-    new_pass[event.target.id] = event.target.value;
-    let change_password_message = "Passwords don't mach";
-    if (new_pass.new_pass === new_pass.new_pass_2) {
-      change_password_message = "";
-    }
-    this.setState({
-      change_password_message: change_password_message,
-      new_pass: new_pass,
-    });
-  };
-
-  changePassword = () => {
-    ToastsStore.warning("Changing");
-    let new_pass = this.state.new_pass;
-    if (
-      new_pass.new_pass === new_pass.new_pass_2 &&
-      new_pass.new_pass.length > 0
-    ) {
+  const changePassword = () => {    
+    if (new_pass_1 !== new_pass_2) {
+      setAlert({severity: "warning", text: "The passwords are not equal."})
+    } else {
+      setAlert({severity: "warning", text: "Changing password."})
       var http = new XMLHttpRequest();
       http.onload = function (e) {
         if (http.readyState === 4) {
           if (http.status === 200) {
-            ToastsStore.success("Changed");
+            setAlert({severity: "success", text: "Password changed."})
           } else {
-            ToastsStore.success("Error, the changes haven't been saved.");
+            setAlert({severity: "error", text: "The changes haven't been saved."})
           }
         } else {
-          ToastsStore.success("Error, the changes haven't been saved.");
+          setAlert({severity: "error", text: "The changes haven't been saved."})
         }
       };
-      http.open("POST", root + "api/user/password/");
+      http.open("POST", root + "api/user/password");
       http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       http.setRequestHeader(
         "authorization",
-        "baerer " + getCookieValue("token")
+        "bearer " + getCookieValue("token")
       );
       http.send(
         JSON.stringify({
-          pass: this.state.pass,
-          new_pass: this.state.new_pass.new_pass,
+          password: current_pass,
+          new_password: new_pass_1,
         })
       );
     }
   };
 
-  render() {
-    return (
-      <div>
-        <div className="page_block_container">
-          <h2>API key</h2>
-          <hr />
-          <div className="page_block_content_container">
-            <div className="two_table_row">
-              <div className="two_table_cel">API Key</div>
-              <div className="two_table_cel">
-                <input
-                  type="text"
-                  className="two_input"
-                  id="apikey"
-                  value={this.state.data.apikey}
-                  disabled
-                />
-              </div>
-            </div>
-          </div>
-          <div className="page_block_buttons_container">
-            <button type="button" onClick={this.generateAPIKey}>
-              Generate
-            </button>
-          </div>
-          <div className="advise">
-            <span>
-              The API Key gives you access to the Homeware's API. Please do not
-              generate an API Key if you are not sure of what you are doing.
-            </span>
-          </div>
+ 
+  return (
+    <div>
+      <div className="page_block_container">
+        <h2>API key</h2>
+        <div className="advise">
+          <span>The API Key gives you access to the Homeware's API. Please do not generate an API Key if you are not sure of what you are doing.</span>
         </div>
-
-        <div className="page_block_container">
-          <h2>Change password</h2>
-          <hr />
-          <div className="page_block_content_container">
-            <div className="two_table_row">
-              <div className="two_table_cel">Password</div>
-              <div className="two_table_cel">
-                <input
-                  type="password"
-                  className="two_input"
-                  id="pass"
-                  onChange={(event) =>
-                    this.setState({ pass: event.target.value })
-                  }
-                />
-              </div>
-            </div>
-            <div className="two_table_row">
-              <div className="two_table_cel">New password</div>
-              <div className="two_table_cel">
-                <input
-                  type="password"
-                  className="two_input"
-                  id="new_pass"
-                  onChange={this.checkEqualPassword}
-                />
-              </div>
-            </div>
-            <div className="two_table_row">
-              <div className="two_table_cel">New password</div>
-              <div className="two_table_cel">
-                <input
-                  type="password"
-                  className="two_input"
-                  id="new_pass_2"
-                  onChange={this.checkEqualPassword}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="page_block_buttons_container">
+        <hr />
+        <div className="page_block_content_container">
+          <div className="two_table_row">
+            <div className="two_table_cel">API Key</div>
             <div className="two_table_cel">
-              <button
-                type="button"
-                id="changePasswordButton"
-                onClick={this.changePassword}
-              >
-                Change
-              </button>
-              <span>{this.state.change_password_message}</span>
+              <input
+                type="text"
+                className="two_input"
+                id="apikey"
+                value={data.apikey}
+                disabled
+              />
             </div>
           </div>
         </div>
-        <ToastsContainer store={ToastsStore} />
+        <div className="page_block_buttons_container">
+          <Button variant="contained" onClick={createAPIKey}>Generate</Button>
+        </div>
       </div>
-    );
-  }
+
+      <div className="page_block_container">
+        <h2>Change password</h2>
+        <div className="advise">
+          <span>Change the password of the admin user.</span>
+        </div>
+        <hr />
+        <div className="page_block_content_container">
+          <div className="two_table_row">
+            <div className="two_table_cel">Password</div>
+            <div className="two_table_cel">
+              <input
+                type="password"
+                className="two_input"
+                id="pass"
+                onChange={(event) =>
+                  setCurrentPass(event.target.value)
+                }
+              />
+            </div>
+          </div>
+          <div className="two_table_row">
+            <div className="two_table_cel">New password</div>
+            <div className="two_table_cel">
+              <input
+                type="password"
+                className="two_input"
+                id="new_pass"
+                onChange={(event) => {
+                  setNewPass1(event.target.value)
+                }}
+              />
+            </div>
+          </div>
+          <div className="two_table_row">
+            <div className="two_table_cel">New password</div>
+            <div className="two_table_cel">
+              <input
+                type="password"
+                className="two_input"
+                id="new_pass_2"
+                onChange={(event) => {
+                  setNewPass2(event.target.value)
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="page_block_buttons_container">
+            <Button
+              variant="contained"
+              onClick={changePassword}
+              disabled={new_pass_1.length === 0 || new_pass_2.length === 0}
+            >
+              Change
+            </Button>
+        </div>
+      </div>
+      <Toast alert={alert}/>
+    </div>
+  );
+  
 }
 
 export default Access;

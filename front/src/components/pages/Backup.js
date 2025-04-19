@@ -1,74 +1,93 @@
-import React from "react";
-import { ToastsContainer, ToastsStore } from "react-toasts";
+import React, {useState} from "react";
+import {Button} from '@mui/material';
+
+import Toast from "../web/Toast";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
 
-class Backup extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      status: "",
-    };
+function Backup() {
+
+  const [alert, setAlert] = useState(null)
+
+  const formatTimestamp = (timestamp) => {
+    let a = new Date(timestamp * 1000);
+    return a.getDate() + '-' + a.getMonth() + '-' + a.getFullYear() + ' ' + a.getHours() + ':' + a.getMinutes() + ':' + a.getSeconds() ;
   }
 
-  componentDidMount() {
-    var url = new URL(window.location);
-    var status = url.searchParams.get("status");
-    if(status === "Success")
-      ToastsStore.success("Uploaded correctly");
-    this.setState({ status });
+  const backup = () => {
+    setAlert({severity: "warning", text: "Downloading the backup file."})
+    var http = new XMLHttpRequest();
+    http.onload = function (e) {
+      if (http.readyState === 4) {
+        if (http.status === 200) {
+          const blob = new Blob([http.responseText], { type: "text/plain" });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.download = "homeware " + formatTimestamp(Date.now()/1000) + ".json";
+          link.href = url;
+          link.click();
+        } else {
+          console.error(http.statusText);
+          setAlert({severity: "error", text: "Something went wrong."})
+        }
+      }
+    }
+    http.open("GET", root + "api/backup");
+    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
+    http.send();
   }
 
-  backup() {
-    ToastsStore.warning("Downloading");
-    const url =
-      root +
-      "files/buckup/homeware/" +
-      getCookieValue("token") +
-      "?code=" +
-      String(Math.random());
-    window.open(url, '_blank')
+  const restore = (e) => {
+    if (e.target.files) {
+      var fileReader = new FileReader();
+      fileReader.onload=function(){
+        setAlert({severity: "warning", text: "Uploading the file."})
+        const backup = fileReader.result
+        var http = new XMLHttpRequest();
+        http.onload = function (e) {
+          if (http.readyState === 4) {
+            if (http.status === 200) {
+              setAlert({severity: "success", text: "File uploaded."})
+            } else {
+              setAlert({severity: "error", text: "Something went wrong."})
+            }
+          }
+        }
+        http.open("PUT", root + "api/backup");
+        http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        http.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
+        http.send(backup);
+      }
+      fileReader.readAsText(e.target.files[0]);
+    }
   }
 
-  render() {
-    const restore_url =
-      root + "files/restore/homeware/" + getCookieValue("token") + "/";
-
-    return (
-      <div>
-        <div className="page_block_container">
-          <h2>Backup</h2>
-          <hr />
-          <div className="page_block_content_container">
-            <button type="button" onClick={this.backup}>
-              Backup
-            </button>
-          </div>
-          <div className="advise">
-            <span>Download a backup file.</span>
-          </div>
+  return (
+    <div>
+      <div className="page_block_container">
+        <h2>Backup</h2>
+        <div className="advise">
+          <span>Download a backup file.</span>
         </div>
-        <div className="page_block_container">
-          <h2>Restore</h2>
-          <hr />
-          <div className="page_block_content_container">
-            <form
-              method="post"
-              encType="multipart/form-data"
-              action={restore_url}
-            >
-              <input type="file" name="file" />
-              <button type="submit">Restore</button>
-            </form>
-          </div>
-          <div className="advise">
-            <span>Restore a backup file.</span>
-          </div>
+        <hr />
+        <div className="page_block_content_container">
+          <Button variant="contained" onClick={backup}>Backup</Button>
         </div>
-        <ToastsContainer store={ToastsStore} />
       </div>
-    );
-  }
+      <div className="page_block_container">
+        <h2>Restore</h2>
+        <div className="advise">
+          <span>Restore a backup file.</span>
+        </div>
+        <hr />
+        <div className="page_block_content_container">
+          <input id="file" type="file" onChange={restore} />
+        </div>
+      </div>
+      <Toast alert={alert}/>
+    </div>
+  );
+  
 }
 
 export default Backup;

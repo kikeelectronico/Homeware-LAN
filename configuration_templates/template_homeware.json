@@ -41,7 +41,6 @@
         "brightness": 80
       }
     },
-  "tasks": [],
   "secure": {
     "domain": "",
     "user": "",
@@ -84,7 +83,7 @@
     "sync_google": false,
     "sync_devices": false,
     "log": {
-      "days": 30
+      "days": 0
     }
   }
 }

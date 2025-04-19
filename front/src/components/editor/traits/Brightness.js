@@ -1,36 +1,51 @@
-import React from 'react';
+import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
 
-class Brightness extends React.Component {
-  constructor(props) {
-    super(props);
-    this.updateCheckbox = this.updateCheckbox.bind(this);
-  }
+const attributes = {
+  commandOnlyBrightness: false,
+}
 
+const states = {
+  brightness: 100
+}
 
-  updateCheckbox(checked, attribute){
-    this.props.update('attributes/' + attribute,checked);
-  }
+const Brightness = forwardRef((props, ref) => {
 
-  render() {
+  const [commandOnlyBrightness, setCommandOnlyBrightness] = useState(false)
 
+  useEffect(() => {
+    if ("commandOnlyBrightness" in props.attributes) {
+      setCommandOnlyBrightness(props.attributes.commandOnlyBrightness)
+    } else {
+      props.updateStates(null, states, "insert")
+      props.updateAttributes(null, attributes, "insert")
+    }
+  }, [props])
 
-    return (
-      <div>
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
-            <i>commandOnlyBrightness</i>
-          </div>
-          <div className="three_table_cel">
-            <Switch onChange={(checked) => {this.updateCheckbox(checked,"commandOnlyBrightness")}} checked={this.props.commandOnlyBrightness} />
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Enable it if Homeware-LAN shouldn't inform Google Home about the brightness.</span>
-          </div>
+  useImperativeHandle(ref, () => ({
+    deleteAttributes() {
+      props.updateAttributes(null, attributes, "drop")
+      props.updateStates(null, states, "drop")
+    }
+  }))
+
+  return (
+      <div className="three_table_row">
+        <div className="three_table_cel align_right">
+          <i>commandOnlyBrightness</i>
+        </div>
+        <div className="three_table_cel">
+          <Switch
+            onChange={(checked) => {
+              setCommandOnlyBrightness(checked)
+              props.updateAttributes("commandOnlyBrightness", checked, "update")
+            }}
+            checked={commandOnlyBrightness}
+          />
         </div>
       </div>
-    );
-  }
-}
+  );
+  
+})
 
 export default Brightness

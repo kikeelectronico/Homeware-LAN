@@ -1,126 +1,134 @@
-import React from 'react';
-import ReactJson from 'react-json-view'
+import React, {useState, useEffect} from "react";
+import ReactJsonView from '@microlink/react-json-view'
+
+import Toast from "../web/Toast";
 import getCookieValue from '../../functions'
 import { root, deviceReference } from '../../constants'
 
 import './Connecting.css';
 
-class Connecting extends React.Component {
-  constructor(props) {
-    super(props);
-    const id = window.location.pathname.split('/')[3]
-    this.state = {
-      id: id,
-      traits: [],
-      params: [],
-      commands: []
-    }
-  }
+function Connecting() {
 
-  componentDidMount() {
-    var dev = new XMLHttpRequest();
-    dev.onload = function (e) {
-      if (dev.readyState === 4) {
-        if (dev.status === 200) {
-          const data = JSON.parse(dev.responseText);
-          const traits = data.traits;
-          var commands = [];
-          var params = []
-          traits.forEach((trait) => {
-            params = params.concat(deviceReference.traits[trait].params);
-            commands = commands.concat(deviceReference.traits[trait].commands);
-          });
-          this.setState({
-             traits: traits,
-             params: params,
-             commands: commands
-           });
-        } else {
-          console.error(dev.statusText)
+  const [id, setId] = useState(null)
+  const [params, setParams] = useState([])
+  const [commands, setCommands] = useState([])
+  const [alert, setAlert] = useState(null)
+  
+  useEffect(() => {
+    setId(window.location.pathname.split('/')[3])
+  }, [])
+
+  useEffect(() => {
+    if (id) {
+      var dev = new XMLHttpRequest();
+      dev.onload = function (e) {
+        if (dev.readyState === 4) {
+          if (dev.status === 200) {
+            const data = JSON.parse(dev.responseText);
+            var _params = []
+            var _commands = []
+            data.description.traits.forEach((trait) => {
+              _params = _params.concat(deviceReference.traits[trait].params);
+              _commands = _commands.concat(deviceReference.traits[trait].commands);
+            });
+            setParams(_params)
+            setCommands(_commands)
+          } else {
+            console.error(dev.statusText)
+            setAlert({severity: "error", text: "Unable to load the data."})
+          }
         }
       }
-    }.bind(this);
-    dev.open("GET", root + "api/devices/get/" + this.state.id + "/");
-    dev.setRequestHeader('authorization', 'baerer ' + getCookieValue('token'))
-    dev.send();
-  }
-
-  render() {
-
-    const params = this.state.params.map((param, i) => {
-      var type = deviceReference.params[param].type
-      if (type === 'list')
-        type = 'string'
-
-      var topic = 'None - Controlled only by the device'
-      if (deviceReference.params[param].commanded)
-        topic = 'device/' + this.state.id + '/' + param
-
-      return (
-        <div key={i} className="param_table_row">
-          <div className="param_table_cel">{param}</div>
-          <div className="param_table_cel">{topic}</div>
-          <div className="param_table_cel">{type}</div>
-        </div>
-      )
-    })
-
-    const commands = this.state.commands.map((command, i) => {
-      return (
-        <div key={i} className="command_table_row">
-          <div className="command_table_cel">{command.command}</div>
-          <div className="command_table_cel">{'device/' + this.state.id + '/command'}</div>
-          <div className="command_table_cel">{command.description}</div>
-        </div>
-      )
-    })
-
-    var example = {"id":"light001","param":"brightness","value":"80","intent":"execute"}
-    var advise = {
-      textAlign: 'left'
+      dev.open("GET", root + "api/devices/" + id);
+      dev.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
+      dev.send();
     }
+  }, [id])
 
-    return (
-      <div>
-
-        <div className="page_block_container">
-          <h2>Params</h2>
-          <div className="advise">
-            <p>Params are data interchanged between Google and the device and stored in Homeware database. </p>
-            <p>If the param has got a notification topic, Google Home can control it. A notification will be sent in this MQTT topic when Google change a param.</p>
-            <p>If the param hasn't got a notification topic, the device should update the param value when necessary.</p>
-            <hr/>
-          </div>
-          <div className="param_table_row param_table_header">
-            <div className="param_table_cel"><b>Param</b></div>
-            <div className="param_table_cel"><b>Notifications topic</b></div>
-            <div className="param_table_cel"><b>Type</b></div>
-          </div>
-          {params}
-          <div className="advise" style={advise}>
-            <hr/>
-            <p>The device can change the value of any param sending an execute request to device/control topic as follow</p>
-            <ReactJson src={example}/>
-          </div>
+  return (
+    <div>
+      <div className="page_block_container">
+        <h2>Params</h2>
+        <div className="advise">
+          <span>Params are data interchanged between Google and the device and stored in Homeware database. A notification will be sent in this MQTT topic when Google change a param.</span>
         </div>
-
-        <div className="page_block_container">
-          <h2>Commands</h2>
-          <div className="advise">
-            <p>Commands are directs orders from Google to the device. Commands are not stored in Homeware's database.</p>
-            <hr/>
-          </div>
-          <div className="command_table_row command_table_header">
-            <div className="command_table_cel"><b>Command</b></div>
-            <div className="command_table_cel"><b>Notifications topic</b></div>
-            <div className="command_table_cel"><b>Description</b></div>
-          </div>
-          {commands}
-        </div>
-
+        <hr/>
+        {
+          params.length === 0 ? 
+            <div className="info">
+              There are no params for this device.
+            </div>
+          :
+            <>
+              <div className="param_table_row param_table_header">
+                <div className="param_table_cel"><b>Param</b></div>
+                <div className="param_table_cel"><b>Notifications topic</b></div>
+                <div className="param_table_cel"><b>Type</b></div>
+              </div>
+              {
+                params.map((param, i) => {
+                  var type = deviceReference.params[param].type
+                  if (type === 'list')
+                    type = 'string'
+            
+                  var topic = 'None - Controlled only by the device'
+                  if (deviceReference.params[param].commanded)
+                    topic = 'device/' + id + '/' + param
+            
+                  return (
+                    <div key={i} className="param_table_row">
+                      <div className="param_table_cel">{param}</div>
+                      <div className="param_table_cel">{topic}</div>
+                      <div className="param_table_cel">{type}</div>
+                    </div>
+                  )
+                })
+              }
+              <div className="advise" style={{textAlign: "left"}}>
+                <hr/>
+                <p>The device can change the value of any param sending an execute request to "device/control" topic as follow</p>
+                <ReactJsonView src={{"id":"light001","param":"brightness","value":"80","intent":"execute"}}/>
+              </div>
+            </>
+        }
+        
       </div>
-    );
-  }
+
+      <div className="page_block_container">
+        <h2>Commands</h2>
+        <div className="advise">
+          <span>Commands are directs orders from Google to the device. Commands are not stored in Homeware's database.</span>
+        </div>
+        <hr/>
+        {
+          commands.length === 0 ? 
+            <div className="info">
+              There are no commands for this device.
+            </div>
+          :
+            <>
+              <div className="command_table_row command_table_header">
+                <div className="command_table_cel"><b>Command</b></div>
+                <div className="command_table_cel"><b>Notifications topic</b></div>
+                <div className="command_table_cel"><b>Description</b></div>
+              </div>
+              {
+                commands.map((command, i) => {
+                  return (
+                    <div key={i} className="command_table_row">
+                      <div className="command_table_cel">{command.command}</div>
+                      <div className="command_table_cel">{'device/' + id + '/command'}</div>
+                      <div className="command_table_cel">{command.description}</div>
+                    </div>
+                  )
+                })
+              }
+            </>
+        }
+      </div>
+      <Toast alert={alert}/>
+    </div>
+  )  
 }
 
 export default Connecting

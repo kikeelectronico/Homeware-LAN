@@ -1,37 +1,67 @@
-import React from 'react';
+import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
 
-class EnergyStorage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.update = this.update.bind(this);
-    this.updateCheckbox = this.updateCheckbox.bind(this);
-  }
+const attributes = {
+  queryOnlyEnergyStorage: false,
+  isRechargeable: false,
+  energyStorageDistanceUnitForUX: "KILOMETERS"
+}
 
-  update(event){
-    this.props.update('attributes/' + event.target.id,event.target.value);
-  }
+const states = {
+  descriptiveCapacityRemaining: "HIGH",
+  capacityRemaining: [
+    {
+      rawValue: 90,
+      unit: "PERCENTAGE"
+    }
+  ]
+}
 
-  updateCheckbox(checked, attribute){
-    this.props.update('attributes/' + attribute,checked);
-  }
+const EnergyStorage = forwardRef((props, ref) => {
 
-  render() {
+  const [queryOnlyEnergyStorage, setQueryOnlyEnergyStorage] = useState(attributes.queryOnlyEnergyStorage)
+  const [isRechargeable, setIsRechargeable] = useState(attributes.isRechargeable)
+  const [energyStorageDistanceUnitForUX, setEnergyStorageDistanceUnitForUX] = useState(attributes.energyStorageDistanceUnitForUX)
+
+  useEffect(() => {
+    if ("queryOnlyEnergyStorage" in props.attributes) {
+      setQueryOnlyEnergyStorage(props.attributes.queryOnlyEnergyStorage)
+      setIsRechargeable(props.attributes.isRechargeable)
+      setEnergyStorageDistanceUnitForUX("energyStorageDistanceUnitForUX" in props.attributes ? props.attributes.energyStorageDistanceUnitForUX : "")
+    } else {
+      props.updateStates(null, states, "insert")
+      props.updateAttributes(null, attributes, "insert")
+    }
+  }, [props])
+
+  useImperativeHandle(ref, () => ({
+    deleteAttributes() {
+      props.updateStates(null, states, "drop")
+      props.updateAttributes(null, attributes, "drop")
+    }
+  }))
+
     return (
-      <div>
+      <>
         <div className="three_table_row">
           <div className="three_table_cel align_right">
             <i>Distance units</i>
           </div>
           <div className="three_table_cel">
-            <select name="type" id="energyStorageDistanceUnitForUX" className="table_input" value={this.props.attributes.energyStorageDistanceUnitForUX} onChange={this.update}>
+            <select
+              name="type"
+              className="table_input"
+              onChange={event => {
+                setEnergyStorageDistanceUnitForUX(event.target.value)
+                if (event.target.value === "") props.updateAttributes("energyStorageDistanceUnitForUX", null, "delete")
+                else props.updateAttributes("energyStorageDistanceUnitForUX", event.target.value, "update")
+              }}
+              value={energyStorageDistanceUnitForUX}
+            >
               <option value="">No apply</option>
               <option value="KILOMETERS">Kilometers</option>
               <option value="MILES">Miles</option>
             </select>
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Select the units of distance for remaining range if apply.</span>
           </div>
         </div>
         <div className="three_table_row">
@@ -39,10 +69,13 @@ class EnergyStorage extends React.Component {
             <i>Controlable</i>
           </div>
           <div className="three_table_cel">
-            <Switch onChange={(checked) => {this.updateCheckbox(checked,"queryOnlyEnergyStorage")}} checked={this.props.attributes.queryOnlyEnergyStorage} />
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Enable it if Google Home can't control the device, only read the state.</span>
+            <Switch
+              onChange={(checked) => {
+                setQueryOnlyEnergyStorage(checked)
+                props.updateAttributes("queryOnlyEnergyStorage", checked, "update")
+              }}
+              checked={queryOnlyEnergyStorage}
+            />
           </div>
         </div>
         <div className="three_table_row">
@@ -50,15 +83,17 @@ class EnergyStorage extends React.Component {
             <i>Rechargeable</i>
           </div>
           <div className="three_table_cel">
-            <Switch onChange={(checked) => {this.updateCheckbox(checked,"isRechargeable")}} checked={this.props.attributes.isRechargeable} />
-          </div>
-          <div className="three_table_cel">
-            <span className="attribute_advise">Enable it if the device is rechargeable.</span>
+            <Switch
+              onChange={(checked) => {
+                setIsRechargeable(checked)
+                props.updateAttributes("isRechargeable", checked, "update")
+              }}
+              checked={isRechargeable}
+            />
           </div>
         </div>
-      </div>
-    );
-  }
-}
+      </>
+    )
+})
 
 export default EnergyStorage
