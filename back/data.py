@@ -76,9 +76,10 @@ class Data:
 	def migrateToMongodb(self):
 		# Move not real time data to MogoDB
 		if not "homeware" in self.mongo_client.list_database_names():
-			print("moving data")
 			# Create db reference
-			self.mongo_db = self.mongo_client["homeware"]
+			self.mongo_db = self.mongo_client["homeware"]		
+		if not "devices" in self.mongo_client["homeware"].list_collection_names():
+			print("moving data")
 			# Create devices collection
 			mongo_devices_col = self.mongo_db["devices"]
 			devices = json.loads(self.redis.get('devices'))
