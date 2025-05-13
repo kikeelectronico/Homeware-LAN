@@ -117,7 +117,7 @@ function App() {
         if (http.readyState === 4) {
           if (http.status === 200) {
             var data = JSON.parse(http.responseText);
-            if (!data.valid && !window.location.href.includes('login')) {
+            if (!data.valid && !window.location.pathname !== '/login') {
               window.location.href = '/login/'
             } else if (data.valid) {
               setSession(true)
@@ -132,7 +132,7 @@ function App() {
       http.setRequestHeader('user', getCookieValue('user'))
       http.send();
     } else {
-      if (window.location.pathname !== '/login')
+      if (window.location.pathname !== '/login' && window.location.pathname !== '/login/google')
         window.location.href = '/login'
     }
   }
@@ -222,6 +222,7 @@ function App() {
                 <Route path="/backup" element={<Backup/>}> </Route>
                 <Route path="/access" element={<Access/>}> </Route>
                 <Route path="/logs" element={<Logs/>}> </Route>
+                <Route path="/login/google" element={<Login/>}> </Route>
               </Routes>
             </div>
           </div>
