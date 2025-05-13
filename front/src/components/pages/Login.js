@@ -13,7 +13,6 @@ function Login() {
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       var response = JSON.parse(http.responseText);
-      console.log(response);
       if(response['valid']){
         // document.cookie = "user=" + response['user'] + "; path=/";
         document.cookie = "token=" + response['token'] + "; path=/";
@@ -34,7 +33,6 @@ function Login() {
     var http = new XMLHttpRequest();
     http.onload = function (e) {
       var response = JSON.parse(http.responseText);
-      console.log(response);
       if(response['valid']) {
         window.location = response['url']
       } else {
@@ -44,7 +42,7 @@ function Login() {
       }
     }
     http.open("GET", root + "api/user/googleSync");
-    http.setRequestHeader('username', document.getElementById('user').value)
+    http.setRequestHeader('username', document.getElementById('username').value)
     http.setRequestHeader('password', document.getElementById('password').value)
     http.send();
   }
@@ -69,7 +67,7 @@ function Login() {
 
   return (
     <div className="login_form_container">
-      { window.location.href.includes('google') ? <p>Google request access to Homeware-Lan</p> : '' }
+      { window.location.href.includes('google') ? <p>Google requests access to Homeware-Lan</p> : '' }
       <br/>
       <span className="login_element">Username</span>
       <input type="text" name="username" id="username" className="login_input"/>
