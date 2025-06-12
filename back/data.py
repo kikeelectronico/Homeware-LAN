@@ -256,10 +256,16 @@ class Data:
 	
 	def getDevicesForGoogle(self, device_id=None):
 		keys = {"_id": 0, "id": 1, "attributes": 1, "deviceInfo": 1, "name": 1, "traits": 1, "type": 1}
+		google_filter = {
+			"$or": [
+				{"hide_from_google": False},
+				{"hide_from_google": {"$exists": False}}
+			]
+		}
 		if device_id is None:
-			return list(self.mongo_db["devices"].find({}, keys))
+			return list(self.mongo_db["devices"].find(google_filter, keys))
 		else:
-			return self.mongo_db["devices"].find_one({"_id": device_id}, keys)
+			return self.mongo_db["devices"].find_one({"_id": device_id} | google_filter, keys)
 
 	def updateDevice(self, device, status):
 		device_id = device['id']
