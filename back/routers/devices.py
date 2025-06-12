@@ -31,6 +31,7 @@ class DeviceDescription(BaseModel):
     traits: list[str]
     type: str
     hide_from_google: Optional[bool] = False
+    room: Optional[str] = ""
 
 class Device(BaseModel):
     description: DeviceDescription

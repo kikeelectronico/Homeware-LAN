@@ -21,6 +21,7 @@ function Editor() {
   const [traits, setTraits] = useState([])
   const [device_info, setDeviceInfo] = useState({})
   const [hide_from_google, setHideFromGoogle] = useState(false)
+  const [room, setRoom] = useState("")
 
   const attributes = useRef({})
   const states = useRef({online: true})
@@ -57,6 +58,7 @@ function Editor() {
               setTraitsToShow(_traits_to_show)
               setDeviceInfo(data.description.deviceInfo)
               setHideFromGoogle(data.description.hide_from_google)
+              setRoom(data.description.room)
               attributes.current = data.description.attributes
               states.current = data.states
               setLoading(false)
@@ -163,7 +165,8 @@ function Editor() {
             nicknames: nicknames,
             name: nicknames[0]
           },
-          hide_from_google: hide_from_google
+          hide_from_google: hide_from_google,
+          room: room
         },
         states: states.current,
       };
@@ -271,6 +274,10 @@ function Editor() {
             <Text name="Model" data="deviceInfo/model"
               value={ device_info ? device_info.model : "" }
               update={(value) => updateDeviceInfo("model", value)}
+            />
+            <Text name="Room" data="room"
+              value={ room }
+              update={(value) => setRoom(value)}
             />
             <div className="two_table_row">
               <div className="two_table_cel">Hide from Google</div>
