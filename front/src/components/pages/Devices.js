@@ -87,12 +87,21 @@ function Devices() {
       var _processed_devices = {};
       var _ordered_devices = orderBy(data, order_by)
       var _filtered_devices = search(_ordered_devices, search_phrase)
+      let temp_processed_devices = {};
       _filtered_devices.forEach(device => {
         const roomKey = device.description.type === "action.devices.types.SCENE" ? "Scene" : (device.description.room !== undefined ? device.description.room : '');
-        if (!_processed_devices[roomKey]) {
-          _processed_devices[roomKey] = [];
+        if (!temp_processed_devices[roomKey]) {
+          temp_processed_devices[roomKey] = [];
         }
-        _processed_devices[roomKey].push(device);
+        temp_processed_devices[roomKey].push(device);
+      });
+      const sortedKeys = Object.keys(temp_processed_devices).sort((a, b) => {
+        if (a === "Scene" && b !== "Scene") { return 1; }
+        if (b === "Scene" && a !== "Scene") { return -1; }
+        return a.localeCompare(b);
+      });
+      sortedKeys.forEach(key => {
+        _processed_devices[key] = temp_processed_devices[key];
       });
       setProcesedDevices(_processed_devices)
     }
@@ -196,7 +205,7 @@ function Devices() {
           })
         }
       </div>
-      
+
       <div className="page_buttons_containter">
         <Link to="/devices/editor/">
           <Button variant="contained">New</Button>
