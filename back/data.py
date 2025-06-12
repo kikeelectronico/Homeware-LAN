@@ -253,6 +253,13 @@ class Data:
 			return list(self.mongo_db["devices"].find())
 		else:
 			return self.mongo_db["devices"].find_one({"_id": device_id})
+	
+	def getDevicesForGoogle(self, device_id=None):
+		keys = {"_id": 0, "id": 1, "attributes": 1, "deviceInfo": 1, "name": 1, "traits": 1, "type": 1}
+		if device_id is None:
+			return list(self.mongo_db["devices"].find({}, keys))
+		else:
+			return self.mongo_db["devices"].find_one({"_id": device_id}, keys)
 
 	def updateDevice(self, device, status):
 		device_id = device['id']

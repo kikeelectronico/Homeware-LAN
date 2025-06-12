@@ -123,10 +123,7 @@ def smarthome(body: dict, authorization: Annotated[str | None, Header()] = None)
         requestId = body['requestId']
         for input in inputs:
             if input['intent'] == 'action.devices.SYNC':
-                devices = []
-                for device in data_conector.getDevices():
-                    del device["_id"]
-                    devices.append(device)
+                devices = data_conector.getDevicesForGoogle()
                 response = {
                     'requestId': requestId,
                     'payload': {
