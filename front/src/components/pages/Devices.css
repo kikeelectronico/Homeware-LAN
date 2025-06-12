@@ -1,6 +1,32 @@
-.device_card {
+.page_cards_container {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.device_room_container {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.device_romm_title{
+
+}
+
+.device_room_cards {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+
+}
+
+.device_card {
+  width: 300px;
   height: 120px;
+  flex-shrink: 0;
   border-radius: 20px;
   background-color: white;
 }
