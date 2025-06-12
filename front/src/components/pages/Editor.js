@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from "react";
 import {Button, Stack, Select, MenuItem} from '@mui/material';
+import Switch from "react-switch";
 
 import Toast from "../web/Toast";
 import getCookieValue from "../../functions";
@@ -19,6 +20,7 @@ function Editor() {
   const [nicknames, setNicknames] = useState([])
   const [traits, setTraits] = useState([])
   const [device_info, setDeviceInfo] = useState({})
+  const [hide_from_google, setHideFromGoogle] = useState(false)
 
   const attributes = useRef({})
   const states = useRef({online: true})
@@ -54,6 +56,7 @@ function Editor() {
                   _traits_to_show.push(all_traits[i])
               setTraitsToShow(_traits_to_show)
               setDeviceInfo(data.description.deviceInfo)
+              setHideFromGoogle(data.description.hide_from_google)
               attributes.current = data.description.attributes
               states.current = data.states
               setLoading(false)
@@ -159,7 +162,8 @@ function Editor() {
             defaultNames: nicknames,
             nicknames: nicknames,
             name: nicknames[0]
-          }
+          },
+          hide_from_google: hide_from_google
         },
         states: states.current,
       };
@@ -268,6 +272,15 @@ function Editor() {
               value={ device_info ? device_info.model : "" }
               update={(value) => updateDeviceInfo("model", value)}
             />
+            <div className="two_table_row">
+              <div className="two_table_cel">Hide from Google</div>
+              <div className="two_table_cel">
+                <Switch
+                  onChange={setHideFromGoogle}
+                  checked={hide_from_google}
+                />
+              </div>
+            </div>
             <div className="page_block_buttons_container">
               <Stack spacing={2} direction="row">
                 <Button
