@@ -47,8 +47,7 @@ function Devices() {
 
   const [data, setData] = useState({})
   const [loading_data, setLoadingData] = useState(true)
-  const [processed_devices, setProcesedDevices] = useState([])
-  const [processed_scenes, setProcesedScenes] = useState([])
+  const [processed_devices, setProcesedDevices] = useState({})
   const [order_by, setOrderBy] = useState("az")
   const [search_phrase, setSearchPhrase] = useState("")
   const [alert, setAlert] = useState(null)
@@ -89,14 +88,13 @@ function Devices() {
       var _ordered_devices = orderBy(data, order_by)
       var _filtered_devices = search(_ordered_devices, search_phrase)
       _filtered_devices.forEach(device => {
-        const roomKey = device.description.room !== undefined ? device.description.room : '';
+        const roomKey = device.description.type === "action.devices.types.SCENE" ? "Scene" : (device.description.room !== undefined ? device.description.room : '');
         if (!_processed_devices[roomKey]) {
           _processed_devices[roomKey] = [];
         }
         _processed_devices[roomKey].push(device);
       });
       setProcesedDevices(_processed_devices)
-      separeteScenes(_filtered_devices)
     }
   }, [data, order_by, search_phrase, loading_data])
 
@@ -123,18 +121,6 @@ function Devices() {
       })
       return filtered_devices      
     }
-  }
-
-  const separeteScenes = (_devices_list) => {
-    var _scenes = []
-    _devices_list.forEach(device => {
-      if (device.description.type === "action.devices.types.SCENE") {
-        if (!_scenes.includes(device)) {
-          _scenes.push(device)
-        }
-      }
-    })
-    setProcesedScenes(_scenes)
   }
 
   return (
@@ -200,6 +186,7 @@ function Devices() {
                     else if (device.description.type === "action.devices.types.WATERHEATER") return <WaterHeater key={device.description.id} device={device.description} states={device["states"]} reload={loadData}/>
                     else if (device.description.type === "action.devices.types.WINDOW") return <Window key={device.description.id} device={device.description} states={device["states"]} reload={loadData}/>
                     else if (device.description.type === "action.devices.types.LIGHT")  return <Light key={device.description.id} device={device.description} states={device["states"]} reload={loadData}/>
+                    else if (device.description.type === "action.devices.types.SCENE")  return <Scene key={device.description.id} device={device.description} states={device["states"]} reload={loadData}/>
                     else return <></>
                   })
                 }
@@ -209,14 +196,7 @@ function Devices() {
           })
         }
       </div>
-      <div className="page_cards_container">
-        {
-          processed_scenes.map((device) => {
-            return <Scene key={device.description.id} device={device.description} states={device["states"]} reload={loadData}/>
-          })
-        }
-      </div>
-
+      
       <div className="page_buttons_containter">
         <Link to="/devices/editor/">
           <Button variant="contained">New</Button>
