@@ -15,12 +15,41 @@
 
 }
 
-.device_cards_container {
+.device_cards_outer_container {
   width: 100%;
+  display: flex;
+  justify-content: center; 
+}
+
+.device_cards_container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 300px);
+  grid-template-columns: repeat(auto-fill, 300px);
   gap: 20px;
-  justify-content: center;
+  max-width: calc((300px + 20px) * 5 - 20px); 
+}
+
+@media (max-width: 1890px) {
+  .device_cards_container {
+    max-width: calc((300px + 20px) * 4 - 20px);
+  }
+}
+
+@media (max-width: 1550px) {
+  .device_cards_container {
+    max-width: calc((300px + 20px) * 3 - 20px);
+  }
+}
+
+@media (max-width: 1230px) {
+  .device_cards_container {
+    max-width: calc((300px + 20px) * 2 - 20px);
+  }
+}
+
+@media (max-width: 890px) {
+  .device_cards_container {
+    max-width: calc((300px + 20px) * 1);
+  }
 }
 
 .device_card {
