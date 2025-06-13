@@ -175,6 +175,7 @@ function Devices() {
                       else if (device.description.type === "action.devices.types.BLINDS") return <Blinds key={device.description.id} device={device.description} states={device["states"]} reload={loadData}/>
                       else if (device.description.type === "action.devices.types.CLOSET") return <Closet key={device.description.id} device={device.description} states={device["states"]} reload={loadData}/>
                       else if (device.description.type === "action.devices.types.CURTAIN") return <Curtain key={device.description.id} device={device.description} states={device["states"]} reload={loadData}/>
+                      else if (device.description.type === "action.devices.types.DISHWASHER") return <Outlet key={device.description.id} device={device.description} states={device["states"]} reload={loadData}/>
                       else if (device.description.type === "action.devices.types.DOOR") return <Door key={device.description.id} device={device.description} states={device["states"]} reload={loadData}/>
                       else if (device.description.type === "action.devices.types.DRAWER") return <Drawer key={device.description.id} device={device.description} states={device["states"]} reload={loadData}/>
                       else if (device.description.type === "action.devices.types.FAN") return <Fan key={device.description.id} device={device.description} states={device["states"]} reload={loadData}/>
