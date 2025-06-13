@@ -159,7 +159,7 @@ function Devices() {
               <div className="device_romm_title">
                 <h2>{room}</h2>
               </div>
-              <div className="device_room_cards">
+              <div className="device_cards_container">
                 {
                   processed_devices[room].map((device) => {
                     if (device.description.type === "action.devices.types.AC_UNIT") return <AcUnit key={device.description.id} device={device.description} states={device["states"]} reload={loadData}/>

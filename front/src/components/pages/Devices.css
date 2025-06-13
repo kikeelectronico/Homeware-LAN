@@ -15,12 +15,11 @@
 
 }
 
-.device_room_cards {
+.device_cards_container {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-
 }
 
 .device_card {
