@@ -17,9 +17,10 @@
 
 .device_cards_container {
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 300px);
   gap: 20px;
+  justify-content: center;
 }
 
 .device_card {
