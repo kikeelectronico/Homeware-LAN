@@ -1,8 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import getCookieValue from '../../../../functions'
 import { root } from '../../../../constants'
 
 const OnOff = (props) => {
+
+  useEffect(() => {
+    if(Object.keys(props.states).includes("on")) {
+      props.setStripColor("#90EE90")
+      props.setStripOn(props.states.on)
+    }
+  }, [props.states])
 
   const toggle = () =>{
     var http = new XMLHttpRequest();

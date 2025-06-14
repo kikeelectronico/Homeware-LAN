@@ -15,14 +15,6 @@ const Device = (props) => {
     const [strip_color, setStripColor] = useState("white")
     const [strip_on, setStripOn] = useState(true)
 
-    useEffect(() => {
-        const states = Object.keys(props.states)
-        if (states.includes("on")) {
-            setStripColor("#90EE90")
-            setStripOn(props.states.on)
-        }
-    }, [props.states])
-
     return (
         <div>
             <div className="device_card">
@@ -36,7 +28,7 @@ const Device = (props) => {
                 </div>
                 
                 <div className="device_card_actions_row">
-                    <OnOff id={ props.device.id } states={props.states} reload={ props.reload }/>
+                    <OnOff id={props.device.id} states={props.states} reload={props.reload} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <TemperatureSetting id={ props.device.id } states={props.states} reload={ props.reload }/>
                     
                     <Edit id={ props.device.id }/>
