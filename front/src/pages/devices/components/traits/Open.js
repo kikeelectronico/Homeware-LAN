@@ -3,9 +3,12 @@ import React from 'react';
 const Open = (props) => {
   
   return (
-    <div style={{float: 'left', marginLeft: '5px', height: "30px"}}>
-      <span style={{color: "#777", fontSize: 25, lineHeight: "30px", verticalAlign: "middle"}}>{props.openPercent} %</span>
-    </div>
+    Object.keys(props.states).includes("openPercent") ?
+      <div>
+        {props.states.openPercent} %
+      </div>
+  : <></>
+    
   );
   
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import OnOff from './traits/OnOff'
+import Open from './traits/Open';
 import TemperatureAmbient from './traits/TemperatureAmbient';
 import TemperatureSetting from './traits/TemperatureSetting';
 import Information from './aux/Information'
@@ -16,6 +17,7 @@ const Device = (props) => {
         <h2 className="device_card_title">{ props.device.name.name }</h2>
         <div className="device_card_status">
             <TemperatureAmbient id={ props.device.id } states={props.states}/>
+            <Open id={ props.device.id } states={props.states}/>
         </div>
         
         <div className="device_card_actions_row">
