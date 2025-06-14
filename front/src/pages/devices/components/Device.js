@@ -1,6 +1,7 @@
 import React from 'react';
 import OnOff from './traits/OnOff'
 import TemperatureAmbient from './traits/TemperatureAmbient';
+import TemperatureSetting from './traits/TemperatureSetting';
 import Information from './aux/Information'
 import Connecting from './aux/Connecting'
 import Edit from './aux/Edit'
@@ -19,6 +20,7 @@ const Device = (props) => {
         
         <div className="device_card_actions_row">
             <OnOff id={ props.device.id } states={props.states} reload={ props.reload }/>
+            <TemperatureSetting id={ props.device.id } states={props.states} reload={ props.reload }/>
             
             <Edit id={ props.device.id }/>
         </div>
