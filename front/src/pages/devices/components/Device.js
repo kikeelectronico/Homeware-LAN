@@ -1,5 +1,6 @@
 import React, {useState, useEffect}  from 'react'
 
+import Enable from './traits/Enable';
 import LockUnlock from './traits/LockUnlock';
 import OnOff from './traits/OnOff'
 import Open from './traits/Open';
@@ -28,6 +29,7 @@ const Device = (props) => {
                 </div>
                 
                 <div className="device_card_actions_row">
+                    <Enable id={props.device.id} states={props.states} reload={props.reload} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <OnOff id={props.device.id} states={props.states} reload={props.reload} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <TemperatureSetting id={ props.device.id } states={props.states} reload={ props.reload }/>
                     

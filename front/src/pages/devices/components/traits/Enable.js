@@ -1,8 +1,15 @@
-import React from 'react';
-import getCookieValue from '../../../functions'
-import { root } from '../../../constants'
+import React, {useEffect} from 'react';
+import getCookieValue from '../../../../functions'
+import { root } from '../../../../constants'
 
 const Enable = (props) => {
+
+  useEffect(() => {
+    if(Object.keys(props.states).includes("enable")) {
+      props.setStripColor("lightsalmon")
+      props.setStripOn(props.states.enable)
+    }
+  }, [props.states])
 
   const toggle = () => {
     var http = new XMLHttpRequest();
@@ -25,9 +32,11 @@ const Enable = (props) => {
 
 
   return (
-    <div style={{float: 'left', marginLeft: '5px', height: "30px"}}>
-      <img src={ props.states.enable ? '/devices/onoff_on_true.png' : '/devices/onoff_on_false.png'} onClick={ toggle } alt={ props.image } style={{width: '30px'}}/>
-    </div>
+    Object.keys(props.states).includes("enable") ?
+      <div>
+        <img src={ props.states.enable ? '/devices/onoff_on_true.png' : '/devices/onoff_on_false.png'} onClick={ toggle } alt={ props.image } style={{width: '30px'}}/>
+      </div>
+    : <></>
   );
   
 }
