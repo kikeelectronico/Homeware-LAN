@@ -1,6 +1,7 @@
 import React from "react";
 
 const TemperatureAmbient = (props) => {
+
   return (
     Object.keys(props.states).includes("thermostatTemperatureAmbient") ?
       <span>
@@ -8,6 +9,7 @@ const TemperatureAmbient = (props) => {
       </span>
     : <></>
   )
+  
 }
 
 export default TemperatureAmbient;
