@@ -20,6 +20,7 @@ const LockUnlock = (props) => {
         setColor("#2196F3")
         props.setStripColor("#2196F3")
       }
+      props.setStripOn(true)
     }
   }, [props.states])
     
