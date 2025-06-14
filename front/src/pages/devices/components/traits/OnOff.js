@@ -10,6 +10,7 @@ const OnOff = (props) => {
       if (http.readyState === 4) {
         if (http.status === 200) {
           props.reload();
+          console.log(http.responseText)
         } else {
           console.error(http.statusText);
         }
@@ -19,7 +20,7 @@ const OnOff = (props) => {
     http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     http.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
     http.send(JSON.stringify({
-      "on": !props.on
+      "on": !props.states.on
     }));
   }
 
