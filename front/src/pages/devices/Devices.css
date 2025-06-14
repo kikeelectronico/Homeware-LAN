@@ -92,7 +92,7 @@
   opacity: 1;
 }
 
-.device_card_buttons_row {
+.device_card_actions_row {
   width: calc(100% - 50px);
   position: absolute;
   bottom: 25px;
