@@ -4,7 +4,7 @@ const TemperatureAmbient = (props) => {
   return (
     Object.keys(props.states).includes("thermostatTemperatureAmbient") ?
       <span>
-        {props.states.thermostatTemperatureAmbient}
+        {props.states.thermostatTemperatureAmbient} {props.device.attributes.thermostatTemperatureUnit === "C" ? "ºC" : "F"}
       </span>
     : <></>
   )

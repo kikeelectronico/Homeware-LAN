@@ -16,7 +16,7 @@ const Device = (props) => {
 
         <h2 className="device_card_title">{ props.device.name.name }</h2>
         <div className="device_card_status">
-            <TemperatureAmbient id={ props.device.id } states={props.states}/>
+            <TemperatureAmbient id={ props.device.id } device={props.device} states={props.states}/>
             <Open id={ props.device.id } states={props.states}/>
         </div>
         
