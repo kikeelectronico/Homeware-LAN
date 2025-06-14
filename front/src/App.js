@@ -7,7 +7,7 @@ import { root } from './constants'
 
 import MenuElement from './components/web/MenuElement'
 import Modal from './components/web/Modal'
-import Devices from './components/pages/Devices'
+import Devices from "./pages/devices/Devices";
 import Editor from './components/pages/Editor'
 import Info from './components/pages/Info'
 import Connecting from './components/pages/Connecting'

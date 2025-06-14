@@ -1,7 +1,7 @@
 import React from 'react';
-import OnOff from './traits/OnOff'
-import Information from './aux/Information'
-import Connecting from './aux/Connecting'
+// import OnOff from './traits/OnOff'
+// import Information from './aux/Information'
+// import Connecting from './aux/Connecting'
 import Edit from './aux/Edit'
 
 const Outlet = (props) => {

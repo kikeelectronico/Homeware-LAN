@@ -1,6 +1,6 @@
 import React from 'react';
-import getCookieValue from '../../../functions'
-import { root } from '../../../constants'
+import getCookieValue from '../../../../functions'
+import { root } from '../../../../constants'
 
 const OnOff = (props) => {
 
@@ -25,7 +25,7 @@ const OnOff = (props) => {
 
 
   return (
-    <div style={{float: 'left', marginLeft: '5px', height: "30px"}}>
+    <div>
       <img src={ props.on ? '/devices/onoff_on_true.png' : '/devices/onoff_on_false.png'} onClick={ toggle } alt={ props.image } style={{width: '30px'}}/>
     </div>
   );

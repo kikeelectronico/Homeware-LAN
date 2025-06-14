@@ -5,23 +5,23 @@
   flex-direction: column;
 }
 
-.device_room_container {
+.devices_room_container {
   width: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.device_romm_title{
+.devices_romm_title{
 
 }
 
-.device_cards_outer_container {
+.devices_cards_outer_container {
   width: 100%;
   display: flex;
   justify-content: center; 
 }
 
-.device_cards_container {
+.devices_cards_container {
   display: grid;
   grid-template-columns: repeat(auto-fill, 300px);
   gap: 20px;
@@ -29,40 +29,56 @@
 }
 
 @media (max-width: 1890px) {
-  .device_cards_container {
+  .devices_cards_container {
     max-width: calc((300px + 20px) * 4 - 20px);
   }
 }
 
 @media (max-width: 1550px) {
-  .device_cards_container {
+  .devices_cards_container {
     max-width: calc((300px + 20px) * 3 - 20px);
   }
 }
 
 @media (max-width: 1230px) {
-  .device_cards_container {
+  .devices_cards_container {
     max-width: calc((300px + 20px) * 2 - 20px);
   }
 }
 
 @media (max-width: 890px) {
-  .device_cards_container {
+  .devices_cards_container {
     max-width: calc((300px + 20px) * 1);
   }
 }
 
 .device_card {
   width: 300px;
-  height: 120px;
+  height: 180px;
   flex-shrink: 0;
-  border-radius: 20px;
+  border-radius: 12px;
   background-color: white;
+  overflow: hidden;
+  position: relative;
 }
 
 .device_card_title {
-  margin-top: 5px;
-  margin-bottom: 5px
+  font-size: 30px;
+  font-weight: 600;
+  color: #333333;
+  margin-top: 25px;
+  margin-bottom: 5px;
+  margin-left: 25px;
+  text-align: left;
+}
+
+.device_card_status {
+  font-family: Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+  color: #6cc56c;
+  margin-left: 25px;
+  text-align: left;
 }
 
 .device_card_divider {
@@ -71,8 +87,22 @@
 
 .device_card_color_strip {
   width: 100%;
-  height: 20px;
-  border-radius: 20px 20px 0px 0px;
+  height: 8px;
   background-color: lightgrey;
   opacity: 1;
+}
+
+.device_card_buttons_row {
+  width: calc(100% - 50px);
+  position: absolute;
+  bottom: 25px;
+  margin-left: 25px;
+  margin-right: 25px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px
+}
+
+.device_card_edit_button {
+  margin-left: auto;
 }
