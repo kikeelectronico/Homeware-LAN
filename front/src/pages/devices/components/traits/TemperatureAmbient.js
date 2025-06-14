@@ -4,12 +4,12 @@ const TemperatureAmbient = (props) => {
 
   return (
     Object.keys(props.states).includes("thermostatTemperatureAmbient") ?
-      <span>
+      <div className="device_card_status">
         {props.states.thermostatTemperatureAmbient} {props.device.attributes.thermostatTemperatureUnit === "C" ? "ºC" : "F"}
-      </span>
+      </div>
     : <></>
   )
-  
+
 }
 
 export default TemperatureAmbient;

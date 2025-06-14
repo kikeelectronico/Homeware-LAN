@@ -72,17 +72,21 @@
   text-align: left;
 }
 
-.device_card_status {
+.device_card_status_container {
   font-family: Arial, sans-serif;
   font-size: 30px;
   font-weight: 500;
   color: #777;
   margin-left: 25px;
   text-align: left;
+  display: flex;
+  flex-direction: row;
 }
 
-.device_card_divider {
-  width: 80%;
+.device_card_status + .device_card_status {
+  border-left: 1px solid #ccc;
+  padding-left: 8px;
+  margin-left: 8px; 
 }
 
 .device_card_color_strip {

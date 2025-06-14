@@ -4,7 +4,7 @@ const Open = (props) => {
 
   return (
     Object.keys(props.states).includes("openPercent") ?
-      <div>
+      <div className="device_card_status">
         {props.states.openPercent} %
       </div>
     : <></>

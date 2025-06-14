@@ -26,7 +26,7 @@ const LockUnlock = (props) => {
     
   return (
     Object.keys(props.states).includes("isLocked") ?
-      <div>
+      <div className="device_card_status">
         <span style={{color: color}}>{title}</span>
       </div>
   : <></>
