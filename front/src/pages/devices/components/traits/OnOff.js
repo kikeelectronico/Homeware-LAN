@@ -9,7 +9,7 @@ const OnOff = (props) => {
       props.setStripColor("#90EE90")
       props.setStripOn(props.states.on)
     }
-  }, [props.states])
+  }, [props])
 
   const toggle = () =>{
     var http = new XMLHttpRequest();

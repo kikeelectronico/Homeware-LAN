@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 
 const ArmDisarm = (props) => {
 
@@ -7,7 +7,7 @@ const ArmDisarm = (props) => {
       props.setStripColor("#673AB7")
       props.setStripOn(props.states.isArmed)
     }
-  }, [props.states])
+  }, [props])
     
   return (
     Object.keys(props.states).includes("currentArmLevel") ?

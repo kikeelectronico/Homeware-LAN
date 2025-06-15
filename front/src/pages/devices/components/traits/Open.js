@@ -7,7 +7,7 @@ const Open = (props) => {
         props.setStripColor("#2196F3")
         props.setStripOn(props.states.openPercent === 100)
       }
-    }, [props.states])
+    }, [props])
 
   return (
     Object.keys(props.states).includes("openPercent") ?

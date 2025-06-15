@@ -9,7 +9,7 @@ const Enable = (props) => {
       props.setStripColor("lightsalmon")
       props.setStripOn(props.states.enable)
     }
-  }, [props.states])
+  }, [props])
 
   const toggle = () => {
     var http = new XMLHttpRequest();

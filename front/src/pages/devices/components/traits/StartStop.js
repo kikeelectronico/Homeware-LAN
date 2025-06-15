@@ -22,7 +22,7 @@ const StartStop = (props) => {
       }
       props.setStripOn(true)
     }
-  }, [props.states])
+  }, [props])
     
   return (
     Object.keys(props.states).includes("isRunning") ?

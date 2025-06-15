@@ -24,9 +24,9 @@ const ThermostatMode = (props) => {
         props.setStripColor("#66BB6A")
         setColor("#66BB6A")
       }
-      props.setStripOn(!props.states.thermostatMode == "off")
+      props.setStripOn(!props.states.thermostatMode === "off")
     }
-  }, [props.states])
+  }, [props])
 
   const update = () => {
     const availableThermostatModes = props.device.attributes.availableThermostatModes
