@@ -155,4 +155,38 @@
   margin-left: auto;
 }
 
+.device_card_contextual_menu_container {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 150px;
+  min-height: 80px;
+  border-radius: 12px 0px 0px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: #fff; 
+  border-radius: 12px; 
+  box-shadow: 0 -1px 8px rgba(0, 0, 0, 0.1);
+}
+
+.device_card_contextual_menu_element {
+  width: 100%;
+  height: 40px;
+  padding-left: 30px;
+  color: #777; 
+  font-size: 18px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  text-decoration: none;
+}
+
+.device_card_contextual_menu_element:hover {
+  background-color: #f0f0f0;
+  color: #000000; 
+}
 

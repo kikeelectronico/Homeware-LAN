@@ -1,4 +1,5 @@
 import React, {useState}  from 'react'
+import { Link } from "react-router-dom";
 
 import ArmDisarm from './traits/ArmDisarm';
 import Brightness from './traits/Brightness';
@@ -16,10 +17,11 @@ const Device = (props) => {
 
     const [strip_color, setStripColor] = useState("white")
     const [strip_on, setStripOn] = useState(true)
+    const [contextual_menu, setContextualMenu] = useState(false)
 
     return (
         <div>
-            <div className="device_card">
+            <div className="device_card" onClick={() => {setContextualMenu(!contextual_menu)}}>
                 <div className="device_card_color_strip" style={{backgroundColor: strip_color, opacity: strip_on ? "1" : "0.4"}}></div>
 
                 <h2 className="device_card_title">{ props.device.name.name }</h2>
@@ -38,8 +40,24 @@ const Device = (props) => {
                     <TemperatureSetting id={props.device.id} states={props.states} reload={props.reload} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <ThermostatMode id={props.device.id} device={props.device} states={props.states} reload={props.reload} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     
-                    <Edit id={ props.device.id }/>
+                    <Edit onClick={() => {setContextualMenu(!contextual_menu)}}/>
                 </div>
+
+                {
+                    contextual_menu ?
+                        <div className="device_card_contextual_menu_container">
+                            <Link to={"/devices/editor/" + props.device.id + "/"} className="device_card_contextual_menu_element">
+                                Edit
+                            </Link>
+                            <Link to={"/devices/info/" + props.device.id + "/"} className="device_card_contextual_menu_element">
+                                Information
+                            </Link>
+                            <Link to={"/devices/connecting/" + props.device.id + "/"} className="device_card_contextual_menu_element">
+                                Connections
+                            </Link>
+                        </div>
+                    : <></>
+                }
             </div>
         </div>
     );
