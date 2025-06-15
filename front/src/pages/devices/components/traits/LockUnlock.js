@@ -29,7 +29,7 @@ const LockUnlock = (props) => {
       <div className="device_card_status">
         <span style={{color: color}}>{title}</span>
       </div>
-  : <></>
+    : <></>
   );
 
 }
