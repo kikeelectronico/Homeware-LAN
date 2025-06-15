@@ -44,7 +44,6 @@ const Device = (props) => {
   
 }
 
-{/*  */}
 {/* <Information id={ props.device.id }/>
 <Connecting id={ props.device.id }/>
  */}
