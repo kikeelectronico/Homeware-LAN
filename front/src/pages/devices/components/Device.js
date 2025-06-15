@@ -1,5 +1,6 @@
 import React, {useState, useEffect}  from 'react'
 
+import Brightness from './traits/Brightness';
 import Enable from './traits/Enable';
 import LockUnlock from './traits/LockUnlock';
 import OnOff from './traits/OnOff'
@@ -23,6 +24,7 @@ const Device = (props) => {
 
                 <h2 className="device_card_title">{ props.device.name.name }</h2>
                 <div className="device_card_status_container">
+                    <Brightness id={ props.device.id } states={props.states}/>
                     <LockUnlock id={ props.device.id } states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <Open id={ props.device.id } states={props.states}/>
                     <TemperatureAmbient id={ props.device.id } device={props.device} states={props.states}/>

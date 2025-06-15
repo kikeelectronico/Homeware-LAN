@@ -3,9 +3,11 @@ import React from 'react';
 const Brightness = (props) => {
   
   return (
-    <div style={{float: 'left', marginLeft: '5px', height: "30px"}}>
-      <span style={{color: "#777", fontSize: 25, lineHeight: "30px", verticalAlign: "middle"}}>{props.brightness} %</span>
-    </div>
+    Object.keys(props.states).includes("brightness") ?
+      <div className="device_card_status">
+          <span>{props.states.brightness} %</span>
+      </div>
+  : <></>
   );
   
 }
