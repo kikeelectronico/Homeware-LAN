@@ -34,7 +34,7 @@ const Device = (props) => {
                 <div className="device_card_actions_row">
                     <Enable id={props.device.id} states={props.states} reload={props.reload} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <OnOff id={props.device.id} states={props.states} reload={props.reload} setStripColor={setStripColor} setStripOn={setStripOn}/>
-                    <TemperatureSetting id={ props.device.id } states={props.states} reload={ props.reload }/>
+                    <TemperatureSetting id={props.device.id} states={props.states} reload={props.reload} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     
                     <Edit id={ props.device.id }/>
                 </div>
