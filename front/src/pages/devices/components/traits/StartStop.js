@@ -8,7 +8,7 @@ const StartStop = (props) => {
   useEffect(() => {
     if (Object.keys(props.states).includes("isRunning")) {
       if (props.states.isPaused) {
-        setTitle("Pause")
+        setTitle("Paused")
         setColor("#FF9800")
         props.setStripColor("#FF9800")
       } else if (props.states.isRunning) {
@@ -16,7 +16,7 @@ const StartStop = (props) => {
         setColor("#4CAF50")
         props.setStripColor("#4CAF50")
       } else if (!props.states.isRunning) {
-        setTitle("Stop")
+        setTitle("Stoped")
         setColor("#777")
         props.setStripColor("#777")
       }
