@@ -37,12 +37,16 @@ const TemperatureSetting = (props) => {
 
   return (
     Object.keys(props.states).includes("thermostatTemperatureSetpoint") ?
-      <div>
-        <img src="/devices/arrow_down.png" onClick={down} alt="Arrow up" style={{ width: "20px"}}/>
-        <span style={{fontSize: "30px", marginLeft: "5px", marginRight: "5px", color: "#777"}}>
+      <div className="device_card_actions_subrow">
+        <div className="device_card_action_button">
+          <img src="/devices/arrow_down.png" onClick={down} alt="Arrow up" style={{ width: "20px"}}/>
+        </div>
+        <span style={{fontSize: "30px", color: "#777"}}>
           {props.states.thermostatTemperatureSetpoint}
         </span>
-        <img src="/devices/arrow_up.png" onClick={up} alt="Arrow down" style={{ width: "20px"}}/>
+        <div className="device_card_action_button">
+          <img src="/devices/arrow_up.png" onClick={up} alt="Arrow down" style={{ width: "20px"}}/>
+        </div>
       </div>
     : <></>
   );

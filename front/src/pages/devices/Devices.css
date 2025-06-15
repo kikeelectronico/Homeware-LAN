@@ -118,6 +118,20 @@
   gap: 5px
 }
 
+.device_card_actions_subrow {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.device_card_action_button {
+  vertical-align: center;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+
 .device_card_edit_button {
   margin-left: auto;
 }
