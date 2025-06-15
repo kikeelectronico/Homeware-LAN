@@ -115,13 +115,18 @@
   margin-right: 25px;
   display: flex;
   flex-direction: row;
-  gap: 5px
 }
 
-.device_card_actions_subrow {
+.device_card_actions_block {
   display: flex;
   flex-direction: row;
   gap: 5px;
+}
+
+.device_card_actions_block + .device_card_actions_block {
+  border-left: 1px solid #ccc;
+  padding-left: 8px;
+  margin-left: 8px; 
 }
 
 .device_card_action_button {
@@ -132,6 +137,13 @@
   justify-content: center; 
 }
 
+.device_card_mode_button {
+  font-size: 25px;
+  color: #777;
+}
+
 .device_card_edit_button {
   margin-left: auto;
 }
+
+

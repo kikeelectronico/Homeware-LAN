@@ -34,8 +34,10 @@ const OnOff = (props) => {
 
   return (
     Object.keys(props.states).includes("on") ?
-      <div className="device_card_action_button">
-        <img src={ props.states.on ? '/devices/onoff_on_true.png' : '/devices/onoff_on_false.png'} onClick={ toggle } alt={ props.image } style={{width: '25px'}}/>
+      <div className="device_card_actions_block">
+        <div className="device_card_action_button">
+          <img src={ props.states.on ? '/devices/onoff_on_true.png' : '/devices/onoff_on_false.png'} onClick={ toggle } alt={ props.image } style={{width: '25px'}}/>
+        </div>
       </div>
     : <></>
   );

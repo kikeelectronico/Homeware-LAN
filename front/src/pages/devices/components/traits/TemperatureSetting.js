@@ -54,7 +54,7 @@ const TemperatureSetting = (props) => {
 
   return (
     Object.keys(props.states).includes("thermostatTemperatureSetpoint") ?
-      <div className="device_card_actions_subrow">
+      <div className="device_card_actions_block">
         <div className="device_card_action_button">
           <img src="/devices/arrow_down.png" onClick={down} alt="Arrow up" style={{ width: "20px"}}/>
         </div>
