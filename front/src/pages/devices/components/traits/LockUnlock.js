@@ -12,11 +12,11 @@ const LockUnlock = (props) => {
         setColor("#FF5722")
         props.setStripColor("#FF5722")
       } else if (props.states.isLocked) {
-        setTitle('Close')
+        setTitle('Lockes')
         setColor("#4CAF50")
         props.setStripColor("#4CAF50")
       } else if (!props.states.isLocked) {
-        setTitle('Open')
+        setTitle('Unlocked')
         setColor("#2196F3")
         props.setStripColor("#2196F3")
       }
