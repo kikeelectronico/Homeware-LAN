@@ -16,7 +16,7 @@ const StartStop = (props) => {
         setColor("#4CAF50")
         props.setStripColor("#4CAF50")
       } else if (!props.states.isRunning) {
-        setTitle("Stoped")
+        setTitle("Stopped")
         setColor("#777")
         props.setStripColor("#777")
       }
