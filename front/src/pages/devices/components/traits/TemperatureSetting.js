@@ -1,25 +1,7 @@
-import React, {useEffect}  from 'react'
 import getCookieValue from '../../../../functions'
 import { root } from '../../../../constants'
 
 const TemperatureSetting = (props) => {
-
-  useEffect(() => {
-    if (Object.keys(props.states).includes("thermostatMode")) {
-      if (props.states.thermostatMode == "heat") {
-        props.setStripColor("#FF4500")
-      } else if (props.states.thermostatMode == "cool") {
-        props.setStripColor("#00BFFF")
-      } else if (props.states.thermostatMode == "fan-only") {
-        props.setStripColor("#00CED1")
-      } else if (props.states.thermostatMode == "off") {
-        props.setStripColor("#757575")
-      } else {
-        props.setStripColor("#66BB6A")
-      }
-      props.setStripOn(!props.states.thermostatMode == "off")
-    }
-  }, [props.states])
 
   const up = () => {
     var temperature = props.states.thermostatTemperatureSetpoint + 1;

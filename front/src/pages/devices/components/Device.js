@@ -9,6 +9,7 @@ import Open from './traits/Open';
 import StartStop from './traits/StartStop';
 import TemperatureAmbient from './traits/TemperatureAmbient';
 import TemperatureSetting from './traits/TemperatureSetting';
+import ThermostatMode from './traits/ThermostatMode';
 import Edit from './aux/Edit'
 
 const Device = (props) => {
@@ -35,6 +36,7 @@ const Device = (props) => {
                     <Enable id={props.device.id} states={props.states} reload={props.reload} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <OnOff id={props.device.id} states={props.states} reload={props.reload} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <TemperatureSetting id={props.device.id} states={props.states} reload={props.reload} setStripColor={setStripColor} setStripOn={setStripOn}/>
+                    <ThermostatMode id={props.device.id} device={props.device} states={props.states} reload={props.reload} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     
                     <Edit id={ props.device.id }/>
                 </div>

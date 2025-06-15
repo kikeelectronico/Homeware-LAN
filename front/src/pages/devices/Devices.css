@@ -131,15 +131,24 @@
 
 .device_card_action_button {
   vertical-align: center;
-  cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center; 
+  justify-content: center;
+  cursor: pointer;
 }
 
 .device_card_mode_button {
-  font-size: 25px;
-  color: #777;
+  font-size: 20px;
+  color: white;
+  /* padding: 4px; */
+  padding-left: 10px;
+  padding-right: 10px;
+  border: white 1px solid;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 .device_card_edit_button {
