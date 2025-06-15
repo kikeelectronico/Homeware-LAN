@@ -8,8 +8,6 @@ import Open from './traits/Open';
 import StartStop from './traits/StartStop';
 import TemperatureAmbient from './traits/TemperatureAmbient';
 import TemperatureSetting from './traits/TemperatureSetting';
-import Information from './aux/Information'
-import Connecting from './aux/Connecting'
 import Edit from './aux/Edit'
 
 const Device = (props) => {
@@ -43,9 +41,5 @@ const Device = (props) => {
     );
   
 }
-
-{/* <Information id={ props.device.id }/>
-<Connecting id={ props.device.id }/>
- */}
 
 export default Device
