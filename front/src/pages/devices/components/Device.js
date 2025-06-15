@@ -5,6 +5,7 @@ import Enable from './traits/Enable';
 import LockUnlock from './traits/LockUnlock';
 import OnOff from './traits/OnOff'
 import Open from './traits/Open';
+import StartStop from './traits/StartStop';
 import TemperatureAmbient from './traits/TemperatureAmbient';
 import TemperatureSetting from './traits/TemperatureSetting';
 import Information from './aux/Information'
@@ -24,10 +25,11 @@ const Device = (props) => {
 
                 <h2 className="device_card_title">{ props.device.name.name }</h2>
                 <div className="device_card_status_container">
-                    <Brightness id={ props.device.id } states={props.states}/>
-                    <LockUnlock id={ props.device.id } states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
-                    <Open id={props.device.id} device={props.device} states={props.states}/>
-                    <TemperatureAmbient id={ props.device.id } device={props.device} states={props.states}/>
+                    <Brightness states={props.states}/>
+                    <LockUnlock states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
+                    <Open device={props.device} states={props.states}/>
+                    <StartStop device={props.device} states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
+                    <TemperatureAmbient device={props.device} states={props.states}/>
                 </div>
                 
                 <div className="device_card_actions_row">
