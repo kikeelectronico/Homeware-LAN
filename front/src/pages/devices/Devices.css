@@ -82,9 +82,16 @@
   font-weight: 500;
   color: #777;
   margin-left: 25px;
+  margin-right: 25px;
   text-align: left;
   display: flex;
   flex-direction: row;
+}
+
+.device_card_status {
+  white-space: nowrap;
+  overflow: hidden;     
+  text-overflow: ellipsis;
 }
 
 .device_card_status + .device_card_status {
