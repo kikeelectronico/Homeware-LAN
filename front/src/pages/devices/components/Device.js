@@ -24,7 +24,7 @@ const Device = (props) => {
                 <div className="device_card_status_container">
                     <Brightness states={props.states}/>
                     <LockUnlock states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
-                    <Open device={props.device} states={props.states}/>
+                    <Open device={props.device} states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <StartStop device={props.device} states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <TemperatureAmbient device={props.device} states={props.states}/>
                 </div>
