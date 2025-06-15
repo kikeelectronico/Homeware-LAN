@@ -11,7 +11,6 @@ import TemperatureSetting from './traits/TemperatureSetting';
 import Information from './aux/Information'
 import Connecting from './aux/Connecting'
 import Edit from './aux/Edit'
-import { colors } from '@mui/material';
 
 const Device = (props) => {
 
