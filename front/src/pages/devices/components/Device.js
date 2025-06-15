@@ -21,7 +21,7 @@ const Device = (props) => {
 
     return (
         <div>
-            <div className="device_card" onClick={() => {setContextualMenu(!contextual_menu)}}>
+            <div className="device_card">
                 <div className="device_card_color_strip" style={{backgroundColor: strip_color, opacity: strip_on ? "1" : "0.4"}}></div>
 
                 <h2 className="device_card_title">{ props.device.name.name }</h2>
@@ -40,12 +40,15 @@ const Device = (props) => {
                     <TemperatureSetting id={props.device.id} states={props.states} reload={props.reload} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <ThermostatMode id={props.device.id} device={props.device} states={props.states} reload={props.reload} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     
-                    <Edit onClick={() => {setContextualMenu(!contextual_menu)}}/>
+                    <Edit setContextualMenu={setContextualMenu}/>
                 </div>
 
                 {
                     contextual_menu ?
                         <div className="device_card_contextual_menu_container">
+                            <div onClick={() => setContextualMenu(false)} className="device_card_contextual_menu_element device_card_contextual_menu_close">
+                                X
+                            </div>
                             <Link to={"/devices/editor/" + props.device.id + "/"} className="device_card_contextual_menu_element">
                                 Edit
                             </Link>
