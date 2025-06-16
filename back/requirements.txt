@@ -4,7 +4,7 @@ uvicorn==0.34.2
 python-dateutil==2.9.0.post0
 requests==2.32.4
 redis==5.2.1
-google-auth==2.39.0
+google-auth==2.40.3
 bcrypt==4.3.0
 gevent
 pymongo==4.13.1
