@@ -1,15 +1,8 @@
-import os
-from fastapi import FastAPI, Header
+from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 from fastapi.middleware.cors import CORSMiddleware
-from typing import Annotated
 from pydantic import BaseModel
-import json
 import time
-from datetime import datetime
-import paho.mqtt.publish as publish
-import subprocess
-from gevent import monkey
 
 from data import Data
 import hostname

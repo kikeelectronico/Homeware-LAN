@@ -126,16 +126,6 @@
     overflow: scroll;
   }
 
-  .page_cards_container {
-    width: 80%;
-    margin: auto;
-    margin-top: 10px;
-    margin-bottom: 40px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 32%);
-    grid-gap: 20px;
-  }
-
   .two_table_row {
     width: 80%;
     min-height: 50px;

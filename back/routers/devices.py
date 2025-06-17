@@ -30,6 +30,8 @@ class DeviceDescription(BaseModel):
     name: DeviceName
     traits: list[str]
     type: str
+    hide_from_google: Optional[bool] = False
+    room: Optional[str] = ""
 
 class Device(BaseModel):
     description: DeviceDescription
@@ -40,10 +42,10 @@ def get_devices() -> list[Device]:
     devices_description = data_conector.getDevices()
     devices = []
     for device_description in devices_description:
-        devices.append({
-            "description": device_description,
-            "states": data_conector.getStatus(device_description["_id"])
-        })
+        devices.append(Device(
+            description=DeviceDescription(**device_description),
+            states=data_conector.getStatus(device_description["_id"])
+        ))
     return devices
 
 @router.post("/api/devices", dependencies=[Depends(allowAuthenticated)])
@@ -85,10 +87,12 @@ def get_a_device(device_id: str = "") -> Device:
         return errorResponses.FOUR_O_FOUR
     
     device_states = data_conector.getStatus(device_id)
-    return {
-        "description": device_description,
-        "states": device_states
-    }
+
+    device = Device(
+        description=DeviceDescription(**device_description),
+        states=device_states
+    )
+    return device
 
 @router.put("/api/devices/{device_id}", dependencies=[Depends(allowAuthenticated)])
 def update_a_device(device: Device, device_id: str = ""):
