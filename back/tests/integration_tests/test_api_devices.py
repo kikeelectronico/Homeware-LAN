@@ -108,7 +108,9 @@ def test_create_device():
             "traits": [
                 "action.devices.traits.OnOff"
             ],
-            "attributes": {}
+            "attributes": {},
+            "hide_from_google": False,
+            "room": ""
         },
         "states": {
             "online": True
@@ -155,7 +157,9 @@ def test_create_device_fail_bad_token():
             "traits": [
                 "action.devices.traits.OnOff"
             ],
-            "attributes": {}
+            "attributes": {},
+            "hide_from_google": False,
+            "room": ""
         },
         "states": {
             "online": True
@@ -193,7 +197,9 @@ def test_create_device_fail_no_token_value():
             "traits": [
                 "action.devices.traits.OnOff"
             ],
-            "attributes": {}
+            "attributes": {},
+            "hide_from_google": False,
+            "room": ""
         },
         "states": {
             "online": True
@@ -232,7 +238,9 @@ def test_create_device_fail_no_header_value():
             "traits": [
                 "action.devices.traits.OnOff"
             ],
-            "attributes": {}
+            "attributes": {},
+            "hide_from_google": False,
+            "room": ""
         },
         "states": {
             "online": True
@@ -269,7 +277,9 @@ def test_create_device_no_header():
             "traits": [
                 "action.devices.traits.OnOff"
             ],
-            "attributes": {}
+            "attributes": {},
+            "hide_from_google": False,
+            "room": ""
         },
         "states": {
             "online": True
@@ -307,7 +317,9 @@ def test_update_device():
             "traits": [
                 "action.devices.traits.OnOff"
             ],
-            "attributes": {}
+            "attributes": {},
+            "hide_from_google": False,
+            "room": ""
         },
         "states": {
             "online": False
@@ -353,7 +365,9 @@ def test_update_device_fail_bad_device_id():
             "traits": [
                 "action.devices.traits.OnOff"
             ],
-            "attributes": {}
+            "attributes": {},
+            "hide_from_google": False,
+            "room": ""
         },
         "states": {
             "online": False
@@ -394,7 +408,9 @@ def test_update_device_fail_bad_token():
             "traits": [
                 "action.devices.traits.OnOff"
             ],
-            "attributes": {}
+            "attributes": {},
+            "hide_from_google": False,
+            "room": ""
         },
         "states": {
             "online": False
@@ -433,7 +449,9 @@ def test_update_device_fail_no_token_value():
             "traits": [
                 "action.devices.traits.OnOff"
             ],
-            "attributes": {}
+            "attributes": {},
+            "hide_from_google": False,
+            "room": ""
         },
         "states": {
             "online": False
@@ -473,7 +491,9 @@ def test_update_device_fail_no_header_value():
             "traits": [
                 "action.devices.traits.OnOff"
             ],
-            "attributes": {}
+            "attributes": {},
+            "hide_from_google": False,
+            "room": ""
         },
         "states": {
             "online": False
@@ -511,7 +531,9 @@ def test_update_device_no_header():
             "traits": [
                 "action.devices.traits.OnOff"
             ],
-            "attributes": {}
+            "attributes": {},
+            "hide_from_google": False,
+            "room": ""
         },
         "states": {
             "online": False
