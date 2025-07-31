@@ -1,4 +1,5 @@
 from data import Data
+import time
 import random
 
 def randomToken():
@@ -14,14 +15,16 @@ def randomToken():
 def test_updateOauthToken():
 	data = Data()
 	data.setup()
-	assert data.updateOauthToken("google", "access_token", randomToken(), 2024) == True
+	ts = int(time.time() * 1000)
+	assert data.updateOauthToken("google", "access_token", randomToken(), ts) == True
 	del data
 
 def test_validateOauthToken():
 	data = Data()
 	data.setup()
 	token = randomToken()
-	assert data.updateOauthToken("google", "access_token", token, 2024) == True
+	ts = int(time.time() * 1000)
+	assert data.updateOauthToken("google", "access_token", token, ts) == True
 	assert data.validateOauthToken("access_token", token) == True
 	del data
 
