@@ -118,6 +118,7 @@ function App() {
           if (http.status === 200) {
             var data = JSON.parse(http.responseText);
             if (!data.valid && !window.location.pathname !== '/login') {
+              document.cookie = "token=; path=/";
               window.location.href = '/login/'
             } else if (data.valid) {
               setSession(true)
