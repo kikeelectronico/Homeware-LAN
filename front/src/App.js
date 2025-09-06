@@ -129,8 +129,7 @@ function App() {
       fetch(root + "api/user/validateToken", {
         method: "GET",
         headers: {
-          'token': getCookieValue('token'),
-          'user': getCookieValue('user')
+          'token': getCookieValue('token')
         }
       })
       .then(response => {
@@ -156,7 +155,6 @@ function App() {
   }
 
   const logout = () => {
-    document.cookie = "user=; path=/";
     document.cookie = "token=; path=/";
     setSession(false)
     window.location.href = '/login'

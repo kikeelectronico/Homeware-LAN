@@ -25,7 +25,6 @@ function Login() {
     })
     .then(response => {
       if (response['valid']) {
-        // document.cookie = "user=" + response['user'] + "; path=/";
         document.cookie = "token=" + response['token'] + "; path=/";
         window.location = '/';
       } else {
