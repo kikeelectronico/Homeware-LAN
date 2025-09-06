@@ -16,25 +16,30 @@ function Backup() {
 
   const backup = () => {
     setAlert({severity: "warning", text: "Downloading the backup file."})
-    var http = new XMLHttpRequest();
-    http.onload = function (e) {
-      if (http.readyState === 4) {
-        if (http.status === 200) {
-          const blob = new Blob([http.responseText], { type: "text/plain" });
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement("a");
-          link.download = "homeware " + formatTimestamp(Date.now()/1000) + ".json";
-          link.href = url;
-          link.click();
-        } else {
-          console.error(http.statusText);
-          setAlert({severity: "error", text: "Something went wrong."})
-        }
+    fetch(root + "api/backup", {
+      method: "GET",
+      headers: {
+        "authorization": "bearer " + getCookieValue("token")
       }
-    }
-    http.open("GET", root + "api/backup");
-    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
-    http.send();
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(text => {
+      const blob = new Blob([text], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.download = "homeware " + formatTimestamp(Date.now()/1000) + ".json";
+      link.href = url;
+      link.click();
+    })
+    .catch(error => {
+      console.error("Error fetching backup:", error);
+      setAlert({severity: "error", text: "Something went wrong."});
+    });
   }
 
   const restore = (e) => {
@@ -43,20 +48,24 @@ function Backup() {
       fileReader.onload=function(){
         setAlert({severity: "warning", text: "Uploading the file."})
         const backup = fileReader.result
-        var http = new XMLHttpRequest();
-        http.onload = function (e) {
-          if (http.readyState === 4) {
-            if (http.status === 200) {
-              setAlert({severity: "success", text: "File uploaded."})
-            } else {
-              setAlert({severity: "error", text: "Something went wrong."})
-            }
+        fetch(root + "api/backup", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json;charset=UTF-8",
+            "authorization": "bearer " + getCookieValue("token")
+          },
+          body: backup
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
           }
-        }
-        http.open("PUT", root + "api/backup");
-        http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        http.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
-        http.send(backup);
+          setAlert({severity: "success", text: "File uploaded."});
+        })
+        .catch(error => {
+          console.error("Error uploading backup file:", error);
+          setAlert({severity: "error", text: "Something went wrong."});
+        });
       }
       fileReader.readAsText(e.target.files[0]);
     }

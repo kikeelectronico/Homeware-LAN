@@ -61,20 +61,21 @@ def auth(client_id: str, redirect_uri: str, state: str):
 @router.post("/token", include_in_schema=False)
 @router.post("/token/", include_in_schema=False)
 def token(grant_type: Annotated[str, Form()], client_id: Annotated[str | None, Form()] = None, client_secret: Annotated[str | None, Form()] = None, code: Annotated[str | None, Form()] = None, refresh_token: Annotated[str | None, Form()] = None):
-    # agent = request.headers['User-Agent']
-    # # Verify special agents
-    # if '+http://www.google.com/bot.html' in agent:
-    #     agent = 'google'
-    # elif agent == 'OpenAuth':
-    #     agent = 'google'
-    agent = "google"
+    response = {}
+
+    if data_conector.validateOauthCredentials("client_id", client_id) and data_conector.validateOauthCredentials("client_secret", client_secret):
+        agent = "google"
+    else:
+        response['error'] = 'invalid_grant'
+        data_conector.log('Alert', 'Unauthorized token request. The new token hasn\'t been sent.')
+        return response
 
     token = ''
     if grant_type == 'authorization_code':
         token = code
     else:
         token = refresh_token
-    response = {}
+    
     # Verify the code
     if  data_conector.validateOauthToken(grant_type, token):
         # Tokens lifetime
