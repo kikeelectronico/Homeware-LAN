@@ -26,21 +26,25 @@ function Info() {
 
   useEffect(() => {
     if (id !== "") {
-      var dev = new XMLHttpRequest();
-      dev.onload = function (e) {
-        if (dev.readyState === 4) {
-          if (dev.status === 200) {
-            var data = JSON.parse(dev.responseText);
-            setDevice(data)
-          } else {
-            console.error(dev.statusText);
-            setAlert({severity: "error", text: "Unable to load the data."})
-          }
+      fetch(root + "api/devices/" + id, {
+        method: "GET",
+        headers: {
+          "authorization": "bearer " + getCookieValue("token")
         }
-      }
-      dev.open("GET", root + "api/devices/" + id);
-      dev.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
-      dev.send();
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setDevice(data);
+      })
+      .catch(error => {
+        console.error("Error fetching device:", error);
+        setAlert({severity: "error", text: "Unable to load the data."});
+      });
     }
   }, [id])
 

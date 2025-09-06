@@ -34,24 +34,28 @@ const ThermostatMode = (props) => {
     const new_mode_index = (current_mode_index + 1) < availableThermostatModes.length ? current_mode_index + 1 : 0
     const new_mode = availableThermostatModes[new_mode_index]
     
-    var http = new XMLHttpRequest();
-    http.onload = function (e) {
-      if (http.readyState === 4) {
-        if (http.status === 200) {
-          props.reload();
-        } else {
-          console.error(http.statusText);
-        }
-      }
-    }
-    http.open("PATCH", root + "api/devices/" + props.id + "/states");
-    http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
-    http.send(
-      JSON.stringify({
-        "thermostatMode": new_mode,
+    fetch(root + "api/devices/" + props.id + "/states", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json;charset=UTF-8",
+        "authorization": "bearer " + getCookieValue("token")
+      },
+      body: JSON.stringify({
+        "thermostatMode": new_mode
       })
-    );
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(text => {
+      props.reload();
+    })
+    .catch(error => {
+      console.error("Error updating thermostat mode:", error);
+    });
   }
 
   const mayus = (string) => {

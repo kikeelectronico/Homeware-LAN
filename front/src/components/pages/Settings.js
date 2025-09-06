@@ -23,24 +23,25 @@ function Settings() {
   const [alert, setAlert] = useState(null)
 
   useEffect(() => {
-    var http = new XMLHttpRequest();
-    http.onload = function (e) {
-      if (http.readyState === 4) {
-        if (http.status === 200) {
-          var data = JSON.parse(http.responseText);
-          setSettings(data)
-        } else {
-          console.error(http.statusText);
-          setAlert({severity: "error", text: "Unable to load the data."})
-        }
+    fetch(root + "api/settings", {
+      method: "GET",
+      headers: {
+        "authorization": "bearer " + getCookieValue("token")
       }
-    }
-    http.open("GET", root + "api/settings");
-    http.setRequestHeader(
-      "authorization",
-      "bearer " + getCookieValue("token")
-    );
-    http.send();
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      setSettings(data);
+    })
+    .catch(error => {
+      console.error("Error fetching settings:", error);
+      setAlert({severity: "error", text: "Unable to load the data."});
+    });
   }, [])
 
   useEffect(() => {
@@ -82,23 +83,24 @@ function Settings() {
 
   const save = () => {
     setAlert({severity: "warning", text: "Saving the settings."})
-    var http = new XMLHttpRequest();
-    http.onload = function (e) {
-      if (http.readyState === 4) {
-        if (http.status === 200) {
-          //JSON.parse(http.responseText);
-          setAlert({severity: "success", text: "Saved correctly."})
-        } else {
-          setAlert({severity: "error", text: "Something went wrong."})
-        }
-      } else {
-        setAlert({severity: "error", text: "Something went wrong."})
+    fetch(root + "api/settings", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json;charset=UTF-8",
+        "authorization": "bearer " + getCookieValue("token")
+      },
+      body: JSON.stringify(settings)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-    };
-    http.open("PATCH", root + "api/settings");
-    http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
-    http.send(JSON.stringify(settings));
+      setAlert({severity: "success", text: "Saved correctly."});
+    })
+    .catch(error => {
+      console.error("Error updating settings:", error);
+      setAlert({severity: "error", text: "Something went wrong."});
+    });
   }
 
   const uploadServiceAccountKey = (e) => {
@@ -107,20 +109,24 @@ function Settings() {
       fileReader.onload=function(){
         setAlert({severity: "warning", text: "Uploading the file."})
         const backup = fileReader.result
-        var http = new XMLHttpRequest();
-        http.onload = function (e) {
-          if (http.readyState === 4) {
-            if (http.status === 200) {
-              setAlert({severity: "success", text: "Uploaded correctly."})
-            } else {
-              setAlert({severity: "error", text: "Something went wrong."})
-            }
+        fetch(root + "api/settings/serviceaccountkey", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json;charset=UTF-8",
+            "authorization": "bearer " + getCookieValue("token")
+          },
+          body: backup
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
           }
-        }
-        http.open("PUT", root + "api/settings/serviceaccountkey");
-        http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        http.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
-        http.send(backup);
+          setAlert({severity: "success", text: "Uploaded correctly."});
+        })
+        .catch(error => {
+          console.error("Error uploading service account key:", error);
+          setAlert({severity: "error", text: "Something went wrong."});
+        });
       }
       fileReader.readAsText(e.target.files[0]);
     }

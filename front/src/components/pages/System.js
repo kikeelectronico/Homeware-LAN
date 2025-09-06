@@ -22,25 +22,29 @@ function System(props) {
   }, [])
 
   const loadComponents = () => {
-    var comp = new XMLHttpRequest();
-    comp.onload = function (e) {
-      if (comp.readyState === 4) {
-        if (comp.status === 200) {
-          var response = JSON.parse(comp.responseText);
-          var _components = [];
-          var keys = Object.keys(response);
-          for (var i = 0; i < keys.length; i++) {
-            _components.push(response[keys[i]]);
-          }
-          setComponents(_components)
-        } else {
-          console.error(comp.statusText);
-        }
+   fetch(root + "api/system/status", {
+      method: "GET",
+      headers: {
+        "authorization": "bearer " + getCookieValue("token")
       }
-    }
-    comp.open("GET", root + "api/system/status");
-    comp.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
-    comp.send();
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(response => {
+      const _components = [];
+      const keys = Object.keys(response);
+      for (let i = 0; i < keys.length; i++) {
+        _components.push(response[keys[i]]);
+      }
+      setComponents(_components);
+    })
+    .catch(error => {
+      console.error("Error fetching system status:", error);
+    });
   }
 
   return (

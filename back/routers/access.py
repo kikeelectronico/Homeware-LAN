@@ -13,7 +13,6 @@ class Access(BaseModel):
 
 @router.get("/api/access", dependencies=[Depends(allowUser)])
 def get_access() -> list[Access]:
-    print(data_conector.getAPIKey())
     return [data_conector.getAPIKey()]
 
 @router.patch("/api/access/", dependencies=[Depends(allowUser)])
