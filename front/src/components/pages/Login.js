@@ -10,41 +10,67 @@ function Login() {
   const [message, setMessage] = useState("")
 
   const login = () => {
-    var http = new XMLHttpRequest();
-    http.onload = function (e) {
-      var response = JSON.parse(http.responseText);
-      if(response['valid']){
+    fetch(root + "api/user/login", {
+      method: "GET",
+      headers: {
+        "username": document.getElementById("username").value,
+        "password": document.getElementById("password").value
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(response => {
+      if (response['valid']) {
         // document.cookie = "user=" + response['user'] + "; path=/";
         document.cookie = "token=" + response['token'] + "; path=/";
         window.location = '/';
       } else {
-        setEnableMessage(true)
-        setMessage("Incorrect User or Password")
-        setTimeout(() => setEnableMessage(false), 5000)
+        setEnableMessage(true);
+        setMessage("Incorrect User or Password");
+        setTimeout(() => setEnableMessage(false), 5000);
       }
-    }
-    http.open("GET", root + "api/user/login");
-    http.setRequestHeader('username', document.getElementById('username').value)
-    http.setRequestHeader('password', document.getElementById('password').value)
-    http.send();
+    })
+    .catch(error => {
+      console.error("Error logging in:", error);
+      setEnableMessage(true);
+      setMessage("Unable to login. Please try again.");
+      setTimeout(() => setEnableMessage(false), 5000);
+    });
   }
 
   const grantAccess = () => {
-    var http = new XMLHttpRequest();
-    http.onload = function (e) {
-      var response = JSON.parse(http.responseText);
-      if(response['valid']) {
-        window.location = response['url']
-      } else {
-        setEnableMessage(true)
-        setMessage("Incorrect User or Password")
-        setTimeout(() => setEnableMessage(false), 5000)
+    fetch(root + "api/user/googleSync", {
+      method: "GET",
+      headers: {
+        "username": document.getElementById("username").value,
+        "password": document.getElementById("password").value
       }
-    }
-    http.open("GET", root + "api/user/googleSync");
-    http.setRequestHeader('username', document.getElementById('username').value)
-    http.setRequestHeader('password', document.getElementById('password').value)
-    http.send();
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(response => {
+      if (response['valid']) {
+        window.location = response['url'];
+      } else {
+        setEnableMessage(true);
+        setMessage("Incorrect User or Password");
+        setTimeout(() => setEnableMessage(false), 5000);
+      }
+    })
+    .catch(error => {
+      console.error("Error syncing Google account:", error);
+      setEnableMessage(true);
+      setMessage("Unable to sync. Please try again.");
+      setTimeout(() => setEnableMessage(false), 5000);
+    });
   }
 
   const submit = () => {
