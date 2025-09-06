@@ -14,24 +14,28 @@ const TemperatureSetting = (props) => {
   }
 
   const update = (temperature) => {
-    var http = new XMLHttpRequest();
-    http.onload = function (e) {
-      if (http.readyState === 4) {
-        if (http.status === 200) {
-          props.reload();
-        } else {
-          console.error(http.statusText);
-        }
-      }
-    }
-    http.open("PATCH", root + "api/devices/" + props.id + "/states");
-    http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
-    http.send(
-      JSON.stringify({
-        "thermostatTemperatureSetpoint": temperature,
+    fetch(root + "api/devices/" + props.id + "/states", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json;charset=UTF-8",
+        "authorization": "bearer " + getCookieValue("token")
+      },
+      body: JSON.stringify({
+        "thermostatTemperatureSetpoint": temperature
       })
-    );
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(text => {
+      props.reload();
+    })
+    .catch(error => {
+      console.error("Error updating thermostat setpoint:", error);
+    });
   }
 
   return (

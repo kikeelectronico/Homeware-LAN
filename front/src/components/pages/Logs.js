@@ -15,21 +15,25 @@ function Logs () {
   const [alert, setAlert] = useState(null)
 
   useEffect(() => {
-    var http = new XMLHttpRequest();
-    http.onload = function (e) {
-      if (http.readyState === 4) {
-        if (http.status === 200) {
-          var data = JSON.parse(http.responseText);
-          setData(data.reverse())
-        } else {
-          console.error(http.statusText);
-          setAlert({severity: "error", text: "Unable to load the data."})
-        }
+    fetch(root + "api/logs", {
+      method: "GET",
+      headers: {
+        "authorization": "bearer " + getCookieValue("token")
       }
-    }
-    http.open("GET", root + "api/logs");
-    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
-    http.send();
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      setData(data.reverse());
+    })
+    .catch(error => {
+      console.error("Error fetching logs:", error);
+      setAlert({severity: "error", text: "Unable to load the data."});
+    });
   }, [])
 
   const loadMore = () => {
@@ -38,19 +42,22 @@ function Logs () {
 
   const deleteLog = () => {
     setAlert({severity: "warning", text: "Deleting the old registers."})
-    var http = new XMLHttpRequest();
-    http.onload = function (e) {
-      if (http.readyState === 4) {
-        if (http.status === 200) {
-          setAlert({severity: "success", text: "Old logs deleted."})
-        } else {
-          setAlert({severity: "error", text: "Something went wrong"})
-        }
+    fetch(root + "api/logs", {
+      method: "DELETE",
+      headers: {
+        "authorization": "bearer " + getCookieValue("token")
       }
-    }
-    http.open("DELETE", root + "api/logs");
-    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
-    http.send();
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      setAlert({severity: "success", text: "Old logs deleted."});
+    })
+    .catch(error => {
+      console.error("Error deleting logs:", error);
+      setAlert({severity: "error", text: "Something went wrong"});
+    });
   }
 
   const downloadLog = () => {

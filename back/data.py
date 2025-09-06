@@ -23,7 +23,7 @@ HOMEWARE_PASSWORD = os.environ.get("HOMEWARE_PASSWORD", "admin")
 class Data:
 	"""Access to Homeware's databases and files."""
 
-	version = 'v2.1'
+	version = 'v2.2'
 
 	def __init__(self):		
 		self.verbose = False
@@ -476,10 +476,20 @@ class Data:
 	def validateOauthToken(self, type, token):
 		if not type in ["authorization_code", "access_token", "refresh_token"]:
 			return False
+
 		filter = {"_id": "google"}
 		oauth = self.mongo_db["oauth"].find_one(filter)
 		if not type in oauth:
 			return False
+		
+		tokens_life = {
+			"authorization_code": 600,
+			"access_token": 86400
+		}
+		if type in tokens_life:
+			if time.time() > (int(oauth[type]["timestamp"]/1000) + tokens_life[type]):
+				return False
+				
 		return token == oauth[type]["value"]
 
 	def validateOauthCredentials(self, type, value):
