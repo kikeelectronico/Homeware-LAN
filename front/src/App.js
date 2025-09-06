@@ -50,87 +50,104 @@ function App() {
 
   const checkoutVersion = () => {
     if (session) {
-      var vers = new XMLHttpRequest();
-      vers.onload = function (e) {
-        if (vers.readyState === 4) {
-          if (vers.status === 200) {
-            var version = JSON.parse(vers.responseText);
-            setVersion(version.version)
-          } else {
-            console.error(vers.statusText);
-          }
+     fetch(root + "api/system/version", {
+        method: "GET",
+        headers: {
+          'authorization': 'bearer ' + getCookieValue('token')
         }
-      }
-      vers.open("GET", root + "api/system/version");
-      vers.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
-      vers.send();
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(version => {
+        setVersion(version.version);
+      })
+      .catch(error => {
+        console.error("Error fetching system version:", error);
+      });
 
-      var git = new XMLHttpRequest();
-      git.onload = function (e) {
-        if (git.readyState === 4) {
-          if (git.status === 200) {
-            const latestRelease = JSON.parse(git.responseText);
-            setGit({
-                    version: latestRelease.tag_name,
-                    description: latestRelease.body,
-                    code: 200
-                  })
-          } else if (git.status === 403) {
-            setGit({
-              code: "",
-              description: "",
-              version: 403
-            })
-          } else {
-            console.error(git.statusText);
-          }
+      fetch('https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest', {
+        method: "GET"
+      })
+      .then(response => {
+        if (response.status === 403) {
+          setGit({
+            code: 403,
+            version: "",
+            description: ""
+          });
+          return;
         }
-      }
-      git.open("GET", 'https://api.github.com/repos/kikeelectronico/Homeware-LAN/releases/latest');
-      git.send();
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(latestRelease => {
+        if (latestRelease) {
+          setGit({
+            version: latestRelease.tag_name,
+            description: latestRelease.body,
+            code: 200
+          });
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching latest GitHub release:", error);
+      });
     }
   }
 
   const checkoutLog = () => {
     if (session) {
-      var vers = new XMLHttpRequest();
-      vers.onload = function (e) {
-        if (vers.readyState === 4) {
-          if (vers.status === 200) {
-            const alert = JSON.parse(vers.responseText)
-            setAlert(alert.alert)
-          } else {
-            console.error(vers.statusText);
-          }
+      fetch(root + "api/alerts", {
+        method: "GET",
+        headers: {
+          'Authorization': 'Bearer ' + getCookieValue('token'),
         }
-      }
-      vers.open("GET", root + "api/alerts");
-      vers.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
-      vers.send();
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setAlert(data.alert);
+      })
+      .catch(error => {
+        console.error("Unable to catch alerts:", error);
+      });
     }
   }
 
   const validateSession = () => {
     if (getCookieValue('token') !== "") {
-      var http = new XMLHttpRequest();
-      http.onload = function (e) {
-        if (http.readyState === 4) {
-          if (http.status === 200) {
-            var data = JSON.parse(http.responseText);
-            if (!data.valid && !window.location.pathname !== '/login') {
-              window.location.href = '/login/'
-            } else if (data.valid) {
-              setSession(true)
-            }
-          } else {
-            console.error(http.statusText);
-          }
+      fetch(root + "api/user/validateToken", {
+        method: "GET",
+        headers: {
+          'token': getCookieValue('token')
         }
-      }
-      http.open("GET", root + "api/user/validateToken");
-      http.setRequestHeader('token', getCookieValue('token'))
-      http.setRequestHeader('user', getCookieValue('user'))
-      http.send();
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (!data.valid && window.location.pathname !== '/login') {
+          logout();
+        } else if (data.valid) {
+          setSession(true);
+        }
+      })
+      .catch(error => {
+        console.error("Error al validar token:", error);
+      });
     } else {
       if (window.location.pathname !== '/login' && window.location.pathname !== '/login/google')
         window.location.href = '/login'
@@ -138,7 +155,6 @@ function App() {
   }
 
   const logout = () => {
-    document.cookie = "user=; path=/";
     document.cookie = "token=; path=/";
     setSession(false)
     window.location.href = '/login'
