@@ -6,6 +6,7 @@ import Brightness from './traits/Brightness';
 import Enable from './traits/Enable';
 import LockUnlock from './traits/LockUnlock';
 import OnOff from './traits/OnOff'
+import Occupancy from './traits/Occupancy'
 import Open from './traits/Open';
 import StartStop from './traits/StartStop';
 import TemperatureAmbient from './traits/TemperatureAmbient';
@@ -29,6 +30,7 @@ const Device = (props) => {
                     <ArmDisarm states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <Brightness states={props.states}/>
                     <LockUnlock states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
+                    <Occupancy device={props.device} states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <Open device={props.device} states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <StartStop device={props.device} states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <TemperatureAmbient device={props.device} states={props.states}/>

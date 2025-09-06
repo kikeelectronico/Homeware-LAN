@@ -41,39 +41,47 @@ function Editor() {
   useEffect(() => {
     if (!create) {
       if (id) {
-        var http = new XMLHttpRequest();
-        http.onload = function (e) {
-          if (http.readyState === 4) {
-            if (http.status === 200) {
-              var data = JSON.parse(http.responseText);
-              console.log(data)
-              setType(data.description.type)
-              setNicknames(data.description.name.nicknames)
-              setTraits(data.description.traits)
-              let _traits_to_show = []
-              const all_traits = Object.keys(deviceReference.traits)
-              for (let i = 0; i < all_traits.length; i++)
-                if (data.description.traits.includes(all_traits[i]) || deviceReference.devices[data.description.type].traits.includes(all_traits[i]))
-                  _traits_to_show.push(all_traits[i])
-              setTraitsToShow(_traits_to_show)
-              setDeviceInfo(data.description.deviceInfo)
-              setHideFromGoogle(data.description.hide_from_google)
-              setRoom(data.description.room)
-              attributes.current = data.description.attributes
-              states.current = data.states
-              setLoading(false)
-            } else {
-              console.error(http.statusText);
-              setAlert({severity: "error", text: "Unable to load the data."})
+        fetch(root + "api/devices/" + id, {
+          method: "GET",
+          headers: {
+            "authorization": "bearer " + getCookieValue("token")
+          }
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log(data);
+          setType(data.description.type);
+          setNicknames(data.description.name.nicknames);
+          setTraits(data.description.traits);
+
+          let _traits_to_show = [];
+          const all_traits = Object.keys(deviceReference.traits);
+          for (let i = 0; i < all_traits.length; i++) {
+            if (
+              data.description.traits.includes(all_traits[i]) ||
+              deviceReference.devices[data.description.type].traits.includes(all_traits[i])
+            ) {
+              _traits_to_show.push(all_traits[i]);
             }
           }
-        }
-        http.open("GET", root + "api/devices/" + id);
-        http.setRequestHeader(
-          "authorization",
-          "bearer " + getCookieValue("token")
-        );
-        http.send();
+          setTraitsToShow(_traits_to_show);
+
+          setDeviceInfo(data.description.deviceInfo);
+          setHideFromGoogle(data.description.hide_from_google);
+          setRoom(data.description.room);
+          attributes.current = data.description.attributes;
+          states.current = data.states;
+          setLoading(false);
+        })
+        .catch(error => {
+          console.error("Error fetching device details:", error);
+          setAlert({severity: "error", text: "Unable to load the data."});
+        });
       }
     }
   }, [id, create])
@@ -139,21 +147,7 @@ function Editor() {
   const saveDevice = () => {
     if(true) {
       setAlert({severity: "warning", text: "Saving the device."})
-      var http = new XMLHttpRequest();
-      http.onload = function (e) {
-        if (http.readyState === 4) {
-          if (http.status === 200) {
-            setAlert({severity: "success", text: "Device saved."})
-            if (create) {
-              window.location.href = "/devices";
-            }
-          } else {
-            console.error(http.statusText);
-            setAlert({severity: "error", text: "Something went wrong."})
-          }
-        }
-      }
-      var payload = {
+      const payload = {
         description: {
           id: id,
           type: type,
@@ -168,16 +162,30 @@ function Editor() {
           hide_from_google: hide_from_google,
           room: room
         },
-        states: states.current,
+        states: states.current
       };
-      if (create) {
-        http.open("POST", root + "api/devices");
-      } else {
-        http.open("PUT", root + "api/devices/" + id);
-      }
-      http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-      http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
-      http.send(JSON.stringify(payload));
+
+      fetch(create ? root + "api/devices" : root + "api/devices/" + id, {
+        method: create ? "POST" : "PUT",
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8",
+          "authorization": "bearer " + getCookieValue("token")
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        setAlert({severity: "success", text: "Device saved."});
+        if (create) {
+          window.location.href = "/devices";
+        }
+      })
+      .catch(error => {
+        console.error("Error saving device:", error);
+        setAlert({severity: "error", text: "Something went wrong."});
+      });
     } else {
       setAlert({severity: "error", text: "Verify the mandatory data."})
     }
@@ -186,27 +194,23 @@ function Editor() {
   const deleteDevice = () => {
     setAlert({severity: "warning", text: "Deleting the device."})
     if (window.confirm("Do you want to delete the device?")) {
-      var http = new XMLHttpRequest();
-      http.onload = function (e) {
-        if (http.readyState === 4) {
-          if (http.status === 200) {
-            // setAlert({severity: "success", text: "Device deleted."})
-            window.location.href = "/devices/";
-          } else {
-            console.error(http.statusText);
-            setAlert({severity: "error", text: "Something went wrong."})
-          }
-        } else {
-          setAlert({severity: "error", text: "Something went wrong."})
+      fetch(root + "api/devices/" + id, {
+        method: "DELETE",
+        headers: {
+          "authorization": "bearer " + getCookieValue("token")
         }
-      };
-      http.open("DELETE", root + "api/devices/" + id
-      );
-      http.setRequestHeader(
-        "authorization",
-        "bearer " + getCookieValue("token")
-      );
-      http.send();
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        // setAlert({severity: "success", text: "Device deleted."})
+        window.location.href = "/devices/";
+      })
+      .catch(error => {
+        console.error("Error deleting device:", error);
+        setAlert({severity: "error", text: "Something went wrong."});
+      });
     } else {
       setAlert({severity: "seccess", text: "Saved."})
     }
