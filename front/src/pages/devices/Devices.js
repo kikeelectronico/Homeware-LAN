@@ -30,23 +30,27 @@ function Devices() {
   }, [])
 
   const loadData = () => {
-    var http = new XMLHttpRequest();
-    http.onload = function (e) {
-      if (http.readyState === 4) {
-        if (http.status === 200) {
-          var _data = JSON.parse(http.responseText)
-          setData(_data)
-          setLoadingData(false)
-          setOrderBy("az")
-        } else {
-          console.error(http.statusText);
-          setAlert({severity: "error", text: "Unable to load the data."})
-        }
+    fetch(root + "api/devices", {
+      method: "GET",
+      headers: {
+        "authorization": "bearer " + getCookieValue("token")
       }
-    }
-    http.open("GET", root + "api/devices");
-    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
-    http.send();
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(_data => {
+      setData(_data);
+      setLoadingData(false);
+      setOrderBy("az");
+    })
+    .catch(error => {
+      console.error("Error fetching devices:", error);
+      setAlert({severity: "error", text: "Unable to load the data."});
+    });
   }
 
   useEffect(() => {

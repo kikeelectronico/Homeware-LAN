@@ -14,42 +14,46 @@ function Access () {
   const [alert, setAlert] = useState(null)
 
   useEffect(() => {
-    var http = new XMLHttpRequest();
-    http.onload = function (e) {
-      if (http.readyState === 4) {
-        if (http.status === 200) {
-          var data = JSON.parse(http.responseText);
-          setData(data[0])
-        } else {
-          console.error(http.statusText);
-          setAlert({severity: "error", text: "Unable to load the data."})
-        }
+    fetch(root + "api/access", {
+      method: "GET",
+      headers: {
+        "authorization": "bearer " + getCookieValue("token")
       }
-    }
-    http.open("GET", root + "api/access");
-    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
-    http.send();
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      setData(data[0]);
+    })
+    .catch(error => {
+      console.error("Error fetching access data:", error);
+      setAlert({severity: "error", text: "Unable to load the data."});
+    });
   }, [])
 
   const createAPIKey = () => {
     setAlert({severity: "warning", text: "Generating API key."})
-    var http = new XMLHttpRequest();
-    http.onload = function (e) {
-      if (http.readyState === 4) {
-        if (http.status === 200) {
-          window.location.href = "/access";
-          setAlert({severity: "success", text: "API key generated."})
-        } else {
-          console.error(http.statusText);
-          setAlert({severity: "error", text: "Something went wrong."})
-        }
-      } else {
-        setAlert({severity: "error", text: "Something went wrong."})
+    fetch(root + "api/access/", {
+      method: "PATCH",
+      headers: {
+        "authorization": "bearer " + getCookieValue("token")
       }
-    };
-    http.open("PATCH", root + "api/access/");
-    http.setRequestHeader("authorization", "bearer " + getCookieValue("token"));
-    http.send();
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      window.location.href = "/access";
+      setAlert({severity: "success", text: "API key generated."});
+    })
+    .catch(error => {
+      console.error("Error generating API key:", error);
+      setAlert({severity: "error", text: "Something went wrong."});
+    });
   }
 
   const changePassword = () => {    
@@ -57,30 +61,27 @@ function Access () {
       setAlert({severity: "warning", text: "The passwords are not equal."})
     } else {
       setAlert({severity: "warning", text: "Changing password."})
-      var http = new XMLHttpRequest();
-      http.onload = function (e) {
-        if (http.readyState === 4) {
-          if (http.status === 200) {
-            setAlert({severity: "success", text: "Password changed."})
-          } else {
-            setAlert({severity: "error", text: "The changes haven't been saved."})
-          }
-        } else {
-          setAlert({severity: "error", text: "The changes haven't been saved."})
-        }
-      };
-      http.open("POST", root + "api/user/password");
-      http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-      http.setRequestHeader(
-        "authorization",
-        "bearer " + getCookieValue("token")
-      );
-      http.send(
-        JSON.stringify({
+      fetch(root + "api/user/password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8",
+          "authorization": "bearer " + getCookieValue("token")
+        },
+        body: JSON.stringify({
           password: current_pass,
-          new_password: new_pass_1,
+          new_password: new_pass_1
         })
-      );
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        setAlert({severity: "success", text: "Password changed."});
+      })
+      .catch(error => {
+        console.error("Error changing password:", error);
+        setAlert({severity: "error", text: "The changes haven't been saved."});
+      });
     }
   };
 

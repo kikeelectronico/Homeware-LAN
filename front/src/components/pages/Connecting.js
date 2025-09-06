@@ -20,28 +20,32 @@ function Connecting() {
 
   useEffect(() => {
     if (id) {
-      var dev = new XMLHttpRequest();
-      dev.onload = function (e) {
-        if (dev.readyState === 4) {
-          if (dev.status === 200) {
-            const data = JSON.parse(dev.responseText);
-            var _params = []
-            var _commands = []
-            data.description.traits.forEach((trait) => {
-              _params = _params.concat(deviceReference.traits[trait].params);
-              _commands = _commands.concat(deviceReference.traits[trait].commands);
-            });
-            setParams(_params)
-            setCommands(_commands)
-          } else {
-            console.error(dev.statusText)
-            setAlert({severity: "error", text: "Unable to load the data."})
-          }
+      fetch(root + "api/devices/" + id, {
+        method: "GET",
+        headers: {
+          "authorization": "bearer " + getCookieValue("token")
         }
-      }
-      dev.open("GET", root + "api/devices/" + id);
-      dev.setRequestHeader('authorization', 'bearer ' + getCookieValue('token'))
-      dev.send();
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        let _params = [];
+        let _commands = [];
+        data.description.traits.forEach(trait => {
+          _params = _params.concat(deviceReference.traits[trait].params);
+          _commands = _commands.concat(deviceReference.traits[trait].commands);
+        });
+        setParams(_params);
+        setCommands(_commands);
+      })
+      .catch(error => {
+        console.error("Error fetching device data:", error);
+        setAlert({severity: "error", text: "Unable to load the data."});
+      });
     }
   }, [id])
 
