@@ -8,10 +8,6 @@ Homeware containts a backend that does the integration and a web forntend that a
 
 https://homeware.enriquegomez.me/docs/install
 
-# Stay up to date
-
-Spanish Telegram channel: [https://t.me/homeware_up_to_date](https://t.me/homeware_up_to_date)
-
 # Contribute
 
 Read [CONTRIBUTING.md](https://homeware.enriquegomez.me/docs/contributing/) and [CODE_OF_CONDUCT.md](https://homeware.enriquegomez.me/docs/code-of-conduct/).
