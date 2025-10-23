@@ -3,7 +3,7 @@ uvicorn==0.35.0
 fastapi==0.116.1
 python-dateutil==2.9.0.post0
 requests==2.32.5
-redis==6.4.0
+redis==7.0.0
 google-auth==2.40.3
 bcrypt==4.3.0
 pymongo==4.14.1
