@@ -16,7 +16,7 @@ const MenuElement = (props) => (
             { props.title }
           </span>
           :
-          <Link to={props.href} className="menu_element_text">
+          <Link to={props.href} className="menu_element_text" onClick={props.hideMenu}>
             <span > { props.title }</span>
           </Link>
         }

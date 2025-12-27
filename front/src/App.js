@@ -164,7 +164,12 @@ function App() {
     document.getElementById('menuIcon').classList.toggle("change_menu_icon");
     document.getElementById('menu').classList.toggle("menu_show_up");
   }
- 
+
+  const hideMenu = () => {
+    if (document.getElementById('menu').classList.contains('menu_show_up')) {
+      document.getElementById('menu').classList.toggle("menu_show_up");
+    }
+  } 
 
   if (!session && !window.location.href.includes('login'))
     return ''
@@ -200,12 +205,12 @@ function App() {
           <div className="main-app">
             <div className="menu" id="menu">
               <div>
-                <MenuElement image="/menu/devices_icon.png" title="Devices" href="/devices"/>
-                <MenuElement image="/menu/settings_icon.png" title="Settings" href="/settings"/>
-                <MenuElement image="/menu/status_icon.png" title="System" href="/system"/>
-                <MenuElement image="/menu/backup_icon.png" title="Backup" href="/backup"/>
-                <MenuElement image="/menu/access_icon.png" title="Access" href="/access"/>
-                <MenuElement image="/menu/logs_icon.png" title="Logs" href="/logs"/>
+                <MenuElement image="/menu/devices_icon.png" title="Devices" href="/devices" hideMenu={hideMenu}/>
+                <MenuElement image="/menu/settings_icon.png" title="Settings" href="/settings" hideMenu={hideMenu}/>
+                <MenuElement image="/menu/status_icon.png" title="System" href="/system" hideMenu={hideMenu}/>
+                <MenuElement image="/menu/backup_icon.png" title="Backup" href="/backup" hideMenu={hideMenu}/>
+                <MenuElement image="/menu/access_icon.png" title="Access" href="/access" hideMenu={hideMenu}/>
+                <MenuElement image="/menu/logs_icon.png" title="Logs" href="/logs" hideMenu={hideMenu}/>
                 <hr/>
                 <MenuElement image="/menu/repo_icon.png" title="Repo" exec={ ()=>{window.location.href = "https://github.com/kikeelectronico/Homeware-LAN"} }/>
                 <MenuElement image="/menu/help_icon.png" title="How to" exec={ ()=>{window.location.href = "https://homeware.enriquegomez.me/"} }/>
