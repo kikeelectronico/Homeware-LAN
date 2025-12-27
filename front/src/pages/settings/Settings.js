@@ -224,13 +224,15 @@ function Settings() {
           </span>
         </div>
         <hr />
-        <div className="two_table_row">
-          <div className="two_table_cel">Enable</div>
-          <div className="two_table_cel">
-            <Switch
-              onChange={enableSyncGoogle}
-              checked={settings.sync_google}
-            />
+        <div className="page_block_content_container">
+          <div className="two_table_row">
+            <div className="two_table_cel">Enable</div>
+            <div className="two_table_cel">
+              <Switch
+                onChange={enableSyncGoogle}
+                checked={settings.sync_google}
+              />
+            </div>
           </div>
         </div>
         <div className="page_block_content_container">
@@ -361,7 +363,7 @@ function Settings() {
           {
             settings.ddns.provider === "noip"
             ?
-            <div>
+            <>
               <div className="two_table_row">
                 <div className="two_table_cel">Username</div>
                 <div className="two_table_cel">
@@ -386,14 +388,14 @@ function Settings() {
                   />
                 </div>
               </div>
-            </div>
+            </>
             :
-            <div></div>
+            <></>
           }
           {
             settings.ddns.provider === "duckdns"
             ?
-            <div>
+            <>
               <div className="two_table_row">
                 <div className="two_table_cel">Token</div>
                 <div className="two_table_cel">
@@ -406,9 +408,9 @@ function Settings() {
                   />
                 </div>
               </div>
-            </div>
+            </>
             :
-            <div></div>
+            <></>
           }
           
 
