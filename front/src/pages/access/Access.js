@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 
-import Toast from "../web/Toast";
+import Toast from "../../components/web/Toast";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
 import {Button} from '@mui/material';

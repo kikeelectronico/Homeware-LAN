@@ -14,7 +14,7 @@ import Connecting from './components/pages/Connecting'
 import Settings from './components/pages/Settings'
 import System from './components/pages/System'
 import Backup from './components/pages/Backup'
-import Access from './components/pages/Access'
+import Access from './pages/access/Access'
 import Logs from './components/pages/Logs'
 import Login from './components/pages/Login'
 
