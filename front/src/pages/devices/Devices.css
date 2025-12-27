@@ -90,6 +90,9 @@
 
 .device_card_status {
   white-space: nowrap;
+}
+
+.device_card_status:last-child {
   overflow: hidden;     
   text-overflow: ellipsis;
 }
