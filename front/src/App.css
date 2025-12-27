@@ -291,7 +291,7 @@
   }
 
   .main-app {
-    height: 100%;
+    height: calc(100vh - 79px);
   }
 
   .upper-menu {
