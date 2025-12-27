@@ -167,6 +167,7 @@ function App() {
 
   const hideMenu = () => {
     if (document.getElementById('menu').classList.contains('menu_show_up')) {
+      document.getElementById('menuIcon').classList.toggle("change_menu_icon");
       document.getElementById('menu').classList.toggle("menu_show_up");
     }
   } 
