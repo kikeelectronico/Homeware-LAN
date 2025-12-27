@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Battery = (props) => {
+const CapacityRemaining = (props) => {
 
   const units = {
     "SECONDS": "s",
@@ -31,4 +31,4 @@ const Battery = (props) => {
   
 }
 
-export default Battery
+export default CapacityRemaining
