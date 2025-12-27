@@ -139,12 +139,13 @@
 .two_table_cel {
   display: flex;
   flex: 1; 
+  padding-right: 10px;
 }
 
 .two_table_cel:first-child {
   min-width: 160px;
   flex-shrink: 0;
-  flex: 0; 
+  flex: 0 1 auto;
 }
 
 .three_table_row {
@@ -156,12 +157,13 @@
 
 .three_table_cel {
   display: flex;
+  padding-right: 10px;
 }
 
 .three_table_cel:first-child {
   min-width: 180px;
   flex-shrink: 0;
-  flex: 0; 
+  flex: 0 1 auto;
 }
 
 .attribute_table {
