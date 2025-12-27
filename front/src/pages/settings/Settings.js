@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Button, TextField} from '@mui/material';
+import {Button, TextField, Select, MenuItem} from '@mui/material';
 import Switch from "react-switch";
 
 import Toast from "../../components/web/Toast";
@@ -52,7 +52,7 @@ function Settings() {
   }, [])
 
   const update = (event) => {
-    const id = event.target.id.split("/");
+    const id = (event.target.id || event.target.name || "").split("/");
     const value = (event.target.id === "log/days" ? (parseInt(event.target.value) < 0 ? 0 : parseInt(event.target.value)) : event.target.value)
     var _settings = {...settings};
     if (id.length === 1) {
@@ -159,7 +159,7 @@ function Settings() {
             <div className="two_table_cel">Client Secret</div>
             <div className="two_table_cel">
               <TextField
-                id="client_id"
+                id="client_secret"
                 variant="outlined"
                 className="two_input"
                 defaultValue={settings.client_secret}
@@ -171,7 +171,7 @@ function Settings() {
             <div className="two_table_cel">Authorization URL</div>
             <div className="two_table_cel">
               <TextField
-                id="client_id"
+                id="auth_url"
                 variant="outlined"
                 className="two_input"
                 value={"https://" + settings.ddns.hostname + "/auth/"}
@@ -183,7 +183,7 @@ function Settings() {
             <div className="two_table_cel">Token URL</div>
             <div className="two_table_cel">
               <TextField
-                id="client_id"
+                id="token_url"
                 variant="outlined"
                 className="two_input"
                 value={"https://" + settings.ddns.hostname + "/token/"}
@@ -195,7 +195,7 @@ function Settings() {
             <div className="two_table_cel">Fulfillment URL</div>
             <div className="two_table_cel">
               <TextField
-                id="client_id"
+                id="fullfilment_url"
                 variant="outlined"
                 className="two_input"
                 value={"https://" + settings.ddns.hostname + "/smarthome/"}
@@ -348,16 +348,14 @@ function Settings() {
           <div className="two_table_row">
             <div className="two_table_cel">Provider</div>
             <div className="two_table_cel">
-              <select
-                name="type"
-                className="settings_select"
-                id="ddns/provider"
-                value={settings.ddns.provider}
+              <Select
+                name="ddns/provider"
+                value={settings.ddns.provider || ""}
                 onChange={update}
               >
-                <option value="noip">Noip</option>
-                <option value="duckdns">Duck DNS</option>
-              </select>
+                <MenuItem value="noip">Noip</MenuItem>
+                <MenuItem value="duckdns">Duck DNS</MenuItem>
+              </Select>
             </div>
           </div>
           {
