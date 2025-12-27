@@ -127,9 +127,13 @@ function Devices() {
           Object.keys(processed_devices).map((room) => {
             return (
             <div className="devices_room_container">
-              <div className="devices_romm_title">
-                <h2>{room}</h2>
-              </div>
+              {
+                room !== "" ?
+                  <div className="devices_romm_title">
+                    <h2>{room}</h2>
+                  </div>
+                : <></>
+              }
               <div class="devices_cards_outer_container">
                 <div className="devices_cards_container">
                   {
