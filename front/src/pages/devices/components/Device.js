@@ -29,8 +29,8 @@ const Device = (props) => {
                 <h2 className="device_card_title">{ props.device.name.name }</h2>
                 <div className="device_card_status_container">
                     <ArmDisarm states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
-                    <CapacityRemaining states={props.states}/>
                     <Brightness states={props.states}/>
+                    <CapacityRemaining states={props.states}/>
                     <LockUnlock states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <Occupancy device={props.device} states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <Open device={props.device} states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
