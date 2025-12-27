@@ -21,7 +21,7 @@ const Device = (props) => {
     const [contextual_menu, setContextualMenu] = useState(false)
 
     return (
-        <div>
+        <>
             <div className="device_card">
                 <div className="device_card_color_strip" style={{backgroundColor: strip_color, opacity: strip_on ? "1" : "0.4"}}></div>
 
@@ -64,7 +64,7 @@ const Device = (props) => {
                     : <></>
                 }
             </div>
-        </div>
+        </>
     );
   
 }

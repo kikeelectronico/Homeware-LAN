@@ -87,7 +87,7 @@ function Access () {
 
  
   return (
-    <div>
+    <>
       <div className="page_block_container">
         <h2>API key</h2>
         <div className="advise">
@@ -169,7 +169,7 @@ function Access () {
         </div>
       </div>
       <Toast alert={alert}/>
-    </div>
+    </>
   );
   
 }

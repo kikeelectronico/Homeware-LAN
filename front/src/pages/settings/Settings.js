@@ -133,7 +133,7 @@ function Settings() {
   }
 
   return (
-    <div>
+    <>
       <div className="page_block_container">
         <h2>Actions on Google</h2>
         <div className="advise">
@@ -458,7 +458,7 @@ function Settings() {
       </div>
 
       <Toast alert={alert}/>
-    </div>
+    </>
   );
   
 }

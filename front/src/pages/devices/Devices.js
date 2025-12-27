@@ -104,7 +104,7 @@ function Devices() {
   }
 
   return (
-    <div>
+    <>
       <div className="page_search_containter">
         <input
           type="text"
@@ -152,7 +152,7 @@ function Devices() {
       </div>
 
       <Toast alert={alert}/>
-    </div>
+    </>
   );
   
 }
