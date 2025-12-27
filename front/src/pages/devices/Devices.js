@@ -114,12 +114,12 @@ function Devices() {
           value={search_phrase}
           onChange={(event) => setSearchPhrase(event.target.value.toLowerCase())}
         />
-        <div
-          className="page_search_x"
+        <button
+          className="page_search_clear"
           onClick={() => setSearchPhrase("")}
         >
-          <span>X</span>
-        </div>
+          X
+        </button>
       </div>
 
       <div className="page_cards_container">
