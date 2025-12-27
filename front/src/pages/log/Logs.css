@@ -1,0 +1,19 @@
+.logs_container {
+  width: 100%;
+  display: "flex";
+  flex-direction: column;
+}
+
+.logs_line {
+  padding: 10px 20px 10px 20px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.logs_yellow {
+  color: orange;
+}
+
+.logs_red {
+  color: red;
+}

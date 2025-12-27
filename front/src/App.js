@@ -15,7 +15,7 @@ import Settings from './pages/settings/Settings'
 import System from './components/pages/System'
 import Backup from './components/pages/Backup'
 import Access from './pages/access/Access'
-import Logs from './pages/logs/Logs'
+import Logs from './pages/log/Logs'
 import Login from './components/pages/Login'
 
 const GIT_CHECKOUT_INTERVAL = 600;
