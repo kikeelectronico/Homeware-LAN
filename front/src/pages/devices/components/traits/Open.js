@@ -16,7 +16,7 @@ const Open = (props) => {
           props.device.attributes.discreteOnlyOpenClose ?
             props.states.openPercent === 0 ? "Close" : "Open"
           :
-            <>{props.states.openPercent} %</>
+            <>{props.states.openPercent}%</>
         }
       </div>
     : <></>

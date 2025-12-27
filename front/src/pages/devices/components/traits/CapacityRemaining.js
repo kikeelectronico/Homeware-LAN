@@ -23,7 +23,7 @@ const CapacityRemaining = (props) => {
     Object.keys(props.states).includes("capacityRemaining") ?
       <div className="device_card_status">
           <span style={{color: isCritical() ? "red" : ""}}>
-            {props.states.capacityRemaining[0].rawValue} {units[props.states.capacityRemaining[0].unit]}
+            {props.states.capacityRemaining[0].rawValue}{units[props.states.capacityRemaining[0].unit]}
           </span>
       </div>
   : <></>
