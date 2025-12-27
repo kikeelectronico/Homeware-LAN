@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import {Button} from '@mui/material';
 import Switch from "react-switch";
 
-import Toast from "../web/Toast";
+import Toast from "../../components/web/Toast";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
 

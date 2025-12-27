@@ -11,7 +11,7 @@ import Devices from "./pages/devices/Devices";
 import Editor from './components/pages/Editor'
 import Info from './components/pages/Info'
 import Connecting from './components/pages/Connecting'
-import Settings from './components/pages/Settings'
+import Settings from './pages/settings/Settings'
 import System from './components/pages/System'
 import Backup from './components/pages/Backup'
 import Access from './pages/access/Access'
