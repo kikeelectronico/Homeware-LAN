@@ -350,6 +350,7 @@ function Settings() {
             <div className="two_table_cel">
               <Select
                 name="ddns/provider"
+                className="two_input"
                 value={settings.ddns.provider || ""}
                 onChange={update}
               >
