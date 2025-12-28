@@ -24,7 +24,7 @@ const LockUnlock = forwardRef((props, ref) => {
   return (
     <>
       <div className="no_attributes_message">
-        <span>This trait don't need to be configured.</span>
+        <span>This trait does not need to be configured.</span>
       </div>
     </>
   )
