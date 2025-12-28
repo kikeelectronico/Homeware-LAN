@@ -153,11 +153,11 @@ const FanSpeed = forwardRef((props, ref) => {
       {
         supportsFanSpeedPercent ? <></> :
 
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
+        <div className="attribute_table">
+          <div className="attribute_table_title">
             <i>availableFanSpeeds</i>
           </div>
-          <div className="three_table_cel">
+          <div className="attribute_table_form">
             {
               availableFanSpeeds.speeds.map((speed, index) => {
                 return (

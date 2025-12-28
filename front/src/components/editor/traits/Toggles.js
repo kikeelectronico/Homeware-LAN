@@ -131,11 +131,11 @@ const Toggles = forwardRef((props, ref) => {
         </div>
       </div>
 
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="attribute_table">
+        <div className="attribute_table_title">
           <i>availableToggles</i>
         </div>
-        <div className="three_table_cel">
+        <div className="attribute_table_form">
           {
             availableToggles.map((toggle, index) => {
               return (
