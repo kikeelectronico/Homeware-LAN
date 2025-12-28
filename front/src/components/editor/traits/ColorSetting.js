@@ -68,12 +68,12 @@ const ColorSetting = forwardRef((props, ref) => {
   }
 
   return (
-    <>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+    <div className="attributes_table">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>commandOnlyColorSetting</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setCommandOnlyColorSetting(checked)
@@ -83,11 +83,11 @@ const ColorSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>Color type</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <select 
             name="type"
             onChange={event => updateType(event.target.value)}
@@ -103,11 +103,11 @@ const ColorSetting = forwardRef((props, ref) => {
       {
         colorTemperatureRange ?
           <>
-             <div className="two_table_row">
-              <div className="two_table_cel align_right">
+             <div className="attributes_row">
+              <div className="attributes_col_1 align_right">
                 Minimum temperature
               </div>
-              <div className="two_table_cel">
+              <div className="attributes_col_2">
                 <input
                   type="number"
                   onChange={event => {
@@ -118,11 +118,11 @@ const ColorSetting = forwardRef((props, ref) => {
                 />
               </div>
             </div>
-            <div className="two_table_row">
-              <div className="two_table_cel align_right">
+            <div className="attributes_row">
+              <div className="attributes_col_1 align_right">
                 Maximum temperature
               </div>
-              <div className="two_table_cel">
+              <div className="attributes_col_2">
                 <input
                   type="number"
                   onChange={event => {
@@ -136,7 +136,7 @@ const ColorSetting = forwardRef((props, ref) => {
           </>
         : <></>
       }      
-    </>
+    </div>
   );
   
 })

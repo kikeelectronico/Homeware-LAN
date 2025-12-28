@@ -70,12 +70,12 @@ const TemperatureSetting = forwardRef((props, ref) => {
   }
 
   return (
-    <>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+    <div className="attributes_table">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>commandOnlyTemperatureSetting</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setCommandOnlyTemperatureSetting(checked)
@@ -85,11 +85,11 @@ const TemperatureSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>queryOnlyTemperatureSetting</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setQueryOnlyTemperatureSetting(checked)
@@ -99,14 +99,14 @@ const TemperatureSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           Thermostat modes
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <i>off</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_3">
           <Switch
             onChange={(checked) => {
               switchMode("off", checked)
@@ -115,12 +115,12 @@ const TemperatureSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right"></div>
-        <div className="two_table_cel">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right"></div>
+        <div className="attributes_col_2">
           <i>heat</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_3">
           <Switch
             onChange={(checked) => {
               switchMode("heat", checked)
@@ -129,12 +129,12 @@ const TemperatureSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right"></div>
-        <div className="two_table_cel">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right"></div>
+        <div className="attributes_col_2">
           <i>cool</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_3">
           <Switch
             onChange={(checked) => {
               switchMode("cool", checked)
@@ -143,12 +143,12 @@ const TemperatureSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right"></div>
-        <div className="two_table_cel">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right"></div>
+        <div className="attributes_col_2">
           <i>on</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_3">
           <Switch
             onChange={(checked) => {
               switchMode("on", checked)
@@ -157,12 +157,12 @@ const TemperatureSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right"></div>
-        <div className="two_table_cel">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right"></div>
+        <div className="attributes_col_2">
           <i>heatcool</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_3">
           <Switch
             onChange={(checked) => {
               switchMode("heatcool", checked)
@@ -171,12 +171,12 @@ const TemperatureSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right"></div>
-        <div className="two_table_cel">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right"></div>
+        <div className="attributes_col_2">
           <i>auto</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_3">
           <Switch
             onChange={(checked) => {
               switchMode("auto", checked)
@@ -185,12 +185,12 @@ const TemperatureSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right"></div>
-        <div className="two_table_cel">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right"></div>
+        <div className="attributes_col_2">
           <i>fan-only</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_3">
           <Switch
             onChange={(checked) => {
               switchMode("fan-only", checked)
@@ -199,12 +199,12 @@ const TemperatureSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right"></div>
-        <div className="two_table_cel">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right"></div>
+        <div className="attributes_col_2">
           <i>purifier</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_3">
           <Switch
             onChange={(checked) => {
               switchMode("purifier", checked)
@@ -213,12 +213,12 @@ const TemperatureSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right"></div>
-        <div className="two_table_cel">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right"></div>
+        <div className="attributes_col_2">
           <i>eco</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_3">
           <Switch
             onChange={(checked) => {
               switchMode("eco", checked)
@@ -227,12 +227,12 @@ const TemperatureSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right"></div>
-        <div className="two_table_cel">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right"></div>
+        <div className="attributes_col_2">
           <i>dry</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_3">
           <Switch
             onChange={(checked) => {
               switchMode("dry", checked)
@@ -241,11 +241,11 @@ const TemperatureSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>thermostatTemperatureUnit</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <select 
             name="type"
             onChange={(event) => {
@@ -260,11 +260,11 @@ const TemperatureSetting = forwardRef((props, ref) => {
           </select>
         </div>
       </div>      
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           Minimum temperature
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <input
             type="number"
             onChange={event => {
@@ -276,11 +276,11 @@ const TemperatureSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           Maximum temperature
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <input
             type="number"
             onChange={event => {
@@ -292,11 +292,11 @@ const TemperatureSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           Range
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <input
             type="number"
             onChange={event => {
@@ -308,7 +308,7 @@ const TemperatureSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
   
 })

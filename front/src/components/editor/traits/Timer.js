@@ -34,12 +34,12 @@ const Timer = forwardRef((props, ref) => {
   }))
 
   return (
-    <>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+    <div className="attributes_table">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>commandOnlyTimer</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setCommandOnlyTimer(checked)
@@ -49,11 +49,11 @@ const Timer = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>maxTimerLimitSec</i>
         </div>
-        <div className="two_table_cel">
+        <div className="two_tableattributes_col_2_cel">
           <input
             type="number"
             onChange={event => {
@@ -65,7 +65,7 @@ const Timer = forwardRef((props, ref) => {
           />
         </div>
       </div>
-    </>
+    </div>
   )
 })
 

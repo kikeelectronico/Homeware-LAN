@@ -177,23 +177,11 @@
   flex: 0 1 auto;
 }
 
-.attribute_table {
-  width: 80%;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-}
-
-.attribute_table_title {
-  flex: 1;
-  text-align: left;
-}
 
 .attribute_table_form {
+  padding-top: 5px;
   flex: 2;
   text-align: left;
-
 }
 
 .attribute_table_form_add_button {

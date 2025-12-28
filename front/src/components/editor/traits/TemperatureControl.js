@@ -53,12 +53,12 @@ const TemperatureControl = forwardRef((props, ref) => {
   }
 
   return (
-    <>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+    <div className="attributes_table">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>commandOnlyTemperatureControl</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setCommandOnlyTemperatureControl(checked)
@@ -68,11 +68,11 @@ const TemperatureControl = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>queryOnlyTemperatureControl</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setQueryOnlyTemperatureControl(checked)
@@ -82,11 +82,11 @@ const TemperatureControl = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>temperatureUnitForUX</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <select 
             name="type"
             onChange={(event) => {
@@ -101,11 +101,11 @@ const TemperatureControl = forwardRef((props, ref) => {
           </select>
         </div>
       </div>      
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           Minimum temperature
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <input
             type="number"
             onChange={event => {
@@ -117,11 +117,11 @@ const TemperatureControl = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           Maximum temperature
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <input
             type="number"
             onChange={event => {
@@ -133,11 +133,11 @@ const TemperatureControl = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>temperatureStepCelsius</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <input
             type="number"
             onChange={event => {
@@ -149,7 +149,7 @@ const TemperatureControl = forwardRef((props, ref) => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
   
 })

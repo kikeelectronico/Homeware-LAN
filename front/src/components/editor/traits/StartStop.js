@@ -45,12 +45,12 @@ const StartStop = forwardRef((props, ref) => {
   }
 
   return (
-    <>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+    <div className="attributes_table">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>pausable</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setPausable(checked)
@@ -60,13 +60,14 @@ const StartStop = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
-          <i>availableZones</i> - Separeted by commas
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
+          <i>availableZones</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <input
             type="text"
+            placeholder="Separeted by commas"
             onChange={event => {
               setAvailableZones(event.target.value.split(","))
               props.updateAttributes("availableZones", event.target.value.split(","), "update")
@@ -76,7 +77,7 @@ const StartStop = forwardRef((props, ref) => {
           />
         </div>
       </div>
-    </>
+    </div>
   )
 })
 

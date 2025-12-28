@@ -59,11 +59,12 @@ const OccupancySensing = forwardRef((props, ref) => {
     }
 
     return (
-            <div className="attribute_table">
-                <div className="attribute_table_title">
+        <div className="attributes_table">
+            <div className="attributes_row">
+                <div className="attributes_col_1 align_right attributes_col_allign_up">
                     <i>occupancySensorConfiguration</i>
                 </div>
-                <div className="attribute_table_form">
+                <div className="attributes_col_2 attribute_table_form">
                     {
                         occupancySensorConfiguration.map((config, index) => {
                             return (
@@ -149,6 +150,7 @@ const OccupancySensing = forwardRef((props, ref) => {
                     </Box>
                 </div>
             </div>
+        </div>
     );
 })
 

@@ -36,12 +36,12 @@ const OpenClose = forwardRef((props, ref) => {
   }))
 
   return (
-    <>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+    <div className="attributes_table">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>discreteOnlyOpenClose</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setDiscreteOnlyOpenClose(checked)
@@ -52,11 +52,11 @@ const OpenClose = forwardRef((props, ref) => {
         </div>
       </div>
 
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>commandOnlyOpenClose</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setCommandOnlyOpenClose(checked)
@@ -67,11 +67,11 @@ const OpenClose = forwardRef((props, ref) => {
         </div>
       </div>
 
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>queryOnlyOpenClose</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setQueryOnlyOpenClose(checked)
@@ -81,7 +81,7 @@ const OpenClose = forwardRef((props, ref) => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 })
 

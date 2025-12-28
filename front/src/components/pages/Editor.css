@@ -17,3 +17,66 @@
   text-align: left;
   color: #aaa;
 }
+
+/* Attributes table */
+
+.attributes_table {
+  width: 80%;
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: max-content auto 1fr;
+  column-gap: 5px;
+  row-gap: 5px;
+  align-items: center;
+}
+
+.attributes_row {
+  display: contents;
+}
+
+.attributes_row::after {
+  content: "";
+  grid-column: 1 / -1;
+  height: 0;
+  margin-bottom: 0.25rem;
+}
+
+.attributes_row > .attributes_col_1 + .attributes_col_3 {
+  grid-column: 2 / 4;
+}
+
+.attributes_col_1 {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.attributes_col_2,
+.attributes_col_3 {
+  text-align: left;
+}
+
+.attributes_col_allign_up {
+  padding-top: 5px;
+  align-self: start;
+}
+
+@media only screen and (max-width: 800px) {
+  .attributes_table {
+    grid-template-columns: 1fr;
+  }
+
+  /* Primera columna: ocupa toda la línea */
+  .attributes_col_1 {
+    grid-column: 1;
+    text-align: left;
+    margin-bottom: 10px;
+  }
+
+  /* Segunda y tercera columna:
+     saltan de línea con indentación */
+  .attributes_col_2,
+  .attributes_col_3 {
+    grid-column: 1;
+    margin-left: 1rem;
+  }
+}

@@ -100,12 +100,12 @@ const Toggles = forwardRef((props, ref) => {
   }
 
   return (
-    <>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+    <div className="attributes_table">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>commandOnlyToggles</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setCommandOnlyToggles(checked)
@@ -116,11 +116,11 @@ const Toggles = forwardRef((props, ref) => {
         </div>
       </div>
 
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>queryOnlyToggles</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setQueryOnlyToggles(checked)
@@ -131,11 +131,11 @@ const Toggles = forwardRef((props, ref) => {
         </div>
       </div>
 
-      <div className="attribute_table">
-        <div className="attribute_table_title">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right attributes_col_allign_up">
           <i>availableToggles</i>
         </div>
-        <div className="attribute_table_form">
+        <div className="attributes_col_2 attribute_table_form">
           {
             availableToggles.map((toggle, index) => {
               return (
@@ -193,8 +193,7 @@ const Toggles = forwardRef((props, ref) => {
           </Box>
         </div>
       </div>
-
-    </>
+    </div>
   );
   
 })

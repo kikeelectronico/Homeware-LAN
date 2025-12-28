@@ -86,12 +86,12 @@ const ArmDisarm = forwardRef((props, ref) => {
   }
 
   return (
-    <>
-      <div className="attribute_table">
-        <div className="attribute_table_title">
+    <div className="attributes_table">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right attributes_col_allign_up">
           <i>availableArmLevels</i>
         </div>
-        <div className="attribute_table_form">
+        <div className="attributes_col_2 attribute_table_form">
           {
             availableArmLevels.levels.map((level, index) => {
               return (
@@ -149,7 +149,7 @@ const ArmDisarm = forwardRef((props, ref) => {
           </Box>
         </div>
       </div>
-    </>
+    </div>
   );
 
 })

@@ -54,12 +54,12 @@ const Rotation = forwardRef((props, ref) => {
   }
 
   return (
-    <>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+    <div className="attributes_table">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>supportsDegrees</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setSupportsDegrees(checked)
@@ -69,11 +69,11 @@ const Rotation = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>supportsPercent</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setSupportsPercent(checked)
@@ -83,11 +83,11 @@ const Rotation = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>supportsContinuousRotation</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setSupportsContinuousRotation(checked)
@@ -97,11 +97,11 @@ const Rotation = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>commandOnlyRotation</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setCommandOnlyRotation(checked)
@@ -111,11 +111,11 @@ const Rotation = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           Minimum degrees
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <input
             type="number"
             onChange={event => {
@@ -126,11 +126,11 @@ const Rotation = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           Maximum degrees
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <input
             type="number"
             onChange={event => {
@@ -141,7 +141,7 @@ const Rotation = forwardRef((props, ref) => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
   
 })
