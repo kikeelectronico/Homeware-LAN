@@ -235,6 +235,10 @@
   align-items: center;
 }
 
+.page_block_container > h2 {
+  margin-bottom: 0px;
+}
+
 .page_block_content_container {
   width: 90%;
   margin-top: 10px;
