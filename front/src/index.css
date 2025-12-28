@@ -21,7 +21,8 @@ code {
 }
 
 hr {
-  border: 0px solid red;
+  width: 100%;
+  border: 0px solid #eee;
   border-top: 1px solid #eee;
 }
 
