@@ -9,4 +9,5 @@
     border: 1px solid #aaa;
     text-align: left;
     box-sizing: border-box;
+    overflow: hidden;
 }
