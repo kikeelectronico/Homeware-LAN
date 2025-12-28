@@ -222,8 +222,8 @@ function App() {
                 {
                   git.version !== version && git.version !== ''
                   ?
-                  <Link to="/system" className="text_decoration_none">
-                    <div className="menu_data_alert">New update available</div>
+                  <Link to="/system" className="text_decoration_none" onClick={hideMenu}>
+                    <div className="menu_data_alert">New version available</div>
                   </Link>
                   :
                   ""
