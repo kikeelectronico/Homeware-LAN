@@ -47,12 +47,12 @@ const HumiditySetting = forwardRef((props, ref) => {
   }
 
   return (
-    <>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+    <div className="attributes_table">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>commandOnlyHumiditySetting</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setCommandOnlyHumiditySetting(checked)
@@ -62,11 +62,11 @@ const HumiditySetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>queryOnlyHumiditySetting</i>
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setQueryOnlyHumiditySetting(checked)
@@ -76,11 +76,11 @@ const HumiditySetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           Minimum humidity
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <input
             type="number"
             onChange={event => {
@@ -91,11 +91,11 @@ const HumiditySetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="two_table_row">
-        <div className="two_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           Maximum humidity
         </div>
-        <div className="two_table_cel">
+        <div className="attributes_col_2">
           <input
             type="number"
             onChange={event => {
@@ -106,7 +106,7 @@ const HumiditySetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
   
 })
