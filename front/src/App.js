@@ -190,18 +190,16 @@ function App() {
               <div className="menu_icon_bar_2"></div>
               <div className="menu_icon_bar_3"></div>
             </div>
-            <div className="uppper_menu_title_container">
-              <h1 className="uppper_menu_title">Homeware-LAN</h1>
-              <div className="uppper_menua_alert">
-                {
-                  alert === "set"
-                  ?
-                    <Modal trigger={<img src="/global/alert_icon.png" alt="bell" className="alert_icon"/>} title="Alert" content={<p>See the <a href="/logs">system log</a></p>} />
-                  :
-                  ""
-                }
-              </div>
-            </div>
+            <h1 className="uppper_menu_title">Homeware-LAN</h1>
+            {/* <div className="uppper_menua_alert">
+              {
+                alert === "set"
+                ?
+                  <Modal trigger={<img src="/global/alert_icon.png" alt="bell" className="alert_icon"/>} title="Alert" content={<p>See the <a href="/logs">system log</a></p>} />
+                :
+                ""
+              }
+            </div> */}
           </div>
           <div className="main-app">
             <div className="menu" id="menu">
