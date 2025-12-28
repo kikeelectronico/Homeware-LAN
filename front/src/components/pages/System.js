@@ -75,29 +75,29 @@ function System(props) {
         </div>
         <hr />
         <div className="page_block_content_container text_left">
-          <b>System version:</b> {props.version}
+          <span style={{marginBottom: 10}}><b>System version:</b> {props.version}</span>
           {props.git.code !== 200 ? (
-            <div>
-              <br /> Unable to verify if there is a system update.
-            </div>
+            <>
+              Unable to verify if there is a system update.
+            </>
           ) : (
-            <div>
+            <>
               {props.version !== props.git.version ? (
-                <div>
-                  <b>Available version:</b> {props.git.version}
+                <>
+                  <span><b>Available version:</b> {props.git.version}</span>
                   <h3>
                     What's new?
                   </h3>
                   <div className="git_description">
                     <ReactMarkdown>{props.git.description}</ReactMarkdown>
                   </div>
-                </div>
+                </>
               ) : (
-                <div>
-                  <br /> The system is up to date.
-                </div>
+                <>
+                  <span>The system is up to date.</span>
+                </>
               )}
-            </div>
+            </>
           )}
         </div>
       </div>
