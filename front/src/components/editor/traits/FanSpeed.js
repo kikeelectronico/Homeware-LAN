@@ -105,11 +105,11 @@ const FanSpeed = forwardRef((props, ref) => {
 
   return (
     <>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="two_table_row">
+        <div className="two_table_cel align_right">
           <i>reversible</i>
         </div>
-        <div className="three_table_cel">
+        <div className="two_table_cel">
           <Switch
             onChange={(checked) => {
               setReversible(checked)
@@ -120,11 +120,11 @@ const FanSpeed = forwardRef((props, ref) => {
         </div>
       </div>
 
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="two_table_row">
+        <div className="two_table_cel align_right">
           <i>commandOnlyFanSpeed</i>
         </div>
-        <div className="three_table_cel">
+        <div className="two_table_cel">
           <Switch
             onChange={(checked) => {
               setCommandOnlyFanSpeed(checked)
@@ -135,11 +135,11 @@ const FanSpeed = forwardRef((props, ref) => {
         </div>
       </div>
 
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="two_table_row">
+        <div className="two_table_cel align_right">
           <i>supportsFanSpeedPercent</i>
         </div>
-        <div className="three_table_cel">
+        <div className="two_table_cel">
           <Switch
             onChange={(checked) => {
               setSupportsFanSpeedPercent(checked)

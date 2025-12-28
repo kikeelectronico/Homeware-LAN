@@ -90,11 +90,11 @@ const Fill = forwardRef((props, ref) => {
 
   return (
     <>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="two_table_row">
+        <div className="two_table_cel align_right">
           <i>supportsFillPercent</i>
         </div>
-        <div className="three_table_cel">
+        <div className="two_table_cel">
           <Switch
             onChange={(checked) => {
               setSupportsFillPercent(checked)

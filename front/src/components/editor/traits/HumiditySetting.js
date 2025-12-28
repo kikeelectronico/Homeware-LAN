@@ -48,11 +48,11 @@ const HumiditySetting = forwardRef((props, ref) => {
 
   return (
     <>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="two_table_row">
+        <div className="two_table_cel align_right">
           <i>commandOnlyHumiditySetting</i>
         </div>
-        <div className="three_table_cel">
+        <div className="two_table_cel">
           <Switch
             onChange={(checked) => {
               setCommandOnlyHumiditySetting(checked)
@@ -62,11 +62,11 @@ const HumiditySetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="two_table_row">
+        <div className="two_table_cel align_right">
           <i>queryOnlyHumiditySetting</i>
         </div>
-        <div className="three_table_cel">
+        <div className="two_table_cel">
           <Switch
             onChange={(checked) => {
               setQueryOnlyHumiditySetting(checked)
@@ -76,11 +76,11 @@ const HumiditySetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="two_table_row">
+        <div className="two_table_cel align_right">
           Minimum humidity
         </div>
-        <div className="three_table_cel">
+        <div className="two_table_cel">
           <input
             type="number"
             onChange={event => {
@@ -91,11 +91,11 @@ const HumiditySetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="two_table_row">
+        <div className="two_table_cel align_right">
           Maximum humidity
         </div>
-        <div className="three_table_cel">
+        <div className="two_table_cel">
           <input
             type="number"
             onChange={event => {

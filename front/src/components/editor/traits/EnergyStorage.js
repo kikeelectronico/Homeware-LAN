@@ -43,11 +43,11 @@ const EnergyStorage = forwardRef((props, ref) => {
 
     return (
       <>
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
+        <div className="two_table_row">
+          <div className="two_table_cel align_right">
             <i>Distance units</i>
           </div>
-          <div className="three_table_cel">
+          <div className="two_table_cel">
             <select
               name="type"
               className="table_input"
@@ -64,11 +64,11 @@ const EnergyStorage = forwardRef((props, ref) => {
             </select>
           </div>
         </div>
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
+        <div className="two_table_row">
+          <div className="two_table_cel align_right">
             <i>Controlable</i>
           </div>
-          <div className="three_table_cel">
+          <div className="two_table_cel">
             <Switch
               onChange={(checked) => {
                 setQueryOnlyEnergyStorage(checked)
@@ -78,11 +78,11 @@ const EnergyStorage = forwardRef((props, ref) => {
             />
           </div>
         </div>
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
+        <div className="two_table_row">
+          <div className="two_table_cel align_right">
             <i>Rechargeable</i>
           </div>
-          <div className="three_table_cel">
+          <div className="two_table_cel">
             <Switch
               onChange={(checked) => {
                 setIsRechargeable(checked)

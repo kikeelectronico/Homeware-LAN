@@ -69,11 +69,11 @@ const ColorSetting = forwardRef((props, ref) => {
 
   return (
     <>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="two_table_row">
+        <div className="two_table_cel align_right">
           <i>commandOnlyColorSetting</i>
         </div>
-        <div className="three_table_cel">
+        <div className="two_table_cel">
           <Switch
             onChange={(checked) => {
               setCommandOnlyColorSetting(checked)
@@ -83,11 +83,11 @@ const ColorSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="two_table_row">
+        <div className="two_table_cel align_right">
           <i>Color type</i>
         </div>
-        <div className="three_table_cel">
+        <div className="two_table_cel">
           <select 
             name="type"
             onChange={event => updateType(event.target.value)}
@@ -103,11 +103,11 @@ const ColorSetting = forwardRef((props, ref) => {
       {
         colorTemperatureRange ?
           <>
-             <div className="three_table_row">
-              <div className="three_table_cel align_right">
+             <div className="two_table_row">
+              <div className="two_table_cel align_right">
                 Minimum temperature
               </div>
-              <div className="three_table_cel">
+              <div className="two_table_cel">
                 <input
                   type="number"
                   onChange={event => {
@@ -118,11 +118,11 @@ const ColorSetting = forwardRef((props, ref) => {
                 />
               </div>
             </div>
-            <div className="three_table_row">
-              <div className="three_table_cel align_right">
+            <div className="two_table_row">
+              <div className="two_table_cel align_right">
                 Maximum temperature
               </div>
-              <div className="three_table_cel">
+              <div className="two_table_cel">
                 <input
                   type="number"
                   onChange={event => {

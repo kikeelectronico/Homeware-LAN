@@ -46,11 +46,11 @@ const StartStop = forwardRef((props, ref) => {
 
   return (
     <>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="two_table_row">
+        <div className="two_table_cel align_right">
           <i>pausable</i>
         </div>
-        <div className="three_table_cel">
+        <div className="two_table_cel">
           <Switch
             onChange={(checked) => {
               setPausable(checked)
@@ -60,11 +60,11 @@ const StartStop = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="two_table_row">
+        <div className="two_table_cel align_right">
           <i>availableZones</i> - Separeted by commas
         </div>
-        <div className="three_table_cel">
+        <div className="two_table_cel">
           <input
             type="text"
             onChange={event => {
