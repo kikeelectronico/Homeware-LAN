@@ -12,7 +12,8 @@
 }
 
 .no_attributes_message {
-  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-bottom: 10px;
   text-align: left;
   color: #aaa;
 }
