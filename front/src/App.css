@@ -177,36 +177,6 @@
   flex: 0 1 auto;
 }
 
-
-.attribute_table_form {
-  padding-top: 5px;
-  flex: 2;
-  text-align: left;
-}
-
-.attribute_table_form_add_button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-}
-
-.attribute_table_subattribute {
-  border-top: lightgray solid 1px;
-  margin-top: 10px;
-  padding-top: 20px;
-}
-
-.attribute_table_subattribute_row {
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 20px;
-}
-
-.attribute_table_subattribute_input {
-  flex: 3;
-}
-
 /* Page type: block */
 
 .page_block_container {
