@@ -1,5 +1,6 @@
 import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
+import {TextField} from '@mui/material';
 
 const attributes = {
   supportsDegrees: true,
@@ -116,13 +117,13 @@ const Rotation = forwardRef((props, ref) => {
           Minimum degrees
         </div>
         <div className="attributes_col_2">
-          <input
+          <TextField
+            variant="outlined"
             type="number"
+            value={rotationDegreesRange.rotationDegreesMin}
             onChange={event => {
               updateRange("rotationDegreesMin", parseInt(event.target.value))
             }}
-            value={rotationDegreesRange.rotationDegreesMin}
-            min="0" max="100" className="int_input"
           />
         </div>
       </div>
@@ -131,13 +132,13 @@ const Rotation = forwardRef((props, ref) => {
           Maximum degrees
         </div>
         <div className="attributes_col_2">
-          <input
+          <TextField
+            variant="outlined"
             type="number"
+            value={rotationDegreesRange.rotationDegreesMax}
             onChange={event => {
               updateRange("rotationDegreesMax", parseInt(event.target.value))
             }}
-            value={rotationDegreesRange.rotationDegreesMax}
-            min="0" max="360" className="int_input"
           />
         </div>
       </div>

@@ -1,5 +1,6 @@
 import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
+import {TextField, Select, MenuItem} from '@mui/material';
 
 const attributes = {
   commandOnlyColorSetting: false,
@@ -88,16 +89,16 @@ const ColorSetting = forwardRef((props, ref) => {
           <i>Color type</i>
         </div>
         <div className="attributes_col_2">
-          <select 
-            name="type"
-            onChange={event => updateType(event.target.value)}
+          <Select
+            name="ddns/provider"
             className="table_input"
-            value={colorModel}
+            value={colorModel || ""}
+            onChange={event => updateType(event.target.value)}
           >
-            <option value="">Color temperature</option>
-            <option value="rgb">RGB light</option>
-            <option value="hsv">HSV light</option>
-          </select>
+            <MenuItem value="">Color temperature</MenuItem>
+            <MenuItem value="rgb">RGB light</MenuItem>
+            <MenuItem value="hsv">HSV light</MenuItem>
+          </Select>
         </div>
       </div> 
       {
@@ -108,13 +109,11 @@ const ColorSetting = forwardRef((props, ref) => {
                 Minimum temperature
               </div>
               <div className="attributes_col_2">
-                <input
+                <TextField
+                  variant="outlined"
                   type="number"
-                  onChange={event => {
-                    updateRange("temperatureMinK", parseInt(event.target.value))
-                  }}
                   value={colorTemperatureRange.temperatureMinK}
-                  min="0" max="10000" className="int_input"
+                  onChange={(event) =>  updateRange("temperatureMinK", parseInt(event.target.value))}
                 />
               </div>
             </div>
@@ -123,13 +122,11 @@ const ColorSetting = forwardRef((props, ref) => {
                 Maximum temperature
               </div>
               <div className="attributes_col_2">
-                <input
+                <TextField
+                  variant="outlined"
                   type="number"
-                  onChange={event => {
-                    updateRange("temperatureMaxK", parseInt(event.target.value))
-                  }}
                   value={colorTemperatureRange.temperatureMaxK}
-                  min="0" max="10000" className="int_input"
+                  onChange={(event) => updateRange("temperatureMaxK", parseInt(event.target.value))}
                 />
               </div>
             </div>

@@ -1,5 +1,6 @@
 import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
+import {Select, MenuItem} from '@mui/material';
 
 const attributes = {
   queryOnlyEnergyStorage: false,
@@ -48,20 +49,19 @@ const EnergyStorage = forwardRef((props, ref) => {
             <i>Distance units</i>
           </div>
           <div className="attributes_col_2">
-            <select
-              name="type"
+            <Select
               className="table_input"
+              value={energyStorageDistanceUnitForUX || ""}
               onChange={event => {
                 setEnergyStorageDistanceUnitForUX(event.target.value)
                 if (event.target.value === "") props.updateAttributes("energyStorageDistanceUnitForUX", null, "delete")
                 else props.updateAttributes("energyStorageDistanceUnitForUX", event.target.value, "update")
               }}
-              value={energyStorageDistanceUnitForUX}
             >
-              <option value="">No apply</option>
-              <option value="KILOMETERS">Kilometers</option>
-              <option value="MILES">Miles</option>
-            </select>
+              <MenuItem value="">No apply</MenuItem>
+              <MenuItem value="KILOMETERS">Kilometers</MenuItem>
+              <MenuItem value="MILES">Miles</MenuItem>
+            </Select>
           </div>
         </div>
         <div className="attributes_row">

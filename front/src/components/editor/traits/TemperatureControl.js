@@ -1,5 +1,6 @@
 import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
+import {TextField, Select, MenuItem} from '@mui/material';
 
 const attributes = {
   temperatureRange: {
@@ -87,18 +88,18 @@ const TemperatureControl = forwardRef((props, ref) => {
           <i>temperatureUnitForUX</i>
         </div>
         <div className="attributes_col_2">
-          <select 
-            name="type"
+          <Select
+            name="ddns/provider"
+            className="table_input"
+            value={temperatureUnitForUX || "C"}
             onChange={(event) => {
               setTemperatureUnitForUX(event.target.value)
               props.updateAttributes("temperatureUnitForUX", event.target.value, "update")
             }}
-            className="table_input"
-            value={temperatureUnitForUX}
           >
-            <option value="C">Celsius</option>
-            <option value="F">Fahrenheit</option>
-          </select>
+            <MenuItem value="C">Celsius</MenuItem>
+            <MenuItem value="F">Fahrenheit</MenuItem>
+          </Select>
         </div>
       </div>      
       <div className="attributes_row">
@@ -106,14 +107,14 @@ const TemperatureControl = forwardRef((props, ref) => {
           Minimum temperature
         </div>
         <div className="attributes_col_2">
-          <input
+          <TextField
+            variant="outlined"
             type="number"
+            value={temperatureRange.minThresholdCelsius}
             onChange={event => {
               if (event.target.value < temperatureRange.maxThresholdCelsius)
                 updateRange("minThresholdCelsius", parseInt(event.target.value))
             }}
-            value={temperatureRange.minThresholdCelsius}
-            min="-273" max="10000" className="int_input"
           />
         </div>
       </div>
@@ -122,14 +123,14 @@ const TemperatureControl = forwardRef((props, ref) => {
           Maximum temperature
         </div>
         <div className="attributes_col_2">
-          <input
+          <TextField
+            variant="outlined"
             type="number"
+            value={temperatureRange.maxThresholdCelsius}
             onChange={event => {
               if (event.target.value > temperatureRange.minThresholdCelsius)
                 updateRange("maxThresholdCelsius", parseInt(event.target.value))
             }}
-            value={temperatureRange.maxThresholdCelsius}
-            min="-273" max="10000" className="int_input"
           />
         </div>
       </div>
@@ -138,14 +139,14 @@ const TemperatureControl = forwardRef((props, ref) => {
           <i>temperatureStepCelsius</i>
         </div>
         <div className="attributes_col_2">
-          <input
+          <TextField
+            variant="outlined"
             type="number"
+            value={temperatureStepCelsius}
             onChange={event => {
               setTemperatureStepCelsius(parseInt(event.target.value))
               props.updateAttributes("temperatureStepCelsius", parseInt(event.target.value), "update")
             }}
-            value={temperatureStepCelsius}
-            min="0" max="10000" className="int_input"
           />
         </div>
       </div>

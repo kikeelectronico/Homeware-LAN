@@ -1,5 +1,6 @@
 import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
+import {TextField} from '@mui/material';
 
 const attributes = {
   humiditySetpointRange: {
@@ -81,13 +82,13 @@ const HumiditySetting = forwardRef((props, ref) => {
           Minimum humidity
         </div>
         <div className="attributes_col_2">
-          <input
+          <TextField
+            variant="outlined"
             type="number"
+            value={humiditySetpointRange.minPercent}
             onChange={event => {
               updateRange("minPercent", parseInt(event.target.value))
             }}
-            value={humiditySetpointRange.minPercent}
-            min="0" max="100" className="int_input"
           />
         </div>
       </div>
@@ -96,13 +97,13 @@ const HumiditySetting = forwardRef((props, ref) => {
           Maximum humidity
         </div>
         <div className="attributes_col_2">
-          <input
+          <TextField
+            variant="outlined"
             type="number"
+            value={humiditySetpointRange.maxPercent}
             onChange={event => {
               updateRange("maxPercent", parseInt(event.target.value))
             }}
-            value={humiditySetpointRange.maxPercent}
-            min="0" max="100" className="int_input"
           />
         </div>
       </div>

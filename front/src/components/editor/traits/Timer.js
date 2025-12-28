@@ -1,5 +1,6 @@
 import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
+import {TextField} from '@mui/material';
 
 const attributes = {
   maxTimerLimitSec: 3600,
@@ -53,15 +54,15 @@ const Timer = forwardRef((props, ref) => {
         <div className="attributes_col_1 align_right">
           <i>maxTimerLimitSec</i>
         </div>
-        <div className="two_tableattributes_col_2_cel">
-          <input
+        <div className="attributes_col_2">
+          <TextField
+            variant="outlined"
             type="number"
+            value={maxTimerLimitSec}
             onChange={event => {
               setMaxTimerLimitSec(parseInt(event.target.value))
               props.updateAttributes("maxTimerLimitSec", parseInt(event.target.value), "update")
             }}
-            value={maxTimerLimitSec}
-            min="0" max="10000" className="int_input"
           />
         </div>
       </div>

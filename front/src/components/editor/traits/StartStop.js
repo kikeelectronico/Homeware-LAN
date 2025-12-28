@@ -1,5 +1,6 @@
 import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
+import {TextField} from '@mui/material';
 
 const attributes = {
   availableZones: [],
@@ -65,15 +66,15 @@ const StartStop = forwardRef((props, ref) => {
           <i>availableZones</i>
         </div>
         <div className="attributes_col_2">
-          <input
-            type="text"
+          <TextField
+            variant="outlined"
             placeholder="Separeted by commas"
+            type="text"
+            value={getAvailableZonesStr()}
             onChange={event => {
               setAvailableZones(event.target.value.split(","))
               props.updateAttributes("availableZones", event.target.value.split(","), "update")
             }}
-            value={getAvailableZonesStr()}
-            min="0" max="10000" className="int_input"
           />
         </div>
       </div>
