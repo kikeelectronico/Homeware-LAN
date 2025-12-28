@@ -353,15 +353,14 @@
     transform: translate(0px);
   }
 
-  .page_cards_container {
+  /* .page_cards_container {
     width: 80%;
     margin-left: 10%;
     margin-top: 10px;
     margin-bottom: 40px;
     display: grid;
     grid-template-columns: repeat(auto-fill, 100%);
-    grid-gap: 20px;
-  }
+  } */
 
   .two_table_row {
     width: 100%;
