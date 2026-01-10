@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {Button, Stack} from '@mui/material';
 
-import Toast from "../web/Toast";
+import Toast from "../../components/web/Toast";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
 
@@ -86,7 +86,7 @@ function Logs () {
           <span>Main log of Homeware.</span>
         </div>
         <hr />
-        <div>
+        <div className="logs_container">
           {
             data.slice(0,page*10).map((register, i) => (
               <div className="logs_line" key={i}>

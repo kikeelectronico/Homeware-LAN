@@ -1,5 +1,6 @@
 import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
+import {TextField} from '@mui/material';
 
 const attributes = {
   supportsDegrees: true,
@@ -54,12 +55,12 @@ const Rotation = forwardRef((props, ref) => {
   }
 
   return (
-    <>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+    <div className="attributes_table">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>supportsDegrees</i>
         </div>
-        <div className="three_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setSupportsDegrees(checked)
@@ -69,11 +70,11 @@ const Rotation = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>supportsPercent</i>
         </div>
-        <div className="three_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setSupportsPercent(checked)
@@ -83,11 +84,11 @@ const Rotation = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>supportsContinuousRotation</i>
         </div>
-        <div className="three_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setSupportsContinuousRotation(checked)
@@ -97,11 +98,11 @@ const Rotation = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>commandOnlyRotation</i>
         </div>
-        <div className="three_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setCommandOnlyRotation(checked)
@@ -111,37 +112,37 @@ const Rotation = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           Minimum degrees
         </div>
-        <div className="three_table_cel">
-          <input
+        <div className="attributes_col_2">
+          <TextField
+            variant="outlined"
             type="number"
+            value={rotationDegreesRange.rotationDegreesMin}
             onChange={event => {
               updateRange("rotationDegreesMin", parseInt(event.target.value))
             }}
-            value={rotationDegreesRange.rotationDegreesMin}
-            min="0" max="100" className="int_input"
           />
         </div>
       </div>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           Maximum degrees
         </div>
-        <div className="three_table_cel">
-          <input
+        <div className="attributes_col_2">
+          <TextField
+            variant="outlined"
             type="number"
+            value={rotationDegreesRange.rotationDegreesMax}
             onChange={event => {
               updateRange("rotationDegreesMax", parseInt(event.target.value))
             }}
-            value={rotationDegreesRange.rotationDegreesMax}
-            min="0" max="360" className="int_input"
           />
         </div>
       </div>
-    </>
+    </div>
   );
   
 })

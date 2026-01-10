@@ -14,7 +14,7 @@ const TemperatureAmbient = (props) => {
       {
         Object.keys(props.states).includes("temperatureAmbientCelsius") ?
           <div className="device_card_status">
-            {props.states.temperatureAmbientCelsius} {props.device.attributes.temperatureUnitForUX === "C" ? "ºC" : "F"}
+            {props.states.temperatureAmbientCelsius}{props.device.attributes.temperatureUnitForUX === "C" ? "ºC" : "F"}
           </div>
         : <></>
       }

@@ -11,11 +11,11 @@ import Devices from "./pages/devices/Devices";
 import Editor from './components/pages/Editor'
 import Info from './components/pages/Info'
 import Connecting from './components/pages/Connecting'
-import Settings from './components/pages/Settings'
+import Settings from './pages/settings/Settings'
 import System from './components/pages/System'
 import Backup from './components/pages/Backup'
-import Access from './components/pages/Access'
-import Logs from './components/pages/Logs'
+import Access from './pages/access/Access'
+import Logs from './pages/log/Logs'
 import Login from './components/pages/Login'
 
 const GIT_CHECKOUT_INTERVAL = 600;
@@ -164,7 +164,13 @@ function App() {
     document.getElementById('menuIcon').classList.toggle("change_menu_icon");
     document.getElementById('menu').classList.toggle("menu_show_up");
   }
- 
+
+  const hideMenu = () => {
+    if (document.getElementById('menu').classList.contains('menu_show_up')) {
+      document.getElementById('menuIcon').classList.toggle("change_menu_icon");
+      document.getElementById('menu').classList.toggle("menu_show_up");
+    }
+  } 
 
   if (!session && !window.location.href.includes('login'))
     return ''
@@ -184,28 +190,26 @@ function App() {
               <div className="menu_icon_bar_2"></div>
               <div className="menu_icon_bar_3"></div>
             </div>
-            <div className="uppper_menu_title_container">
-              <h1 className="uppper_menu_title">Homeware-LAN</h1>
-              <div className="uppper_menua_alert">
-                {
-                  alert === "set"
-                  ?
-                    <Modal trigger={<img src="/global/alert_icon.png" alt="bell" className="alert_icon"/>} title="Alert" content={<p>See the <a href="/logs">system log</a></p>} />
-                  :
-                  ""
-                }
-              </div>
-            </div>
+            <h1 className="uppper_menu_title">Homeware-LAN</h1>
+            {/* <div className="uppper_menua_alert">
+              {
+                alert === "set"
+                ?
+                  <Modal trigger={<img src="/global/alert_icon.png" alt="bell" className="alert_icon"/>} title="Alert" content={<p>See the <a href="/logs">system log</a></p>} />
+                :
+                ""
+              }
+            </div> */}
           </div>
           <div className="main-app">
             <div className="menu" id="menu">
               <div>
-                <MenuElement image="/menu/devices_icon.png" title="Devices" href="/devices"/>
-                <MenuElement image="/menu/settings_icon.png" title="Settings" href="/settings"/>
-                <MenuElement image="/menu/status_icon.png" title="System" href="/system"/>
-                <MenuElement image="/menu/backup_icon.png" title="Backup" href="/backup"/>
-                <MenuElement image="/menu/access_icon.png" title="Access" href="/access"/>
-                <MenuElement image="/menu/logs_icon.png" title="Logs" href="/logs"/>
+                <MenuElement image="/menu/devices_icon.png" title="Devices" href="/devices" hideMenu={hideMenu}/>
+                <MenuElement image="/menu/settings_icon.png" title="Settings" href="/settings" hideMenu={hideMenu}/>
+                <MenuElement image="/menu/status_icon.png" title="System" href="/system" hideMenu={hideMenu}/>
+                <MenuElement image="/menu/backup_icon.png" title="Backup" href="/backup" hideMenu={hideMenu}/>
+                <MenuElement image="/menu/access_icon.png" title="Access" href="/access" hideMenu={hideMenu}/>
+                <MenuElement image="/menu/logs_icon.png" title="Logs" href="/logs" hideMenu={hideMenu}/>
                 <hr/>
                 <MenuElement image="/menu/repo_icon.png" title="Repo" exec={ ()=>{window.location.href = "https://github.com/kikeelectronico/Homeware-LAN"} }/>
                 <MenuElement image="/menu/help_icon.png" title="How to" exec={ ()=>{window.location.href = "https://homeware.enriquegomez.me/"} }/>
@@ -216,8 +220,8 @@ function App() {
                 {
                   git.version !== version && git.version !== ''
                   ?
-                  <Link to="/system" className="text_decoration_none">
-                    <div className="menu_data_alert">New update available</div>
+                  <Link to="/system" className="text_decoration_none" onClick={hideMenu}>
+                    <div className="menu_data_alert">New version available</div>
                   </Link>
                   :
                   ""

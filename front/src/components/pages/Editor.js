@@ -54,7 +54,6 @@ function Editor() {
           return response.json();
         })
         .then(data => {
-          console.log(data);
           setType(data.description.type);
           setNicknames(data.description.name.nicknames);
           setTraits(data.description.traits);

@@ -24,12 +24,18 @@
   font-weight: bold;
   color: white;
   padding: 5px 10px 5px 10px;
+  border-radius: 5px;
 }
 
 .component_label_runnig {
-  background-color: green;
+  background-color: #E8F5E9; /* Verde muy suave de fondo */
+  color: #2E7D32; /* Verde oscuro para el texto */
+  border: 1px solid #2E7D32;
+
 }
 
 .component_label_stopped {
-  background-color: red;
+  background-color: #FFEBEE; /* Rojo muy suave de fondo */
+  color: #C62828; /* Rojo intenso para el texto */
+  border: 1px solid #C62828;
 }

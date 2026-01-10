@@ -1,5 +1,6 @@
 import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
+import {TextField, Select, MenuItem} from '@mui/material';
 
 const attributes = {
   commandOnlyColorSetting: false,
@@ -68,12 +69,12 @@ const ColorSetting = forwardRef((props, ref) => {
   }
 
   return (
-    <>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+    <div className="attributes_table">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>commandOnlyColorSetting</i>
         </div>
-        <div className="three_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setCommandOnlyColorSetting(checked)
@@ -83,60 +84,56 @@ const ColorSetting = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>Color type</i>
         </div>
-        <div className="three_table_cel">
-          <select 
-            name="type"
-            onChange={event => updateType(event.target.value)}
+        <div className="attributes_col_2">
+          <Select
+            name="ddns/provider"
             className="table_input"
-            value={colorModel}
+            value={colorModel || ""}
+            onChange={event => updateType(event.target.value)}
           >
-            <option value="">Color temperature</option>
-            <option value="rgb">RGB light</option>
-            <option value="hsv">HSV light</option>
-          </select>
+            <MenuItem value="">Color temperature</MenuItem>
+            <MenuItem value="rgb">RGB light</MenuItem>
+            <MenuItem value="hsv">HSV light</MenuItem>
+          </Select>
         </div>
       </div> 
       {
         colorTemperatureRange ?
           <>
-             <div className="three_table_row">
-              <div className="three_table_cel align_right">
+             <div className="attributes_row">
+              <div className="attributes_col_1 align_right">
                 Minimum temperature
               </div>
-              <div className="three_table_cel">
-                <input
+              <div className="attributes_col_2">
+                <TextField
+                  variant="outlined"
                   type="number"
-                  onChange={event => {
-                    updateRange("temperatureMinK", parseInt(event.target.value))
-                  }}
                   value={colorTemperatureRange.temperatureMinK}
-                  min="0" max="10000" className="int_input"
+                  onChange={(event) =>  updateRange("temperatureMinK", parseInt(event.target.value))}
                 />
               </div>
             </div>
-            <div className="three_table_row">
-              <div className="three_table_cel align_right">
+            <div className="attributes_row">
+              <div className="attributes_col_1 align_right">
                 Maximum temperature
               </div>
-              <div className="three_table_cel">
-                <input
+              <div className="attributes_col_2">
+                <TextField
+                  variant="outlined"
                   type="number"
-                  onChange={event => {
-                    updateRange("temperatureMaxK", parseInt(event.target.value))
-                  }}
                   value={colorTemperatureRange.temperatureMaxK}
-                  min="0" max="10000" className="int_input"
+                  onChange={(event) => updateRange("temperatureMaxK", parseInt(event.target.value))}
                 />
               </div>
             </div>
           </>
         : <></>
       }      
-    </>
+    </div>
   );
   
 })

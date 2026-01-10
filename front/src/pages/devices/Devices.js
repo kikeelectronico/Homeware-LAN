@@ -104,7 +104,7 @@ function Devices() {
   }
 
   return (
-    <div>
+    <>
       <div className="page_search_containter">
         <input
           type="text"
@@ -114,12 +114,12 @@ function Devices() {
           value={search_phrase}
           onChange={(event) => setSearchPhrase(event.target.value.toLowerCase())}
         />
-        <div
-          className="page_search_x"
+        <button
+          className="page_search_clear"
           onClick={() => setSearchPhrase("")}
         >
-          <span>X</span>
-        </div>
+          X
+        </button>
       </div>
 
       <div className="page_cards_container">
@@ -127,9 +127,13 @@ function Devices() {
           Object.keys(processed_devices).map((room) => {
             return (
             <div className="devices_room_container">
-              <div className="devices_romm_title">
-                <h2>{room}</h2>
-              </div>
+              {
+                room !== "" ?
+                  <div className="devices_romm_title">
+                    <h2>{room}</h2>
+                  </div>
+                : <></>
+              }
               <div class="devices_cards_outer_container">
                 <div className="devices_cards_container">
                   {
@@ -152,7 +156,7 @@ function Devices() {
       </div>
 
       <Toast alert={alert}/>
-    </div>
+    </>
   );
   
 }

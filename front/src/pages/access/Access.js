@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from "react";
 
-import Toast from "../web/Toast";
+import Toast from "../../components/web/Toast";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
-import {Button} from '@mui/material';
+import {Button, TextField} from '@mui/material';
 
 function Access () {
 
@@ -87,7 +87,7 @@ function Access () {
 
  
   return (
-    <div>
+    <>
       <div className="page_block_container">
         <h2>API key</h2>
         <div className="advise">
@@ -98,12 +98,12 @@ function Access () {
           <div className="two_table_row">
             <div className="two_table_cel">API Key</div>
             <div className="two_table_cel">
-              <input
-                type="text"
-                className="two_input"
+              <TextField
                 id="apikey"
+                variant="outlined"
+                className="two_input"
                 value={data.apikey}
-                disabled
+                disabled={true}
               />
             </div>
           </div>
@@ -123,40 +123,37 @@ function Access () {
           <div className="two_table_row">
             <div className="two_table_cel">Password</div>
             <div className="two_table_cel">
-              <input
-                type="password"
-                className="two_input"
-                id="pass"
-                onChange={(event) =>
-                  setCurrentPass(event.target.value)
-                }
-              />
+               <TextField
+                  type="password"
+                  id="pass"
+                  variant="outlined"
+                  className="two_input"
+                  onChange={(event) => setCurrentPass(event.target.value)}
+                />
             </div>
           </div>
           <div className="two_table_row">
             <div className="two_table_cel">New password</div>
             <div className="two_table_cel">
-              <input
-                type="password"
-                className="two_input"
-                id="new_pass"
-                onChange={(event) => {
-                  setNewPass1(event.target.value)
-                }}
-              />
+              <TextField
+                  type="password"
+                  id="new_pass"
+                  variant="outlined"
+                  className="two_input"
+                  onChange={(event) => setNewPass1(event.target.value)}
+                />
             </div>
           </div>
           <div className="two_table_row">
             <div className="two_table_cel">New password</div>
             <div className="two_table_cel">
-              <input
-                type="password"
-                className="two_input"
-                id="new_pass_2"
-                onChange={(event) => {
-                  setNewPass2(event.target.value)
-                }}
-              />
+              <TextField
+                  type="password"
+                  id="new_pass_2"
+                  variant="outlined"
+                  className="two_input"
+                  onChange={(event) => setNewPass2(event.target.value)}
+                />
             </div>
           </div>
         </div>
@@ -172,7 +169,7 @@ function Access () {
         </div>
       </div>
       <Toast alert={alert}/>
-    </div>
+    </>
   );
   
 }

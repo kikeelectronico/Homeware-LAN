@@ -33,12 +33,12 @@ const OnOff = forwardRef((props, ref) => {
   }))
 
   return (
-    <>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+    <div className="attributes_table">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>commandOnlyOnOff</i>
         </div>
-        <div className="three_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setCommandOnlyOnOff(checked)
@@ -48,11 +48,11 @@ const OnOff = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>queryOnlyOnOff</i>
         </div>
-        <div className="three_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setQueryOnlyOnOff(checked)
@@ -62,7 +62,7 @@ const OnOff = forwardRef((props, ref) => {
           />
         </div>
       </div>
-    </>
+    </div>
   )
 })
 

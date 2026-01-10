@@ -31,12 +31,12 @@ const Scene = forwardRef((props, ref) => {
 
 
   return (
-    <>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+    <div className="attributes_table">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>sceneReversible</i>
         </div>
-        <div className="three_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setSceneReversible(checked)
@@ -46,7 +46,7 @@ const Scene = forwardRef((props, ref) => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
   
 })

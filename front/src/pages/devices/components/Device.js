@@ -2,6 +2,7 @@ import React, {useState}  from 'react'
 import { Link } from "react-router-dom";
 
 import ArmDisarm from './traits/ArmDisarm';
+import CapacityRemaining from './traits/CapacityRemaining';
 import Brightness from './traits/Brightness';
 import Enable from './traits/Enable';
 import LockUnlock from './traits/LockUnlock';
@@ -21,7 +22,7 @@ const Device = (props) => {
     const [contextual_menu, setContextualMenu] = useState(false)
 
     return (
-        <div>
+        <>
             <div className="device_card">
                 <div className="device_card_color_strip" style={{backgroundColor: strip_color, opacity: strip_on ? "1" : "0.4"}}></div>
 
@@ -29,6 +30,7 @@ const Device = (props) => {
                 <div className="device_card_status_container">
                     <ArmDisarm states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <Brightness states={props.states}/>
+                    <CapacityRemaining states={props.states}/>
                     <LockUnlock states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <Occupancy device={props.device} states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
                     <Open device={props.device} states={props.states} setStripColor={setStripColor} setStripOn={setStripOn}/>
@@ -64,7 +66,7 @@ const Device = (props) => {
                     : <></>
                 }
             </div>
-        </div>
+        </>
     );
   
 }

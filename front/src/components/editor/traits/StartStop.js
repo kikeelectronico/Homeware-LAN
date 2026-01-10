@@ -1,5 +1,6 @@
 import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
+import {TextField} from '@mui/material';
 
 const attributes = {
   availableZones: [],
@@ -45,12 +46,12 @@ const StartStop = forwardRef((props, ref) => {
   }
 
   return (
-    <>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+    <div className="attributes_table">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>pausable</i>
         </div>
-        <div className="three_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setPausable(checked)
@@ -60,23 +61,24 @@ const StartStop = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
-          <i>availableZones</i> - Separeted by commas
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
+          <i>availableZones</i>
         </div>
-        <div className="three_table_cel">
-          <input
+        <div className="attributes_col_2">
+          <TextField
+            variant="outlined"
+            placeholder="Separeted by commas"
             type="text"
+            value={getAvailableZonesStr()}
             onChange={event => {
               setAvailableZones(event.target.value.split(","))
               props.updateAttributes("availableZones", event.target.value.split(","), "update")
             }}
-            value={getAvailableZonesStr()}
-            min="0" max="10000" className="int_input"
           />
         </div>
       </div>
-    </>
+    </div>
   )
 })
 

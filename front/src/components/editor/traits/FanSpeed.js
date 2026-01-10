@@ -104,12 +104,12 @@ const FanSpeed = forwardRef((props, ref) => {
   }
 
   return (
-    <>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+    <div className="attributes_table">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>reversible</i>
         </div>
-        <div className="three_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setReversible(checked)
@@ -120,11 +120,11 @@ const FanSpeed = forwardRef((props, ref) => {
         </div>
       </div>
 
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>commandOnlyFanSpeed</i>
         </div>
-        <div className="three_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setCommandOnlyFanSpeed(checked)
@@ -135,11 +135,11 @@ const FanSpeed = forwardRef((props, ref) => {
         </div>
       </div>
 
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>supportsFanSpeedPercent</i>
         </div>
-        <div className="three_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setSupportsFanSpeedPercent(checked)
@@ -153,11 +153,11 @@ const FanSpeed = forwardRef((props, ref) => {
       {
         supportsFanSpeedPercent ? <></> :
 
-        <div className="three_table_row">
-          <div className="three_table_cel align_right">
+        <div className="attributes_row">
+          <div className="attributes_col_1 align_right attributes_col_allign_up">
             <i>availableFanSpeeds</i>
           </div>
-          <div className="three_table_cel">
+          <div className="attributes_col_2 attribute_table_form">
             {
               availableFanSpeeds.speeds.map((speed, index) => {
                 return (
@@ -217,7 +217,7 @@ const FanSpeed = forwardRef((props, ref) => {
         </div>
       }
 
-    </>
+    </div>
   );
 
 })

@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react";
-import {Button} from '@mui/material';
+import {Button, TextField, Select, MenuItem} from '@mui/material';
 import Switch from "react-switch";
 
-import Toast from "../web/Toast";
+import Toast from "../../components/web/Toast";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
 
@@ -52,8 +52,8 @@ function Settings() {
   }, [])
 
   const update = (event) => {
-    const id = event.target.id.split("/");
-    const value = (event.target.id === "log/days" ? parseInt(event.target.value) : event.target.value)
+    const id = (event.target.id || event.target.name || "").split("/");
+    const value = (event.target.id === "log/days" ? (parseInt(event.target.value) < 0 ? 0 : parseInt(event.target.value)) : event.target.value)
     var _settings = {...settings};
     if (id.length === 1) {
       _settings[id[0]] = value;
@@ -133,7 +133,7 @@ function Settings() {
   }
 
   return (
-    <div>
+    <>
       <div className="page_block_container">
         <h2>Actions on Google</h2>
         <div className="advise">
@@ -146,10 +146,10 @@ function Settings() {
           <div className="two_table_row">
             <div className="two_table_cel">Client ID</div>
             <div className="two_table_cel">
-              <input
-                type="text"
-                className="two_input"
+              <TextField
                 id="client_id"
+                variant="outlined"
+                className="two_input"
                 defaultValue={settings.client_id}
                 onChange={update}
               />
@@ -158,10 +158,10 @@ function Settings() {
           <div className="two_table_row">
             <div className="two_table_cel">Client Secret</div>
             <div className="two_table_cel">
-              <input
-                type="text"
-                className="two_input"
+              <TextField
                 id="client_secret"
+                variant="outlined"
+                className="two_input"
                 defaultValue={settings.client_secret}
                 onChange={update}
               />
@@ -170,33 +170,36 @@ function Settings() {
           <div className="two_table_row">
             <div className="two_table_cel">Authorization URL</div>
             <div className="two_table_cel">
-              <input
-                type="text"
+              <TextField
+                id="auth_url"
+                variant="outlined"
                 className="two_input"
                 value={"https://" + settings.ddns.hostname + "/auth/"}
-                disabled
+                disabled={true}
               />
             </div>
           </div>
           <div className="two_table_row">
             <div className="two_table_cel">Token URL</div>
             <div className="two_table_cel">
-              <input
-                type="text"
+              <TextField
+                id="token_url"
+                variant="outlined"
                 className="two_input"
                 value={"https://" + settings.ddns.hostname + "/token/"}
-                disabled
+                disabled={true}
               />
             </div>
           </div>
           <div className="two_table_row">
             <div className="two_table_cel">Fulfillment URL</div>
             <div className="two_table_cel">
-              <input
-                type="text"
+              <TextField
+                id="fullfilment_url"
+                variant="outlined"
                 className="two_input"
                 value={"https://" + settings.ddns.hostname + "/smarthome/"}
-                disabled
+                disabled={true}
               />
             </div>
           </div>
@@ -221,13 +224,15 @@ function Settings() {
           </span>
         </div>
         <hr />
-        <div className="two_table_row">
-          <div className="two_table_cel">Enable</div>
-          <div className="two_table_cel">
-            <Switch
-              onChange={enableSyncGoogle}
-              checked={settings.sync_google}
-            />
+        <div className="page_block_content_container">
+          <div className="two_table_row">
+            <div className="two_table_cel">Enable</div>
+            <div className="two_table_cel">
+              <Switch
+                onChange={enableSyncGoogle}
+                checked={settings.sync_google}
+              />
+            </div>
           </div>
         </div>
         <div className="page_block_content_container">
@@ -248,10 +253,10 @@ function Settings() {
           <div className="two_table_row">
             <div className="two_table_cel">User</div>
             <div className="two_table_cel">
-              <input
-                type="text"
-                className="two_input"
+              <TextField
                 id="mqtt/user"
+                variant="outlined"
+                className="two_input"
                 defaultValue={settings.mqtt.user}
                 onChange={update}
               />
@@ -260,10 +265,10 @@ function Settings() {
           <div className="two_table_row">
             <div className="two_table_cel">Password</div>
             <div className="two_table_cel">
-              <input
-                type="text"
-                className="two_input"
+              <TextField
                 id="mqtt/password"
+                variant="outlined"
+                className="two_input"
                 defaultValue={settings.mqtt.password}
                 onChange={update}
               />
@@ -343,29 +348,28 @@ function Settings() {
           <div className="two_table_row">
             <div className="two_table_cel">Provider</div>
             <div className="two_table_cel">
-              <select
-                name="type"
-                className="settings_select"
-                id="ddns/provider"
-                value={settings.ddns.provider}
+              <Select
+                name="ddns/provider"
+                className="two_input"
+                value={settings.ddns.provider || ""}
                 onChange={update}
               >
-                <option value="noip">Noip</option>
-                <option value="duckdns">Duck DNS</option>
-              </select>
+                <MenuItem value="noip">Noip</MenuItem>
+                <MenuItem value="duckdns">Duck DNS</MenuItem>
+              </Select>
             </div>
           </div>
           {
             settings.ddns.provider === "noip"
             ?
-            <div>
+            <>
               <div className="two_table_row">
                 <div className="two_table_cel">Username</div>
                 <div className="two_table_cel">
-                  <input
-                    type="text"
-                    className="two_input"
+                  <TextField
                     id="ddns/username"
+                    variant="outlined"
+                    className="two_input"
                     defaultValue={settings.ddns.username}
                     onChange={update}
                   />
@@ -374,48 +378,48 @@ function Settings() {
               <div className="two_table_row">
                 <div className="two_table_cel">Password</div>
                 <div className="two_table_cel">
-                  <input
-                    type="text"
-                    className="two_input"
+                  <TextField
                     id="ddns/password"
+                    variant="outlined"
+                    className="two_input"
                     defaultValue={settings.ddns.password}
                     onChange={update}
                   />
                 </div>
               </div>
-            </div>
+            </>
             :
-            <div></div>
+            <></>
           }
           {
             settings.ddns.provider === "duckdns"
             ?
-            <div>
+            <>
               <div className="two_table_row">
                 <div className="two_table_cel">Token</div>
                 <div className="two_table_cel">
-                  <input
-                    type="text"
-                    className="two_input"
+                  <TextField
                     id="ddns/password"
+                    variant="outlined"
+                    className="two_input"
                     defaultValue={settings.ddns.password}
                     onChange={update}
                   />
                 </div>
               </div>
-            </div>
+            </>
             :
-            <div></div>
+            <></>
           }
           
 
           <div className="two_table_row">
             <div className="two_table_cel">Hostname</div>
             <div className="two_table_cel">
-              <input
-                type="text"
-                className="two_input"
+              <TextField
                 id="ddns/hostname"
+                variant="outlined"
+                className="two_input"
                 defaultValue={settings.ddns.hostname}
                 onChange={update}
               />
@@ -437,11 +441,11 @@ function Settings() {
           <div className="two_table_row">
             <div className="two_table_cel">Days to save</div>
             <div className="two_table_cel">
-              <input
-                type="number"
-                min="0"
-                className="two_input"
+              <TextField
                 id="log/days"
+                type="number"
+                variant="outlined"
+                className="two_input"
                 defaultValue={settings.log.days}
                 onChange={update}
               />
@@ -454,7 +458,7 @@ function Settings() {
       </div>
 
       <Toast alert={alert}/>
-    </div>
+    </>
   );
   
 }

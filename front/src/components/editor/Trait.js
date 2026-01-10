@@ -72,37 +72,37 @@ const Trait = (props) => {
   }
 
     return (
-        <div>
-            <div className="three_table_row">
-            <div className="three_table_cel">
-                <b>{deviceReference.traits[props.trait].name}</b>
-            </div>
-            <div className="three_table_cel">
-                <Switch
-                    onChange={enableTrait}
-                    checked={show_attributes}
-                />
-            </div>
-            <div className="three_table_cel">
-                Read Google's{" "}
-                <a
-                href={
-                    "https://developers.google.com/assistant/smarthome/traits/" +
-                    props.trait.split(".")[3].toLowerCase()
-                }
-                target="blanck"
-                >
-                documentation
-                </a>
-            </div>
+        <>
+            <div className="three_table_row"  style={{marginBottom: 10}}>
+                <div className="three_table_cel">
+                    <b>{deviceReference.traits[props.trait].name}</b>
+                </div>
+                <div className="three_table_cel">
+                    <Switch
+                        onChange={enableTrait}
+                        checked={show_attributes}
+                    />
+                </div>
+                <div className="three_table_cel">
+                    Read Google's{" "}
+                    <a
+                    href={
+                        "https://developers.google.com/assistant/smarthome/traits/" +
+                        props.trait.split(".")[3].toLowerCase()
+                    }
+                    target="blanck"
+                    >
+                    documentation
+                    </a>
+                </div>
             </div>
             {
                 show_attributes ? 
                     renderAttrinutes(props.trait)
                 : <></>
             }
-            <hr className="separator" />
-        </div>
+            <hr className="separator" style={{marginTop: show_attributes ? 25 : 15}}/>
+        </>
     )
 
 }

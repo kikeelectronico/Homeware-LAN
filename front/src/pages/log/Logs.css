@@ -1,7 +1,11 @@
+.logs_container {
+  width: 100%;
+  display: "flex";
+  flex-direction: column;
+}
+
 .logs_line {
-  width: 80%;
-  margin: 10px 0 0 8%;
-  padding: 0 20px 10px 20px;
+  padding: 10px 20px 10px 20px;
   text-align: left;
   border-bottom: 1px solid #eee;
 }

@@ -1,5 +1,6 @@
 import React, {useEffect, forwardRef, useImperativeHandle, useState} from 'react';
 import Switch from "react-switch";
+import {TextField} from '@mui/material';
 
 const attributes = {
   maxTimerLimitSec: 3600,
@@ -34,12 +35,12 @@ const Timer = forwardRef((props, ref) => {
   }))
 
   return (
-    <>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+    <div className="attributes_table">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>commandOnlyTimer</i>
         </div>
-        <div className="three_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setCommandOnlyTimer(checked)
@@ -49,23 +50,23 @@ const Timer = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>maxTimerLimitSec</i>
         </div>
-        <div className="three_table_cel">
-          <input
+        <div className="attributes_col_2">
+          <TextField
+            variant="outlined"
             type="number"
+            value={maxTimerLimitSec}
             onChange={event => {
               setMaxTimerLimitSec(parseInt(event.target.value))
               props.updateAttributes("maxTimerLimitSec", parseInt(event.target.value), "update")
             }}
-            value={maxTimerLimitSec}
-            min="0" max="10000" className="int_input"
           />
         </div>
       </div>
-    </>
+    </div>
   )
 })
 

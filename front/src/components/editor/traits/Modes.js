@@ -139,12 +139,12 @@ const Modes = forwardRef((props, ref) => {
   }
 
   return (
-    <>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+    <div className="attributes_table">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>commandOnlyModes</i>
         </div>
-        <div className="three_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setCommandOnlyModes(checked)
@@ -154,11 +154,11 @@ const Modes = forwardRef((props, ref) => {
           />
         </div>
       </div>
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right">
           <i>queryOnlyModes</i>
         </div>
-        <div className="three_table_cel">
+        <div className="attributes_col_2">
           <Switch
             onChange={(checked) => {
               setQueryOnlyModes(checked)
@@ -169,11 +169,11 @@ const Modes = forwardRef((props, ref) => {
         </div>
       </div>
 
-      <div className="three_table_row">
-        <div className="three_table_cel align_right">
+      <div className="attributes_row">
+        <div className="attributes_col_1 align_right attributes_col_allign_up">
           <i>availableModes</i>
         </div>
-        <div className="three_table_cel">
+        <div className="attributes_col_2 attribute_table_form">
           {
             availableModes.map((mode, index) => {
               return (
@@ -244,7 +244,7 @@ const Modes = forwardRef((props, ref) => {
           </Box>
         </div>
       </div>
-    </>
+    </div>
   );
   
 })
