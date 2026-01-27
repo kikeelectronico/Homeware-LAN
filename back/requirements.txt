@@ -7,4 +7,4 @@ bcrypt==5.0.0
 redis==7.1.0
 google-auth==2.47.0
 pymongo==4.16.0
-python-multipart==0.0.21
+python-multipart==0.0.22
