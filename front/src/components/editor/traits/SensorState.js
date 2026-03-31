@@ -92,7 +92,7 @@ class SensorState extends React.Component {
     return (
       <div>
         <div className="two_table_row">
-          <div className="two_table_cel align_right">
+          <div className="two_table_cel two_table_label align_right">
             Sensor type
           </div>
           <div className="two_table_cel">

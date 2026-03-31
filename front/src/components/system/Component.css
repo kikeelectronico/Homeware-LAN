@@ -12,6 +12,8 @@
 
 .component_text {
   font-size: 18px;
+  color: var(--text-secundary);
+  font-weight: 500;
 }
 
 .component_label_container {

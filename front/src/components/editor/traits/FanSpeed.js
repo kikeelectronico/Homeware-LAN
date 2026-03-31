@@ -106,7 +106,7 @@ const FanSpeed = forwardRef((props, ref) => {
   return (
     <div className="attributes_table">
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>reversible</i>
         </div>
         <div className="attributes_col_2">
@@ -121,7 +121,7 @@ const FanSpeed = forwardRef((props, ref) => {
       </div>
 
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>commandOnlyFanSpeed</i>
         </div>
         <div className="attributes_col_2">
@@ -136,7 +136,7 @@ const FanSpeed = forwardRef((props, ref) => {
       </div>
 
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>supportsFanSpeedPercent</i>
         </div>
         <div className="attributes_col_2">
@@ -154,7 +154,7 @@ const FanSpeed = forwardRef((props, ref) => {
         supportsFanSpeedPercent ? <></> :
 
         <div className="attributes_row">
-          <div className="attributes_col_1 align_right attributes_col_allign_up">
+          <div className="attributes_col_1 attributes_label align_right attributes_col_allign_up">
             <i>availableFanSpeeds</i>
           </div>
           <div className="attributes_col_2 attribute_table_form">

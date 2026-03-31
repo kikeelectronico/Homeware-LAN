@@ -7,7 +7,7 @@ const Text = (props) => {
 
     return (
       <div className="two_table_row">
-        <div className="two_table_cel">
+        <div className="two_table_cel two_table_label">
           {props.name}
         </div>
         <div className="two_table_cel">

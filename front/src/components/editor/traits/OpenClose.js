@@ -38,7 +38,7 @@ const OpenClose = forwardRef((props, ref) => {
   return (
     <div className="attributes_table">
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>discreteOnlyOpenClose</i>
         </div>
         <div className="attributes_col_2">
@@ -53,7 +53,7 @@ const OpenClose = forwardRef((props, ref) => {
       </div>
 
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>commandOnlyOpenClose</i>
         </div>
         <div className="attributes_col_2">
@@ -68,7 +68,7 @@ const OpenClose = forwardRef((props, ref) => {
       </div>
 
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>queryOnlyOpenClose</i>
         </div>
         <div className="attributes_col_2">

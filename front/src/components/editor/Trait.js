@@ -74,8 +74,8 @@ const Trait = (props) => {
     return (
         <>
             <div className="three_table_row"  style={{marginBottom: 10}}>
-                <div className="three_table_cel">
-                    <b>{deviceReference.traits[props.trait].name}</b>
+                <div className="three_table_cel three_table_label">
+                    {deviceReference.traits[props.trait].name}
                 </div>
                 <div className="three_table_cel">
                     <Switch

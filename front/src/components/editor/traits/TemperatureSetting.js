@@ -73,7 +73,7 @@ const TemperatureSetting = forwardRef((props, ref) => {
   return (
     <div className="attributes_table">
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>commandOnlyTemperatureSetting</i>
         </div>
         <div className="attributes_col_2">
@@ -87,7 +87,7 @@ const TemperatureSetting = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>queryOnlyTemperatureSetting</i>
         </div>
         <div className="attributes_col_2">
@@ -101,7 +101,7 @@ const TemperatureSetting = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           Thermostat modes
         </div>
         <div className="attributes_col_2">
@@ -117,7 +117,7 @@ const TemperatureSetting = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right"></div>
+        <div className="attributes_col_1 attributes_label align_right"></div>
         <div className="attributes_col_2">
           <i>heat</i>
         </div>
@@ -131,7 +131,7 @@ const TemperatureSetting = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right"></div>
+        <div className="attributes_col_1 attributes_label align_right"></div>
         <div className="attributes_col_2">
           <i>cool</i>
         </div>
@@ -145,7 +145,7 @@ const TemperatureSetting = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right"></div>
+        <div className="attributes_col_1 attributes_label align_right"></div>
         <div className="attributes_col_2">
           <i>on</i>
         </div>
@@ -159,7 +159,7 @@ const TemperatureSetting = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right"></div>
+        <div className="attributes_col_1 attributes_label align_right"></div>
         <div className="attributes_col_2">
           <i>heatcool</i>
         </div>
@@ -173,7 +173,7 @@ const TemperatureSetting = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right"></div>
+        <div className="attributes_col_1 attributes_label align_right"></div>
         <div className="attributes_col_2">
           <i>auto</i>
         </div>
@@ -187,7 +187,7 @@ const TemperatureSetting = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right"></div>
+        <div className="attributes_col_1 attributes_label align_right"></div>
         <div className="attributes_col_2">
           <i>fan-only</i>
         </div>
@@ -201,7 +201,7 @@ const TemperatureSetting = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right"></div>
+        <div className="attributes_col_1 attributes_label align_right"></div>
         <div className="attributes_col_2">
           <i>purifier</i>
         </div>
@@ -215,7 +215,7 @@ const TemperatureSetting = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right"></div>
+        <div className="attributes_col_1 attributes_label align_right"></div>
         <div className="attributes_col_2">
           <i>eco</i>
         </div>
@@ -229,7 +229,7 @@ const TemperatureSetting = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right"></div>
+        <div className="attributes_col_1 attributes_label align_right"></div>
         <div className="attributes_col_2">
           <i>dry</i>
         </div>
@@ -243,7 +243,7 @@ const TemperatureSetting = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>thermostatTemperatureUnit</i>
         </div>
         <div className="attributes_col_2">
@@ -262,7 +262,7 @@ const TemperatureSetting = forwardRef((props, ref) => {
         </div>
       </div>      
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           Minimum temperature
         </div>
         <div className="attributes_col_2">
@@ -278,7 +278,7 @@ const TemperatureSetting = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           Maximum temperature
         </div>
         <div className="attributes_col_2">
@@ -294,7 +294,7 @@ const TemperatureSetting = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           Range
         </div>
         <div className="attributes_col_2">

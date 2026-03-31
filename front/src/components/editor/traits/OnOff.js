@@ -35,7 +35,7 @@ const OnOff = forwardRef((props, ref) => {
   return (
     <div className="attributes_table">
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>commandOnlyOnOff</i>
         </div>
         <div className="attributes_col_2">
@@ -49,7 +49,7 @@ const OnOff = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>queryOnlyOnOff</i>
         </div>
         <div className="attributes_col_2">

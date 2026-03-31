@@ -16,5 +16,5 @@
   font-size: 18px;
   text-decoration: none;
   cursor: pointer;
-  color: black;
+  color: var(--text-primary);
 }

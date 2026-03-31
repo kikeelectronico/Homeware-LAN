@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import ReactJsonView from '@microlink/react-json-view'
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import Toast from "../web/Toast";
 import getCookieValue from '../../functions'
@@ -21,6 +22,7 @@ function Info() {
       type: ""
     })
   const [alert, setAlert] = useState(null)
+  const prefersDark = useMediaQuery('(prefers-color-scheme: dark)');
 
   useEffect(() => setId(window.location.pathname.split('/')[3]), [])
 
@@ -57,7 +59,11 @@ function Info() {
         </div>
         <hr/>
         <div className="page_block_buttons_container">
-          <ReactJsonView src={device.description} />
+          <ReactJsonView
+            src={device.description}
+            theme={prefersDark ? "monokai" : "rjv-default"}
+            style={{ background: "var(--surface-background)", color: "var(--text-primary)" }}
+          />
         </div>
       </div>
       <div className="page_block_container">
@@ -67,7 +73,11 @@ function Info() {
         </div>
         <hr/>
         <div className="page_block_buttons_container">
-          <ReactJsonView src={device.states} />
+          <ReactJsonView
+            src={device.states}
+            theme={prefersDark ? "monokai" : "rjv-default"}
+            style={{ background: "var(--surface-background)", color: "var(--text-primary)" }}
+          />
         </div>
       </div>
       <Toast alert={alert}/>

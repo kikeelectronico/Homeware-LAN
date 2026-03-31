@@ -96,7 +96,7 @@ function Access () {
         <hr />
         <div className="page_block_content_container">
           <div className="two_table_row">
-            <div className="two_table_cel">API Key</div>
+            <div className="two_table_cel two_table_label">API Key</div>
             <div className="two_table_cel">
               <TextField
                 id="apikey"
@@ -121,7 +121,7 @@ function Access () {
         <hr />
         <div className="page_block_content_container">
           <div className="two_table_row">
-            <div className="two_table_cel">Password</div>
+            <div className="two_table_cel two_table_label">Password</div>
             <div className="two_table_cel">
                <TextField
                   type="password"
@@ -133,7 +133,7 @@ function Access () {
             </div>
           </div>
           <div className="two_table_row">
-            <div className="two_table_cel">New password</div>
+            <div className="two_table_cel two_table_label">New password</div>
             <div className="two_table_cel">
               <TextField
                   type="password"
@@ -145,7 +145,7 @@ function Access () {
             </div>
           </div>
           <div className="two_table_row">
-            <div className="two_table_cel">New password</div>
+            <div className="two_table_cel two_table_label">New password</div>
             <div className="two_table_cel">
               <TextField
                   type="password"

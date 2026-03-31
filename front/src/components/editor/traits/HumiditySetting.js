@@ -50,7 +50,7 @@ const HumiditySetting = forwardRef((props, ref) => {
   return (
     <div className="attributes_table">
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>commandOnlyHumiditySetting</i>
         </div>
         <div className="attributes_col_2">
@@ -64,7 +64,7 @@ const HumiditySetting = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>queryOnlyHumiditySetting</i>
         </div>
         <div className="attributes_col_2">
@@ -78,7 +78,7 @@ const HumiditySetting = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           Minimum humidity
         </div>
         <div className="attributes_col_2">
@@ -93,7 +93,7 @@ const HumiditySetting = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           Maximum humidity
         </div>
         <div className="attributes_col_2">

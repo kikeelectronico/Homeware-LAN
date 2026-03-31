@@ -7,14 +7,14 @@
   flex-direction: column;
   gap: 10px;
   border-radius: 20px;
-  background-color: white;
+  background-color: var(--surface-background);
 }
 
 .login_element {
 }
 
 .login_input {
-  border: lightgray solid 1px;
+  border: var(--border-primary) solid 1px;
 }
 
 .alert_message {
@@ -22,7 +22,6 @@
   margin-bottom: 20px;
   padding: 20px;
   background-color: rgba(255, 255, 0, 0.5);
-  color: black;
+  color: var(--text-primary);
   border-radius: 20px;
 }
-

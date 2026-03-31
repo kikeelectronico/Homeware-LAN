@@ -144,7 +144,7 @@ function Settings() {
         <hr />
         <div className="page_block_content_container">
           <div className="two_table_row">
-            <div className="two_table_cel">Client ID</div>
+            <div className="two_table_cel two_table_label">Client ID</div>
             <div className="two_table_cel">
               <TextField
                 id="client_id"
@@ -156,7 +156,7 @@ function Settings() {
             </div>
           </div>
           <div className="two_table_row">
-            <div className="two_table_cel">Client Secret</div>
+            <div className="two_table_cel two_table_label">Client Secret</div>
             <div className="two_table_cel">
               <TextField
                 id="client_secret"
@@ -168,7 +168,7 @@ function Settings() {
             </div>
           </div>
           <div className="two_table_row">
-            <div className="two_table_cel">Authorization URL</div>
+            <div className="two_table_cel two_table_label">Authorization URL</div>
             <div className="two_table_cel">
               <TextField
                 id="auth_url"
@@ -180,7 +180,7 @@ function Settings() {
             </div>
           </div>
           <div className="two_table_row">
-            <div className="two_table_cel">Token URL</div>
+            <div className="two_table_cel two_table_label">Token URL</div>
             <div className="two_table_cel">
               <TextField
                 id="token_url"
@@ -192,7 +192,7 @@ function Settings() {
             </div>
           </div>
           <div className="two_table_row">
-            <div className="two_table_cel">Fulfillment URL</div>
+            <div className="two_table_cel two_table_label">Fulfillment URL</div>
             <div className="two_table_cel">
               <TextField
                 id="fullfilment_url"
@@ -226,7 +226,7 @@ function Settings() {
         <hr />
         <div className="page_block_content_container">
           <div className="two_table_row">
-            <div className="two_table_cel">Enable</div>
+            <div className="two_table_cel two_table_label">Enable</div>
             <div className="two_table_cel">
               <Switch
                 onChange={enableSyncGoogle}
@@ -251,7 +251,7 @@ function Settings() {
         <hr />
         <div className="page_block_content_container">
           <div className="two_table_row">
-            <div className="two_table_cel">User</div>
+            <div className="two_table_cel two_table_label">User</div>
             <div className="two_table_cel">
               <TextField
                 id="mqtt/user"
@@ -263,7 +263,7 @@ function Settings() {
             </div>
           </div>
           <div className="two_table_row">
-            <div className="two_table_cel">Password</div>
+            <div className="two_table_cel two_table_label">Password</div>
             <div className="two_table_cel">
               <TextField
                 id="mqtt/password"
@@ -288,7 +288,7 @@ function Settings() {
         <hr/>
         <div className="page_block_content_container">
           <div className="three_table_row">
-            <div className="three_table_cel align_right">
+            <div className="three_table_cel three_table_label align_right">
               Automatic state sync
             </div>
             <div className="three_table_cel">
@@ -320,13 +320,13 @@ function Settings() {
         <hr />
         <div className="page_block_content_container">
           <div className="two_table_row">
-            <div className="two_table_cel">Status:</div>
+            <div className="two_table_cel two_table_label">Status:</div>
             <div className="two_table_cel">
               {settings.ddns.status}
             </div>
           </div>
           <div className="two_table_row">
-            <div className="two_table_cel">IP and time:</div>
+            <div className="two_table_cel two_table_label">IP and time:</div>
             <div className="two_table_cel">
               {settings.ddns.ip +
                 " updated at " +
@@ -337,7 +337,7 @@ function Settings() {
         <hr />
         <div className="page_block_content_container">
           <div className="two_table_row">
-            <div className="two_table_cel">Enable</div>
+            <div className="two_table_cel two_table_label">Enable</div>
             <div className="two_table_cel">
               <Switch
                 onChange={enableDdnsProvider}
@@ -346,7 +346,7 @@ function Settings() {
             </div>
           </div>
           <div className="two_table_row">
-            <div className="two_table_cel">Provider</div>
+            <div className="two_table_cel two_table_label">Provider</div>
             <div className="two_table_cel">
               <Select
                 name="ddns/provider"
@@ -364,7 +364,7 @@ function Settings() {
             ?
             <>
               <div className="two_table_row">
-                <div className="two_table_cel">Username</div>
+                <div className="two_table_cel two_table_label">Username</div>
                 <div className="two_table_cel">
                   <TextField
                     id="ddns/username"
@@ -376,7 +376,7 @@ function Settings() {
                 </div>
               </div>
               <div className="two_table_row">
-                <div className="two_table_cel">Password</div>
+                <div className="two_table_cel two_table_label">Password</div>
                 <div className="two_table_cel">
                   <TextField
                     id="ddns/password"
@@ -396,7 +396,7 @@ function Settings() {
             ?
             <>
               <div className="two_table_row">
-                <div className="two_table_cel">Token</div>
+                <div className="two_table_cel two_table_label">Token</div>
                 <div className="two_table_cel">
                   <TextField
                     id="ddns/password"
@@ -414,7 +414,7 @@ function Settings() {
           
 
           <div className="two_table_row">
-            <div className="two_table_cel">Hostname</div>
+            <div className="two_table_cel two_table_label">Hostname</div>
             <div className="two_table_cel">
               <TextField
                 id="ddns/hostname"
@@ -439,7 +439,7 @@ function Settings() {
         <hr />
         <div className="page_block_content_container">
           <div className="two_table_row">
-            <div className="two_table_cel">Days to save</div>
+            <div className="two_table_cel two_table_label">Days to save</div>
             <div className="two_table_cel">
               <TextField
                 id="log/days"

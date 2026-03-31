@@ -153,6 +153,12 @@
   padding-right: 10px;
 }
 
+.two_table_label {
+  color: var(--text-secundary);
+  font-weight: 500;
+  font-size: 0.95em;
+}
+
 .two_table_cel:first-child {
   min-width: 160px;
   flex-shrink: 0;
@@ -169,6 +175,12 @@
 .three_table_cel {
   display: flex;
   padding-right: 10px;
+}
+
+.three_table_label {
+  color: var(--text-secundary);
+  font-weight: 600;
+  font-size: 0.95em;
 }
 
 .three_table_cel:first-child {
@@ -238,7 +250,8 @@
 
 .page_search_bar {
   width: 100%;
-  height: 20px;
+  height: 36px;
+  line-height: 36px;
   color: var(--text-secundary);
   position: relative;
   border: none;
