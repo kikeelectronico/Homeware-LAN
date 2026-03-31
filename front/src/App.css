@@ -25,7 +25,7 @@
 .advise {
   width: 70%;
   margin-top: 10px;
-  color: #aaa;
+  color: var(--text-subtle);
 }
 
 .two_input {
@@ -65,8 +65,8 @@
   padding-right: 30px;
   text-align: left;
   vertical-align: middle;
-  background-color: #1c8adb;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--primary-contrast);
   font-size: 1.5em;
   -webkit-box-shadow: -1px 3px 22px -10px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: -1px 3px 22px -10px rgba(0, 0, 0, 0.75);
@@ -93,7 +93,7 @@
   padding: 20px;
   padding-right: 50px;
   text-align: left;
-  background-color: white;
+  background-color: var(--surface-background);
   position: relative;
 }
 
@@ -112,14 +112,14 @@
   box-sizing: border-box;
   padding: 10px;
   border-radius: 5px;
-  background-color: #1c8adb;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--primary-contrast);
   cursor: pointer;
   text-align: center;
 }
 
 .menu_data_version {
-  color: #aaa;
+  color: var(--text-subtle);
 }
 
 .align_right {
@@ -183,7 +183,7 @@
   width: 80%;
   margin-left: 8%;
   margin-top: 20px;
-  background-color: white;
+  background-color: var(--surface-background);
   padding-top: 10px;
   padding-left: 20px;
   padding-bottom: 20px;
@@ -239,7 +239,7 @@
 .page_search_bar {
   width: 100%;
   height: 20px;
-  color: #777;
+  color: var(--text-secundary);
   position: relative;
   border: none;
 }
@@ -247,7 +247,7 @@
 .page_search_bar:focus {
   outline: none;
   box-shadow: none;
-  border-color: #ccc;
+  border-color: var(--border-primary);
 }
 
 .page_search_clear {
@@ -258,12 +258,12 @@
   border: none;
   background: none;
   font-size: 22px;
-  color: #aaa;
+  color: var(--text-subtle);
   cursor: pointer;
 }
 
 .page_search_clear:hover {
-  color: #aaa;
+  color: var(--text-subtle);
 }
 
 @media only screen and (max-width: 800px) {
@@ -279,7 +279,7 @@
   .menu_icon_bar_3 {
     width: 35px;
     height: 5px;
-    background-color: white;
+    background-color: var(--primary-contrast);
     margin: 6px 0;
     transition: 0.4s;
   }
@@ -357,7 +357,7 @@
     width: 80%;
     margin-left: 5%;
     margin-top: 20px;
-    background-color: white;
+    background-color: var(--surface-background);
     padding-top: 10px;
     padding-left: 20px;
     padding-bottom: 20px;

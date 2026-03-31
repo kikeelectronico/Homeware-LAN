@@ -1,6 +1,6 @@
 .attribute_advise {
   width: 70%;
-  color: #aaa;
+  color: var(--text-subtle);
 }
 
 .add_attribute_button{
@@ -15,7 +15,7 @@
   margin-top: 20px;
   margin-bottom: 10px;
   text-align: left;
-  color: #aaa;
+  color: var(--text-subtle);
 }
 
 /* Attributes table */
@@ -74,7 +74,7 @@
 }
 
 .attribute_table_subattribute {
-  border-top: lightgray solid 1px;
+  border-top: var(--border-primary) solid 1px;
   margin-top: 10px;
   padding-top: 20px;
 }

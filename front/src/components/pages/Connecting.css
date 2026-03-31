@@ -9,7 +9,7 @@
   }
 
   .param_table_header {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-subtle);
     text-align: center;
   }
 
@@ -31,7 +31,7 @@
   }
 
   .command_table_header {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-subtle);
     text-align: center;
   }
 
