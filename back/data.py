@@ -429,12 +429,8 @@ class Data:
 
 # APIKEY
 
-	def getAPIKey(self):
-		apikey = self.mongo_db["apikeys"].find()[0]["apikey"]
-		data = {
-			"apikey": apikey
-		}
-		return data
+	def getAPIKeys(self):
+		return self.mongo_db["apikeys"].find({}, {"apikey": 1, "agent": 1})
 
 	def createAPIKey(self):
 		# Generate the token

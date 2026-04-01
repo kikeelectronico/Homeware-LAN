@@ -229,6 +229,10 @@
   text-align: left;
 }
 
+.separator {
+  width: 90%;
+}
+
 /* Page type: clear */
 
 .page_buttons_containter {

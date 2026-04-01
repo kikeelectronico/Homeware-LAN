@@ -10,19 +10,19 @@ def test_createAPIKey():
 	del data
 
 
-def test_getAPIKey():
+def test_getAPIKeys():
 	data = Data()
 	data.setup()
-	access = data.getAPIKey()
+	access = data.getAPIKeys()[0]
 	assert "apikey" in access
 	assert type(access["apikey"]) == str
 	assert len(access["apikey"]) == 40
 	del data
 
-def test_validateAPIKey():
+def test_validateAPIKeys():
 	data = Data()
 	data.setup()
-	access = data.getAPIKey()
+	access = data.getAPIKeys()[0]
 	assert "apikey" in access
 	assert type(access["apikey"]) == str
 	assert len(access["apikey"]) == 40

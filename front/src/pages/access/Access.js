@@ -3,15 +3,19 @@ import React, {useState, useEffect} from "react";
 import Toast from "../../components/web/Toast";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
-import {Button, TextField} from '@mui/material';
+import {Button, IconButton, TextField} from '@mui/material';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import "./Access.css";
 
 function Access () {
 
-  const [data, setData] = useState({apikey: ""})
+  const [data, setData] = useState([])
   const [current_pass, setCurrentPass] = useState("")
   const [new_pass_1, setNewPass1] = useState("")
   const [new_pass_2, setNewPass2] = useState("")
   const [alert, setAlert] = useState(null)
+  const [visibleKeys, setVisibleKeys] = useState(new Set())
 
   useEffect(() => {
     fetch(root + "api/access", {
@@ -27,7 +31,7 @@ function Access () {
       return response.json();
     })
     .then(data => {
-      setData(data[0]);
+      setData(Array.isArray(data) ? data : []);
     })
     .catch(error => {
       console.error("Error fetching access data:", error);
@@ -54,6 +58,23 @@ function Access () {
       console.error("Error generating API key:", error);
       setAlert({severity: "error", text: "Something went wrong."});
     });
+  }
+
+  const toggleKeyVisibility = (index) => {
+    setVisibleKeys(prev => {
+      const next = new Set(prev);
+      if (next.has(index)) {
+        next.delete(index);
+      } else {
+        next.add(index);
+      }
+      return next;
+    });
+  }
+
+  const getMaskedKey = (apikey) => {
+    const _apikey = apikey || "";
+    return "•".repeat(_apikey.length);
   }
 
   const changePassword = () => {    
@@ -95,18 +116,44 @@ function Access () {
         </div>
         <hr />
         <div className="page_block_content_container">
-          <div className="two_table_row">
-            <div className="two_table_cel two_table_label">API Key</div>
-            <div className="two_table_cel">
-              <TextField
-                id="apikey"
-                variant="outlined"
-                className="two_input"
-                value={data.apikey}
-                disabled={true}
-              />
+          {data.length === 0 ? (
+            <div className="advise">
+              <span>No API keys found.</span>
             </div>
-          </div>
+          ) : (
+            <div className="access_key_list">
+              {data.map((item, index) => (
+                <React.Fragment key={index}>
+                  <div className="access_key_item">
+                  <div className="access_key_row">
+                    <span className="access_key_label">Agent</span>
+                    <span className="access_key_value">{item.agent || "-"}</span>
+                  </div>
+                  <div className="access_key_row">
+                    <span className="access_key_label">API Key</span>
+                    <span className="access_key_value">
+                      {visibleKeys.has(index) ? (item.apikey || "-") : getMaskedKey(item.apikey)}
+                    </span>
+                    <IconButton
+                      aria-label={visibleKeys.has(index) ? "Hide API key" : "Show API key"}
+                      size="small"
+                      className="access_key_toggle"
+                      color="inherit"
+                      onClick={() => toggleKeyVisibility(index)}
+                    >
+                      {visibleKeys.has(index) ? (
+                        <VisibilityOffIcon fontSize="small" />
+                      ) : (
+                        <VisibilityIcon fontSize="small" />
+                      )}
+                    </IconButton>
+                  </div>
+                  </div>
+                  <hr className="separator"/>
+                </React.Fragment>
+              ))}
+            </div>
+          )}
         </div>
         <div className="page_block_buttons_container">
           <Button variant="contained" onClick={createAPIKey}>Generate</Button>

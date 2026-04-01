@@ -412,10 +412,10 @@ The user's token.
 ### Returns
 `True` if the token is valid. `False` if the token is invalid.
 
-## Method - getAPIKey
-This method returns the active apiakey.
+## Method - getAPIKeys
+This method returns the apiakeys.
 
-`myData.getAPIKey()`
+`myData.getAPIKeys()`
 
 ### Arguments
 None

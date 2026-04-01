@@ -9,11 +9,13 @@ router = APIRouter()
 data_conector = Data()
 
 class Access(BaseModel):
+    _id: str
+    agent: str
     apikey: str
 
 @router.get("/api/access", dependencies=[Depends(allowUser)])
 def get_access() -> list[Access]:
-    return [data_conector.getAPIKey()]
+    return data_conector.getAPIKeys()
 
 @router.patch("/api/access/", dependencies=[Depends(allowUser)])
 def update_access() -> Access:
@@ -24,7 +26,7 @@ def update_access() -> Access:
 @router.get("/api/access/get", dependencies=[Depends(allowUser)], include_in_schema=False)
 @router.get("/api/access/get/", dependencies=[Depends(allowUser)], include_in_schema=False)
 def get_access_deprecated():
-    return data_conector.getAPIKey()
+    return data_conector.getAPIKeys()[0]
 
 @router.get("/api/access/create", dependencies=[Depends(allowUser)], include_in_schema=False)
 @router.get("/api/access/create/", dependencies=[Depends(allowUser)], include_in_schema=False)
