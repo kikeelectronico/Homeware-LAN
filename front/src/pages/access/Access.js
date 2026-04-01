@@ -4,6 +4,7 @@ import Toast from "../../components/web/Toast";
 import getCookieValue from "../../functions";
 import { root } from "../../constants";
 import {Button, IconButton, TextField} from '@mui/material';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import "./Access.css";
@@ -57,6 +58,29 @@ function Access () {
     .catch(error => {
       console.error("Error generating API key:", error);
       setAlert({severity: "error", text: "Something went wrong."});
+    });
+  }
+
+  const deleteAPIKey = (id) => {
+    if (!window.confirm("Do you want to delete the API key?")) {
+      return;
+    }
+    fetch(root + "api/access/" + id, {
+      method: "DELETE",
+      headers: {
+        "authorization": "bearer " + getCookieValue("token")
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      setData((prev) => prev.filter((item) => item._id !== id));
+      setAlert({severity: "success", text: "API key deleted."});
+    })
+    .catch(error => {
+      console.error("Error deleting API key:", error);
+      setAlert({severity: "error", text: "The API key could not be deleted."});
     });
   }
 
@@ -128,6 +152,15 @@ function Access () {
                   <div className="access_key_row">
                     <span className="access_key_label">Agent</span>
                     <span className="access_key_value">{item.agent || "-"}</span>
+                    <IconButton
+                      aria-label="Delete API key"
+                      size="small"
+                      className="access_key_delete"
+                      color="inherit"
+                      onClick={() => deleteAPIKey(item["_id"])}
+                    >
+                      <DeleteOutlineIcon fontSize="small" />
+                    </IconButton>
                   </div>
                   <div className="access_key_row">
                     <span className="access_key_label">API Key</span>
@@ -148,7 +181,7 @@ function Access () {
                       )}
                     </IconButton>
                   </div>
-                  </div>
+                </div>
                   <hr className="separator"/>
                 </React.Fragment>
               ))}

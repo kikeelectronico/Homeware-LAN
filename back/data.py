@@ -449,6 +449,13 @@ class Data:
 			"apikey": token
 		}
 		return data
+	
+	def deleteAPIKey(self, apikey_id):
+		filter = {"_id": apikey_id}
+		if self.mongo_db["apikeys"].count_documents(filter) == 1:
+			result = self.mongo_db["apikeys"].delete_one(filter)
+			return result.deleted_count == 1
+		return False
 
 	def validateAPIKey(self, apikey):
 		filter = {"apikey": apikey}

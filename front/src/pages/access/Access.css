@@ -39,3 +39,7 @@
 .access_key_toggle {
   margin-left: 6px;
 }
+
+.access_key_delete {
+  margin-left: auto !important;
+}
