@@ -13,7 +13,7 @@ function ApiKey({ setAlert }) {
   const [visibleKeys, setVisibleKeys] = useState(new Set())
   const [newAgent, setNewAgent] = useState("")
 
-  useEffect(() => {
+  const loadAPIKeys = () => {
     fetch(root + "api/access", {
       method: "GET",
       headers: {
@@ -33,6 +33,10 @@ function ApiKey({ setAlert }) {
       console.error("Error fetching access data:", error);
       setAlert({severity: "error", text: "Unable to load the data."});
     });
+  }
+
+  useEffect(() => {
+    loadAPIKeys();
   }, [setAlert])
 
   const createAPIKey = () => {
@@ -51,8 +55,8 @@ function ApiKey({ setAlert }) {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      window.location.href = "/access";
       setAlert({severity: "success", text: "API key generated."});
+      loadAPIKeys();
     })
     .catch(error => {
       console.error("Error generating API key:", error);
@@ -77,8 +81,8 @@ function ApiKey({ setAlert }) {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      setData((prev) => prev.filter((item) => item._id !== id));
       setAlert({severity: "success", text: "API key deleted."});
+      loadAPIKeys();
     })
     .catch(error => {
       console.error("Error deleting API key:", error);
