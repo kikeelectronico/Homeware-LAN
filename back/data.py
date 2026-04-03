@@ -359,6 +359,9 @@ class Data:
 			return None
 
 	def validateUserToken(self, token):
+		if token == "noset":
+			return False
+		
 		user_data = self.mongo_db["users"].find()[0]
 		ddbb_token = user_data["token"]
 		return token == ddbb_token
@@ -419,6 +422,9 @@ class Data:
 
 	def validateOauthToken(self, type, token):
 		if not type in ["authorization_code", "access_token", "refresh_token"]:
+			return False
+		
+		if token == "-":
 			return False
 
 		filter = {"_id": "google"}
