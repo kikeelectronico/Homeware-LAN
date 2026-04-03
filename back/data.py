@@ -1,6 +1,8 @@
 import json
 import os
 import random
+import secrets
+import uuid
 import bcrypt
 import redis
 import pymongo
@@ -432,22 +434,13 @@ class Data:
 	def getAPIKeys(self):
 		return self.mongo_db["apikeys"].find({}, {"apikey": 1, "agent": 1})
 
-	def createAPIKey(self):
-		# Generate the token
-		chars = 'abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-		token = ''
-		i = 0
-		while i < 40:
-			token += random.choice(chars)
-			i += 1
-		# Save the new token
-		filter = {"_id": "legacy"}
-		operation = {"$set": {"apikey": token}}
-		self.mongo_db["apikeys"].update_one(filter, operation)
-		# Prepare the response
+	def createAPIKey(self, agent):
 		data = {
-			"apikey": token
+			"_id": str(uuid.uuid4()),
+			"agent": agent,
+			"apikey": secrets.token_urlsafe(32)
 		}
+		self.mongo_db["apikeys"].insert_one(data)
 		return data
 	
 	def deleteAPIKey(self, apikey_id):

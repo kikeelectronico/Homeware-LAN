@@ -3,10 +3,10 @@ from data import Data
 def test_createAPIKey():
 	data = Data()
 	data.setup()
-	access = data.createAPIKey()
+	access = data.createAPIKey("new")
 	assert "apikey" in access
 	assert type(access["apikey"]) == str
-	assert len(access["apikey"]) == 40
+	assert len(access["apikey"]) == 43
 	del data
 
 
@@ -16,7 +16,7 @@ def test_getAPIKeys():
 	access = data.getAPIKeys()[0]
 	assert "apikey" in access
 	assert type(access["apikey"]) == str
-	assert len(access["apikey"]) == 40
+	assert len(access["apikey"]) == 43
 	del data
 
 def test_validateAPIKeys():
@@ -25,7 +25,7 @@ def test_validateAPIKeys():
 	access = data.getAPIKeys()[0]
 	assert "apikey" in access
 	assert type(access["apikey"]) == str
-	assert len(access["apikey"]) == 40
+	assert len(access["apikey"]) == 43
 	assert data.validateAPIKey(access["apikey"]) == True
 	del data
 

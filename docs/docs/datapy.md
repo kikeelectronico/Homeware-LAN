@@ -425,23 +425,32 @@ An object containing the apikey.
 
 ```
 {
+  id: 'some-uuid',
+  agent: 'agent-name'
   apikey: 'the-apikey'
 }
 ```
 
 ## Method - createAPIKey
-This method generates a new apiakey. Only one apikey can be active. When a new apikey is generated, the older one will be deleted.
+This method generates a new apiakey using the agent name given
 
-`myData.createAPIKey()`
+`myData.createAPIKey(agent)`
 
 ### Arguments
-None
+
+#### agent
+The agent name.
+
+- Type: string
+- Example: 'automation-controller'
 
 ### Returns
 An object containing the apikey.
 
 ```
 {
+  id: 'some-uuid',
+  agent: 'agent-name'
   apikey: 'the-apikey'
 }
 ```

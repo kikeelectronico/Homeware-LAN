@@ -19,9 +19,12 @@ class Access(BaseModel):
 def get_access() -> list[Access]:
     return data_conector.getAPIKeys()
 
-@router.patch("/api/access/", dependencies=[Depends(allowUser)])
-def update_access() -> Access:
-    return data_conector.createAPIKey()
+class AccessCreate(BaseModel):
+    agent: str
+
+@router.post("/api/access/", dependencies=[Depends(allowUser)])
+def create_access(access: AccessCreate) -> Access:
+    return data_conector.createAPIKey(access.agent)
 
 @router.delete("/api/access/{apikey_id}", dependencies=[Depends(allowUser)])
 def delete_access(apikey_id: str = "") -> Access:
