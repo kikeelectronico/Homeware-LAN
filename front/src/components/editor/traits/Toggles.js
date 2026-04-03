@@ -102,7 +102,7 @@ const Toggles = forwardRef((props, ref) => {
   return (
     <div className="attributes_table">
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>commandOnlyToggles</i>
         </div>
         <div className="attributes_col_2">
@@ -117,7 +117,7 @@ const Toggles = forwardRef((props, ref) => {
       </div>
 
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>queryOnlyToggles</i>
         </div>
         <div className="attributes_col_2">
@@ -132,7 +132,7 @@ const Toggles = forwardRef((props, ref) => {
       </div>
 
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right attributes_col_allign_up">
+        <div className="attributes_col_1 attributes_label align_right attributes_col_allign_up">
           <i>availableToggles</i>
         </div>
         <div className="attributes_col_2 attribute_table_form">

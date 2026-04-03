@@ -141,7 +141,7 @@ const Modes = forwardRef((props, ref) => {
   return (
     <div className="attributes_table">
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>commandOnlyModes</i>
         </div>
         <div className="attributes_col_2">
@@ -155,7 +155,7 @@ const Modes = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>queryOnlyModes</i>
         </div>
         <div className="attributes_col_2">
@@ -170,7 +170,7 @@ const Modes = forwardRef((props, ref) => {
       </div>
 
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right attributes_col_allign_up">
+        <div className="attributes_col_1 attributes_label align_right attributes_col_allign_up">
           <i>availableModes</i>
         </div>
         <div className="attributes_col_2 attribute_table_form">

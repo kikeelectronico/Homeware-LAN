@@ -232,7 +232,7 @@ function Editor() {
               disabled={create ? false : true}
             />
             <div className="two_table_row">
-              <div className="two_table_cel">Device Type*</div>
+              <div className="two_table_cel two_table_label">Device Type*</div>
               <div className="two_table_cel">
                 <Select
                   id="type"
@@ -283,7 +283,7 @@ function Editor() {
               update={(value) => setRoom(value)}
             />
             <div className="two_table_row">
-              <div className="two_table_cel">Hide from Google</div>
+              <div className="two_table_cel two_table_label">Hide from Google</div>
               <div className="two_table_cel">
                 <Switch
                   onChange={setHideFromGoogle}

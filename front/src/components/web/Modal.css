@@ -1,7 +1,26 @@
+.popup-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+  background-color: var(--surface-background);
+  border: 1px solid var(--border-primary);
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  padding: 0;
+  width: min(520px, 90vw);
+}
+
 .modal {
   padding: 20px;
 }
 
 .modal > h2 {
   text-align: center;
+  margin-top: 0;
+}
+
+.modal > hr {
+  width: 100%;
+  border-color: var(--border-primary);
 }

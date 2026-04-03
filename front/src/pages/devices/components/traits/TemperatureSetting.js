@@ -44,7 +44,7 @@ const TemperatureSetting = (props) => {
         <div className="device_card_action_button">
           <img src="/devices/arrow_down.png" onClick={down} alt="Arrow up" style={{ width: "20px"}}/>
         </div>
-        <span style={{fontSize: "25px", color: "#777"}}>
+        <span style={{fontSize: "25px", color: "var(--text-secundary)"}}>
           {props.states.thermostatTemperatureSetpoint}
         </span>
         <div className="device_card_action_button">

@@ -1,21 +1,18 @@
 .attribute_advise {
   width: 70%;
-  color: #aaa;
+  color: var(--text-subtle);
 }
 
 .add_attribute_button{
   width: 100px
 }
 
-.separator {
-  width: 70%;
-}
 
 .no_attributes_message {
   margin-top: 20px;
   margin-bottom: 10px;
   text-align: left;
-  color: #aaa;
+  color: var(--text-subtle);
 }
 
 /* Attributes table */
@@ -28,6 +25,7 @@
   column-gap: 5px;
   row-gap: 5px;
   align-items: center;
+  margin-left: 2rem;
 }
 
 .attributes_row {
@@ -48,6 +46,12 @@
 .attributes_col_1 {
   text-align: right;
   white-space: nowrap;
+}
+
+.attributes_label {
+  color: var(--text-secundary);
+  font-weight: 600;
+  font-size: 0.95em;
 }
 
 .attributes_col_2,
@@ -74,7 +78,7 @@
 }
 
 .attribute_table_subattribute {
-  border-top: lightgray solid 1px;
+  border-top: var(--border-primary) solid 1px;
   margin-top: 10px;
   padding-top: 20px;
 }

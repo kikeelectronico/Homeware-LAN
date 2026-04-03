@@ -1,0 +1,46 @@
+.access_key_list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.access_key_item {
+  width: 80%;
+  margin: 0 auto;
+  padding: 10px 0;
+  box-sizing: border-box;
+}
+
+.access_key_row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+}
+
+.access_key_row + .access_key_row {
+  margin-top: 6px;
+}
+
+.access_key_label {
+  min-width: 80px;
+  text-align: left;
+  color: var(--text-secundary);
+  font-weight: 500;
+  font-size: 0.95em;
+}
+
+.access_key_value {
+  color: var(--text-secundary);
+  font-weight: 500;
+  font-size: 0.9em;
+  text-align: left;
+}
+
+.access_key_toggle {
+  margin-left: 6px;
+}
+
+.access_key_delete {
+  margin-left: auto !important;
+}

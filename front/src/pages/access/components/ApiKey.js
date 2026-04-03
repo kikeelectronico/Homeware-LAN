@@ -1,0 +1,226 @@
+import React, {useEffect, useState} from "react";
+
+import getCookieValue from "../../../functions";
+import { root } from "../../../constants";
+import {Button, IconButton, TextField} from '@mui/material';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import Modal from "../../../components/web/Modal";
+
+function ApiKey({ setAlert }) {
+  const [data, setData] = useState([])
+  const [visibleKeys, setVisibleKeys] = useState(new Set())
+  const [newAgent, setNewAgent] = useState("")
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [deleteTarget, setDeleteTarget] = useState(null)
+
+  const loadAPIKeys = () => {
+    fetch(root + "api/access", {
+      method: "GET",
+      headers: {
+        "authorization": "bearer " + getCookieValue("token")
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      setData(Array.isArray(data) ? data : []);
+    })
+    .catch(error => {
+      console.error("Error fetching access data:", error);
+      setAlert({severity: "error", text: "Unable to load the data."});
+    });
+  }
+
+  useEffect(() => {
+    loadAPIKeys();
+  }, [setAlert])
+
+  const createAPIKey = () => {
+    setAlert({severity: "warning", text: "Generating API key."})
+    fetch(root + "api/access/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=UTF-8",
+        "authorization": "bearer " + getCookieValue("token")
+      },
+      body: JSON.stringify({
+        agent: newAgent
+      })
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      setAlert({severity: "success", text: "API key generated."});
+      loadAPIKeys();
+      setNewAgent("");
+      setIsModalOpen(false);
+    })
+    .catch(error => {
+      console.error("Error generating API key:", error);
+      setAlert({severity: "error", text: "Something went wrong."});
+    });
+  }
+
+  const deleteAPIKey = (id) => {
+    if (!id) {
+      return;
+    }
+    fetch(root + "api/access/" + id, {
+      method: "DELETE",
+      headers: {
+        "authorization": "bearer " + getCookieValue("token")
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      setAlert({severity: "success", text: "API key deleted."});
+      loadAPIKeys();
+      setDeleteTarget(null);
+    })
+    .catch(error => {
+      console.error("Error deleting API key:", error);
+      setAlert({severity: "error", text: "The API key could not be deleted."});
+    });
+  }
+
+  const toggleKeyVisibility = (index) => {
+    setVisibleKeys(prev => {
+      const next = new Set(prev);
+      if (next.has(index)) {
+        next.delete(index);
+      } else {
+        next.add(index);
+      }
+      return next;
+    });
+  }
+
+  const getMaskedKey = (apikey) => {
+    const safe = apikey || "";
+    const length = safe.length > 0 ? safe.length : 20;
+    return "•".repeat(length);
+  }
+
+  return (
+    <div className="page_block_container">
+      <h2>API key</h2>
+      <div className="advise">
+        <span>An API Key gives you access to the Homeware's REST API. Please do not generate an API Key if you are not sure of what you are doing.</span>
+      </div>
+      <hr />
+      <div className="page_block_content_container">
+        {data.length === 0 ? (
+          <div className="advise">
+            <span>No API keys found. Create your first one using the button bellow.</span>
+          </div>
+        ) : (
+          <div className="access_key_list">
+            {data.map((item, index) => (
+              <React.Fragment key={index}>
+                <div className="access_key_item">
+                  <div className="access_key_row">
+                    <span className="access_key_label">Agent</span>
+                    <span className="access_key_value">{item.agent || "-"}</span>
+                    <IconButton
+                      aria-label="Delete API key"
+                      size="small"
+                      className="access_key_delete"
+                      color="inherit"
+                      onClick={() => setDeleteTarget(item)}
+                    >
+                      <DeleteOutlineIcon fontSize="small" />
+                    </IconButton>
+                  </div>
+                  <div className="access_key_row">
+                    <span className="access_key_label">API Key</span>
+                    <span className="access_key_value">
+                      {visibleKeys.has(index) ? (item.apikey || "-") : getMaskedKey(item.apikey)}
+                    </span>
+                    <IconButton
+                      aria-label={visibleKeys.has(index) ? "Hide API key" : "Show API key"}
+                      size="small"
+                      className="access_key_toggle"
+                      color="inherit"
+                      onClick={() => toggleKeyVisibility(index)}
+                    >
+                      {visibleKeys.has(index) ? (
+                        <VisibilityOffIcon fontSize="small" />
+                      ) : (
+                        <VisibilityIcon fontSize="small" />
+                      )}
+                    </IconButton>
+                  </div>
+                </div>
+                <hr className="separator"/>
+              </React.Fragment>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="page_block_buttons_container">
+        <Button variant="contained" onClick={() => setIsModalOpen(true)}>
+          New
+        </Button>
+      </div>
+      <Modal
+        title="Create a new API key"
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        content={
+          <>
+            <p>
+              Give the new API key an agent name.
+            </p>
+            <TextField
+              label="Agent name"
+              variant="outlined"
+              fullWidth
+              value={newAgent}
+              onChange={(event) => setNewAgent(event.target.value)}
+            />
+            <div className="page_block_buttons_container">
+              <Button
+                variant="contained"
+                onClick={createAPIKey}
+                disabled={newAgent.trim().length === 0}
+              >
+                Create
+              </Button>
+            </div>
+          </>
+        }
+      />
+      <Modal
+        title="Delete an API key"
+        open={deleteTarget !== null}
+        onClose={() => setDeleteTarget(null)}
+        content={
+          <>
+            <p>
+              Do you want to delete the API key for agent <strong>{deleteTarget?.agent}</strong>?
+            </p>
+            <div className="page_block_buttons_container">
+              <Button
+                variant="contained"
+                onClick={() => deleteAPIKey(deleteTarget?._id)}
+              >
+                Delete
+              </Button>
+            </div>
+          </>
+        }
+      />
+    </div>
+  );
+}
+
+export default ApiKey;

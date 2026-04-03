@@ -1,6 +1,8 @@
 import json
 import os
 import random
+import secrets
+import uuid
 import bcrypt
 import redis
 import pymongo
@@ -23,7 +25,7 @@ HOMEWARE_PASSWORD = os.environ.get("HOMEWARE_PASSWORD", "admin")
 class Data:
 	"""Access to Homeware's databases and files."""
 
-	version = 'v2.2.2'
+	version = 'v2.3.1'
 
 	def __init__(self):		
 		self.verbose = False
@@ -38,19 +40,23 @@ class Data:
 
 	def setup(self):
 		self.redis.set("homeware_version", self.version)
-		if not self.redis.get('transfer'):
+		needs_init = "homeware" not in self.mongo_client.list_database_names()
+		if not needs_init:
+			self.mongo_db = self.mongo_client["homeware"]
+			needs_init = "settings" not in self.mongo_db.list_collection_names()
+		if needs_init:
 			print("The database must be created")
 			self.log('Warning','The database must be created')
 			# Set alert flags
 			self.redis.set("alert","clear")
+			# Create db reference
+			self.mongo_db = self.mongo_client["homeware"]
 			# Load the database using the template
 			file = open("../configuration_templates/template_homeware.json", 'r')
 			data = json.load(file)
 			file.close()
 			self.restoreBackup(data)
 			self.log('Warning','Using a template homeware file')
-			# Create db reference
-			self.mongo_db = self.mongo_client["homeware"]
 			# Override settings
 			filter = {"_id": "settings"}
 			print("HOMEWARE_DOMAIN", HOMEWARE_DOMAIN)
@@ -70,75 +76,6 @@ class Data:
 			}}
 			result = self.mongo_db["users"].update_one(filter, operation)
 			print("result", result.modified_count)
-			# Set the flag
-			self.redis.set("transfer", "true")
-
-	def migrateToMongodb(self):
-		# Move not real time data to MogoDB
-		if not "homeware" in self.mongo_client.list_database_names():
-			# Create db reference
-			self.mongo_db = self.mongo_client["homeware"]		
-		if not "devices" in self.mongo_client["homeware"].list_collection_names():
-			print("moving data")
-			# Create devices collection
-			mongo_devices_col = self.mongo_db["devices"]
-			devices = json.loads(self.redis.get('devices'))
-			for device in devices:
-				device["_id"] = device["id"]
-				mongo_devices_col.insert_one(device)
-			# Create user collection
-			mongo_users_col = self.mongo_db["users"]
-			user_data = {
-				"_id": self.redis.get("user/username").decode('UTF-8'),
-				"username": self.redis.get("user/username").decode('UTF-8'),
-				"password": self.redis.get("user/password").decode('UTF-8'),
-				"token": self.redis.get("token/front").decode('UTF-8'),
-			}
-			mongo_users_col.insert_one(user_data)
-			# Create oauth2 collection
-			mongo_oauth_col = self.mongo_db["oauth"]
-			google_data = {
-				"_id": "google",
-				"agent": "Google",
-				"access_token": {
-					"timestamp": self.redis.get("token/google/access_token/timestamp").decode('UTF-8'),
-					"value": self.redis.get("token/google/access_token/value").decode('UTF-8'),
-				},
-				"authorization_code": {
-					"timestamp": self.redis.get("token/google/authorization_code/timestamp").decode('UTF-8'),
-					"value": self.redis.get("token/google/authorization_code/value").decode('UTF-8'),
-				},
-				"refresh_token": {
-					"timestamp": self.redis.get("token/google/refresh_token/timestamp").decode('UTF-8'),
-					"value": self.redis.get("token/google/refresh_token/value").decode('UTF-8'),
-				}
-			}
-			mongo_oauth_col.insert_one(google_data)
-			# Create apikey collection
-			mongo_apikeys_col = self.mongo_db["apikeys"]
-			legacy_data = {
-				"_id": "legacy",
-				"agent": "legacy",
-				"apikey": self.redis.get("token/apikey").decode('UTF-8')
-			}
-			mongo_apikeys_col.insert_one(legacy_data)
-			# Create settings collection
-			mongo_settings_col = self.mongo_db["settings"]
-			settings_data = {
-				"_id": "settings",
-				"domain": self.redis.get("domain").decode('UTF-8'),
-				"ddns": pickle.loads(self.redis.get("ddns")),
-				"mqtt": {
-					"user": self.redis.get("mqtt/username").decode('UTF-8'),
-					"password": self.redis.get("mqtt/password").decode('UTF-8'),
-				},
-				"sync_google": pickle.loads(self.redis.get("sync_google")),
-				"sync_devices": pickle.loads(self.redis.get("sync_devices")),
-				"log": pickle.loads(self.redis.get("log")),
-				"client_id": self.redis.get("token/google/client_id").decode('UTF-8'),
-				"client_secret": self.redis.get("token/google/client_secret").decode('UTF-8'),
-			}
-			mongo_settings_col.insert_one(settings_data)
 
 # BACKUP
 
@@ -160,9 +97,9 @@ class Data:
 						"client_id": self.getSettings()["client_id"],
 						"client_secret": self.getSettings()["client_secret"],
 						"refresh_token": oauth["refresh_token"]
-					},
-					"apikey": self.mongo_db["apikeys"].find()[0]["apikey"]
+					}
 				},
+				"apikeys": self.getAPIKeys(),
 				"ddns": self.getSettings()["ddns"],
 				"mqtt": self.getSettings()["mqtt"],
 				"sync_google": self.getSettings()["sync_google"],
@@ -201,15 +138,25 @@ class Data:
 		filter = {"_id": "settings"}
 		operation = {"$set": settings}
 		self.mongo_db["settings"].update_one(filter, operation, upsert = True)
-		# Load the apikey
-		apikey = {
-			"_id": "legacy",
-			"agent": "legacy",
-			"apikey": data['secure']['token']['apikey'],
-		}
-		filter = {"_id": "legacy"}
-		operation = {"$set": apikey}
-		self.mongo_db["apikeys"].update_one(filter, operation, upsert = True)
+		# Load the apikeys (supports legacy single-token backups)
+		apikeys = data['secure'].get('apikeys', None)
+		if isinstance(apikeys, list) and len(apikeys) > 0:
+			for apikey in apikeys:
+				if "_id" in apikey and "agent" in apikey and "apikey" in apikey:
+					filter = {"_id": apikey["_id"]}
+					operation = {"$set": apikey}
+					self.mongo_db["apikeys"].update_one(filter, operation, upsert = True)
+		else:
+			legacy_token = data['secure'].get('token', {}).get('apikey', "")
+			if isinstance(legacy_token, str) and legacy_token != "":
+				legacy_data = {
+					"_id": "legacy",
+					"agent": "legacy",
+					"apikey": legacy_token
+				}
+				filter = {"_id": "legacy"}
+				operation = {"$set": legacy_data}
+				self.mongo_db["apikeys"].update_one(filter, operation, upsert = True)
 		# Load the user
 		user = {
 			"_id": "admin",
@@ -412,6 +359,9 @@ class Data:
 			return None
 
 	def validateUserToken(self, token):
+		if token == "noset":
+			return False
+		
 		user_data = self.mongo_db["users"].find()[0]
 		ddbb_token = user_data["token"]
 		return token == ddbb_token
@@ -429,32 +379,29 @@ class Data:
 
 # APIKEY
 
-	def getAPIKey(self):
-		apikey = self.mongo_db["apikeys"].find()[0]["apikey"]
-		data = {
-			"apikey": apikey
-		}
-		return data
+	def getAPIKeys(self):
+		return list(self.mongo_db["apikeys"].find({}, {"_id": 1, "apikey": 1, "agent": 1}))
 
-	def createAPIKey(self):
-		# Generate the token
-		chars = 'abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-		token = ''
-		i = 0
-		while i < 40:
-			token += random.choice(chars)
-			i += 1
-		# Save the new token
-		filter = {"_id": "legacy"}
-		operation = {"$set": {"apikey": token}}
-		self.mongo_db["apikeys"].update_one(filter, operation)
-		# Prepare the response
+	def createAPIKey(self, agent):
 		data = {
-			"apikey": token
+			"_id": str(uuid.uuid4()),
+			"agent": agent,
+			"apikey": secrets.token_urlsafe(32)
 		}
+		self.mongo_db["apikeys"].insert_one(data)
 		return data
+	
+	def deleteAPIKey(self, apikey_id):
+		filter = {"_id": apikey_id}
+		if self.mongo_db["apikeys"].count_documents(filter) == 1:
+			result = self.mongo_db["apikeys"].delete_one(filter)
+			return result.deleted_count == 1
+		return False
 
 	def validateAPIKey(self, apikey):
+		if len(apikey) == 0:
+			return False
+		
 		filter = {"apikey": apikey}
 		return self.mongo_db["apikeys"].count_documents(filter) == 1
 
@@ -475,6 +422,9 @@ class Data:
 
 	def validateOauthToken(self, type, token):
 		if not type in ["authorization_code", "access_token", "refresh_token"]:
+			return False
+		
+		if token == "-":
 			return False
 
 		filter = {"_id": "google"}

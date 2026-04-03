@@ -9,6 +9,7 @@ import Battery60Icon from '@mui/icons-material/Battery60';
 import Battery80Icon from '@mui/icons-material/Battery80';
 import Battery90Icon from '@mui/icons-material/Battery90';
 import BatteryFullIcon from '@mui/icons-material/BatteryFull';
+import Tooltip from '@mui/material/Tooltip';
 
 const CapacityRemaining = (props) => {
 
@@ -54,7 +55,11 @@ const CapacityRemaining = (props) => {
   return (
     Object.keys(props.states).includes("capacityRemaining") ?
       <div className="device_card_status">
-        {getBatteryIcon()}
+        <Tooltip
+          title={`Battery: ${props.states.capacityRemaining[0].rawValue}${units[props.states.capacityRemaining[0].unit] ?? ''}`}
+        >
+          <span>{getBatteryIcon()}</span>
+        </Tooltip>
       </div>
   : <></>
   );

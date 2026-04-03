@@ -169,7 +169,7 @@ class Cook extends React.Component {
       <div>
 
         <div className="two_table_row">
-          <div className="two_table_cel align_right">
+          <div className="two_table_cel two_table_label align_right">
             Add a cooking mode
           </div>
           <div className="two_table_cel">
@@ -180,7 +180,7 @@ class Cook extends React.Component {
         {modes}
 
         <div className="two_table_row">
-          <div className="two_table_cel align_right">
+          <div className="two_table_cel two_table_label align_right">
             Add a preset
           </div>
           <div className="two_table_cel">

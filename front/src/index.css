@@ -3,6 +3,29 @@ html {
   width: 100%;
 }
 
+:root {
+  /* Light palette (default) */
+  --app-background: #eee;
+  --surface-background: #fff;
+  --surface-hover: #f0f0f0;
+  --text-primary: #333333;
+  --text-secundary: #666;
+  --text-subtle: #aaa;
+  --border-primary: #ccc;
+  --border-subtle: #eee;
+
+  --primary-color: #1c8adb;
+  --primary-contrast: #ffffff;
+
+  --status-success-background: #E8F5E9;
+  --status-success-text: #2E7D32;
+  --status-success-border: #2E7D32;
+
+  --status-danger-background: #FFEBEE;
+  --status-danger-text: #C62828;
+  --status-danger-border: #C62828;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -10,7 +33,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #eee;
+  color-scheme: light dark;
+  background-color: var(--app-background);
+  color: var(--text-primary);
   height: 100%;
   width: 100%;
 }
@@ -22,8 +47,8 @@ code {
 
 hr {
   width: 100%;
-  border: 0px solid #eee;
-  border-top: 1px solid #eee;
+  border: 0px solid var(--border-subtle);
+  border-top: 1px solid var(--border-subtle);
 }
 
 /* button {
@@ -44,14 +69,53 @@ input {
   padding: 10px;
   font-size: 1em;
   border-radius: 5px;
+  color: var(--text-primary);
+  background-color: var(--surface-background);
+  border: 1px solid var(--border-primary);
 }
 
 select {
   padding: 10px;
   font-size: 1em;
   border-radius: 5px;
+  color: var(--text-primary);
+  background-color: var(--surface-background);
+  border: 1px solid var(--border-primary);
 }
+
+textarea {
+  color: var(--text-primary);
+  background-color: var(--surface-background);
+  border: 1px solid var(--border-primary);
+}
+
 
 h3 {
   margin-bottom: 0px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --app-background: #10151c;
+    --surface-background: #18202b;
+    --surface-hover: #222d3a;
+
+    --text-primary: #e6e9ef;
+    --text-secundary: #9aa4b2;
+    --text-subtle: #7f8a98;
+
+    --border-primary: #2a3543;
+    --border-subtle: #202936;
+
+    --primary-color: #1c8adb;
+    --primary-contrast: #ffffff;
+
+    --status-success-background: #12301b;
+    --status-success-text: #7ad48d;
+    --status-success-border: #2f6b3a;
+
+    --status-danger-background: #3a1518;
+    --status-danger-text: #ff8c8c;
+    --status-danger-border: #7a2d35;
+  }
 }

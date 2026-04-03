@@ -6,7 +6,7 @@
     max-width: 100%;
     padding: 20px;
     border-radius: 20px;
-    border: 1px solid #aaa;
+    border: 1px solid var(--text-subtle);
     text-align: left;
     box-sizing: border-box;
     overflow: hidden;

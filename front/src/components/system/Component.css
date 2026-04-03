@@ -12,6 +12,8 @@
 
 .component_text {
   font-size: 18px;
+  color: var(--text-secundary);
+  font-weight: 500;
 }
 
 .component_label_container {
@@ -28,14 +30,14 @@
 }
 
 .component_label_runnig {
-  background-color: #E8F5E9; /* Verde muy suave de fondo */
-  color: #2E7D32; /* Verde oscuro para el texto */
-  border: 1px solid #2E7D32;
+  background-color: var(--status-success-background);
+  color: var(--status-success-text);
+  border: 1px solid var(--status-success-border);
 
 }
 
 .component_label_stopped {
-  background-color: #FFEBEE; /* Rojo muy suave de fondo */
-  color: #C62828; /* Rojo intenso para el texto */
-  border: 1px solid #C62828;
+  background-color: var(--status-danger-background);
+  color: var(--status-danger-text);
+  border: 1px solid var(--status-danger-border);
 }

@@ -57,7 +57,7 @@ const Rotation = forwardRef((props, ref) => {
   return (
     <div className="attributes_table">
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>supportsDegrees</i>
         </div>
         <div className="attributes_col_2">
@@ -71,7 +71,7 @@ const Rotation = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>supportsPercent</i>
         </div>
         <div className="attributes_col_2">
@@ -85,7 +85,7 @@ const Rotation = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>supportsContinuousRotation</i>
         </div>
         <div className="attributes_col_2">
@@ -99,7 +99,7 @@ const Rotation = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           <i>commandOnlyRotation</i>
         </div>
         <div className="attributes_col_2">
@@ -113,7 +113,7 @@ const Rotation = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           Minimum degrees
         </div>
         <div className="attributes_col_2">
@@ -128,7 +128,7 @@ const Rotation = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="attributes_row">
-        <div className="attributes_col_1 align_right">
+        <div className="attributes_col_1 attributes_label align_right">
           Maximum degrees
         </div>
         <div className="attributes_col_2">

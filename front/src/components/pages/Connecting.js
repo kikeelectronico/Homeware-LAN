@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import ReactJsonView from '@microlink/react-json-view'
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import Toast from "../web/Toast";
 import getCookieValue from '../../functions'
@@ -13,6 +14,7 @@ function Connecting() {
   const [params, setParams] = useState([])
   const [commands, setCommands] = useState([])
   const [alert, setAlert] = useState(null)
+  const prefersDark = useMediaQuery('(prefers-color-scheme: dark)');
   
   useEffect(() => {
     setId(window.location.pathname.split('/')[3])
@@ -91,7 +93,11 @@ function Connecting() {
               <div className="advise" style={{textAlign: "left"}}>
                 <hr/>
                 <p>The device can change the value of any param sending an execute request to "device/control" topic as follow</p>
-                <ReactJsonView src={{"id":"light001","param":"brightness","value":"80","intent":"execute"}}/>
+                <ReactJsonView
+                  src={{"id":"light001","param":"brightness","value":"80","intent":"execute"}}
+                  theme={prefersDark ? "monokai" : "rjv-default"}
+                  style={{ background: "var(--surface-background)", color: "var(--text-primary)" }}
+                />
               </div>
             </>
         }
