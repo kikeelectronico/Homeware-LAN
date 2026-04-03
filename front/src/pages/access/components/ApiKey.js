@@ -170,32 +170,35 @@ function ApiKey({ setAlert }) {
         <Button variant="contained" onClick={() => setIsModalOpen(true)}>
           New
         </Button>
-        <Modal
-          title="Create a new API key"
-          open={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          content={
-            <>
-              <TextField
-                label="Agent name"
-                variant="outlined"
-                fullWidth
-                value={newAgent}
-                onChange={(event) => setNewAgent(event.target.value)}
-              />
-              <div className="page_block_buttons_container">
-                <Button
-                  variant="contained"
-                  onClick={createAPIKey}
-                  disabled={newAgent.trim().length === 0}
-                >
-                  Create
-                </Button>
-              </div>
-            </>
-          }
-        />
       </div>
+      <Modal
+        title="Create a new API key"
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        content={
+          <>
+            <p>
+              Give the new API key an agent name.
+            </p>
+            <TextField
+              label="Agent name"
+              variant="outlined"
+              fullWidth
+              value={newAgent}
+              onChange={(event) => setNewAgent(event.target.value)}
+            />
+            <div className="page_block_buttons_container">
+              <Button
+                variant="contained"
+                onClick={createAPIKey}
+                disabled={newAgent.trim().length === 0}
+              >
+                Create
+              </Button>
+            </div>
+          </>
+        }
+      />
       <Modal
         title="Delete an API key"
         open={deleteTarget !== null}
