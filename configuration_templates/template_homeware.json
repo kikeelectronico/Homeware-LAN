@@ -62,9 +62,9 @@
           "timestamp": 1579452782954,
           "value": "-"
         }
-      },
-      "apikey": ""
+      }
     },
+    "apikeys": [],
     "ddns": {
       "enabled": false,
       "status": "Unknown",
