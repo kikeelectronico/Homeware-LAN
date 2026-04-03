@@ -12,6 +12,7 @@ function ApiKey({ setAlert }) {
   const [data, setData] = useState([])
   const [visibleKeys, setVisibleKeys] = useState(new Set())
   const [newAgent, setNewAgent] = useState("")
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const loadAPIKeys = () => {
     fetch(root + "api/access", {
@@ -57,6 +58,8 @@ function ApiKey({ setAlert }) {
       }
       setAlert({severity: "success", text: "API key generated."});
       loadAPIKeys();
+      setNewAgent("");
+      setIsModalOpen(false);
     })
     .catch(error => {
       console.error("Error generating API key:", error);
@@ -165,9 +168,13 @@ function ApiKey({ setAlert }) {
         )}
       </div>
       <div className="page_block_buttons_container">
+        <Button variant="contained" onClick={() => setIsModalOpen(true)}>
+          New
+        </Button>
         <Modal
           title="Create a new API key"
-          trigger={<Button variant="contained">New</Button>}
+          open={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
           content={
             <>
               <TextField
