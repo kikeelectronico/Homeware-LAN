@@ -114,13 +114,13 @@ function ApiKey({ setAlert }) {
     <div className="page_block_container">
       <h2>API key</h2>
       <div className="advise">
-        <span>The API Key gives you access to the Homeware's API. Please do not generate an API Key if you are not sure of what you are doing.</span>
+        <span>An API Key gives you access to the Homeware's REST API. Please do not generate an API Key if you are not sure of what you are doing.</span>
       </div>
       <hr />
       <div className="page_block_content_container">
         {data.length === 0 ? (
           <div className="advise">
-            <span>No API keys found.</span>
+            <span>No API keys found. Create your first one using the button bellow.</span>
           </div>
         ) : (
           <div className="access_key_list">
