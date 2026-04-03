@@ -13,6 +13,7 @@ function ApiKey({ setAlert }) {
   const [visibleKeys, setVisibleKeys] = useState(new Set())
   const [newAgent, setNewAgent] = useState("")
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [deleteTarget, setDeleteTarget] = useState(null)
 
   const loadAPIKeys = () => {
     fetch(root + "api/access", {
@@ -71,9 +72,6 @@ function ApiKey({ setAlert }) {
     if (!id) {
       return;
     }
-    if (!window.confirm("Do you want to delete the apiley?")) {
-      return;
-    }
     fetch(root + "api/access/" + id, {
       method: "DELETE",
       headers: {
@@ -86,6 +84,7 @@ function ApiKey({ setAlert }) {
       }
       setAlert({severity: "success", text: "API key deleted."});
       loadAPIKeys();
+      setDeleteTarget(null);
     })
     .catch(error => {
       console.error("Error deleting API key:", error);
@@ -136,7 +135,7 @@ function ApiKey({ setAlert }) {
                       size="small"
                       className="access_key_delete"
                       color="inherit"
-                      onClick={() => deleteAPIKey(item._id)}
+                      onClick={() => setDeleteTarget(item)}
                     >
                       <DeleteOutlineIcon fontSize="small" />
                     </IconButton>
@@ -197,6 +196,26 @@ function ApiKey({ setAlert }) {
           }
         />
       </div>
+      <Modal
+        title="Delete an API key"
+        open={deleteTarget !== null}
+        onClose={() => setDeleteTarget(null)}
+        content={
+          <>
+            <p>
+              Do you want to delete the API key for agent <strong>{deleteTarget?.agent}</strong>?
+            </p>
+            <div className="page_block_buttons_container">
+              <Button
+                variant="contained"
+                onClick={() => deleteAPIKey(deleteTarget?._id)}
+              >
+                Delete
+              </Button>
+            </div>
+          </>
+        }
+      />
     </div>
   );
 }
