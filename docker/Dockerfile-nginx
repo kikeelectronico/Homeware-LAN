@@ -7,5 +7,5 @@ RUN npm run build
 
 FROM nginx
 RUN mkdir /html
-COPY --from=base /usr/share/Homeware-LAN/front/build /html
+COPY --from=base /usr/share/Homeware-LAN/front/dist /html
 COPY configuration_templates/nginx_docker /etc/nginx/conf.d/default.conf
