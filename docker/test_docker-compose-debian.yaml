@@ -72,7 +72,7 @@ services:
 
   # mongoDB
   mongodb:
-    image: mongo
+    image: mongo:8.0.19
     restart: always
     hostname: mongodb
     expose:
