@@ -25,7 +25,7 @@ jobs:
         redis-version: [6]
         mongodb-version: [8.0]
         mosquitto-version: [2.0]
-        python-version: [3.12]
+        python-version: [3.12, 3.13]
     steps:
       - uses: actions/checkout@v3
       - name: Start Redis ${{ matrix.redis-version }}
