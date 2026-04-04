@@ -23,8 +23,9 @@ jobs:
     strategy:
       matrix:
         redis-version: [6]
-        python-version: [3.12]
+        mongodb-version: [8.0]
         mosquitto-version: [2.0]
+        python-version: [3.12]
     steps:
       - uses: actions/checkout@v3
       - name: Start Redis ${{ matrix.redis-version }}
@@ -32,8 +33,10 @@ jobs:
         with:
           redis-version: ${{ matrix.redis-version }}
       - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.6.0
-      - name: Start Mosquitto broker
+        uses: supercharge/mongodb-github-action@1.12.1
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+      - name: Start Mosquitto broker ${{ matrix.mosquitto-version }}
         uses: Namoshek/mosquitto-github-action@v1
         with:
           version: ${{ matrix.mosquitto-version }}
