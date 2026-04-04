@@ -2,7 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import './index.css';
+import './main.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 

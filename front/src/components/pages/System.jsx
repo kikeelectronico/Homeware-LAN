@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
-import getCookieValue from "../../functions";
-import { root } from "../../constants";
-import Component from "../system/Component.js";
+import getCookieValue from "../../functions.js";
+import { root } from "../../constants.js";
+import Component from "../system/Component.jsx";
 import ReactMarkdown from 'react-markdown'
 
 import "./System.css"
