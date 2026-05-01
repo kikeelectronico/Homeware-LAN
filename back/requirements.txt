@@ -5,6 +5,6 @@ python-dateutil==2.9.0.post0
 requests==2.33.1
 bcrypt==5.0.0
 redis==7.4.0
-google-auth==2.49.1
+google-auth==2.50.0
 pymongo==4.16.0
 python-multipart==0.0.22
