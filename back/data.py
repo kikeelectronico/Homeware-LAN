@@ -23,7 +23,7 @@ HOMEWARE_PASSWORD = os.environ.get("HOMEWARE_PASSWORD", "notSet")
 class Data:
 	"""Access to Homeware's databases and files."""
 
-	version = 'v2.3.1'
+	version = 'v2.3.2'
 
 	def __init__(self):		
 		self.verbose = False
