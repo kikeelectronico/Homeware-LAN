@@ -7,29 +7,34 @@ import bcrypt
 import redis
 import pymongo
 import time
-from datetime import datetime, timedelta
-import dateutil.parser
-import subprocess
 import paho.mqtt.publish as publish
 import os.path
 import pickle
+import sys
 
 from homeGraph import HomeGraph
 import hostname
 homegraph = HomeGraph()
 
 HOMEWARE_DOMAIN = os.environ.get("HOMEWARE_DOMAIN", "localhost")
-HOMEWARE_USER = os.environ.get("HOMEWARE_USER", "admin")
-HOMEWARE_PASSWORD = os.environ.get("HOMEWARE_PASSWORD", "admin")
+HOMEWARE_USER = os.environ.get("HOMEWARE_USER", "notSet")
+HOMEWARE_PASSWORD = os.environ.get("HOMEWARE_PASSWORD", "notSet")
 
 class Data:
 	"""Access to Homeware's databases and files."""
 
-	version = 'v2.3.1'
+	version = 'v2.3.2'
 
 	def __init__(self):		
 		self.verbose = False
 		self.deep_logging = os.environ.get("DEEP_LOGGING", False) == "True"
+
+		if HOMEWARE_USER == "notSet" \
+			or HOMEWARE_PASSWORD == "notSet" \
+			or HOMEWARE_USER == "admin-username-for-homeware" \
+			or HOMEWARE_PASSWORD == "admin-password-for-homeware":
+
+			sys.exit("Homeware credentials are missing. Please configure them using environment variables.")
 
 		if not os.path.exists("../files"):
 				os.mkdir("../files")
@@ -66,6 +71,7 @@ class Data:
 			}}
 			result = self.mongo_db["settings"].update_one(filter, operation)
 			print("result", result.modified_count)
+			self.redis.set("domain", HOMEWARE_DOMAIN)
 			# Override user
 			print("HOMEWARE_USER", HOMEWARE_USER)
 			print("HOMEWARE_PASSWORD set")
@@ -138,6 +144,7 @@ class Data:
 		filter = {"_id": "settings"}
 		operation = {"$set": settings}
 		self.mongo_db["settings"].update_one(filter, operation, upsert = True)
+		self.redis.set("domain", data['secure']['domain'])
 		# Load the apikeys (supports legacy single-token backups)
 		apikeys = data['secure'].get('apikeys', None)
 		if isinstance(apikeys, list) and len(apikeys) > 0:
@@ -460,6 +467,7 @@ class Data:
 		filter = {"_id": "settings"}
 		operation = {"$set": settings}
 		result = self.mongo_db["settings"].update_one(filter, operation)
+		self.redis.set("domain", settings['domain'])
 		return result.acknowledged
 
 	def getDDNS(self):
