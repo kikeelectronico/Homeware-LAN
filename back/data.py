@@ -13,14 +13,15 @@ import subprocess
 import paho.mqtt.publish as publish
 import os.path
 import pickle
+import sys
 
 from homeGraph import HomeGraph
 import hostname
 homegraph = HomeGraph()
 
 HOMEWARE_DOMAIN = os.environ.get("HOMEWARE_DOMAIN", "localhost")
-HOMEWARE_USER = os.environ.get("HOMEWARE_USER", "admin")
-HOMEWARE_PASSWORD = os.environ.get("HOMEWARE_PASSWORD", "admin")
+HOMEWARE_USER = os.environ.get("HOMEWARE_USER", "notSet")
+HOMEWARE_PASSWORD = os.environ.get("HOMEWARE_PASSWORD", "notSet")
 
 class Data:
 	"""Access to Homeware's databases and files."""
@@ -30,6 +31,13 @@ class Data:
 	def __init__(self):		
 		self.verbose = False
 		self.deep_logging = os.environ.get("DEEP_LOGGING", False) == "True"
+
+		if HOMEWARE_USER == "notSet" \
+			or HOMEWARE_PASSWORD == "notSet" \
+			or HOMEWARE_USER == "admin-username-for-homeware" \
+			or HOMEWARE_PASSWORD == "admin-password-for-homeware":
+			
+			sys.exit("Homeware credentials are missing. Please configure them using environment variables.")
 
 		if not os.path.exists("../files"):
 				os.mkdir("../files")
