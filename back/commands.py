@@ -1,5 +1,4 @@
 import paho.mqtt.publish as publish
-import json
 import hostname
 import time
 

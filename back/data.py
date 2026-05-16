@@ -7,9 +7,6 @@ import bcrypt
 import redis
 import pymongo
 import time
-from datetime import datetime, timedelta
-import dateutil.parser
-import subprocess
 import paho.mqtt.publish as publish
 import os.path
 import pickle
@@ -36,7 +33,7 @@ class Data:
 			or HOMEWARE_PASSWORD == "notSet" \
 			or HOMEWARE_USER == "admin-username-for-homeware" \
 			or HOMEWARE_PASSWORD == "admin-password-for-homeware":
-			
+
 			sys.exit("Homeware credentials are missing. Please configure them using environment variables.")
 
 		if not os.path.exists("../files"):
