@@ -66,6 +66,7 @@ class Data:
 			}}
 			result = self.mongo_db["settings"].update_one(filter, operation)
 			print("result", result.modified_count)
+			self.redis.set("domain", HOMEWARE_DOMAIN)
 			# Override user
 			print("HOMEWARE_USER", HOMEWARE_USER)
 			print("HOMEWARE_PASSWORD set")
@@ -138,6 +139,7 @@ class Data:
 		filter = {"_id": "settings"}
 		operation = {"$set": settings}
 		self.mongo_db["settings"].update_one(filter, operation, upsert = True)
+		self.redis.set("domain", data['secure']['domain'])
 		# Load the apikeys (supports legacy single-token backups)
 		apikeys = data['secure'].get('apikeys', None)
 		if isinstance(apikeys, list) and len(apikeys) > 0:
@@ -460,6 +462,7 @@ class Data:
 		filter = {"_id": "settings"}
 		operation = {"$set": settings}
 		result = self.mongo_db["settings"].update_one(filter, operation)
+		self.redis.set("domain", settings['domain'])
 		return result.acknowledged
 
 	def getDDNS(self):
