@@ -18,21 +18,21 @@ concurrency:
 
 jobs:
   back:
-    name: Test (red, py, moss)
+    name: Test (red, mon, moss, py)
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        redis-version: [6]
-        mongodb-version: [8.0]
+        redis-version: [6.0, "6.2.20"]
+        mongodb-version: [8.0, "8.0.19"]
         mosquitto-version: [2.0]
-        python-version: [3.12]
+        python-version: [3.12, 3.13]
     steps:
       - uses: actions/checkout@v3
       - name: Start Redis ${{ matrix.redis-version }}
         uses: supercharge/redis-github-action@1.8.1
         with:
           redis-version: ${{ matrix.redis-version }}
-      - name: Start MongoDB
+      - name: Start MongoDB ${{ matrix.mongodb-version }}
         uses: supercharge/mongodb-github-action@1.12.1
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
