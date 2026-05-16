@@ -1,4 +1,3 @@
-import requests
 import json
 import paho.mqtt.publish as publish
 import paho.mqtt.client as mqtt
