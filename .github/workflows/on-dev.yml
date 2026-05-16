@@ -24,6 +24,9 @@ jobs:
   unit_test_backend:
     name: Unit test backend
     runs-on: ubuntu-latest
+    env:
+      HOMEWARE_USER: admin
+      HOMEWARE_PASSWORD: admin
     steps:
       - uses: actions/checkout@v3
       - name: Start Redis ${{env.REDIS_VERSION}}
