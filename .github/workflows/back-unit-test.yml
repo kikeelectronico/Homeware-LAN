@@ -20,6 +20,9 @@ jobs:
   back:
     name: Test (red, mon, moss, py)
     runs-on: ubuntu-latest
+    env:
+      HOMEWARE_USER: admin
+      HOMEWARE_PASSWORD: admin
     strategy:
       matrix:
         redis-version: [6.0, "6.2.20"]
