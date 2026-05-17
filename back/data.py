@@ -29,13 +29,6 @@ class Data:
 		self.verbose = False
 		self.deep_logging = os.environ.get("DEEP_LOGGING", False) == "True"
 
-		if HOMEWARE_USER == "notSet" \
-			or HOMEWARE_PASSWORD == "notSet" \
-			or HOMEWARE_USER == "admin-username-for-homeware" \
-			or HOMEWARE_PASSWORD == "admin-password-for-homeware":
-
-			sys.exit("Homeware credentials are missing. Please configure them using environment variables.")
-
 		if not os.path.exists("../files"):
 				os.mkdir("../files")
 
@@ -44,6 +37,14 @@ class Data:
 		self.mongo_db = self.mongo_client["homeware"]
 
 	def setup(self):
+
+		if HOMEWARE_USER == "notSet" \
+			or HOMEWARE_PASSWORD == "notSet" \
+			or HOMEWARE_USER == "admin-username-for-homeware" \
+			or HOMEWARE_PASSWORD == "admin-password-for-homeware":
+
+			sys.exit("Homeware credentials are missing. Please configure them using environment variables.")
+
 		self.redis.set("homeware_version", self.version)
 		needs_init = "homeware" not in self.mongo_client.list_database_names()
 		if not needs_init:
