@@ -19,6 +19,7 @@ homegraph = HomeGraph()
 HOMEWARE_DOMAIN = os.environ.get("HOMEWARE_DOMAIN", "localhost")
 HOMEWARE_USER = os.environ.get("HOMEWARE_USER", "notSet")
 HOMEWARE_PASSWORD = os.environ.get("HOMEWARE_PASSWORD", "notSet")
+APIKEY_CACHE_PREFIX = "apikey/"
 
 class Data:
 	"""Access to Homeware's databases and files."""
@@ -29,13 +30,6 @@ class Data:
 		self.verbose = False
 		self.deep_logging = os.environ.get("DEEP_LOGGING", False) == "True"
 
-		if HOMEWARE_USER == "notSet" \
-			or HOMEWARE_PASSWORD == "notSet" \
-			or HOMEWARE_USER == "admin-username-for-homeware" \
-			or HOMEWARE_PASSWORD == "admin-password-for-homeware":
-
-			sys.exit("Homeware credentials are missing. Please configure them using environment variables.")
-
 		if not os.path.exists("../files"):
 				os.mkdir("../files")
 
@@ -44,6 +38,14 @@ class Data:
 		self.mongo_db = self.mongo_client["homeware"]
 
 	def setup(self):
+
+		if HOMEWARE_USER == "notSet" \
+			or HOMEWARE_PASSWORD == "notSet" \
+			or HOMEWARE_USER == "admin-username-for-homeware" \
+			or HOMEWARE_PASSWORD == "admin-password-for-homeware":
+
+			sys.exit("Homeware credentials are missing. Please configure them using environment variables.")
+
 		self.redis.set("homeware_version", self.version)
 		needs_init = "homeware" not in self.mongo_client.list_database_names()
 		if not needs_init:
@@ -82,6 +84,7 @@ class Data:
 			}}
 			result = self.mongo_db["users"].update_one(filter, operation)
 			print("result", result.modified_count)
+		self.refreshAPIKeyCache()
 
 # BACKUP
 
@@ -164,6 +167,7 @@ class Data:
 				filter = {"_id": "legacy"}
 				operation = {"$set": legacy_data}
 				self.mongo_db["apikeys"].update_one(filter, operation, upsert = True)
+		self.refreshAPIKeyCache()
 		# Load the user
 		user = {
 			"_id": "admin",
@@ -386,6 +390,25 @@ class Data:
 
 # APIKEY
 
+	def _getAPIKeyCacheKey(self, apikey):
+		return APIKEY_CACHE_PREFIX + apikey
+
+	def _cacheAPIKey(self, access):
+		cache_data = {
+			"_id": access["_id"],
+			"agent": access["agent"],
+			"apikey": access["apikey"]
+		}
+		return self.redis.set(self._getAPIKeyCacheKey(access["apikey"]), json.dumps(cache_data)) == True
+
+	def refreshAPIKeyCache(self):
+		cache_keys = self.redis.keys(APIKEY_CACHE_PREFIX + "*")
+		if len(cache_keys) > 0:
+			self.redis.delete(*cache_keys)
+		for access in self.getAPIKeys():
+			self._cacheAPIKey(access)
+		return True
+
 	def getAPIKeys(self):
 		return list(self.mongo_db["apikeys"].find({}, {"_id": 1, "apikey": 1, "agent": 1}))
 
@@ -396,21 +419,33 @@ class Data:
 			"apikey": secrets.token_urlsafe(32)
 		}
 		self.mongo_db["apikeys"].insert_one(data)
+		self._cacheAPIKey(data)
 		return data
 	
 	def deleteAPIKey(self, apikey_id):
 		filter = {"_id": apikey_id}
-		if self.mongo_db["apikeys"].count_documents(filter) == 1:
+		access = self.mongo_db["apikeys"].find_one(filter, {"_id": 1, "apikey": 1})
+		if access is not None:
 			result = self.mongo_db["apikeys"].delete_one(filter)
-			return result.deleted_count == 1
+			if result.deleted_count == 1:
+				self.redis.delete(self._getAPIKeyCacheKey(access["apikey"]))
+				return True
 		return False
 
 	def validateAPIKey(self, apikey):
 		if len(apikey) == 0:
 			return False
 		
+		cache_key = self._getAPIKeyCacheKey(apikey)
+		if self.redis.exists(cache_key) == 1:
+			return True
+
 		filter = {"apikey": apikey}
-		return self.mongo_db["apikeys"].count_documents(filter) == 1
+		access = self.mongo_db["apikeys"].find_one(filter, {"_id": 1, "apikey": 1, "agent": 1})
+		if access is None:
+			return False
+		self._cacheAPIKey(access)
+		return True
 
 # OAUTH
 

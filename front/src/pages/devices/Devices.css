@@ -54,7 +54,7 @@
 
 .device_card {
   width: 300px;
-  height: 180px;
+  height: 190px;
   flex-shrink: 0;
   border-radius: 12px;
   background-color: var(--surface-background);
@@ -81,6 +81,7 @@
   font-size: 25px;
   font-weight: 500;
   color: var(--text-secundary);
+  margin-bottom: 10px;
   margin-left: 25px;
   margin-right: 25px;
   text-align: left;
@@ -112,8 +113,6 @@
 
 .device_card_actions_container {
   width: calc(100% - 50px);
-  position: absolute;
-  bottom: 25px;
   margin-left: 25px;
   margin-right: 25px;
   display: flex;
@@ -194,7 +193,7 @@
 }
 
 .device_card_contextual_menu_close {
-  padding-right: 60px;
+  padding-right: 10px;
   justify-content: end;
   font-weight: bold;
   cursor: pointer;

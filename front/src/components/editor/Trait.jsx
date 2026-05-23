@@ -21,7 +21,7 @@ import OpenClose from "./traits/OpenClose";
 import Rotation from "./traits/Rotation";
 import RunCycle from './traits/RunCycle';
 import Scene from "./traits/Scene";
-// import SensorState from "./traits/SensorState";
+import SensorState from "./traits/SensorState";
 import StartStop from "./traits/StartStop";
 import StatusReport from './traits/StatusReport';
 import TemperatureControl from "./traits/TemperatureControl";
@@ -62,7 +62,7 @@ const Trait = (props) => {
       else if (trait === "action.devices.traits.Rotation") return <Rotation attributes={props.attributes} updateAttributes={props.updateAttributes} updateStates={props.updateStates} ref={childRef}/>
       else if (trait === "action.devices.traits.RunCycle") return <RunCycle states={props.states} updateStates={props.updateStates} ref={childRef}/>
       else if (trait === "action.devices.traits.Scene") return <Scene attributes={props.attributes} updateAttributes={props.updateAttributes} updateStates={props.updateStates} ref={childRef}/>
-    //   else if (trait === "action.devices.traits.SensorState") return <SensorState attributes={props.attributes} updateAttributes={props.updateAttributes} updateStates={props.updateStates} ref={childRef}/>
+      else if (trait === "action.devices.traits.SensorState") return <SensorState attributes={props.attributes} updateAttributes={props.updateAttributes} updateStates={props.updateStates} ref={childRef}/>
       else if (trait === "action.devices.traits.StartStop") return <StartStop attributes={props.attributes} updateAttributes={props.updateAttributes} updateStates={props.updateStates} ref={childRef}/>
       else if (trait === "action.devices.traits.StatusReport") return <StatusReport states={props.states} updateStates={props.updateStates} ref={childRef}/>
       else if (trait === "action.devices.traits.TemperatureControl") return <TemperatureControl attributes={props.attributes} updateAttributes={props.updateAttributes} updateStates={props.updateStates} ref={childRef}/>

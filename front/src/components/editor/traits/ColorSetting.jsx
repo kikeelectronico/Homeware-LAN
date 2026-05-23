@@ -93,6 +93,7 @@ const ColorSetting = forwardRef((props, ref) => {
             name="ddns/provider"
             className="table_input"
             value={colorModel || ""}
+            displayEmpty
             onChange={event => updateType(event.target.value)}
           >
             <MenuItem value="">Color temperature</MenuItem>

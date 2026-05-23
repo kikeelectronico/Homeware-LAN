@@ -52,6 +52,7 @@ const EnergyStorage = forwardRef((props, ref) => {
             <Select
               className="table_input"
               value={energyStorageDistanceUnitForUX || ""}
+              displayEmpty
               onChange={event => {
                 setEnergyStorageDistanceUnitForUX(event.target.value)
                 if (event.target.value === "") props.updateAttributes("energyStorageDistanceUnitForUX", null, "delete")
