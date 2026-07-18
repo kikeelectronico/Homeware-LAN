@@ -1,5 +1,4 @@
 import json
-import paho.mqtt.publish as publish
 import paho.mqtt.client as mqtt
 from data import Data
 import hostname
@@ -22,7 +21,7 @@ def on_message(client, userdata, msg):
 	if msg.topic in TOPICS:
 		if msg.topic == "device/control":
 			payload = json.loads(msg.payload)
-			control(payload)
+			control(client, payload)
 		elif msg.topic == "homeware/alive":
 			data_conector.updateAlive('mqtt')
 	else:
@@ -40,7 +39,7 @@ def mqttReader():
 	client.connect(hostname.MQTT_HOST, hostname.MQTT_PORT, 60)
 	client.loop_forever()
 
-def control(payload):
+def control(client, payload):
 	id = payload['id']
 	param = payload['param']
 	value = payload['value']
@@ -53,11 +52,9 @@ def control(payload):
 		data_conector.updateParamStatus(id,param,value)
 	elif intent == 'request':
 		status = data_conector.getStatus()[id]
-		mqttData = data_conector.getMQTT()
-		publish.single("device/"+id, json.dumps(status), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
+		client.publish("device/"+id, json.dumps(status))
 		for param in status.keys():
-			mqttData = data_conector.getMQTT()
-			publish.single("device/"+id+'/'+param, str(status[param]), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
+			client.publish("device/"+id+'/'+param, str(status[param]))
 
 if __name__ == "__main__":
 	data_conector.log('Log', 'Starting HomewareMQTT core')
