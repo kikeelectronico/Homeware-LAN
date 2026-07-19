@@ -44,9 +44,9 @@ def control(client, payload):
 
 	# Analyze the message
 	if intent == 'execute':
-		data_conector.updateParamStatus(id,param,value)
+		data_conector.updateParamStatus(id,param,value, mqtt_client=client)
 	elif intent == 'rules':
-		data_conector.updateParamStatus(id,param,value)
+		data_conector.updateParamStatus(id,param,value, mqtt_client=client)
 	elif intent == 'request':
 		status = data_conector.getStatus()[id]
 		client.publish("device/"+id, json.dumps(status))
