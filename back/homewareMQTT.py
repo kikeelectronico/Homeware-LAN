@@ -5,7 +5,7 @@ import hostname
 
 #Init the data managment object
 data_conector = Data()
-client = mqtt.mqtt.Client(
+client = mqtt.Client(
 	mqtt.CallbackAPIVersion.VERSION2,
 	client_id="homewareMQTT",
 	protocol=mqtt.MQTTv5
