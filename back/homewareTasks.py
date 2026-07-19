@@ -20,23 +20,12 @@ client = mqtt.Client(
 already_run = False
 last_status = {}
 
-def connectMQTT():
-	mqttData = data_conector.getMQTT()
-	client.username_pw_set(mqttData['user'], mqttData['password'])
-	client.reconnect_delay_set(min_delay=1, max_delay=60)
-	client.connect(hostname.MQTT_HOST, hostname.MQTT_PORT, 60)
-	data_conector.log('Log', 'MQTT reconnected')
-
 def on_connect(client, userdata, flags, rc, properties):
 	print("Connected with result code "+str(rc))
 
 def on_disconnect(client, userdata, rc):
 	if rc != 0:
 		data_conector.log('Warning', 'MQTT disconnected. Trying to reconnect...')
-		try:
-			connectMQTT()
-		except Exception as e:
-			data_conector.log('Warning', 'MQTT reconnection failed: ' + str(e))
 
 def ddnsUpdater():
 	ddns = data_conector.getDDNS()
@@ -144,7 +133,10 @@ if __name__ == "__main__":
 	client.on_connect = on_connect
 	client.on_disconnect = on_disconnect
 
-	connectMQTT()
+	mqttData = data_conector.getMQTT()
+	client.username_pw_set(mqttData['user'], mqttData['password'])
+	client.reconnect_delay_set(min_delay=1, max_delay=60)
+	client.connect(hostname.MQTT_HOST, hostname.MQTT_PORT, 60)
 
 	client.loop_start()
 	
