@@ -311,7 +311,7 @@ class Data:
 				return None
 			return pickle.loads(param)
 
-	def updateParamStatus(self, device_id, param, value, client=None):
+	def updateParamStatus(self, device_id, param, value, mqtt_client=None):
 		if len(self.redis.keys('status/' + device_id + '/' + param)) == 1:
 			self.redis.set('status/' + device_id + '/' + param,pickle.dumps(value))
 			# Create the status json
@@ -326,12 +326,12 @@ class Data:
 				{'topic': "device/" + device_id, 'payload': json.dumps(status)}
 			]
 			# Send the messagees
-			if client is None:
+			if mqtt_client is None:
 				mqttData = self.getMQTT()
 				publish.multiple(msgs, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
 			else:
 				for msg in msgs:
-					client.publish(msg["topic"], msg["payload"])
+					mqtt_client.publish(msg["topic"], msg["payload"])
 			
 			return True
 		else:
