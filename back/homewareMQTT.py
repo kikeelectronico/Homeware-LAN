@@ -5,7 +5,11 @@ import hostname
 
 #Init the data managment object
 data_conector = Data()
-client = mqtt.Client()
+client = mqtt.mqtt.Client(
+	mqtt.CallbackAPIVersion.VERSION2,
+	client_id="homewareMQTT",
+	protocol=mqtt.MQTTv5
+)
 
 #Constants
 TOPICS = ["device/control", "homeware/alive"]

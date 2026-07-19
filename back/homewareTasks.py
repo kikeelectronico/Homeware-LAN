@@ -12,7 +12,11 @@ from homeGraph import HomeGraph
 #Init the data managment object
 data_conector = Data()
 homegraph = HomeGraph()
-client = mqtt.Client()
+client = mqtt.mqtt.Client(
+	mqtt.CallbackAPIVersion.VERSION2,
+	client_id="homewareTasks",
+	protocol=mqtt.MQTTv5
+)
 already_run = False
 last_status = {}
 
