@@ -19,6 +19,7 @@ TOPICS = ["device/control", "homeware/alive"]
 def connectMQTT():
 	mqttData = data_conector.getMQTT()
 	client.username_pw_set(mqttData['user'], mqttData['password'])
+	client.reconnect_delay_set(min_delay=1, max_delay=60)
 	client.connect(hostname.MQTT_HOST, hostname.MQTT_PORT, 60)
 	data_conector.log('Log', 'MQTT reconnected')
 
