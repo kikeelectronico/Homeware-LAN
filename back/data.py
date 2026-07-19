@@ -8,6 +8,7 @@ import redis
 import pymongo
 import time
 import paho.mqtt.publish as publish
+import paho.mqtt.client as mqtt
 import os.path
 import pickle
 import sys
@@ -310,7 +311,7 @@ class Data:
 				return None
 			return pickle.loads(param)
 
-	def updateParamStatus(self, device_id, param, value):
+	def updateParamStatus(self, device_id, param, value, client=None):
 		if len(self.redis.keys('status/' + device_id + '/' + param)) == 1:
 			self.redis.set('status/' + device_id + '/' + param,pickle.dumps(value))
 			# Create the status json
@@ -325,8 +326,12 @@ class Data:
 				{'topic': "device/" + device_id, 'payload': json.dumps(status)}
 			]
 			# Send the messagees
-			mqttData = self.getMQTT()
-			publish.multiple(msgs, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
+			if client is None:
+				mqttData = self.getMQTT()
+				publish.multiple(msgs, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
+			else:
+				for msg in msgs:
+					client.publish(msg["topic"], msg["payload"])
 			
 			return True
 		else:
