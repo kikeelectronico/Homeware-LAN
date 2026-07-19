@@ -16,13 +16,6 @@ TOPICS = ["device/control", "homeware/alive"]
 
 ########################### MQTT reader ###########################
 
-def connectMQTT():
-	mqttData = data_conector.getMQTT()
-	client.username_pw_set(mqttData['user'], mqttData['password'])
-	client.reconnect_delay_set(min_delay=1, max_delay=60)
-	client.connect(hostname.MQTT_HOST, hostname.MQTT_PORT, 60, clean_start=False)
-	data_conector.log('Log', 'MQTT reconnected')
-
 def on_connect(client, userdata, flags, rc, properties):
 	print("Connected with result code "+str(rc))
 	# Suscribe to topics
@@ -42,10 +35,6 @@ def on_message(client, userdata, msg):
 def on_disconnect(client, userdata, rc):
 	if rc != 0:
 		data_conector.log('Warning', 'MQTT disconnected. Trying to reconnect...')
-		try:
-			connectMQTT()
-		except Exception as e:
-			data_conector.log('Warning', 'MQTT reconnection failed: ' + str(e))
 
 def control(client, payload):
 	id = payload['id']
@@ -71,6 +60,9 @@ if __name__ == "__main__":
 	client.on_message = on_message
 	client.on_disconnect = on_disconnect
 
-	connectMQTT()
+	mqttData = data_conector.getMQTT()
+	client.username_pw_set(mqttData['user'], mqttData['password'])
+	client.reconnect_delay_set(min_delay=1, max_delay=60)
+	client.connect(hostname.MQTT_HOST, hostname.MQTT_PORT, 60, clean_start=False)
 
 	client.loop_forever()
