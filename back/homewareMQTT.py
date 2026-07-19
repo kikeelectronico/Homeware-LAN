@@ -5,11 +5,18 @@ import hostname
 
 #Init the data managment object
 data_conector = Data()
+client = mqtt.Client()
 
 #Constants
 TOPICS = ["device/control", "homeware/alive"]
 
 ########################### MQTT reader ###########################
+
+def connectMQTT():
+	mqttData = data_conector.getMQTT()
+	client.username_pw_set(mqttData['user'], mqttData['password'])
+	client.connect(hostname.MQTT_HOST, hostname.MQTT_PORT, 60)
+	data_conector.log('Log', 'MQTT reconnected')
 
 def on_connect(client, userdata, flags, rc):
 	print("Connected with result code "+str(rc))
@@ -27,17 +34,13 @@ def on_message(client, userdata, msg):
 	else:
 		data_conector.log('Warning', 'Received a message from a extrange MQTT topic')
 
-# MQTT reader
-def mqttReader():
-	client = mqtt.Client()
-	client.on_connect = on_connect
-	client.on_message = on_message
-
-	mqttData = data_conector.getMQTT()
-	client.username_pw_set(mqttData['user'], mqttData['password'])
-
-	client.connect(hostname.MQTT_HOST, hostname.MQTT_PORT, 60)
-	client.loop_forever()
+def on_disconnect(client, userdata, rc):
+	if rc != 0:
+		data_conector.log('Warning', 'MQTT disconnected. Trying to reconnect...')
+		try:
+			connectMQTT()
+		except Exception as e:
+			data_conector.log('Warning', 'MQTT reconnection failed: ' + str(e))
 
 def control(client, payload):
 	id = payload['id']
@@ -58,4 +61,11 @@ def control(client, payload):
 
 if __name__ == "__main__":
 	data_conector.log('Log', 'Starting HomewareMQTT core')
-	mqttReader()
+
+	client.on_connect = on_connect
+	client.on_message = on_message
+	client.on_disconnect = on_disconnect
+
+	connectMQTT()
+
+	client.loop_forever()
