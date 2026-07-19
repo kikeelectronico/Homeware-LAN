@@ -26,7 +26,7 @@ def connectMQTT():
 	client.connect(hostname.MQTT_HOST, hostname.MQTT_PORT, 60)
 	data_conector.log('Log', 'MQTT reconnected')
 
-def on_connect(client, userdata, flags, rc):
+def on_connect(client, userdata, flags, rc, properties):
 	print("Connected with result code "+str(rc))
 
 def on_disconnect(client, userdata, rc):
