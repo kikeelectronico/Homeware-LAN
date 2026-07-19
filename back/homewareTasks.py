@@ -2,7 +2,7 @@ import time
 from datetime import datetime
 import json
 import hostname
-import paho.mqtt.publish as publish
+import paho.mqtt.client as mqtt
 import requests
 import os
 
@@ -12,8 +12,26 @@ from homeGraph import HomeGraph
 #Init the data managment object
 data_conector = Data()
 homegraph = HomeGraph()
+client = mqtt.Client()
 already_run = False
 last_status = {}
+
+def connectMQTT():
+	mqttData = data_conector.getMQTT()
+	client.username_pw_set(mqttData['user'], mqttData['password'])
+	client.connect(hostname.MQTT_HOST, hostname.MQTT_PORT, 60)
+	data_conector.log('Log', 'MQTT reconnected')
+
+def on_connect(client, userdata, flags, rc):
+	print("Connected with result code "+str(rc))
+
+def on_disconnect(client, userdata, rc):
+	if rc != 0:
+		data_conector.log('Warning', 'MQTT disconnected. Trying to reconnect...')
+		try:
+			connectMQTT()
+		except Exception as e:
+			data_conector.log('Warning', 'MQTT reconnection failed: ' + str(e))
 
 def ddnsUpdater():
 	ddns = data_conector.getDDNS()
@@ -84,12 +102,9 @@ def syncDevicesStatus():
 	if data_conector.getSyncDevices():
 		devices = data_conector.getStatus()
 		for device in devices.keys():
-			mqttData = data_conector.getMQTT()
-			publish.single("device/" + device, json.dumps(devices[device]), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
-
+			client.publish("device/" + device, json.dumps(devices[device]))
 			for param in devices[device].keys():
-				mqttData = data_conector.getMQTT()
-				publish.single("device/" + device + '/'+param, str(devices[device][param]), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
+				client.publish("device/" + device + '/'+param, str(devices[device][param]))
 
 def clearLogFile():
 	# Delete at 00:00
@@ -104,8 +119,7 @@ def clearLogFile():
 		already_run = False
 
 def homewareCoreHearbeat():
-	mqttData = data_conector.getMQTT()
-	publish.single("homeware/alive", "all", hostname=hostname.MQTT_HOST, auth={'username': mqttData['user'], 'password': mqttData['password']})
+	client.publish("homeware/alive", "all")
 
 def syncGoogleState():
 	if pickle.loads(data_conector.getSyncGoogle()):
@@ -121,6 +135,14 @@ def syncGoogleState():
 
 if __name__ == "__main__":
 	data_conector.log('Log', 'Starting HomewareTask core')
+
+	client.on_connect = on_connect
+	client.on_disconnect = on_disconnect
+
+	connectMQTT()
+
+	client.loop_start()
+	
 	while(True):
 		ddnsUpdater()
 		syncDevicesStatus()
