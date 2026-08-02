@@ -312,7 +312,7 @@ class Data:
 			return pickle.loads(param)
 
 	def updateParamStatus(self, device_id, param, value, mqtt_client=None):
-		if len(self.redis.keys('status/' + device_id + '/*')) == 1:
+		if len(self.redis.keys('status/' + device_id + '/*')) >= 1:
 			self.redis.set('status/' + device_id + '/' + param,pickle.dumps(value))
 			# Create the status json
 			params_keys = self.redis.keys('status/' + device_id + '/*')
