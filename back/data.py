@@ -312,30 +312,27 @@ class Data:
 			return pickle.loads(param)
 
 	def updateParamStatus(self, device_id, param, value, mqtt_client=None):
-		if len(self.redis.keys('status/' + device_id + '/' + param)) == 1:
-			self.redis.set('status/' + device_id + '/' + param,pickle.dumps(value))
-			# Create the status json
-			params_keys = self.redis.keys('status/' + device_id + '/*')
-			status = {}
-			for param_key_string in params_keys:
-				param_key = param_key_string.decode().split("/")
-				status[param_key[2]] = pickle.loads(self.redis.get(param_key_string))
-			# Compose the messages
-			msgs = [
-				{'topic': "device/" + device_id + '/' + param, 'payload': str(value)},
-				{'topic': "device/" + device_id, 'payload': json.dumps(status)}
-			]
-			# Send the messagees
-			if mqtt_client is None:
-				mqttData = self.getMQTT()
-				publish.multiple(msgs, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
-			else:
-				for msg in msgs:
-					mqtt_client.publish(msg["topic"], msg["payload"])
-			
-			return True
+		self.redis.set('status/' + device_id + '/' + param,pickle.dumps(value))
+		# Create the status json
+		params_keys = self.redis.keys('status/' + device_id + '/*')
+		status = {}
+		for param_key_string in params_keys:
+			param_key = param_key_string.decode().split("/")
+			status[param_key[2]] = pickle.loads(self.redis.get(param_key_string))
+		# Compose the messages
+		msgs = [
+			{'topic': "device/" + device_id + '/' + param, 'payload': str(value)},
+			{'topic': "device/" + device_id, 'payload': json.dumps(status)}
+		]
+		# Send the messagees
+		if mqtt_client is None:
+			mqttData = self.getMQTT()
+			publish.multiple(msgs, hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
 		else:
-			return False
+			for msg in msgs:
+				mqtt_client.publish(msg["topic"], msg["payload"])
+		
+		return True
 
 # USER
 
