@@ -322,7 +322,7 @@ class Data:
 				status[param_key[2]] = pickle.loads(self.redis.get(param_key_string))
 			# Compose the messages
 			msgs = [
-				{'topic': "device/" + device_id + '/' + param, 'payload': str(value)},
+				{'topic': "device/" + device_id + '/' + param, 'payload': json.dumps(value)},
 				{'topic': "device/" + device_id, 'payload': json.dumps(status)}
 			]
 			# Send the messagees
