@@ -1,7 +1,7 @@
 paho-mqtt==2.1.0
 fastapi==0.136.1
 uvicorn==0.47.0
-python-dateutil==2.9.0.post0
+python-dateutil==3.0.0
 requests==2.34.2
 bcrypt==5.0.0
 redis==7.4.0
