@@ -1,10 +1,10 @@
 paho-mqtt==2.1.0
-fastapi==0.136.1
 uvicorn==0.54.0
-python-dateutil==2.9.0.post0
+fastapi==0.162.0
+python-dateutil==3.0.0
 requests==2.34.2
 bcrypt==5.0.0
-redis==7.4.0
+redis==8.1.0
 google-auth==2.53.0
-pymongo==4.17.0
-python-multipart==0.0.31
+python-multipart==0.0.32
+pymongo==4.19.0
