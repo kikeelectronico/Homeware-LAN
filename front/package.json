@@ -15,8 +15,8 @@
 
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@mui/material": "^9.5.0",
     "@microlink/react-json-view": "^1.31.43",
-    "@mui/material": "^7.3.6",
     "@mui/icons-material": "^9.5.0",
     "json-schema": "^0.4.0",
     "link": "^2.1.1",
