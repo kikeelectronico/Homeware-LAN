@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "react": "^19.2.4",
-    "react-dom": "^19.2.4",
+    "react-dom": "^19.3.1",
 
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -23,7 +23,7 @@
     "react-bootstrap": "^2.10.10",
     "react-markdown": "^10.1.0",
     "react-router": "^8.5.1",
-    "react-router-dom": "^7.18.3",
+    "react-router-dom": "^7.18.5",
     "react-router-link": "^2.0.2",
     "react-switch": "^7.1.0",
     "reactjs-popup": "^2.0.6"
@@ -31,7 +31,7 @@
   "devDependencies": {
     "@eslint/js": "^9.39.4",
     "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
+    "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^9.39.4",
     "eslint-plugin-react-hooks": "^7.0.1",
