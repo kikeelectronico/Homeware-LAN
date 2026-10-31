@@ -1,18 +1,22 @@
 import json
-import paho.mqtt.publish as publish
 import paho.mqtt.client as mqtt
 from data import Data
 import hostname
 
 #Init the data managment object
 data_conector = Data()
+client = mqtt.Client(
+	mqtt.CallbackAPIVersion.VERSION2,
+	client_id="homewareMQTT",
+	protocol=mqtt.MQTTv5
+)
 
 #Constants
 TOPICS = ["device/control", "homeware/alive"]
 
 ########################### MQTT reader ###########################
 
-def on_connect(client, userdata, flags, rc):
+def on_connect(client, userdata, flags, rc, properties):
 	print("Connected with result code "+str(rc))
 	# Suscribe to topics
 	for topic in TOPICS:
@@ -22,25 +26,17 @@ def on_message(client, userdata, msg):
 	if msg.topic in TOPICS:
 		if msg.topic == "device/control":
 			payload = json.loads(msg.payload)
-			control(payload)
+			control(client, payload)
 		elif msg.topic == "homeware/alive":
 			data_conector.updateAlive('mqtt')
 	else:
 		data_conector.log('Warning', 'Received a message from a extrange MQTT topic')
 
-# MQTT reader
-def mqttReader():
-	client = mqtt.Client()
-	client.on_connect = on_connect
-	client.on_message = on_message
+def on_disconnect(client, userdata, rc):
+	if rc != 0:
+		data_conector.log('Warning', 'MQTT disconnected. Trying to reconnect...')
 
-	mqttData = data_conector.getMQTT()
-	client.username_pw_set(mqttData['user'], mqttData['password'])
-
-	client.connect(hostname.MQTT_HOST, hostname.MQTT_PORT, 60)
-	client.loop_forever()
-
-def control(payload):
+def control(client, payload):
 	id = payload['id']
 	param = payload['param']
 	value = payload['value']
@@ -48,17 +44,25 @@ def control(payload):
 
 	# Analyze the message
 	if intent == 'execute':
-		data_conector.updateParamStatus(id,param,value)
+		data_conector.updateParamStatus(id,param,value, mqtt_client=client)
 	elif intent == 'rules':
-		data_conector.updateParamStatus(id,param,value)
+		data_conector.updateParamStatus(id,param,value, mqtt_client=client)
 	elif intent == 'request':
 		status = data_conector.getStatus()[id]
-		mqttData = data_conector.getMQTT()
-		publish.single("device/"+id, json.dumps(status), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
+		client.publish("device/"+id, json.dumps(status))
 		for param in status.keys():
-			mqttData = data_conector.getMQTT()
-			publish.single("device/"+id+'/'+param, str(status[param]), hostname=hostname.MQTT_HOST, auth={'username':mqttData['user'], 'password': mqttData['password']})
+			client.publish("device/"+id+'/'+param, str(status[param]))
 
 if __name__ == "__main__":
 	data_conector.log('Log', 'Starting HomewareMQTT core')
-	mqttReader()
+
+	client.on_connect = on_connect
+	client.on_message = on_message
+	client.on_disconnect = on_disconnect
+
+	mqttData = data_conector.getMQTT()
+	client.username_pw_set(mqttData['user'], mqttData['password'])
+	client.reconnect_delay_set(min_delay=1, max_delay=60)
+	client.connect(hostname.MQTT_HOST, hostname.MQTT_PORT, 60, clean_start=False)
+
+	client.loop_forever()
