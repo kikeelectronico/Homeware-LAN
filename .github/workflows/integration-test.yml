@@ -22,7 +22,7 @@ jobs:
         with:
           redis-version: ${{env.REDIS_VERSION}}
       - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.6.0
+        uses: supercharge/mongodb-github-action@1.12.1
       - name: Start Mosquitto broker ${{env.MOSQUITTO_VERSION}}
         uses: Namoshek/mosquitto-github-action@v1
         with:
