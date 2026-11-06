@@ -30,7 +30,7 @@ jobs:
         mosquitto-version: [2.0]
         python-version: [3.12, 3.13]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - name: Start Redis ${{ matrix.redis-version }}
         uses: supercharge/redis-github-action@1.8.1
         with:
