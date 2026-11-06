@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import getCookieValue from "../../../functions";
 import { root } from "../../../constants";
 import {Button, IconButton, TextField} from '@mui/material';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlined';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import Modal from "../../../components/web/Modal";
