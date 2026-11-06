@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Start Redis ${{env.REDIS_VERSION}}
-        uses: supercharge/redis-github-action@1.1.0
+        uses: supercharge/redis-github-action@1.8.1
         with:
           redis-version: ${{env.REDIS_VERSION}}
       - name: Start MongoDB
