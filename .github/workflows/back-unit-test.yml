@@ -46,7 +46,7 @@ jobs:
           ports: '1883:1883'
           password-file: ${{ github.workspace }}/configuration_templates/mosquitto_passwd
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
