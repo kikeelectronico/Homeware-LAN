@@ -25,7 +25,7 @@ APIKEY_CACHE_PREFIX = "apikey/"
 class Data:
 	"""Access to Homeware's databases and files."""
 
-	version = 'v2.5'
+	version = 'v2.4.1'
 
 	def __init__(self):		
 		self.verbose = False
