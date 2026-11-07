@@ -5,16 +5,17 @@ aliases:
   - /docs/install/
 ---
 
-To install Homeware, follow these steps.
+To install Homeware, follow these steps. Keep in mind that Homeware is built for Debian, Ubuntu, Raspberry Pi OS and their derivatives.
 
 ## Dependencies
 
-1. Install docker and docker-compose following the instructions for your OS https://docs.docker.com/compose/install/linux/.
-2. Install git.
-```bash
-sudo apt install -y git
-```
-3. Install your favourite text editor. For example, nano.
+1. Install docker and docker compose plugin following the instructions for your OS:
+- https://docs.docker.com/engine/install/
+- https://docs.docker.com/compose/install/
+2. Install git following the instructions for your OS:
+- https://git-scm.com/install/
+3. Install your favourite text editor.
+- For example, nano in Debian: 
 ```bash
 sudo apt install -y nano
 ```
