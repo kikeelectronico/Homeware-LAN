@@ -18,7 +18,7 @@ updates:
     mui:
       patterns:
         - "@mui/*"
-- package-ecosystem: npm
+- package-ecosystem: gomod
   directory: "/docs"
   schedule:
     interval: daily
