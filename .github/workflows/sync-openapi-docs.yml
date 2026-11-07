@@ -1,0 +1,114 @@
+name: Sync REST API docs
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - 'back/homewareAPI.py'
+      - 'back/routers/**'
+      - 'back/security/**'
+      - 'back/errorResponses.py'
+      - 'back/requirements.txt'
+      - 'docs/scripts/openapi2md.py'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: sync-docs-commits
+  cancel-in-progress: false
+
+env:
+  MAIN_BRANCH: master
+  DEV_BRANCH: dev
+  REDIS_VERSION: "6.2.20"
+  MONGODB_VERSION: "8.0.19"
+  MOSQUITTO_VERSION: "2.0"
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  sync:
+    name: Regenerate openapi.json and the REST API page
+    runs-on: ubuntu-latest
+    env:
+      HOMEWARE_USER: admin
+      HOMEWARE_PASSWORD: admin
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ env.MAIN_BRANCH }}
+      - name: Checkout dev
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ env.DEV_BRANCH }}
+          path: dev-branch
+      - name: Start Redis ${{ env.REDIS_VERSION }}
+        uses: supercharge/redis-github-action@1.8.1
+        with:
+          redis-version: ${{ env.REDIS_VERSION }}
+      - name: Start MongoDB ${{ env.MONGODB_VERSION }}
+        uses: supercharge/mongodb-github-action@1.12.1
+        with:
+          mongodb-version: ${{ env.MONGODB_VERSION }}
+      - name: Start Mosquitto broker ${{ env.MOSQUITTO_VERSION }}
+        uses: Namoshek/mosquitto-github-action@v1
+        with:
+          version: ${{ env.MOSQUITTO_VERSION }}
+          ports: '1883:1883'
+          password-file: ${{ github.workspace }}/configuration_templates/mosquitto_passwd
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        working-directory: ./back
+      - name: Get openapi.json from the API
+        working-directory: ./back
+        run: |
+          python - <<'PY'
+          import json
+          from homewareAPI import app
+
+          with open("../docs/static/openapi.json", "w", encoding="utf-8") as f:
+              f.write(json.dumps(app.openapi(), ensure_ascii=False, separators=(",", ":")))
+          PY
+      - name: Generate the REST API page
+        run: python3 scripts/openapi2md.py static/openapi.json content/docs/api/rest.md
+        working-directory: ./docs
+      - name: Commit to master
+        id: master
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/static/openapi.json docs/content/docs/api/rest.md
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "docs: update REST API reference"
+            git pull --rebase origin "$MAIN_BRANCH"
+            git push origin "HEAD:$MAIN_BRANCH"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Commit to dev
+        working-directory: dev-branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          cp ../docs/static/openapi.json docs/static/openapi.json
+          cp ../docs/content/docs/api/rest.md docs/content/docs/api/rest.md
+          git add docs/static/openapi.json docs/content/docs/api/rest.md
+          if ! git diff --cached --quiet; then
+            git commit -m "docs: update REST API reference"
+            git pull --rebase origin "$DEV_BRANCH"
+            git push origin "HEAD:$DEV_BRANCH"
+          fi
+      # Pushes made with GITHUB_TOKEN do not trigger other workflows, so the site is rebuilt explicitly.
+      - name: Rebuild the documentation site
+        if: steps.master.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run documentation.yml --ref "$MAIN_BRANCH"

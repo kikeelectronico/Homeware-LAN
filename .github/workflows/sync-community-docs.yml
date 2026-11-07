@@ -1,0 +1,72 @@
+name: Sync community docs
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - 'CODE_OF_CONDUCT.md'
+      - 'CONTRIBUTING.md'
+      - 'docs/scripts/sync_community_docs.py'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: sync-docs-commits
+  cancel-in-progress: false
+
+env:
+  MAIN_BRANCH: master
+  DEV_BRANCH: dev
+
+jobs:
+  sync:
+    name: Copy code of conduct and contributing guide to docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ env.MAIN_BRANCH }}
+      - name: Checkout dev
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ env.DEV_BRANCH }}
+          path: dev-branch
+      - name: Generate the docs pages
+        run: python3 docs/scripts/sync_community_docs.py
+      - name: Commit to master
+        id: master
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/content/code-of-conduct.md docs/content/contributing.md
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "docs: sync code of conduct and contributing guide"
+            git pull --rebase origin "$MAIN_BRANCH"
+            git push origin "HEAD:$MAIN_BRANCH"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Commit to dev
+        working-directory: dev-branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          cp ../docs/content/code-of-conduct.md docs/content/code-of-conduct.md
+          cp ../docs/content/contributing.md docs/content/contributing.md
+          git add docs/content/code-of-conduct.md docs/content/contributing.md
+          if ! git diff --cached --quiet; then
+            git commit -m "docs: sync code of conduct and contributing guide"
+            git pull --rebase origin "$DEV_BRANCH"
+            git push origin "HEAD:$DEV_BRANCH"
+          fi
+      # Pushes made with GITHUB_TOKEN do not trigger other workflows, so the site is rebuilt explicitly.
+      - name: Rebuild the documentation site
+        if: steps.master.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run documentation.yml --ref "$MAIN_BRANCH"
