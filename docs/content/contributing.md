@@ -6,9 +6,7 @@ aliases:
 
 First of all, thank you for thinking about contributing.
 
-# Ways to help
-
-## Reporting bugs or requesting a feature
+## Report bugs or request a feature
 
 If you find a bug you are welcome to report it using an issue. When you create a issue you will be asked for choose one of the following issue templates.
 
@@ -29,7 +27,7 @@ You will be asked for more information if needed. If you don't respond in 30 day
 
 - Verify that there is no similar issues open. If there is another issue similar, used the open issue to submit your opinion or bug.
 
-- Verify if you are using the last version of Homeware. The last one is ![GitHub release (latest by date)](https://img.shields.io/github/v/release/kikeelectronico/Homeware-LAN?style=flat-square).
+- Verify if you are using the last version of Homeware. The last one is: ![GitHub release (latest by date)](https://img.shields.io/github/v/release/kikeelectronico/Homeware-LAN?style=flat-square)
 
 ### How to fill a good issue.
 
@@ -39,25 +37,21 @@ You will be asked for more information if needed. If you don't respond in 30 day
 - Describe the behavior you expected and why.
 - Include data of your system: OS, web browser, Homeware version, hardware platform, etc..
 
-## Asking a question or sharing your project
-
-You can share anything related with Homeware or ask any question by opening a [Discussion](https://github.com/kikeelectronico/Homeware-LAN/discussions).
-
 ## Code contribution
 
 If you want to code contributes you must fork the repository and work on you own fork.
 
-The main resository is composed of 3 permanent branches: master, develop and alpha.
+The main resository is composed of 2 permanent branches: master and dev.
 
 The project is separeted in two main directories: back and front.
 
-### Backend
+**Backend**
 
-The backend is coded in Python 3.7 and it is available inside the `back` directory.
+The backend is coded in Python 3 and it is available inside the `back` directory.
 
 Read the back README in order to start working.
 
-### Frontend
+**Frontend**
 
 The frontend is coded in React js and it is available inside the `front` directory.
 
