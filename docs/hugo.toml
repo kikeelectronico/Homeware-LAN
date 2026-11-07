@@ -1,0 +1,57 @@
+# baseURL taken from static/CNAME (the custom domain of the original site).
+baseURL = "https://homeware.enriquegomez.me/"
+title = "Homeware Docs"
+locale = "en"
+defaultContentLanguage = "en"
+
+# The theme has no layouts for taxonomies.
+disableKinds = ["taxonomy", "term"]
+
+[module]
+  proxy = "direct"                          # clone from GitHub, no Go module proxy
+  private = "github.com/kikeelectronico/*"  # also skips the checksum database
+
+  [[module.imports]]
+    path = "github.com/kikeelectronico/hugo-docs-theme"
+
+[markup]
+  [markup.goldmark.renderer]
+    # The docs use raw <a> and <img> tags in a few places.
+    unsafe = true
+  [markup.highlight]
+    # The theme has no syntax-highlighting colors; keep plain code blocks that
+    # follow the theme's light/dark styles instead of Chroma's inline colors.
+    codeFences = false
+
+[params]
+  tagline   = "A complete ecosystem to connect your DIY devices with Google Home."
+  copyright = "Homeware Docs."
+  github    = "https://github.com/kikeelectronico/Homeware-LAN"
+  logo      = "img/Homeware.png"
+  logoAlt   = "Homeware Logo"
+  favicon   = "img/favicon.ico"
+
+  # Primary color from src/css/custom.css (--ifm-color-primary).
+  [params.colors.light]
+    primary = "#1c8adb"
+
+# Navbar (same order as the Docusaurus navbar; "API REST" could not be migrated).
+[[menus.main]]
+  name    = "Docs"
+  pageRef = "/docs/installation/install"
+  weight  = 10
+
+[[menus.main]]
+  name   = "Unsopported devices"
+  pageRef = "/unsupported-devices"
+  weight = 30
+
+[[menus.main]]
+  name   = "Code of conduct"
+  pageRef = "/code-of-conduct"
+  weight = 40
+
+[[menus.main]]
+  name   = "Contributing"
+  pageRef = "/contributing"
+  weight = 50

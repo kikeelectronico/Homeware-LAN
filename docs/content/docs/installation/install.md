@@ -1,0 +1,69 @@
+---
+title: "Install Homeware"
+weight: 10
+aliases:
+  - /docs/install/
+---
+
+To install Homeware, follow these steps. Keep in mind that Homeware is built for Debian, Ubuntu, Raspberry Pi OS and their derivatives.
+
+## Dependencies
+
+1. Install docker and docker compose plugin following the instructions for your OS:
+- https://docs.docker.com/engine/install/
+- https://docs.docker.com/compose/install/
+2. Install git following the instructions for your OS:
+- https://git-scm.com/install/
+3. Install your favourite text editor.
+- For example, nano in Debian: 
+```bash
+sudo apt install -y nano
+```
+## Installation process
+
+1. Open the ports 80 and 443 on your router/firewall if needed.
+
+2. Create a DDNS domain and set it using your public IP. DuckDNS and no-ip are supported.
+
+3. Clone the repo and cd into it.
+```bash
+git clone https://github.com/kikeelectronico/Homeware-LAN.git
+```
+```bash
+cd Homeware-LAN
+```
+4. Create your own `.env` file from `.env.template`. Data will be used to generate certs on letsencrypt.
+```bash
+cp configuration_templates/.env.template .env
+```
+5. Replace the default data with your values.
+- DOMAIN: your domain name from step 2.
+- EMAIL: your email. It is used for getting the SSL certificate from Let's Encrypt.
+- HOMEWARE_USER: the admin username that you will use to log in.
+- HOMEWARE_PASSWORD: the admin password that you will use to log in.
+6. Copy the docker-compose file.
+- Debian / Ubuntu
+```bash
+cp docker/docker-compose-debian.yaml docker-compose.yaml
+```
+- Raspberry Pi / ARM cores
+```bash
+cp docker/docker-compose-raspberry.yaml docker-compose.yaml
+```
+7. Start the project.
+```bash
+docker compose up -d
+```
+8. Follow this steps to link Homeware with Google Home: https://homeware.enriquegomez.me/docs/connect-with-google
+
+9. Finally, set up the necessary data using the Homeware's _Settings_ page.
+
+    Keep in mind that the default MQTT user and password are:
+
+    - User: mosquitto
+    - Password: homewarelan123
+
+    You may create a different `mosquitto_passwd` file following [these steps](https://mosquitto.org/man/mosquitto_passwd-1.html)  
+
+Thanks to <a href="https://github.com/ajpl" tarjet="blanck">@ajpl</a> for the PR.
+
