@@ -19,7 +19,7 @@ To install Homeware, follow these steps. Keep in mind that Homeware is built for
 ```bash
 sudo apt install -y nano
 ```
-## Install process
+## Installation process
 
 1. Open the ports 80 and 443 on your router/firewall if needed.
 
