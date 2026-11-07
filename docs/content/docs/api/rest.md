@@ -28,6 +28,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -59,6 +61,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -86,6 +90,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -111,6 +117,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -138,6 +146,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -154,7 +164,7 @@ aliases:
 {{< /api-section >}}
 {{< api-section kind="responses" >}}
 {{< api-response status="200" description="Successful Response" >}}
-{{< api-body type="application/json" schema="array of object (Device-Output)" >}}
+{{< api-body type="application/json" schema="array of object (Device)" >}}
 {{< api-object name="description" type="object (DeviceDescription)" required="true" >}}
 {{< api-field name="id" type="string" required="true" >}}
 {{< api-field name="attributes" type="object" required="true" >}}
@@ -178,6 +188,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -191,7 +203,7 @@ aliases:
 {{< api-field name="authorization" type="string or null" location="header" >}}
 {{< /api-section >}}
 {{< api-section kind="request" required="true" >}}
-{{< api-body type="application/json" schema="object (Device-Input)" >}}
+{{< api-body type="application/json" schema="object (Device)" >}}
 {{< api-object name="description" type="object (DeviceDescription)" required="true" >}}
 {{< api-field name="id" type="string" required="true" >}}
 {{< api-field name="attributes" type="object" required="true" >}}
@@ -220,6 +232,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -235,7 +249,7 @@ aliases:
 {{< /api-section >}}
 {{< api-section kind="responses" >}}
 {{< api-response status="200" description="Successful Response" >}}
-{{< api-body type="application/json" schema="object (Device-Output)" >}}
+{{< api-body type="application/json" schema="object (Device)" >}}
 {{< api-object name="description" type="object (DeviceDescription)" required="true" >}}
 {{< api-field name="id" type="string" required="true" >}}
 {{< api-field name="attributes" type="object" required="true" >}}
@@ -259,6 +273,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -273,7 +289,7 @@ aliases:
 {{< api-field name="authorization" type="string or null" location="header" >}}
 {{< /api-section >}}
 {{< api-section kind="request" required="true" >}}
-{{< api-body type="application/json" schema="object (Device-Input)" >}}
+{{< api-body type="application/json" schema="object (Device)" >}}
 {{< api-object name="description" type="object (DeviceDescription)" required="true" >}}
 {{< api-field name="id" type="string" required="true" >}}
 {{< api-field name="attributes" type="object" required="true" >}}
@@ -302,6 +318,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -326,6 +344,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -350,6 +370,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -378,6 +400,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -403,6 +427,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -432,6 +458,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -455,6 +483,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -481,6 +511,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -525,6 +557,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -590,6 +624,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -628,6 +664,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -654,6 +692,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -702,6 +742,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -728,6 +770,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -755,6 +799,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
@@ -784,6 +830,8 @@ aliases:
 {{< api-field name="loc" type="array of (string or integer)" required="true" >}}
 {{< api-field name="msg" type="string" required="true" >}}
 {{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="input" type="any" >}}
+{{< api-field name="ctx" type="object" >}}
 {{< /api-object >}}
 {{< /api-body >}}
 {{< /api-response >}}
