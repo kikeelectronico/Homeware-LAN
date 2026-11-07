@@ -42,6 +42,7 @@ def system_clock():
     m = ts.tm_min
     return str(h) + ":" + str(m)
 
+# Development entry point
 if __name__ == "__main__":
    import uvicorn
    uvicorn.run(
