@@ -1,7 +1,7 @@
 # baseURL taken from static/CNAME (the custom domain of the original site).
 baseURL = "https://homeware.enriquegomez.me/"
 title = "Homeware Docs"
-languageCode = "en"
+locale = "en"
 defaultContentLanguage = "en"
 
 # The theme has no layouts for taxonomies.
