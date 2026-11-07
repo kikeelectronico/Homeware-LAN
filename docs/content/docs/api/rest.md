@@ -10,685 +10,808 @@ aliases:
 
 ### Get Access
 
-`GET` `/api/access`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: array of [Access](#schema-access) |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="get" path="/api/access" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="array of object (Access)" >}}
+{{< api-field name="_id" type="string" required="true" >}}
+{{< api-field name="agent" type="string" required="true" >}}
+{{< api-field name="apikey" type="string" required="true" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ### Create Access
 
-`POST` `/api/access/`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Request body** (required)
-
-Content type: `application/json`, [AccessCreate](#schema-accesscreate)
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: [Access](#schema-access) |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="post" path="/api/access/" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="request" required="true" >}}
+{{< api-body type="application/json" schema="object (AccessCreate)" >}}
+{{< api-field name="agent" type="string" required="true" >}}
+{{< /api-body >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="object (Access)" >}}
+{{< api-field name="_id" type="string" required="true" >}}
+{{< api-field name="agent" type="string" required="true" >}}
+{{< api-field name="apikey" type="string" required="true" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ### Delete Access
 
-`DELETE` `/api/access/{apikey_id}`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `apikey_id` | path | `string` | yes |  |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: [Access](#schema-access) |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="delete" path="/api/access/{apikey_id}" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="apikey_id" type="string" location="path" required="true" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="object (Access)" >}}
+{{< api-field name="_id" type="string" required="true" >}}
+{{< api-field name="agent" type="string" required="true" >}}
+{{< api-field name="apikey" type="string" required="true" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ## Backup
 
 ### Get Backup
 
-`GET` `/api/backup`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: any |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="get" path="/api/backup" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="any" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ### Restore Backup
 
-`PUT` `/api/backup`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Request body**
-
-Content type: `application/json`, `object` or `null`
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: any |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="put" path="/api/backup" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="request" >}}
+{{< api-body type="application/json" schema="object or null" >}}
+{{< /api-body >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="any" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ## Devices
 
 ### Get Devices
 
-`GET` `/api/devices`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: array of [Device-Output](#schema-device-output) |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="get" path="/api/devices" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="array of object (Device-Output)" >}}
+{{< api-object name="description" type="object (DeviceDescription)" required="true" >}}
+{{< api-field name="id" type="string" required="true" >}}
+{{< api-field name="attributes" type="object" required="true" >}}
+{{< api-field name="deviceInfo" type="object" required="true" >}}
+{{< api-object open="false" name="name" type="object (DeviceName)" required="true" >}}
+{{< api-field name="defaultNames" type="array of string" required="true" >}}
+{{< api-field name="name" type="string" required="true" >}}
+{{< api-field name="nicknames" type="array of string" required="true" >}}
+{{< /api-object >}}
+{{< api-field name="traits" type="array of string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="hide_from_google" type="boolean or null" default="false" >}}
+{{< api-field name="room" type="string or null" default="\"\"" >}}
+{{< /api-object >}}
+{{< api-field name="states" type="object" required="true" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ### Create A Device
 
-`POST` `/api/devices`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Request body** (required)
-
-Content type: `application/json`, [Device-Input](#schema-device-input)
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: any |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="post" path="/api/devices" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="request" required="true" >}}
+{{< api-body type="application/json" schema="object (Device-Input)" >}}
+{{< api-object name="description" type="object (DeviceDescription)" required="true" >}}
+{{< api-field name="id" type="string" required="true" >}}
+{{< api-field name="attributes" type="object" required="true" >}}
+{{< api-field name="deviceInfo" type="object" required="true" >}}
+{{< api-object open="false" name="name" type="object (DeviceName)" required="true" >}}
+{{< api-field name="defaultNames" type="array of string" required="true" >}}
+{{< api-field name="name" type="string" required="true" >}}
+{{< api-field name="nicknames" type="array of string" required="true" >}}
+{{< /api-object >}}
+{{< api-field name="traits" type="array of string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="hide_from_google" type="boolean or null" default="false" >}}
+{{< api-field name="room" type="string or null" default="\"\"" >}}
+{{< /api-object >}}
+{{< api-field name="states" type="object" required="true" >}}
+{{< /api-body >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="any" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ### Get A Device
 
-`GET` `/api/devices/{device_id}`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `device_id` | path | `string` | yes |  |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: [Device-Output](#schema-device-output) |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="get" path="/api/devices/{device_id}" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="device_id" type="string" location="path" required="true" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="object (Device-Output)" >}}
+{{< api-object name="description" type="object (DeviceDescription)" required="true" >}}
+{{< api-field name="id" type="string" required="true" >}}
+{{< api-field name="attributes" type="object" required="true" >}}
+{{< api-field name="deviceInfo" type="object" required="true" >}}
+{{< api-object open="false" name="name" type="object (DeviceName)" required="true" >}}
+{{< api-field name="defaultNames" type="array of string" required="true" >}}
+{{< api-field name="name" type="string" required="true" >}}
+{{< api-field name="nicknames" type="array of string" required="true" >}}
+{{< /api-object >}}
+{{< api-field name="traits" type="array of string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="hide_from_google" type="boolean or null" default="false" >}}
+{{< api-field name="room" type="string or null" default="\"\"" >}}
+{{< /api-object >}}
+{{< api-field name="states" type="object" required="true" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ### Update A Device
 
-`PUT` `/api/devices/{device_id}`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `device_id` | path | `string` | yes |  |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Request body** (required)
-
-Content type: `application/json`, [Device-Input](#schema-device-input)
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: any |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="put" path="/api/devices/{device_id}" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="device_id" type="string" location="path" required="true" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="request" required="true" >}}
+{{< api-body type="application/json" schema="object (Device-Input)" >}}
+{{< api-object name="description" type="object (DeviceDescription)" required="true" >}}
+{{< api-field name="id" type="string" required="true" >}}
+{{< api-field name="attributes" type="object" required="true" >}}
+{{< api-field name="deviceInfo" type="object" required="true" >}}
+{{< api-object open="false" name="name" type="object (DeviceName)" required="true" >}}
+{{< api-field name="defaultNames" type="array of string" required="true" >}}
+{{< api-field name="name" type="string" required="true" >}}
+{{< api-field name="nicknames" type="array of string" required="true" >}}
+{{< /api-object >}}
+{{< api-field name="traits" type="array of string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="hide_from_google" type="boolean or null" default="false" >}}
+{{< api-field name="room" type="string or null" default="\"\"" >}}
+{{< /api-object >}}
+{{< api-field name="states" type="object" required="true" >}}
+{{< /api-body >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="any" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ### Delete A Device
 
-`DELETE` `/api/devices/{device_id}`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `device_id` | path | `string` | yes |  |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: any |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="delete" path="/api/devices/{device_id}" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="device_id" type="string" location="path" required="true" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="any" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ### Get States Of A Device
 
-`GET` `/api/devices/{device_id}/states`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `device_id` | path | `string` | yes |  |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: `object` |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="get" path="/api/devices/{device_id}/states" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="device_id" type="string" location="path" required="true" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="object" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ### Update States Of A Device
 
-`PATCH` `/api/devices/{device_id}/states`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `device_id` | path | `string` | yes |  |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Request body** (required)
-
-Content type: `application/json`, `object`
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: any |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="patch" path="/api/devices/{device_id}/states" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="device_id" type="string" location="path" required="true" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="request" required="true" >}}
+{{< api-body type="application/json" schema="object" >}}
+{{< /api-body >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="any" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ### Get A State Of A Device
 
-`GET` `/api/devices/{device_id}/states/{state_name}`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `device_id` | path | `string` | yes |  |
-| `state_name` | path | `string` | yes |  |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: any |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="get" path="/api/devices/{device_id}/states/{state_name}" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="device_id" type="string" location="path" required="true" >}}
+{{< api-field name="state_name" type="string" location="path" required="true" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="any" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ## Logs
 
 ### Get Log
 
-`GET` `/api/logs`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: array of [LogRegistry](#schema-logregistry) |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="get" path="/api/logs" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="array of object (LogRegistry)" >}}
+{{< api-field name="agent" type="string" required="true" >}}
+{{< api-field name="severity" type="string" required="true" enum="Warning, Log, Alert, Info" >}}
+{{< api-field name="message" type="string" required="true" >}}
+{{< api-field name="timestamp" type="number" required="true" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ### Delete Log
 
-`DELETE` `/api/logs`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: `boolean` |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="delete" path="/api/logs" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="boolean" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ## Alerts
 
 ### Get Alerts
 
-`GET` `/api/alerts`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: [Alerts](#schema-alerts) |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="get" path="/api/alerts" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="object (Alerts)" >}}
+{{< api-field name="alert" type="string" required="true" enum="set, clear" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ## Settings
 
 ### Get Settings
 
-`GET` `/api/settings`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: [Settings](#schema-settings) |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="get" path="/api/settings" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="object (Settings)" >}}
+{{< api-field name="client_id" type="string" required="true" >}}
+{{< api-field name="client_secret" type="string" required="true" >}}
+{{< api-object name="ddns" type="object (DDNS)" required="true" >}}
+{{< api-field name="enabled" type="boolean" required="true" >}}
+{{< api-field name="hostname" type="string" required="true" >}}
+{{< api-field name="password" type="string" required="true" >}}
+{{< api-field name="provider" type="string" required="true" >}}
+{{< api-field name="username" type="string" required="true" >}}
+{{< /api-object >}}
+{{< api-field name="domain" type="string" required="true" >}}
+{{< api-object name="log" type="object (Log)" required="true" >}}
+{{< api-field name="days" type="integer" required="true" >}}
+{{< /api-object >}}
+{{< api-object name="mqtt" type="object (MQTT)" required="true" >}}
+{{< api-field name="user" type="string" required="true" >}}
+{{< api-field name="password" type="string" required="true" >}}
+{{< /api-object >}}
+{{< api-field name="sync_devices" type="boolean" required="true" >}}
+{{< api-field name="sync_google" type="boolean" required="true" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ### Update Settings
 
-`PATCH` `/api/settings`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Request body** (required)
-
-Content type: `application/json`, [PatchSettings](#schema-patchsettings)
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: [Settings](#schema-settings) |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="patch" path="/api/settings" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="request" required="true" >}}
+{{< api-body type="application/json" schema="object (PatchSettings)" >}}
+{{< api-field name="client_id" type="string or null" required="true" >}}
+{{< api-field name="client_secret" type="string or null" required="true" >}}
+{{< api-object name="ddns" type="object (DDNS) or null" required="true" >}}
+{{< api-field name="enabled" type="boolean" required="true" >}}
+{{< api-field name="hostname" type="string" required="true" >}}
+{{< api-field name="password" type="string" required="true" >}}
+{{< api-field name="provider" type="string" required="true" >}}
+{{< api-field name="username" type="string" required="true" >}}
+{{< /api-object >}}
+{{< api-field name="domain" type="string or null" required="true" >}}
+{{< api-object name="log" type="object (Log) or null" required="true" >}}
+{{< api-field name="days" type="integer" required="true" >}}
+{{< /api-object >}}
+{{< api-object name="mqtt" type="object (MQTT) or null" required="true" >}}
+{{< api-field name="user" type="string" required="true" >}}
+{{< api-field name="password" type="string" required="true" >}}
+{{< /api-object >}}
+{{< api-field name="sync_devices" type="boolean or null" required="true" >}}
+{{< api-field name="sync_google" type="boolean or null" required="true" >}}
+{{< /api-body >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="object (Settings)" >}}
+{{< api-field name="client_id" type="string" required="true" >}}
+{{< api-field name="client_secret" type="string" required="true" >}}
+{{< api-object name="ddns" type="object (DDNS)" required="true" >}}
+{{< api-field name="enabled" type="boolean" required="true" >}}
+{{< api-field name="hostname" type="string" required="true" >}}
+{{< api-field name="password" type="string" required="true" >}}
+{{< api-field name="provider" type="string" required="true" >}}
+{{< api-field name="username" type="string" required="true" >}}
+{{< /api-object >}}
+{{< api-field name="domain" type="string" required="true" >}}
+{{< api-object name="log" type="object (Log)" required="true" >}}
+{{< api-field name="days" type="integer" required="true" >}}
+{{< /api-object >}}
+{{< api-object name="mqtt" type="object (MQTT)" required="true" >}}
+{{< api-field name="user" type="string" required="true" >}}
+{{< api-field name="password" type="string" required="true" >}}
+{{< /api-object >}}
+{{< api-field name="sync_devices" type="boolean" required="true" >}}
+{{< api-field name="sync_google" type="boolean" required="true" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ### Set Service Account Key
 
-`PUT` `/api/settings/serviceaccountkey`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Request body** (required)
-
-Content type: `application/json`, [ServiceAccountKey](#schema-serviceaccountkey)
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: any |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="put" path="/api/settings/serviceaccountkey" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="request" required="true" >}}
+{{< api-body type="application/json" schema="object (ServiceAccountKey)" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< api-field name="project_id" type="string" required="true" >}}
+{{< api-field name="private_key_id" type="string" required="true" >}}
+{{< api-field name="private_key" type="string" required="true" >}}
+{{< api-field name="client_email" type="string" required="true" >}}
+{{< api-field name="client_id" type="string" required="true" >}}
+{{< api-field name="auth_uri" type="string" required="true" >}}
+{{< api-field name="token_uri" type="string" required="true" >}}
+{{< api-field name="auth_provider_x509_cert_url" type="string" required="true" >}}
+{{< api-field name="client_x509_cert_url" type="string" required="true" >}}
+{{< api-field name="universe_domain" type="string" required="true" >}}
+{{< /api-body >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="any" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ## System
 
 ### Get System Version
 
-`GET` `/api/system/version`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: [Version](#schema-version) |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="get" path="/api/system/version" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="object (Version)" >}}
+{{< api-field name="version" type="string" required="true" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ### Get System Status
 
-`GET` `/api/system/status`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: [SystemStatus](#schema-systemstatus) |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="get" path="/api/system/status" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="object (SystemStatus)" >}}
+{{< api-object name="api" type="object (ComponentState)" required="true" >}}
+{{< api-field name="enable" type="boolean" required="true" >}}
+{{< api-field name="status" type="string" required="true" >}}
+{{< api-field name="title" type="string" required="true" >}}
+{{< /api-object >}}
+{{< api-object name="mqtt" type="object (ComponentState)" required="true" >}}
+{{< api-field name="enable" type="boolean" required="true" >}}
+{{< api-field name="status" type="string" required="true" >}}
+{{< api-field name="title" type="string" required="true" >}}
+{{< /api-object >}}
+{{< api-object name="tasks" type="object (ComponentState)" required="true" >}}
+{{< api-field name="enable" type="boolean" required="true" >}}
+{{< api-field name="status" type="string" required="true" >}}
+{{< api-field name="title" type="string" required="true" >}}
+{{< /api-object >}}
+{{< api-object name="redis" type="object (ComponentState)" required="true" >}}
+{{< api-field name="enable" type="boolean" required="true" >}}
+{{< api-field name="status" type="string" required="true" >}}
+{{< api-field name="title" type="string" required="true" >}}
+{{< /api-object >}}
+{{< api-object name="mongo" type="object (ComponentState)" required="true" >}}
+{{< api-field name="enable" type="boolean" required="true" >}}
+{{< api-field name="status" type="string" required="true" >}}
+{{< api-field name="title" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ## User
 
 ### Validate User Token
 
-`GET` `/api/user/validateToken`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `token` | header | `string` or `null` | no |  |
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: [TokenValidation](#schema-tokenvalidation) |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="get" path="/api/user/validateToken" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="token" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="object (TokenValidation)" >}}
+{{< api-field name="valid" type="boolean" required="true" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ### User Login
 
-`GET` `/api/user/login`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `username` | header | `string` or `null` | no |  |
-| `password` | header | `string` or `null` | no |  |
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: [UserSesion](#schema-usersesion) |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="get" path="/api/user/login" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="username" type="string or null" location="header" >}}
+{{< api-field name="password" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="object (UserSesion)" >}}
+{{< api-field name="username" type="string" required="true" >}}
+{{< api-field name="token" type="string" required="true" >}}
+{{< api-field name="valid" type="boolean" required="true" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ### Change User Password
 
-`PUT` `/api/user/password`
-
-**Parameters**
-
-| Name | In | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| `authorization` | header | `string` or `null` | no |  |
-
-**Request body**
-
-Content type: `application/json`, [Password](#schema-password) or `null`
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: any |
-| `422` | Validation Error | `application/json`: [HTTPValidationError](#schema-httpvalidationerror) |
+{{< api-op method="put" path="/api/user/password" >}}
+{{< api-section kind="parameters" >}}
+{{< api-field name="authorization" type="string or null" location="header" >}}
+{{< /api-section >}}
+{{< api-section kind="request" >}}
+{{< api-body type="application/json" schema="object (Password) or null" >}}
+{{< api-field name="password" type="string" required="true" >}}
+{{< api-field name="new_password" type="string" required="true" >}}
+{{< /api-body >}}
+{{< /api-section >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="any" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< api-response status="422" description="Validation Error" open="false" >}}
+{{< api-body type="application/json" schema="object (HTTPValidationError)" >}}
+{{< api-object name="detail" type="array of object (ValidationError)" >}}
+{{< api-field name="loc" type="array of (string or integer)" required="true" >}}
+{{< api-field name="msg" type="string" required="true" >}}
+{{< api-field name="type" type="string" required="true" >}}
+{{< /api-object >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ## Test
 
 ### Test Endpoint
 
-`GET` `/test`
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `text/plain`: `string` |
+{{< api-op method="get" path="/test" >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="text/plain" schema="string" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
 
 ## Clock
 
 ### System Clock
 
-`GET` `/api/clock`
-
-**Responses**
-
-| Status | Description | Content |
-| --- | --- | --- |
-| `200` | Successful Response | `application/json`: any |
-
-## Schemas
-
-### Access {#schema-access}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `_id` | `string` | yes |  |
-| `agent` | `string` | yes |  |
-| `apikey` | `string` | yes |  |
-
-### AccessCreate {#schema-accesscreate}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `agent` | `string` | yes |  |
-
-### AlertState {#schema-alertstate}
-
-Type: `string`, one of `"set"`, `"clear"`
-
-### Alerts {#schema-alerts}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `alert` | [AlertState](#schema-alertstate) | yes |  |
-
-### ComponentState {#schema-componentstate}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `enable` | `boolean` | yes |  |
-| `status` | `string` | yes |  |
-| `title` | `string` | yes |  |
-
-### DDNS {#schema-ddns}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `enabled` | `boolean` | yes |  |
-| `hostname` | `string` | yes |  |
-| `password` | `string` | yes |  |
-| `provider` | `string` | yes |  |
-| `username` | `string` | yes |  |
-
-### Device-Input {#schema-device-input}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `description` | [DeviceDescription](#schema-devicedescription) | yes |  |
-| `states` | `object` | yes |  |
-
-### Device-Output {#schema-device-output}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `description` | [DeviceDescription](#schema-devicedescription) | yes |  |
-| `states` | `object` | yes |  |
-
-### DeviceDescription {#schema-devicedescription}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `id` | `string` | yes |  |
-| `attributes` | `object` | yes |  |
-| `deviceInfo` | `object` | yes |  |
-| `name` | [DeviceName](#schema-devicename) | yes |  |
-| `traits` | array of `string` | yes |  |
-| `type` | `string` | yes |  |
-| `hide_from_google` | `boolean` or `null` | no | Default: `false`. |
-| `room` | `string` or `null` | no | Default: `""`. |
-
-### DeviceName {#schema-devicename}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `defaultNames` | array of `string` | yes |  |
-| `name` | `string` | yes |  |
-| `nicknames` | array of `string` | yes |  |
-
-### HTTPValidationError {#schema-httpvalidationerror}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `detail` | array of [ValidationError](#schema-validationerror) | no |  |
-
-### Log {#schema-log}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `days` | `integer` | yes |  |
-
-### LogRegistry {#schema-logregistry}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `agent` | `string` | yes |  |
-| `severity` | [Severity](#schema-severity) | yes |  |
-| `message` | `string` | yes |  |
-| `timestamp` | `number` | yes |  |
-
-### MQTT {#schema-mqtt}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `user` | `string` | yes |  |
-| `password` | `string` | yes |  |
-
-### Password {#schema-password}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `password` | `string` | yes |  |
-| `new_password` | `string` | yes |  |
-
-### PatchSettings {#schema-patchsettings}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `client_id` | `string` or `null` | yes |  |
-| `client_secret` | `string` or `null` | yes |  |
-| `ddns` | [DDNS](#schema-ddns) or `null` | yes |  |
-| `domain` | `string` or `null` | yes |  |
-| `log` | [Log](#schema-log) or `null` | yes |  |
-| `mqtt` | [MQTT](#schema-mqtt) or `null` | yes |  |
-| `sync_devices` | `boolean` or `null` | yes |  |
-| `sync_google` | `boolean` or `null` | yes |  |
-
-### ServiceAccountKey {#schema-serviceaccountkey}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `type` | `string` | yes |  |
-| `project_id` | `string` | yes |  |
-| `private_key_id` | `string` | yes |  |
-| `private_key` | `string` | yes |  |
-| `client_email` | `string` | yes |  |
-| `client_id` | `string` | yes |  |
-| `auth_uri` | `string` | yes |  |
-| `token_uri` | `string` | yes |  |
-| `auth_provider_x509_cert_url` | `string` | yes |  |
-| `client_x509_cert_url` | `string` | yes |  |
-| `universe_domain` | `string` | yes |  |
-
-### Settings {#schema-settings}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `client_id` | `string` | yes |  |
-| `client_secret` | `string` | yes |  |
-| `ddns` | [DDNS](#schema-ddns) | yes |  |
-| `domain` | `string` | yes |  |
-| `log` | [Log](#schema-log) | yes |  |
-| `mqtt` | [MQTT](#schema-mqtt) | yes |  |
-| `sync_devices` | `boolean` | yes |  |
-| `sync_google` | `boolean` | yes |  |
-
-### Severity {#schema-severity}
-
-Type: `string`, one of `"Warning"`, `"Log"`, `"Alert"`, `"Info"`
-
-### SystemStatus {#schema-systemstatus}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `api` | [ComponentState](#schema-componentstate) | yes |  |
-| `mqtt` | [ComponentState](#schema-componentstate) | yes |  |
-| `tasks` | [ComponentState](#schema-componentstate) | yes |  |
-| `redis` | [ComponentState](#schema-componentstate) | yes |  |
-| `mongo` | [ComponentState](#schema-componentstate) | yes |  |
-
-### TokenValidation {#schema-tokenvalidation}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `valid` | `boolean` | yes |  |
-
-### UserSesion {#schema-usersesion}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `username` | `string` | yes |  |
-| `token` | `string` | yes |  |
-| `valid` | `boolean` | yes |  |
-
-### ValidationError {#schema-validationerror}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `loc` | array of `string` or `integer` | yes |  |
-| `msg` | `string` | yes |  |
-| `type` | `string` | yes |  |
-
-### Version {#schema-version}
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `version` | `string` | yes |  |
+{{< api-op method="get" path="/api/clock" >}}
+{{< api-section kind="responses" >}}
+{{< api-response status="200" description="Successful Response" >}}
+{{< api-body type="application/json" schema="any" >}}
+{{< /api-body >}}
+{{< /api-response >}}
+{{< /api-section >}}
+{{< /api-op >}}
