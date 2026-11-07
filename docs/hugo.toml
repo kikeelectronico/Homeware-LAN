@@ -47,16 +47,11 @@ disableKinds = ["taxonomy", "term"]
   weight = 30
 
 [[menus.main]]
-  name    = "Libs"
-  pageRef = "/libs"
-  weight  = 40
-
-[[menus.main]]
   name   = "Code of conduct"
   pageRef = "/code-of-conduct"
-  weight = 50
+  weight = 40
 
 [[menus.main]]
   name   = "Contributing"
   pageRef = "/contributing"
-  weight = 60
+  weight = 50
