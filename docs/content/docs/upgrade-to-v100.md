@@ -5,15 +5,15 @@ weight: 180
 
 Please, **backup your system**. Use the backup file option.
 
-# Process
+## Process
 
 You shouldn't upgrade to v1.0 from an older versión. You **MUST INSTALL THE NEW VERSION** and restore your backup file after installation.
 
-# Installation process
+## Installation process
 
 First you need to delete some old files and configurations
 
-## Delete the cron jobs
+### Delete the cron jobs
 
 1. Run.
 
@@ -35,7 +35,7 @@ First you need to delete some old files and configurations
 
 4. Exit using `Ctrl + X`.
 
-## Delete the Redis service
+### Delete the Redis service
 
 1. Run.
 
@@ -43,7 +43,7 @@ First you need to delete some old files and configurations
 sudo rm /lib/systemd/system/homewareRedis.service
 ```
 
-## Install the new version
+### Install the new version
 
 https://homeware.enriquegomez.me/docs/install
 

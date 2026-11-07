@@ -5,11 +5,18 @@ aliases:
   - /docs/create-device/
 ---
 
-For create a device click `New`.
+To create a device in Homeware, follow these steps.
+
+1. For create a device click `New`.
 
 <img src="/img/create-device/C1.png"/>
 
-## Global Settings
+2. Configure the device using *Global settings* and *Traits*.
+3. Save. Do not forget to save your changes by clicking the `Save` button.
+
+## Device Settings
+
+### Global Settings
 
 The global settings are data common to all devices at Google Home ecosystem. The mandatory data is marked with an **\***.
 
@@ -21,13 +28,13 @@ The global settings are data common to all devices at Google Home ecosystem. The
 - **Manufacturer:** usually, you. This is used by the manufacturers to indicate its brand.
 - **Model:** every manufacturer has diferrent devices.
 
-## Traits
+### Traits
 
 Every device has tratis. They indicate what the device can really do and how it do it. Once you select a *Device Type*, the *Traits* section will show the recommended traits for the device. You can enable any not recommended trait for the device using the button *More traits*.
 
 For enabling a trait, click on its switch.
 
-### Configuring a Trait
+#### Configuring a Trait
 
 Some traits must be configured, for example in the *Power control* trait we can enable *commandOnlyOnOff* and *queryOnlyOnOff*.
 
@@ -36,9 +43,3 @@ Some traits must be configured, for example in the *Power control* trait we can 
 In the *Color setting* trait we can enable *Color type*, *Minimum temperature*, *Maximum temperature* and *commandOnlyColorSetting*.
 
 <img src="/img/create-device/C3.png"/>
-
-## Save
-
-Save. Do not forget to save your changes by clicking the `Save` button.
-
-If you have any doubt, please open a Q&A [Discussion](https://github.com/kikeelectronico/Homeware-LAN/discussions).

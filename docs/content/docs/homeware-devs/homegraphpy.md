@@ -13,7 +13,7 @@ The methods can only be called from data.py file when something changes in the d
 
 This method is used to inform HomeGraph that a definition of a device has changed.
 
-## repostState
+## reportState
 
 This method is used to inform HomeGraph that the status of a device has changed.
 

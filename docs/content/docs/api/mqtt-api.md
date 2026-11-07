@@ -7,12 +7,14 @@ aliases:
 
 Homeware LAN has an MQTT API for getting and setting the status of any device. You can use this API for communicating Homeware with your hardware devices.
 
-## Connection data
+## MQTT API basics
+
+### Connection data
 **Host**: It is the IP of the machine that runs Homeware.
 
 **Port**: 1883
 
-## Status of a device
+### Status of a device
 
 The status of a device is composed by several parameters. For example, the status of a light can be something like:
 ```

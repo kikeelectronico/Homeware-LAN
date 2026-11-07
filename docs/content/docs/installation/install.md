@@ -5,7 +5,9 @@ aliases:
   - /docs/install/
 ---
 
-# Dependencies
+To install Homeware, follow these steps.
+
+## Dependencies
 
 1. Install docker and docker-compose following the instructions for your OS https://docs.docker.com/compose/install/linux/.
 2. Install git.
@@ -16,7 +18,7 @@ sudo apt install -y git
 ```bash
 sudo apt install -y nano
 ```
-# Install process
+## Install process
 
 1. Open the ports 80 and 443 on your router/firewall if needed.
 
@@ -55,12 +57,12 @@ docker compose up -d
 
 9. Finally, set up the necessary data using the Homeware's _Settings_ page.
 
-# Default MQTT user and password
+    Keep in mind that the default MQTT user and password are:
 
-- User: mosquitto
-- Password: homewarelan123
+    - User: mosquitto
+    - Password: homewarelan123
 
-You may create a different `mosquitto_passwd` file following [these steps](https://mosquitto.org/man/mosquitto_passwd-1.html)  
+    You may create a different `mosquitto_passwd` file following [these steps](https://mosquitto.org/man/mosquitto_passwd-1.html)  
 
 Thanks to <a href="https://github.com/ajpl" tarjet="blanck">@ajpl</a> for the PR.
 

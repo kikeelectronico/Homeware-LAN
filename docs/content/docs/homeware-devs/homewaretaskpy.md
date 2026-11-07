@@ -5,7 +5,7 @@ aliases:
   - /docs/homewaretaskpy/
 ---
 
-HomewareTasks contains functions that work periodic work like verify the public IP, synchronize the devices or execute the user's programed takss.
+HomewareTasks is a worker that runs functions periodically, such as verifying the public IP, synchronizing devices, or clearing logs.
 
 ## Functions
 
@@ -15,4 +15,16 @@ This function verify the public IP and sends request to the DDNS provider in ord
 
 ### syncDevicesStatus
 
-This functions sends the devices its status periodically.
+This function periodically sends the devices' status to the devices.
+
+### clearLogFile
+
+This function clears the log if configured to do so.
+
+### homewareCoreHearbeat
+
+This function sends a heartbeat to other parts of the system.
+
+### syncGoogleState
+
+This function sends the devices' status to Google.
