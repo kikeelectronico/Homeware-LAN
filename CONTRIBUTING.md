@@ -1,11 +1,5 @@
 # Contributing to Homeware
 
----
-title: "Contributing to Homeware"
-aliases:
-  - /docs/contributing/
----
-
 First of all, thank you for thinking about contributing.
 
 ## Report bugs or request a feature
