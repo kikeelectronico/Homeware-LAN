@@ -1,41 +1,16 @@
-# Website
+# Homeware Docs (Hugo)
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+Sitio de documentación de Homeware migrado de Docusaurus a Hugo con el tema
+[hugo-docs-theme](https://github.com/kikeelectronico/hugo-docs-theme) v0.1.0
+(Hugo >= 0.146.0 y Go instalados).
 
-### Installation
-
-```
-$ yarn
-```
-
-### Local Development
-
-```
-$ yarn start
+```sh
+hugo mod get github.com/kikeelectronico/hugo-docs-theme@v0.1.0   # genera go.sum
+hugo server
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+Para probar con una copia local del tema:
 
-### Build
-
+```sh
+HUGO_MODULE_REPLACEMENTS="github.com/kikeelectronico/hugo-docs-theme -> ../hugo-docs-theme" hugo server
 ```
-$ yarn build
-```
-
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
-
-### Deployment
-
-Using SSH:
-
-```
-$ USE_SSH=true yarn deploy
-```
-
-Not using SSH:
-
-```
-$ GIT_USER=<Your GitHub username> yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
