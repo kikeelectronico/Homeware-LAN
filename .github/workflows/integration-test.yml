@@ -3,7 +3,8 @@ on:
   workflow_dispatch:
 
 env:
-  REDIS_VERSION: 6
+  REDIS_VERSION: "6.2.20"
+  MONGODB_VERSION: "8.0.19"
   PYTHON_VERSION: 3.12
   MOSQUITTO_VERSION: 2.0
     
