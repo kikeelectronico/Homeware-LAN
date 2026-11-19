@@ -34,6 +34,7 @@ services:
       - MQTT_HOST=mosquitto
     depends_on:
       - redis
+      - mongodb
       - mosquitto
       - homeware-lan-back-api
     volumes:
@@ -52,6 +53,7 @@ services:
       - MQTT_HOST=mosquitto
     depends_on:
       - redis
+      - mongodb
       - mosquitto
       - homeware-lan-back-api
     volumes:
