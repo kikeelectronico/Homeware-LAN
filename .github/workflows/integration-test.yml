@@ -15,14 +15,19 @@ jobs:
   unit_test_backend:
     name: Unit test backend
     runs-on: ubuntu-latest
+    env:
+      HOMEWARE_USER: admin
+      HOMEWARE_PASSWORD: admin
     steps:
       - uses: actions/checkout@v7
       - name: Start Redis ${{env.REDIS_VERSION}}
         uses: supercharge/redis-github-action@1.8.1
         with:
           redis-version: ${{env.REDIS_VERSION}}
-      - name: Start MongoDB
+      - name: Start MongoDB ${{env.MONGODB_VERSION}}
         uses: supercharge/mongodb-github-action@1.12.1
+        with:
+          mongodb-version: ${{env.MONGODB_VERSION}}
       - name: Start Mosquitto broker ${{env.MOSQUITTO_VERSION}}
         uses: Namoshek/mosquitto-github-action@v1
         with:
