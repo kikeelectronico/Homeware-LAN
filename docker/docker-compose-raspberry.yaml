@@ -111,7 +111,9 @@ services:
 
   # nginx reverse proxy
   nginx-proxy:
-    image: budry/jwilder-nginx-proxy-arm
+    image: nginxproxy/nginx-proxy:1.11
+    environment:
+      - ENABLE_HTTP2=false
     restart: always
     ports:
       - "80:80"
@@ -125,15 +127,16 @@ services:
       - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
 
   # certificate helper
-  letsencrypt:
-    image: alexanderkrause/rpi-letsencrypt-nginx-proxy-companion
+  acme-companion:
+    image: nginxproxy/acme-companion:2.8.2
     restart: always
     environment:
-      - NGINX_PROXY_CONTAINER=nginx-proxy
+      - DEFAULT_EMAIL=${EMAIL}
+    volumes_from:
+      - nginx-proxy
     volumes:
-      - html:/usr/share/nginx/html
       - certs:/etc/nginx/certs:rw
-      - vhostd:/etc/nginx/vhost.d
+      - acme:/etc/acme.sh
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
 
@@ -141,6 +144,7 @@ volumes:
   html:
   certs:
   vhostd:
+  acme:
   mosquitto-data:
   redis-data:
   mongo-data:
