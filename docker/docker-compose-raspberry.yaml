@@ -62,7 +62,7 @@ services:
 
   # redis
   redis:
-    image: redis:6.2.20
+    image: redis:8.10.3
     restart: always
     hostname: redis
     expose:
