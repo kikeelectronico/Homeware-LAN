@@ -32,7 +32,7 @@ updates:
   open-pull-requests-limit: 10
   target-branch: "dev"
 - package-ecosystem: "docker-compose"
-  directory: "/"
+  directory: "/docker"
   schedule:
     interval: "weekly"
   open-pull-requests-limit: 10
