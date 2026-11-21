@@ -141,9 +141,13 @@ jobs:
 
   publish_ip_to_proxy:
     name: Publish VM IP in proxy
-    runs-on: ci-runner
+    runs-on: homeware-runner
     needs: create_gcloud_vm
     steps:
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v5
+        with:
+          version: 'latest'
       - name: Publish EndpointSlice
         run: |
           kubectl apply -n "$PROXY_NS" -f - <<EOF
@@ -171,7 +175,7 @@ jobs:
       - name: "Wait until Homeware is ready"
         uses: cygnetdigital/wait_for_response@v2.0.0
         with:
-          url: ${{ secrets.HOMEWARE_HOST }}
+          url: ${{ secrets.HOMEWARE_HOST }}     # https://homeware-test.enriquegomez.me
           responseCode: '200'
           timeout: 480000
           interval: 5000
@@ -198,14 +202,16 @@ jobs:
 
   unpublish_ip_from_proxy:
     name: Remove VM IP from proxy
-    runs-on: ci-runner
+    runs-on: homeware-runner
     needs: integration_test
     if: ${{ always() }}
     steps:
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v5
+        with:
+          version: 'latest'
       - name: Delete EndpointSlice
-        run: |
-          kubectl delete endpointslice "$PROXY_SLICE" -n "$PROXY_NS" --ignore-not-found
-          sleep 5
+        run: kubectl delete endpointslice "$PROXY_SLICE" -n "$PROXY_NS" --ignore-not-found
 
   delete_gcloud_vm:
     name: Delete VM
