@@ -173,12 +173,17 @@ jobs:
     steps:
       - uses: "actions/checkout@v7"
       - name: "Wait until Homeware is ready"
-        uses: cygnetdigital/wait_for_response@v2.0.0
-        with:
-          url: ${{ secrets.HOMEWARE_HOST }}     # https://homeware-test.enriquegomez.me
-          responseCode: '200'
-          timeout: 480000
-          interval: 5000
+        env:
+          HOST: ${{ secrets.HOMEWARE_HOST }}
+        run: |
+          for i in $(seq 1 96); do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "$HOST" || true)
+            echo "[$i/96] HTTP $code"
+            [ "$code" = "200" ] && exit 0
+            sleep 5
+          done
+          echo "::error::Homeware no respondió 200 tras 8 minutos"
+          exit 1
 
   integration_test:
     name: Integration test
