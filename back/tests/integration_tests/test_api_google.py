@@ -145,7 +145,7 @@ def test_sync_smarthome():
             }
         ]
     }
-    request = requests.post(pytest.host + "/smarthome", headers=headers, data=json.dumps(body))
+    request = requests.post(pytest.host + "/smarthome", headers=headers, json=body)
     assert request.status_code == 200
     response = request.json()
     assert response["requestId"] == body["requestId"]
@@ -165,7 +165,7 @@ def test_query_smarthome():
             }
         ]
     }
-    request = requests.post(pytest.host + "/smarthome", headers=headers, data=json.dumps(body))
+    request = requests.post(pytest.host + "/smarthome", headers=headers, json=body)
     assert request.status_code == 200
     response = request.json()
     assert response["requestId"] == body["requestId"]
@@ -188,7 +188,7 @@ def test_execute_smarthome():
             }
         ]
     }
-    request = requests.post(pytest.host + "/smarthome", headers=headers, data=json.dumps(body))
+    request = requests.post(pytest.host + "/smarthome", headers=headers, json=body)
     assert request.status_code == 200
     response = request.json()
     assert response["requestId"] == body["requestId"]
@@ -206,7 +206,7 @@ def test_disconnect_smarthome():
             }
         ]
     }
-    request = requests.post(pytest.host + "/smarthome", headers=headers, data=json.dumps(body))
+    request = requests.post(pytest.host + "/smarthome", headers=headers, json=body)
     assert request.status_code == 200
     response = request.text
     assert response == "Ok"
@@ -224,7 +224,7 @@ def test_sync_smarthome_fail_bad_token():
             }
         ]
     }
-    request = requests.post(pytest.host + "/smarthome", headers=headers, data=json.dumps(body))
+    request = requests.post(pytest.host + "/smarthome", headers=headers, json=body)
     assert request.status_code == 200
     response = request.text
     assert response == "A"
