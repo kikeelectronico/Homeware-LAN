@@ -1,33 +1,31 @@
 import requests
-import os
-import json
 import pytest
 
 # /api/access/*
-
-apikey = ""
 
 def test_create_access():
     headers = {
         "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
-    request = requests.patch(pytest.host + "/api/access/", headers=headers)
+    request = requests.post(
+        pytest.host + "/api/access/",
+        headers=headers,
+        json={"agent": "integration-test"}
+    )
     assert request.status_code == 200
     response = request.json()
-    keys = list(response.keys())
-    assert len(keys) == 1
-    assert "apikey" in keys
+    assert set(response.keys()) == {"_id", "agent", "apikey"}
+    assert response["_id"]
+    assert response["agent"] == "integration-test"
     assert len(response["apikey"]) > 0
-    global apikey
-    apikey = response["apikey"]
 
 def test_create_access_fail_bad_token():
     headers = {
         "authorization": f"bearer whre_is_perry",
         "content-type": "application/json"
     }
-    request = requests.patch(pytest.host + "/api/access/", headers=headers)
+    request = requests.post(pytest.host + "/api/access/", headers=headers, json={"agent": "integration-test"})
     assert request.status_code == 401
     response = request.json()
     assert response["detail"] == "A valid token is needed"
@@ -37,7 +35,7 @@ def test_create_access_fail_no_token_value():
         "authorization": f"bearer ",
         "content-type": "application/json"
     }
-    request = requests.patch(pytest.host + "/api/access/", headers=headers)
+    request = requests.post(pytest.host + "/api/access/", headers=headers, json={"agent": "integration-test"})
     assert request.status_code == 401
     response = request.json()
     assert response["detail"] == "A valid token is needed"
@@ -48,7 +46,7 @@ def test_create_access_fail_no_header_value():
         "authorization": f"",
         "content-type": "application/json"
     }
-    request = requests.patch(pytest.host + "/api/access/", headers=headers)
+    request = requests.post(pytest.host + "/api/access/", headers=headers, json={"agent": "integration-test"})
     assert request.status_code == 401
     response = request.json()
     assert response["detail"] == "A valid token is needed"
@@ -57,7 +55,7 @@ def test_create_access_fail_no_header():
     headers = {
         "content-type": "application/json"
     }
-    request = requests.patch(pytest.host + "/api/access/", headers=headers)
+    request = requests.post(pytest.host + "/api/access/", headers=headers, json={"agent": "integration-test"})
     assert request.status_code == 401
     response = request.json()
     assert response["detail"] == "A valid token is needed"
@@ -67,14 +65,21 @@ def test_get_access():
         "authorization": f"bearer {pytest.token}",
         "content-type": "application/json"
     }
+    created = requests.post(
+        pytest.host + "/api/access/",
+        headers=headers,
+        json={"agent": "integration-test-list"}
+    )
+    assert created.status_code == 200
+    created_access = created.json()
+
     request = requests.get(pytest.host + "/api/access", headers=headers)
     assert request.status_code == 200
     response = request.json()
-    assert len(response) == 1
-    keys = response[0].keys()
-    assert "apikey" in keys
-    assert len(response[0]["apikey"]) > 0
-    assert apikey == response[0]["apikey"]
+    assert isinstance(response, list)
+    assert all({"_id", "agent", "apikey"}.issubset(item.keys()) for item in response)
+    assert all(len(item["apikey"]) > 0 for item in response)
+    assert created_access in response
 
 def test_get_access_fail_bad_token():
     headers = {

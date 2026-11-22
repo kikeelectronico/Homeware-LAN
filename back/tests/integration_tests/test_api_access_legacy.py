@@ -1,11 +1,7 @@
 import requests
-import os
-import json
 import pytest
 
 # /api/access/*
-
-apikey = ""
 
 def test_legacy_create_access():
     headers = {
@@ -15,12 +11,10 @@ def test_legacy_create_access():
     request = requests.get(pytest.host + "/api/access/create", headers=headers)
     assert request.status_code == 200
     response = request.json()
-    keys = list(response.keys())
-    assert len(keys) == 1
-    assert "apikey" in keys
+    assert set(response.keys()) == {"_id", "agent", "apikey"}
+    assert response["_id"]
+    assert response["agent"] == "legacy"
     assert len(response["apikey"]) > 0
-    global apikey
-    apikey = response["apikey"]
 
 def test_legacy_create_access_fail_bad_token():
     headers = {
@@ -70,11 +64,10 @@ def test_legacy_get_access():
     request = requests.get(pytest.host + "/api/access/get", headers=headers)
     assert request.status_code == 200
     response = request.json()
-    keys = list(response.keys())
-    assert len(keys) == 1
-    assert "apikey" in keys
+    assert set(response.keys()) == {"_id", "agent", "apikey"}
+    assert response["_id"]
+    assert response["agent"]
     assert len(response["apikey"]) > 0
-    assert apikey == response["apikey"]
 
 def test_legacy_get_access_fail_bad_token():
     headers = {
