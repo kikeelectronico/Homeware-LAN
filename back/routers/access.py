@@ -50,4 +50,4 @@ def get_access_deprecated():
 @router.get("/api/access/create", dependencies=[Depends(allowUser)], include_in_schema=False)
 @router.get("/api/access/create/", dependencies=[Depends(allowUser)], include_in_schema=False)
 def create_access_deprecated():
-    return data_conector.createAPIKey()
+    return data_conector.createAPIKey("legacy")
