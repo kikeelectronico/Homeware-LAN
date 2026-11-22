@@ -4,6 +4,9 @@ on:
     types:
       - released
 
+env:
+  DOCKER_BUILD_RECORD_UPLOAD: false
+
 concurrency: 
   group: ${{ github.workflow }}
   cancel-in-progress: true

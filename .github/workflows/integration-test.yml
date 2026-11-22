@@ -11,6 +11,7 @@ env:
   VM_ZONE: europe-southwest1-a
   PROXY_NS: homeware-test-proxy
   PROXY_SLICE: vm-backend-slice
+  DOCKER_BUILD_RECORD_UPLOAD: false
 
 concurrency:
   group: ${{ github.workflow }}

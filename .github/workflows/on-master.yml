@@ -9,7 +9,10 @@ on:
       - 'configuration_templates/**'
       - 'docker/**'
       - 'front/**'
-    
+
+env:
+  DOCKER_BUILD_RECORD_UPLOAD: false
+
 concurrency: 
   group: ${{ github.workflow }}
   cancel-in-progress: true
