@@ -160,7 +160,6 @@ jobs:
           addressType: IPv4
           ports:
           - {name: http, port: 80, protocol: TCP}
-          - {name: https, port: 443, protocol: TCP}
           endpoints:
           - addresses: ["${{ needs.create_gcloud_vm.outputs.vm_ip }}"]
             conditions: {ready: true}
